@@ -1,0 +1,39 @@
+# Deployment credentials
+repoCredentials.gradle
+
+.jar
+
+# Build output directies
+/target
+*/target
+/build
+*/build
+/out
+*/out
+
+# Gradle
+!gradle-wrapper.jar
+.gradletasknamecache
+.gradle
+
+# Mac
+.DS_Store
+
+# User-specific stuff
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/dictionaries
+.idea/**/shelf
+
+# Sensitive or high-churn files
+.idea/**/dataSources/
+.idea/**/dataSources.ids
+.idea/**/dataSources.local.xml
+.idea/**/sqlDataSources.xml
+.idea/**/dynamic.xml
+.idea/**/uiDesigner.xml
+
+.idea/**/libraries
+
+# File-based project format
+*.iws
