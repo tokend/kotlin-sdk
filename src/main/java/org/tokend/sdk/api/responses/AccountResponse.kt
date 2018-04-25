@@ -121,8 +121,8 @@ class AccountResponse : Response(), TransactionBuilderAccount {
     }
 
     fun getExternalAccount(type: String): ExternalAccount? {
-        val type = if (type == "SWM") "ETH" else type
-        return externalAccounts.find { it.type == type }
+        val tempType = if (type == "SWM") "ETH" else type
+        return externalAccounts.find { it.type == tempType }
     }
 
     fun addBalance(asset: String, balanceId: String?, balance: String?, locked: String?) {

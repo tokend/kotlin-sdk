@@ -31,7 +31,8 @@ object ApiFactory {
     private var requestSigner: RequestSigner? = null
     private var cookieJarProvider: CookieJarProvider? = null
 
-
+    @JvmStatic
+    @JvmOverloads
     fun getApiService(url: String, cookieJar: CookieJarProvider? = null): ApiService {
         if (apiService == null || mApiUrl != url || cookieJarProvider != cookieJar) {
             val retrofit = createBaseRetrofitConfig(url).build()
@@ -40,7 +41,10 @@ object ApiFactory {
         return apiService!!
     }
 
-    fun getApiService(apiUrl: String, accountId: String, signer: RequestSigner, cookieJar: CookieJarProvider? = null): ApiService {
+    @JvmStatic
+    @JvmOverloads
+    fun getApiService(apiUrl: String, accountId: String, signer: RequestSigner, cookieJar: CookieJarProvider? = null)
+            : ApiService {
         if (signedApiService == null || apiUrl != mApiUrl || signer != requestSigner || this.accountId != accountId) {
             this.cookieJarProvider = cookieJar
             this.accountId = accountId
@@ -51,15 +55,17 @@ object ApiFactory {
         return signedApiService!!
     }
 
+    @JvmStatic
     fun getBaseGson(): Gson {
         val builder = GsonBuilder()
                 .serializeNulls()
-                .registerTypeAdapter(SocialLinks::class.java,
-                        SocialLinks.SocialLinksDeserializer())
+                .registerTypeAdapter(SocialLinks::class.java, SocialLinks.SocialLinksDeserializer())
                 .registerTypeAdapter(Date::class.java, getGsonDateDeserializer())
         return builder.create()
     }
 
+    @JvmStatic
+    @JvmOverloads
     fun getBaseHttpClient(isSigned: Boolean = false, cookieJar: CookieJarProvider? = null): OkHttpClient {
         val sslContext = SSLContext.getInstance("TLSv1.2")
         sslContext.init(null, null, null)
@@ -90,18 +96,12 @@ object ApiFactory {
             addInterceptor(createLoggingInterceptor())
         }
 
-        val simulateLongResponses = false
-        if (simulateLongResponses) {
-            clientBuilder.addInterceptor { chain ->
-                Thread.sleep(3000)
-                chain.proceed(chain.request())
-            }
-        }
-
         return clientBuilder.build()
     }
 
-    private fun createBaseRetrofitConfig(apiUrl: String, signed: Boolean = false, cookieJar: CookieJarProvider? = null): Retrofit.Builder {
+    @JvmStatic
+    private fun createBaseRetrofitConfig(apiUrl: String, signed: Boolean = false, cookieJar: CookieJarProvider? = null)
+            : Retrofit.Builder {
         val client = getBaseHttpClient(signed, cookieJar)
 
         return Retrofit.Builder()
@@ -111,16 +111,19 @@ object ApiFactory {
                 .client(client)
     }
 
+    @JvmStatic
     internal fun createBaseJsonConverterFactory(): GsonConverterFactory {
         return GsonConverterFactory.create(getBaseGson())
     }
 
+    @JvmStatic
     private fun createLoggingInterceptor(): Interceptor {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         return loggingInterceptor
     }
 
+    @JvmStatic
     private fun createHandleTfaInterceptor(): Interceptor {
         return Interceptor { chain ->
             val request = chain.request()
@@ -149,6 +152,7 @@ object ApiFactory {
         }
     }
 
+    @JvmStatic
     private fun createSignInterceptor(): Interceptor {
         return Interceptor { chain ->
             val newRequest = buildSignedRequest(chain)
@@ -156,12 +160,14 @@ object ApiFactory {
         }
     }
 
+    @JvmStatic
     private fun getGsonDateDeserializer(): JsonDeserializer<Date?> {
         return JsonDeserializer<Date?> { json, _, _ ->
             ApiDateUtil.tryParseDate(json?.asString)
         }
     }
 
+    @JvmStatic
     private fun buildSignedRequest(chain: Interceptor.Chain): Request {
         val validUntil = java.lang.Double.valueOf(Math.floor((Date().time / 1000 +
                 SIGNATURE_VALID_SEC).toDouble()))!!.toInt().toString()

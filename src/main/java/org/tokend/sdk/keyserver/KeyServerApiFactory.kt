@@ -10,7 +10,8 @@ object KeyServerApiFactory {
     private var keyServerApiUrl: String? = null
     private var cookieJarProvider: CookieJarProvider? = null
 
-
+    @JvmStatic
+    @JvmOverloads
     fun getApiService(keyServerApiUrl: String, cookieJar: CookieJarProvider? = null): KeyServerApi {
         if (keyServerApi == null || this.keyServerApiUrl != keyServerApiUrl || cookieJarProvider != cookieJar) {
             this.keyServerApiUrl = keyServerApiUrl
@@ -21,6 +22,7 @@ object KeyServerApiFactory {
         return keyServerApi!!
     }
 
+    @JvmStatic
     private fun createBaseRetrofitConfig(apiUrl: String, cookieJar: CookieJarProvider? = null): Retrofit.Builder {
         val client = ApiFactory.getBaseHttpClient(cookieJar = cookieJar)
         return Retrofit.Builder()

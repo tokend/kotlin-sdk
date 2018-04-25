@@ -64,12 +64,6 @@ interface ApiService {
                          @Body data: DataEntity<Any>):
             Call<ServerResponse<TfaBackend, ServerError>>
 
-    @FormUrlEncoded
-    @POST("/wallets/{walletId}/factors")
-    fun createTfaBackend(@Path("walletId") walletId: String?,
-                         @Field("type") tfaType: String):
-            Call<ServerResponse<TfaBackend, ServerError>>
-
     @DELETE("/wallets/{walletId}/factors/{id}")
     fun deleteTfaBackend(@Path("walletId") walletId: String?,
                          @Path("id") backendId: Int?):
