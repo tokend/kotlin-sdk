@@ -1,13 +1,13 @@
 package org.tokend.sdk.keyserver
 
+import com.google.gson.JsonObject
 import org.tokend.sdk.api.models.WalletData
+import org.tokend.sdk.api.requests.DataEntity
 import org.tokend.sdk.api.responses.ServerError
 import org.tokend.sdk.api.responses.ServerResponse
 import org.tokend.sdk.keyserver.models.LoginParamsResponse
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface KeyServerApi {
     /**
@@ -23,4 +23,13 @@ interface KeyServerApi {
     @GET("/wallets/{walletId}")
     fun getWalletData(@Path("walletId") walletId: String)
             : Call<ServerResponse<WalletData, ServerError>>
+
+    @PUT("/wallets/{walletId}")
+    fun updateWallet(@Path("walletId") walletId: String?,
+                     @Body data: DataEntity<WalletData>):
+            Call<ServerResponse<JsonObject, ServerError>>
+
+    @POST("/wallets")
+    fun createWallet(@Body data: DataEntity<WalletData>):
+            Call<ServerResponse<JsonObject, ServerError>>
 }

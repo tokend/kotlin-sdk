@@ -35,11 +35,6 @@ interface ApiService {
                      @Body data: DataEntity<HashMap<String, Serializable>>):
             Call<ServerResponse<JsonObject, ServerError>>
 
-    @PUT("/wallets/{walletId}")
-    fun updateWallet(@Path("walletId") walletId: String?,
-                     @Body data: DataEntity<WalletData>):
-            Call<ServerResponse<JsonObject, ServerError>>
-
     @PUT("/users/{accountId}")
     fun createUser(@Path("accountId") accountId: String?,
                    @Body data: DataEntity<HashMap<String, Serializable>>):
