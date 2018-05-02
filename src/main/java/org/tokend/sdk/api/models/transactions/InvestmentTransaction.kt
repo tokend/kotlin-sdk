@@ -43,10 +43,10 @@ class InvestmentTransaction(amount: String?,
     companion object {
         const val TYPE_INVESTMENT = "check_sale_state"
 
-        fun fromRecord(record: PaymentRecord, accountId: String, accountAssetBalanceId: String, contextAsset: String)
+        fun fromRecord(record: PaymentRecord, contextAccountId: String, contextBalanceId: String, contextAsset: String)
                 : List<InvestmentTransaction> {
             val ourParticipant = record.participants?.find {
-                it.accountId == accountId && it.balanceId == accountAssetBalanceId
+                it.accountId == contextAccountId && it.balanceId == contextBalanceId
             }
 
             return ourParticipant?.effects?.map { effect ->
