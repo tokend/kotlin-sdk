@@ -31,17 +31,6 @@ class AccountResponse : Response(), TransactionBuilderAccount {
                           val data: String? = null,
                           @SerializedName("type")
                           private val typeMap: HashMap<String, String> = hashMapOf()) {
-
-        companion object {
-            val typeAbbreviationMap = mapOf(
-                    "1" to "BTC",
-                    "2" to "ETH",
-                    "3" to "SWM"
-            )
-        }
-
-        val type: String?
-            get() = typeAbbreviationMap[typeMap["value"]]
     }
 
     class Referral(@SerializedName("account_id")
@@ -118,11 +107,6 @@ class AccountResponse : Response(), TransactionBuilderAccount {
 
     fun getAssetBalanceId(asset: String): String? {
         return balances?.find { it.asset == asset }?.balanceId
-    }
-
-    fun getExternalAccount(type: String): ExternalAccount? {
-        val tempType = if (type == "SWM") "ETH" else type
-        return externalAccounts.find { it.type == tempType }
     }
 
     fun addBalance(asset: String, balanceId: String?, balance: String?, locked: String?) {

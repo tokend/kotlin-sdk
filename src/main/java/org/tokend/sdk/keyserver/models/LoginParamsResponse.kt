@@ -17,7 +17,7 @@ class LoginParamsResponse {
     }
 }
 
-class KdfAttributes() {
+class KdfAttributes {
     @SerializedName("algorithm")
     @Expose
     var algorithm: String? = null

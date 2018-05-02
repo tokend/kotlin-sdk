@@ -32,8 +32,6 @@ class EmissionTransaction(amount: String?,
 
     companion object {
         const val TYPE_ISSUANCE = "create_issuance_request"
-        const val CAUSE_AIRDROP_EARLYBIRD = "airdrop"
-        const val CAUSE_AIRDROP_KYC = "airdrop-for-kyc"
 
         fun fromRecord(record: PaymentRecord): EmissionTransaction {
             val externalDetails = record.externalDetails as? JsonObject

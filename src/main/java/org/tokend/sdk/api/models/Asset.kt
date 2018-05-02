@@ -19,11 +19,4 @@ data class Asset(
             @SerializedName("logo") val logo: RemoteFile?,
             @SerializedName("terms") val terms: RemoteFile?
     )
-
-    companion object {
-        val DEFAULT_ASSET = "SUN"
-        val BTC = "BTC"
-        val ETH = "ETH"
-        val SWM = "SWM"
-    }
 }

@@ -17,7 +17,6 @@ open class Transaction @JvmOverloads constructor(val amount: String? = null,
                                                  var state: PaymentState? = null,
                                                  val id: String? = null,
                                                  val isFeeFromSource: Boolean = false,
-                                                 val paymentType: String? = null,
                                                  val subject: String? = null,
                                                  val participants: List<Participant>?,
                                                  val fromBalance: String?,
@@ -49,22 +48,24 @@ open class Transaction @JvmOverloads constructor(val amount: String? = null,
     val date: Date
         get() = ApiDateUtil.tryParseDate(this.createdAt)
 
-    val asset: String
-        get() = assetString ?: Asset.DEFAULT_ASSET
 
     companion object {
         const val TYPE_PAYMENT = "payment"
-        const val PAYMENT_TYPE_TRANSFER = "Transfer"
-        const val PAYMENT_TYPE_INVOICE = "Invoice"
-        const val PAYMENT_TYPE_GIFT = "Gift"
 
         fun fromRecord(record: PaymentRecord): Transaction {
             return Transaction(record.amount, record.asset,
-                    record.from, record.to, record.ledgerCloseTime,
-                    record.sourceFixedFee, record.sourcePaymentFee,
-                    record.type, PaymentState.fromCode(record.state), record.id,
+                    record.from,
+                    record.to,
+                    record.ledgerCloseTime,
+                    record.sourceFixedFee,
+                    record.sourcePaymentFee,
+                    record.type,
+                    PaymentState.fromCode(record.state),
+                    record.id,
                     record.isFeeFromSource,
-                    record.paymentType, record.subject, record.participants, record.fromBalance,
+                    record.subject,
+                    record.participants,
+                    record.fromBalance,
                     record.toBalance!!,
                     record.pagingToken,
                     record.destFixedFee, record.destPaymentFee)

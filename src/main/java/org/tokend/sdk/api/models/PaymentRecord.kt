@@ -72,19 +72,6 @@ class PaymentRecord {
     @SerializedName("dest_amount")
     val destAmount: String? = null
 
-    val paymentType: String
-        get() {
-            if (subjectRaw != null && (subjectRaw.contains("in: ") || subjectRaw.contains("gf: "))) {
-                if (subjectRaw.substring(0, 4) == "in: ") {
-                    return Transaction.PAYMENT_TYPE_INVOICE
-                }
-                if (subjectRaw.substring(0, 4) == "gf: ") {
-                    return Transaction.PAYMENT_TYPE_GIFT
-                }
-            }
-            return Transaction.PAYMENT_TYPE_TRANSFER
-        }
-
     val subject: String
         get() {
             if (subjectRaw == null || subjectRaw.isEmpty()) {
