@@ -191,13 +191,13 @@ object ApiFactory {
         }
         val signatureBase = "{ uri: '$fullUrlPath', valid_untill: '$validUntil'}"
         val data = signatureBase.toByteArray().hash()
-        val signedData = String(requestSigner?.sing(data) ?: byteArrayOf())
+        val signedDataBase64 = requestSigner?.signToBase64(data) ?: ""
 
         return chain.request().newBuilder()
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
                 .addHeader("X-AuthValidUnTillTimestamp", validUntil)
                 .addHeader("X-AuthPublicKey", accountId)
-                .addHeader("X-AuthSignature", signedData)
+                .addHeader("X-AuthSignature", signedDataBase64)
                 .build()
     }
 }

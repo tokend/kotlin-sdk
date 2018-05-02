@@ -1,5 +1,8 @@
 package org.tokend.sdk.api.requests
 
 interface RequestSigner {
-    fun sing(data: ByteArray): ByteArray
+    /**
+     * Returns Base64 encoded signature of given data.
+     */
+    fun signToBase64(data: ByteArray): String
 }
