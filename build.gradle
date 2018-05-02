@@ -11,7 +11,7 @@ buildscript {
 }
 
 group 'org.tokend'
-version '0.42'
+version '0.43'
 
 apply plugin: 'java'
 apply plugin: 'kotlin'
