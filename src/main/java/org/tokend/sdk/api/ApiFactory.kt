@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonParser
 import okhttp3.*
+import okhttp3.internal.Util
 import okhttp3.logging.HttpLoggingInterceptor
 import org.tokend.sdk.api.models.SocialLinks
 import org.tokend.sdk.api.requests.CookieJarProvider
@@ -16,6 +17,7 @@ import org.tokend.sdk.utils.extentions.hash
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import java.nio.charset.Charset
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.net.ssl.SSLContext
@@ -130,8 +132,18 @@ object ApiFactory {
             val response = chain.proceed(request)
 
             if (response?.code() == 403) {
-                val responseJson =
-                        JsonParser().parse(response.body()?.string()).asJsonObject
+                val responseBuffer = response.body().source().buffer().clone()
+                var responseString = "{}"
+
+                try {
+                    val responseCharset =
+                            Util.bomAwareCharset(responseBuffer, Charset.defaultCharset())
+                    responseString = responseBuffer.readString(responseCharset)
+                } finally {
+                    Util.closeQuietly(responseBuffer)
+                }
+
+                val responseJson = JsonParser().parse(responseString).asJsonObject
                 val errors = responseJson["errors"]?.asJsonArray
 
                 if (errors?.size() ?: 0 > 0) {
