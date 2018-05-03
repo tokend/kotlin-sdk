@@ -20,10 +20,5 @@ class NeedTfaException(val backendId: Int,
     }
 }
 
-class NotFoundException : RuntimeException {
-    constructor(message: String) : super(message) {}
-
-    constructor() {}
-
-    constructor(ex: Exception) : super(ex) {}
-}
+class InvalidCredentialsException: Exception()
+class EmailNotVerifiedException: Exception()

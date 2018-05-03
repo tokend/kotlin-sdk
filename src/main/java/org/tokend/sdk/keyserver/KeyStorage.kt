@@ -5,44 +5,74 @@ import org.tokend.crypto.cipher.Aes256GCM
 import org.tokend.kdf.ScryptWithMasterKeyDerivation
 import org.tokend.sdk.api.models.WalletData
 import org.tokend.sdk.api.requests.CookieJarProvider
-import org.tokend.sdk.federation.NotFoundException
+import org.tokend.sdk.federation.EmailNotVerifiedException
+import org.tokend.sdk.federation.InvalidCredentialsException
 import org.tokend.sdk.keyserver.models.KdfAttributes
 import org.tokend.sdk.keyserver.models.LoginParamsResponse
 import org.tokend.sdk.keyserver.models.WalletInfo
 import org.tokend.sdk.utils.extentions.encodeHex
 import org.tokend.sdk.utils.extentions.toBytes
+import retrofit2.HttpException
+import java.net.HttpURLConnection
 
 class KeyStorage(keyServerUrl: String, cookieJarProvider: CookieJarProvider? = null) {
     private val keyServerApiService = KeyServerApiFactory.getApiService(keyServerUrl, cookieJarProvider)
 
+    @Throws(InvalidCredentialsException::class,
+            EmailNotVerifiedException::class,
+            HttpException::class
+    )
     fun getWalletInfo(login: String, password: String, isRecovery: Boolean = false): WalletInfo {
-        try {
-            val loginParams = getApiLoginParams(login, isRecovery)!!
-            val tempLogin = if (loginParams.id == 2L) login.toLowerCase() else login
+        val loginParams = getApiLoginParams(login, isRecovery)
 
-            val hexWalletId = getWalletIdHex(tempLogin, password, loginParams.kdfAttributes!!)
-            val walletKey = getWalletKey(tempLogin, password, loginParams.kdfAttributes!!)
+        val tempLogin = if (loginParams.id == 2L) login.toLowerCase() else login
 
-            val walletData = getWalletData(hexWalletId)!!
-            val iv = walletData.attributes?.iv!!
-            val cipherText = walletData.attributes?.cipherText!!
+        val hexWalletId = getWalletIdHex(tempLogin, password, loginParams.kdfAttributes)
+        val walletKey = getWalletKey(tempLogin, password, loginParams.kdfAttributes)
 
-            return WalletInfo(walletData.attributes?.accountId!!, hexWalletId, getSecretSeed(iv, cipherText, walletKey))
-        } catch (e: Throwable) {
-            when (e) {
-                is NullPointerException,
-                is NotFoundException -> throw NotFoundException("Unable to obtain salt")
-                else -> throw e
+        val walletData = getWalletData(hexWalletId)
+
+        val iv = walletData.attributes?.iv
+                ?: throw IllegalStateException("Wallet data has no IV")
+        val cipherText = walletData.attributes?.cipherText
+                ?: throw IllegalStateException("Wallet data has no encrypted seed")
+        val accountId = walletData.attributes?.accountId
+                ?: throw IllegalStateException("Wallet data has no account ID")
+
+        return WalletInfo(accountId, hexWalletId, getSecretSeed(iv, cipherText, walletKey))
+    }
+
+    @Throws(InvalidCredentialsException::class, HttpException::class)
+    fun getApiLoginParams(login: String, isRecovery: Boolean): LoginParamsResponse {
+        val response = keyServerApiService.getLoginParams(login, isRecovery).execute()
+        val data = response.body()?.data
+
+        if (data != null) {
+            return data
+        } else {
+            when (response.code()) {
+                HttpURLConnection.HTTP_NOT_FOUND -> throw InvalidCredentialsException()
+                else -> throw HttpException(response)
             }
         }
     }
 
-    private fun getApiLoginParams(login: String, isRecovery: Boolean): LoginParamsResponse? {
-        return keyServerApiService.getLoginParams(login, isRecovery).execute().body()?.data
-    }
+    @Throws(InvalidCredentialsException::class,
+            EmailNotVerifiedException::class,
+            HttpException::class)
+    fun getWalletData(walletId: String): WalletData {
+        val response = keyServerApiService.getWalletData(walletId).execute()
+        val data = response.body()?.data
 
-    private fun getWalletData(walletId: String): WalletData? {
-        return keyServerApiService.getWalletData(walletId).execute().body()?.data
+        if (data != null) {
+            return data
+        } else {
+            when (response.code()) {
+                HttpURLConnection.HTTP_FORBIDDEN -> throw EmailNotVerifiedException()
+                HttpURLConnection.HTTP_NOT_FOUND -> throw InvalidCredentialsException()
+                else -> throw HttpException(response)
+            }
+        }
     }
 
     private companion object {
@@ -55,9 +85,9 @@ class KeyStorage(keyServerUrl: String, cookieJarProvider: CookieJarProvider? = n
         }
 
         fun deriveWallet(login: ByteArray, password: ByteArray, masterKey: ByteArray, kdfAttributes: KdfAttributes): ByteArray {
-            val derivation = ScryptWithMasterKeyDerivation(kdfAttributes.n!!, kdfAttributes.r!!,
-                    kdfAttributes.p!!, login, masterKey)
-            return derivation.derive(password, kdfAttributes.salt!!, kdfAttributes.bits!!.toBytes())
+            val derivation = ScryptWithMasterKeyDerivation(kdfAttributes.n, kdfAttributes.r,
+                    kdfAttributes.p, login, masterKey)
+            return derivation.derive(password, kdfAttributes.salt!!, kdfAttributes.bits.toBytes())
         }
 
         fun getSecretSeed(iv: ByteArray, cipherText: ByteArray, key: ByteArray): String {
