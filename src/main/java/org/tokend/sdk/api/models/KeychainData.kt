@@ -9,7 +9,11 @@ import org.tokend.sdk.utils.extentions.encodeBase64String
 data class KeychainData(@SerializedName("IV")
                         private val rawIV: String,
                         @SerializedName("cipherText")
-                        private val rawCipherText: String) {
+                        private val rawCipherText: String,
+                        @SerializedName("cipherName")
+                        private val cipherName: String = "aes",
+                        @SerializedName("modeName")
+                        private val cipherMode: String = "gcm") {
 
     val iv: ByteArray
         get() = rawIV.decodeBase64()

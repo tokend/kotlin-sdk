@@ -22,3 +22,4 @@ class NeedTfaException(val backendId: Int,
 
 class InvalidCredentialsException: Exception()
 class EmailNotVerifiedException: Exception()
+class EmailAlreadyTakenException: Exception()

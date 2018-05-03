@@ -27,9 +27,9 @@ interface KeyServerApi {
     @PUT("/wallets/{walletId}")
     fun updateWallet(@Path("walletId") walletId: String?,
                      @Body data: DataEntity<WalletData>):
-            Call<ServerResponse<JsonObject, ServerError>>
+            Call<Void>
 
     @POST("/wallets")
     fun createWallet(@Body data: DataEntity<WalletData>):
-            Call<ServerResponse<JsonObject, ServerError>>
+            Call<Void>
 }

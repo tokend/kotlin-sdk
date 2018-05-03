@@ -4,7 +4,7 @@ data class WalletRelation(val name: String,
                           private val type: String,
                           private val id: String?,
                           private val accountId: String? = null,
-                          private val encryptedWallet: EncryptedWallet? = null) {
+                          private val encryptedKey: EncryptedKey? = null) {
 
     val walletData: WalletData
         get() {
@@ -15,11 +15,11 @@ data class WalletRelation(val name: String,
                     relationships = hashMapOf()
             )
 
-            if (accountId != null && encryptedWallet != null) {
+            if (accountId != null && encryptedKey != null) {
                 val attributes = WalletData.WalletAttributes(
                         accountId = accountId,
-                        keychainDataString = encryptedWallet.keychainData,
-                        salt = encryptedWallet.salt,
+                        keychainDataString = encryptedKey.keychainData,
+                        salt = encryptedKey.salt,
                         email = "",
                         isVerified = true
                 )
@@ -28,9 +28,6 @@ data class WalletRelation(val name: String,
 
             return walletData
         }
-
-    constructor(name: String, type: String, accountId: String?, encryptedWallet: EncryptedWallet)
-            : this(name, type, encryptedWallet.walletIdHex, accountId, encryptedWallet)
 
     companion object {
         var RELATION_RECOVERY = "recovery"

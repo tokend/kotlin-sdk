@@ -28,9 +28,9 @@ class KdfAttributes(
     @SerializedName("r")
     val r: Int,
     @SerializedName("salt")
-    val encodedSalt: String
+    var encodedSalt: String
 ) {
-    val salt: ByteArray?
+    val salt: ByteArray
         get() = encodedSalt.decodeBase64()
 
     override fun toString(): String {

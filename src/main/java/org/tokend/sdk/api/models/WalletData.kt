@@ -41,25 +41,26 @@ class WalletData(
         }
     }
 
-    constructor(encryptedWallet: EncryptedWallet, accountId: String,
+    constructor(walletIdHex: String,
+                encryptedKey: EncryptedKey,
                 relations: List<WalletRelation>) : this(
             type = "wallet",
-            id = encryptedWallet.walletIdHex,
+            id = walletIdHex,
             attributes = WalletAttributes(
-                    accountId = accountId,
-                    email = encryptedWallet.username,
-                    salt = encryptedWallet.salt,
-                    isVerified = false,
-                    keychainDataString = ""
+                    accountId = encryptedKey.accountId,
+                    email = encryptedKey.email,
+                    salt = encryptedKey.salt,
+                    keychainDataString = encryptedKey.keychainData,
+                    isVerified = false
             ),
             relationships = HashMap()
     ) {
-        id = encryptedWallet.walletIdHex
-        type = "wallet"
-        attributes?.setKeychainDataString(encryptedWallet.keychainData)
-
         for (relation in relations) {
-            relationships.put(relation.name, DataEntity(relation.walletData))
+            addRelation(relation)
         }
+    }
+
+    fun addRelation(relation: WalletRelation) {
+        relationships.put(relation.name, DataEntity(relation.walletData))
     }
 }
