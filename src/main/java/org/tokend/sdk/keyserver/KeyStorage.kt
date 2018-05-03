@@ -38,8 +38,10 @@ class KeyStorage(keyServerUrl: String, cookieJarProvider: CookieJarProvider? = n
                 ?: throw IllegalStateException("Wallet data has no encrypted seed")
         val accountId = walletData.attributes?.accountId
                 ?: throw IllegalStateException("Wallet data has no account ID")
+        val email = walletData.attributes?.email
+                ?: throw IllegalStateException("Wallet data has no email")
 
-        return WalletInfo(accountId, hexWalletId, getSecretSeed(iv, cipherText, walletKey))
+        return WalletInfo(accountId, email, hexWalletId, getSecretSeed(iv, cipherText, walletKey))
     }
 
     @Throws(InvalidCredentialsException::class, HttpException::class)

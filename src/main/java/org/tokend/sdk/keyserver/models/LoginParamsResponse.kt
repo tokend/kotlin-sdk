@@ -1,44 +1,37 @@
 package org.tokend.sdk.keyserver.models
 
-import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import org.tokend.sdk.utils.extentions.decodeBase64
 
-class LoginParamsResponse {
+class LoginParamsResponse(
     @SerializedName("type")
-    var type: String? = null
+    val type: String,
     @SerializedName("id")
-    var id: Long? = null
+    val id: Long,
     @SerializedName("attributes")
-    var kdfAttributes: KdfAttributes? = null
-
+    val kdfAttributes: KdfAttributes
+) {
     override fun toString(): String {
         return "LoginParamsResponse(type=$type, id=$id, kdfAttributes=$kdfAttributes)"
     }
 }
 
-class KdfAttributes {
+class KdfAttributes(
     @SerializedName("algorithm")
-    @Expose
-    var algorithm: String? = null
+    val algorithm: String,
     @SerializedName("bits")
-    @Expose
-    var bits: Int? = null
+    val bits: Int,
     @SerializedName("n")
-    @Expose
-    var n: Int? = null
+    val n: Int,
     @SerializedName("p")
-    @Expose
-    var p: Int? = null
+    val p: Int,
     @SerializedName("r")
-    @Expose
-    var r: Int? = null
+    val r: Int,
     @SerializedName("salt")
-    @Expose
-    var encodedSalt: String? = null
-
+    val encodedSalt: String
+) {
     val salt: ByteArray?
-        get() = encodedSalt?.decodeBase64()
+        get() = encodedSalt.decodeBase64()
 
     override fun toString(): String {
         return "KdfAttributes(algorithm=$algorithm, bits=$bits, n=$n, p=$p, r=$r, encodedSalt=$encodedSalt, salt=${String(salt!!)})"
