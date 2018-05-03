@@ -1,9 +1,5 @@
 package org.tokend.sdk.api.models
 
-/**
- * Created by Oleg Koretsky on 2/8/18.
- */
-
 data class WalletRelation(val name: String,
                           private val type: String,
                           private val id: String?,
@@ -12,15 +8,21 @@ data class WalletRelation(val name: String,
 
     val walletData: WalletData
         get() {
-            val walletData = WalletData()
-            walletData.type = type
-            id?.let { walletData.id = id }
+            val walletData = WalletData(
+                    type = type,
+                    id = id,
+                    attributes = null,
+                    relationships = hashMapOf()
+            )
 
             if (accountId != null && encryptedWallet != null) {
-                val attributes = walletData.WalletAttributes()
-                attributes.accountId = accountId
-                attributes.setKeychainDataString(encryptedWallet.keychainData!!)
-                attributes.salt = encryptedWallet.salt
+                val attributes = WalletData.WalletAttributes(
+                        accountId = accountId,
+                        keychainDataString = encryptedWallet.keychainData,
+                        salt = encryptedWallet.salt,
+                        email = "",
+                        isVerified = true
+                )
                 walletData.attributes = attributes
             }
 

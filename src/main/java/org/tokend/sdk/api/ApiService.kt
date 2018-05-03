@@ -37,7 +37,7 @@ interface ApiService {
 
     @PUT("/users/{accountId}")
     fun createUser(@Path("accountId") accountId: String?,
-                   @Body data: DataEntity<HashMap<String, Serializable>>):
+                   @Body data: DataEntity<@JvmSuppressWildcards HashMap<String, Serializable>>):
             Call<ServerResponse<JsonObject, ServerError>>
 
     @GET("/users/{accountId}")

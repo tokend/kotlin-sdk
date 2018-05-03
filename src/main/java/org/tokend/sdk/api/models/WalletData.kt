@@ -5,38 +5,36 @@ import com.google.gson.annotations.SerializedName
 import org.tokend.sdk.api.requests.DataEntity
 import org.tokend.sdk.utils.extentions.decodeBase64
 
-class WalletData() {
-    @SerializedName("type")
-    var type: String? = null
-    @SerializedName("id")
-    var id: String? = null
-    @SerializedName("attributes")
-    var attributes: WalletAttributes? = null
-    @SerializedName("relationships")
-    var relationships: MutableMap<String, DataEntity<Any>>? = null
+class WalletData(
+        @SerializedName("type")
+        var type: String,
+        @SerializedName("id")
+        var id: String?,
+        @SerializedName("attributes")
+        var attributes: WalletAttributes?,
+        @SerializedName("relationships")
+        var relationships: MutableMap<String, DataEntity<Any>>
+) {
+    class WalletAttributes(
+            @SerializedName("account_id")
+            var accountId: String,
+            @SerializedName("email")
+            var email: String,
+            @SerializedName("keychain_data")
+            private var keychainDataString: String,
+            @SerializedName("salt")
+            var salt: String,
+            @SerializedName("verified")
+            var isVerified: Boolean) {
 
-    inner class WalletAttributes {
-        @SerializedName("account_id")
-        var accountId: String? = null
-        @SerializedName("email")
-        var email: String? = null
-        @SerializedName("keychain_data")
-        private var keychainDataString: String? = null
-        @SerializedName("salt")
-        var salt: String? = null
-        @SerializedName("verified")
-        var isVerified: Boolean = false
-
-        val keychainData: KeychainData?
-            get() = this.keychainDataString?.let {
-                KeychainData.fromJson(String(it.decodeBase64()))
-            }
+        val keychainData: KeychainData
+            get() = KeychainData.fromJson(String(keychainDataString.decodeBase64()))
 
         val iv: ByteArray?
-            get() = this.keychainData?.iv
+            get() = this.keychainData.iv
 
         val cipherText: ByteArray?
-            get() = this.keychainData?.cipherText
+            get() = this.keychainData.cipherText
 
         fun setKeychainDataString(keychainDataString: String) {
             this.keychainDataString = keychainDataString
@@ -44,18 +42,24 @@ class WalletData() {
     }
 
     constructor(encryptedWallet: EncryptedWallet, accountId: String,
-                relations: List<WalletRelation>) : this() {
+                relations: List<WalletRelation>) : this(
+            type = "wallet",
+            id = encryptedWallet.walletIdHex,
+            attributes = WalletAttributes(
+                    accountId = accountId,
+                    email = encryptedWallet.username,
+                    salt = encryptedWallet.salt,
+                    isVerified = false,
+                    keychainDataString = ""
+            ),
+            relationships = HashMap()
+    ) {
         id = encryptedWallet.walletIdHex
         type = "wallet"
-        attributes = WalletAttributes()
-        attributes!!.accountId = accountId
-        attributes!!.email = encryptedWallet.username
-        attributes!!.salt = encryptedWallet.salt
-        attributes!!.setKeychainDataString(encryptedWallet.keychainData!!)
+        attributes?.setKeychainDataString(encryptedWallet.keychainData)
 
-        relationships = HashMap()
         for (relation in relations) {
-            relationships?.put(relation.name, DataEntity(relation.walletData))
+            relationships.put(relation.name, DataEntity(relation.walletData))
         }
     }
 }
