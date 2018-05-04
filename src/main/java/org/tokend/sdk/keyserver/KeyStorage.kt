@@ -80,7 +80,7 @@ class KeyStorage(keyServerUrl: String, cookieJarProvider: CookieJarProvider? = n
             return data
         } else {
             when (response.code()) {
-                HttpURLConnection.HTTP_FORBIDDEN -> throw EmailNotVerifiedException()
+                HttpURLConnection.HTTP_FORBIDDEN -> throw EmailNotVerifiedException(walletId)
                 HttpURLConnection.HTTP_NOT_FOUND -> throw InvalidCredentialsException()
                 else -> throw HttpException(response)
             }
