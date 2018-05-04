@@ -69,12 +69,6 @@ interface ApiService {
                          @Path("id") backendId: Int?,
                          @Body data: DataEntity<Any>):
             Call<ServerResponse<JsonObject, ServerError>>
-
-    @PUT("/wallets/{walletId}/factors/{id}/verification")
-    fun verifyTfaBackend(@Path("walletId") walletId: String?,
-                         @Path("id") backendId: Int?,
-                         @Body data: DataEntity<@JvmSuppressWildcards Any>):
-            Call<Void>
     //endregion TFA
 
     @GET("/fees/{feeType}")

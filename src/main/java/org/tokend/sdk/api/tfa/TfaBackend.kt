@@ -2,9 +2,6 @@ package org.tokend.sdk.api.tfa
 
 import com.google.gson.annotations.SerializedName
 
-/**
- * Created by Oleg Koretsky on 11/22/17.
- */
 class TfaBackend {
     class Attributes(@SerializedName("priority")
                      var priority: Int? = null,
@@ -25,4 +22,9 @@ class TfaBackend {
     val id: Int? = null
     @SerializedName("attributes")
     val attributes: Attributes? = null
+
+    companion object {
+        const val TYPE_TOTP = "totp"
+        const val TYPE_PASSWORD = "password"
+    }
 }

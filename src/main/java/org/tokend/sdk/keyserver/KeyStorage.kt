@@ -12,6 +12,7 @@ import org.tokend.sdk.api.models.WalletData
 import org.tokend.sdk.api.models.WalletRelation
 import org.tokend.sdk.api.requests.CookieJarProvider
 import org.tokend.sdk.api.requests.DataEntity
+import org.tokend.sdk.api.tfa.TfaCallback
 import org.tokend.sdk.federation.EmailAlreadyTakenException
 import org.tokend.sdk.federation.EmailNotVerifiedException
 import org.tokend.sdk.federation.InvalidCredentialsException
@@ -24,8 +25,10 @@ import retrofit2.HttpException
 import java.net.HttpURLConnection
 import java.security.SecureRandom
 
-class KeyStorage(keyServerUrl: String, cookieJarProvider: CookieJarProvider? = null) {
-    private val keyServerApiService = KeyServerApiFactory.getApiService(keyServerUrl, cookieJarProvider)
+class KeyStorage @JvmOverloads constructor(keyServerUrl: String, tfaCallback: TfaCallback? = null,
+                                           cookieJarProvider: CookieJarProvider? = null) {
+    private val keyServerApiService =
+            KeyServerApiFactory.getApiService(keyServerUrl, tfaCallback, cookieJarProvider)
 
     // region Obtain
     @Throws(InvalidCredentialsException::class,
@@ -137,7 +140,7 @@ class KeyStorage(keyServerUrl: String, cookieJarProvider: CookieJarProvider? = n
             return derivation.derive(password, kdfAttributes.salt, kdfAttributes.bits.toBytes())
         }
 
-        private fun decryptSecretSeed(iv: ByteArray, cipherText: ByteArray, key: ByteArray): String {
+        fun decryptSecretSeed(iv: ByteArray, cipherText: ByteArray, key: ByteArray): String {
             val privateSeedJson = String(Aes256GCM(iv).decrypt(cipherText, key))
             return JsonParser().parse(privateSeedJson).asJsonObject["seed"].asString
         }

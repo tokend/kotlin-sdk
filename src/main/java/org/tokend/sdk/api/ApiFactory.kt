@@ -3,21 +3,19 @@ package org.tokend.sdk.api
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonDeserializer
-import com.google.gson.JsonParser
 import okhttp3.*
-import okhttp3.internal.Util
 import okhttp3.logging.HttpLoggingInterceptor
 import org.tokend.sdk.api.models.SocialLinks
 import org.tokend.sdk.api.requests.CookieJarProvider
 import org.tokend.sdk.api.requests.RequestSigner
-import org.tokend.sdk.api.responses.ServerError
-import org.tokend.sdk.federation.NeedTfaException
+import org.tokend.sdk.api.tfa.TfaCallback
+import org.tokend.sdk.api.tfa.TfaOkHttpInterceptor
+import org.tokend.sdk.api.tfa.TfaVerificationService
 import org.tokend.sdk.utils.ApiDateUtil
 import org.tokend.sdk.utils.extentions.hash
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
-import java.nio.charset.Charset
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.net.ssl.SSLContext
@@ -32,12 +30,19 @@ object ApiFactory {
     private var signedApiService: ApiService? = null
     private var requestSigner: RequestSigner? = null
     private var cookieJarProvider: CookieJarProvider? = null
+    private var tfaVerificationService: TfaVerificationService? = null
 
     @JvmStatic
     @JvmOverloads
-    fun getApiService(url: String, cookieJar: CookieJarProvider? = null): ApiService {
+    fun getApiService(url: String, tfaCallback: TfaCallback? = null,
+                      cookieJar: CookieJarProvider? = null): ApiService {
         if (apiService == null || mApiUrl != url || cookieJarProvider != cookieJar) {
-            val retrofit = createBaseRetrofitConfig(url).build()
+            val client = getBaseHttpClientBuilder(false, cookieJar)
+                    .addInterceptor(TfaOkHttpInterceptor(getTfaVerificationService(url),
+                            tfaCallback))
+                    .build()
+            val retrofit = createBaseRetrofitConfig(url, client).build()
+
             apiService = retrofit.create(ApiService::class.java)
         }
         return apiService!!
@@ -45,16 +50,31 @@ object ApiFactory {
 
     @JvmStatic
     @JvmOverloads
-    fun getApiService(apiUrl: String, accountId: String, signer: RequestSigner, cookieJar: CookieJarProvider? = null)
+    fun getApiService(apiUrl: String, accountId: String, signer: RequestSigner,
+                      tfaCallback: TfaCallback? = null, cookieJar: CookieJarProvider? = null)
             : ApiService {
         if (signedApiService == null || apiUrl != mApiUrl || signer != requestSigner || this.accountId != accountId) {
             this.cookieJarProvider = cookieJar
             this.accountId = accountId
             this.requestSigner = signer
-            val retrofit = createBaseRetrofitConfig(apiUrl = apiUrl, signed = true).build()
+
+            val client = getBaseHttpClientBuilder(true, cookieJar)
+                    .addInterceptor(TfaOkHttpInterceptor(getTfaVerificationService(apiUrl),
+                            tfaCallback))
+                    .build()
+            val retrofit = createBaseRetrofitConfig(apiUrl, client).build()
+
             signedApiService = retrofit.create(ApiService::class.java)
         }
         return signedApiService!!
+    }
+
+    @JvmStatic
+    fun getTfaVerificationService(apiUrl: String): TfaVerificationService {
+        return tfaVerificationService
+                ?: createBaseRetrofitConfig(apiUrl, getBaseHttpClientBuilder().build()).build()
+                        .create(TfaVerificationService::class.java)
+                        .also { tfaVerificationService = it }
     }
 
     @JvmStatic
@@ -68,7 +88,8 @@ object ApiFactory {
 
     @JvmStatic
     @JvmOverloads
-    fun getBaseHttpClient(isSigned: Boolean = false, cookieJar: CookieJarProvider? = null): OkHttpClient {
+    fun getBaseHttpClientBuilder(isSigned: Boolean = false, cookieJar: CookieJarProvider? = null)
+            : OkHttpClient.Builder {
         val sslContext = SSLContext.getInstance("TLSv1.2")
         sslContext.init(null, null, null)
         val sslFactory = sslContext.socketFactory
@@ -88,7 +109,6 @@ object ApiFactory {
 
         clientBuilder.apply {
             connectionSpecs(Arrays.asList(connectionSpec, ConnectionSpec.CLEARTEXT))
-            addInterceptor(createHandleTfaInterceptor())
             val jar = cookieJar?.getCookieJar()
             if (jar != null)
                 cookieJar(jar)
@@ -98,19 +118,17 @@ object ApiFactory {
             addInterceptor(createLoggingInterceptor())
         }
 
-        return clientBuilder.build()
+        return clientBuilder
     }
 
     @JvmStatic
-    private fun createBaseRetrofitConfig(apiUrl: String, signed: Boolean = false, cookieJar: CookieJarProvider? = null)
+    private fun createBaseRetrofitConfig(apiUrl: String, httpClient: OkHttpClient)
             : Retrofit.Builder {
-        val client = getBaseHttpClient(signed, cookieJar)
-
         return Retrofit.Builder()
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(createBaseJsonConverterFactory())
                 .baseUrl(apiUrl)
-                .client(client)
+                .client(httpClient)
     }
 
     @JvmStatic
@@ -123,45 +141,6 @@ object ApiFactory {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         return loggingInterceptor
-    }
-
-    @JvmStatic
-    private fun createHandleTfaInterceptor(): Interceptor {
-        return Interceptor { chain ->
-            val request = chain.request()
-            val response = chain.proceed(request)
-
-            if (response?.code() == 403) {
-                val responseBuffer = response.body().source().buffer().clone()
-                var responseString = "{}"
-
-                try {
-                    val responseCharset =
-                            Util.bomAwareCharset(responseBuffer, Charset.defaultCharset())
-                    responseString = responseBuffer.readString(responseCharset)
-                } finally {
-                    Util.closeQuietly(responseBuffer)
-                }
-
-                val responseJson = JsonParser().parse(responseString).asJsonObject
-                val errors = responseJson["errors"]?.asJsonArray
-
-                if (errors?.size() ?: 0 > 0) {
-                    val error = getBaseGson().fromJson(errors?.get(0), ServerError::class.java)
-                    if (error.detail?.contains("factor") == true) {
-                        throw NeedTfaException(
-                                (error.meta?.get(NeedTfaException.BACKEND_ID) as? Double)?.toInt()
-                                        ?: 0,
-                                (error.meta?.get(NeedTfaException.BACKEND_TYPE) as? String).toString(),
-                                (error.meta?.get(NeedTfaException.TOKEN) as? String).toString(),
-                                (error.meta?.get(NeedTfaException.KEYCHAIN_DATA) as? String).toString(),
-                                (error.meta?.get(NeedTfaException.SALT) as? String).toString(),
-                                (error.meta?.get(NeedTfaException.WALLET_ID) as? String).toString())
-                    }
-                }
-            }
-            response!!
-        }
     }
 
     @JvmStatic
