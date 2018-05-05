@@ -94,9 +94,9 @@ interface ApiService {
 
     @GET("/accounts/{accountId}/payments")
     fun getPayments(@Path("accountId") accountId: String,
-                    @Query("limit") limit: Int,
-                    @Query("order") order: String,
-                    @Query("cursor") cursor: String,
+                    @Query("limit") limit: Int = 25,
+                    @Query("order") order: String = "desc",
+                    @Query("cursor") cursor: String? = null,
                     @Query("asset") asset: String? = null,
                     @Query("since") sinceDate: String? = null,
                     @Query("to") toDate: String? = null): Call<Page<PaymentRecord>>
