@@ -4,24 +4,21 @@ import com.google.gson.annotations.SerializedName
 import org.tokend.sdk.utils.BigDecimalUtil
 import java.math.BigDecimal
 
-/**
- * Created by Oleg Koretsky on 2/7/18.
- */
 data class BalanceDetails(
+        @SerializedName("balance_id")
+        val balanceId: String,
         @SerializedName("balance")
-        val balanceString: String?,
+        val balanceString: String,
         @SerializedName("locked")
-        val lockedString: String?,
+        val lockedString: String,
+        @SerializedName("converted_balance")
+        private val convertedBalanceString: String,
+        @SerializedName("converted_locked")
+        private val convertedLockedString: String,
         @SerializedName("asset_details")
         val assetDetails: Asset? = null,
-        @SerializedName("converted_balance")
-        private val convertedBalanceString: String?,
-        @SerializedName("converted_locked")
-        private val convertedLockedString: String?,
         @SerializedName("offers")
-        var offers: List<Offer>? = null,
-        @SerializedName("balance_id")
-        val balanceId: String? = null) {
+        var offers: List<Offer>? = null) {
 
     val asset: String
         get() = assetDetails?.code ?: ""
@@ -30,6 +27,8 @@ data class BalanceDetails(
         get() = BigDecimalUtil.valueOf(balanceString)
     val convertedBalance: BigDecimal
         get() = BigDecimalUtil.valueOf(convertedBalanceString)
-    val convertedLocked: BigDecimal
+    val lockedBalance: BigDecimal
+        get() = BigDecimalUtil.valueOf(lockedString)
+    val convertedLockedBalance: BigDecimal
         get() = BigDecimalUtil.valueOf(convertedLockedString)
 }
