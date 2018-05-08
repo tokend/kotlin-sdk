@@ -50,7 +50,6 @@ uploadArchives {
                     password: project.ext.has("repoPass") ? repoPass : "")
         }
 
-        pom.artifactId = 'sdk'
         pom.project {
             licenses {
                 license {
