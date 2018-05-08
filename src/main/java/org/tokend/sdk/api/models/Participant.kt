@@ -15,7 +15,7 @@ data class Participant(@SerializedName("account_id") val accountId: String? = nu
     class Effect(@SerializedName("base_asset")
                  val baseAsset: String? = null,
                  @SerializedName("is_buy")
-                 val isBuy: Boolean? = null,
+                 val isBuy: Boolean = false,
                  @SerializedName("quote_asset")
                  val quoteAsset: String? = null,
                  @SerializedName("matches")

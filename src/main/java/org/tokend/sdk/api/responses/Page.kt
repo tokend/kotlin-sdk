@@ -9,10 +9,10 @@ class Page<T> constructor(private var type: TypeToken<Page<T>>? = object : TypeT
     : Response() {
 
     @SerializedName("records")
-    var records: ArrayList<T>? = null
-        get() = if (field == null && this.embeddedPage != null) {
+    var records: List<T> = emptyList()
+        get() = (if (field.isEmpty() && this.embeddedPage != null) {
             this.embeddedPage.records
-        } else field
+        } else field) ?: emptyList()
     @SerializedName("links")
     private var links: Links? = null
     @SerializedName("_embedded")

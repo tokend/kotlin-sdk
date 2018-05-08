@@ -1,13 +1,12 @@
 package org.tokend.sdk.api.models.transactions
 
-import org.tokend.sdk.api.models.Asset
 import org.tokend.sdk.api.models.Participant
 import org.tokend.sdk.api.models.PaymentRecord
 import org.tokend.sdk.utils.ApiDateUtil
 import java.util.*
 
 open class Transaction @JvmOverloads constructor(val amount: String? = null,
-                                                 private var assetString: String? = null,
+                                                 var assetString: String? = null,
                                                  val from: String? = null,
                                                  val to: String? = null,
                                                  val createdAt: String? = null,
@@ -66,7 +65,7 @@ open class Transaction @JvmOverloads constructor(val amount: String? = null,
                     record.subject,
                     record.participants,
                     record.fromBalance,
-                    record.toBalance!!,
+                    record.toBalance,
                     record.pagingToken,
                     record.destFixedFee, record.destPaymentFee)
         }

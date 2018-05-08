@@ -43,13 +43,29 @@ class InvestmentTransaction(amount: String?,
     companion object {
         const val TYPE_INVESTMENT = "check_sale_state"
 
-        fun fromRecord(record: PaymentRecord, contextAccountId: String, contextBalanceId: String, contextAsset: String)
+        fun fromRecord(record: PaymentRecord, contextAsset: String, contextAccountId: String)
                 : List<InvestmentTransaction> {
-            val ourParticipant = record.participants?.find {
-                it.accountId == contextAccountId && it.balanceId == contextBalanceId
+            val ourParticipants = record.participants?.filter {
+                it.accountId == contextAccountId
             }
 
-            return ourParticipant?.effects?.map { effect ->
+            val contextAssetIsBase = ourParticipants?.find {
+                it.effects?.find { it.baseAsset == contextAsset } != null
+            } != null
+
+            // If we have investments in some token and we are looking
+            // for transactions for this token, we would like to get all investments.
+            // Otherwise we would like to get only investment made with this token.
+            val ourParticipant =
+                    if (contextAssetIsBase)
+                        ourParticipants?.maxBy { it.effects?.size ?: 0 }
+                    else
+                        ourParticipants?.find {
+                            it.effects?.size == 1
+                                    && it.effects.find { it.quoteAsset == contextAsset } != null
+                        }
+
+            return ourParticipant?.effects?.mapIndexed { i, effect ->
                 val matches = effect.matches
 
                 val baseAsset = effect.baseAsset
@@ -70,19 +86,19 @@ class InvestmentTransaction(amount: String?,
                             null
                         else quoteAmount?.divide(baseAmount, MathContext.DECIMAL128)
 
-                val contextAssetIsQuote = contextAsset == quoteAsset
+                val contextAssetIsQuote = !contextAssetIsBase
 
                 InvestmentTransaction(
                         amount = if (contextAssetIsQuote) quoteAmount?.toPlainString() else baseAmount?.toPlainString(),
                         asset = if (contextAssetIsQuote) quoteAsset else baseAsset,
                         quoteAmount = if (contextAssetIsQuote) baseAmount?.toPlainString() else quoteAmount?.toPlainString(),
                         quoteAsset = if (contextAssetIsQuote) baseAsset else quoteAsset,
-                        isIncome = !contextAssetIsQuote,
+                        isIncome = !contextAssetIsQuote && (effect.isBuy ?: false),
                         price = price?.toPlainString(),
                         createdAt = record.ledgerCloseTime,
                         type = record.type,
                         state = PaymentState.fromCode(record.state),
-                        id = record.id,
+                        id = "${record.id} $i",
                         pagingToken = record.pagingToken,
                         participants = record.participants,
                         paymentFee = fee,
