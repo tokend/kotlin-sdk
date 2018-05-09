@@ -1,7 +1,5 @@
 package org.tokend.sdk.keyserver
 
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
 import org.spongycastle.util.encoders.Base64
 import org.tokend.crypto.cipher.Aes256GCM
 import org.tokend.kdf.ScryptWithMasterKeyDerivation
@@ -23,6 +21,9 @@ import org.tokend.sdk.utils.extentions.encodeHex
 import org.tokend.sdk.utils.extentions.toBytes
 import retrofit2.HttpException
 import java.net.HttpURLConnection
+import java.nio.ByteBuffer
+import java.nio.CharBuffer
+import java.nio.charset.Charset
 import java.security.SecureRandom
 
 class KeyStorage @JvmOverloads constructor(keyServerUrl: String, tfaCallback: TfaCallback? = null,
@@ -35,7 +36,8 @@ class KeyStorage @JvmOverloads constructor(keyServerUrl: String, tfaCallback: Tf
             EmailNotVerifiedException::class,
             HttpException::class
     )
-    fun getWalletInfo(login: String, password: String, isRecovery: Boolean = false): WalletInfo {
+    fun getWalletInfo(login: String, password: CharArray,
+                      isRecovery: Boolean = false): WalletInfo {
         val loginParams = getApiLoginParams(login, isRecovery)
 
         val tempLogin = if (loginParams.id == 2L) login.toLowerCase() else login
@@ -97,7 +99,7 @@ class KeyStorage @JvmOverloads constructor(keyServerUrl: String, tfaCallback: Tf
             salt: ByteArray,
             walletIdHex: String,
             walletKey: ByteArray,
-            seed: String,
+            seed: CharArray,
             accountId: String,
             kdfVersion: Long): WalletData {
         val encryptedRoot =
@@ -129,9 +131,20 @@ class KeyStorage @JvmOverloads constructor(keyServerUrl: String, tfaCallback: Tf
         private const val WALLET_KEY_MASTER_KEY = "WALLET_KEY"
         private const val IV_LENGTH = 12
 
-        fun getWalletKey(login: String, password: String, kdfAttributes: KdfAttributes): ByteArray {
-            return deriveWallet(login.toByteArray(), password.toByteArray(),
+        fun getWalletKey(login: String, password: CharArray,
+                         kdfAttributes: KdfAttributes): ByteArray {
+            val passwordCharBuffer = CharBuffer.wrap(password)
+            val passwordByteBuffer = Charset.defaultCharset().encode(passwordCharBuffer)
+            passwordCharBuffer.clear()
+
+            val passwordBytes = passwordByteBuffer.array()
+            passwordByteBuffer.clear()
+
+            val result =  deriveWallet(login.toByteArray(), passwordBytes,
                     WALLET_KEY_MASTER_KEY.toByteArray(), kdfAttributes)
+            passwordBytes.fill(0)
+
+            return result
         }
 
         private fun deriveWallet(login: ByteArray, password: ByteArray, masterKey: ByteArray, kdfAttributes: KdfAttributes): ByteArray {
@@ -140,23 +153,82 @@ class KeyStorage @JvmOverloads constructor(keyServerUrl: String, tfaCallback: Tf
             return derivation.derive(password, kdfAttributes.salt, kdfAttributes.bits.toBytes())
         }
 
-        fun decryptSecretSeed(iv: ByteArray, cipherText: ByteArray, key: ByteArray): String {
-            val privateSeedJson = String(Aes256GCM(iv).decrypt(cipherText, key))
-            return JsonParser().parse(privateSeedJson).asJsonObject["seed"].asString
+        fun decryptSecretSeed(iv: ByteArray, cipherText: ByteArray, key: ByteArray): CharArray {
+            val seedJsonBytes = Aes256GCM(iv).decrypt(cipherText, key)
+            val seedJsonByteBuffer = ByteBuffer.wrap(seedJsonBytes)
+
+            val seedJsonCharBuffer = Charset.defaultCharset().decode(seedJsonByteBuffer)
+            seedJsonByteBuffer.clear()
+            seedJsonBytes.fill(0)
+            val seedJsonChars = seedJsonCharBuffer.array()
+            seedJsonCharBuffer.clear()
+
+            val seedStartKey = "\"seed\"".toCharArray()
+            var seedStartIndex = seedJsonChars.foldIndexed(-1) { index, found, _ ->
+                if (found >= 0) {
+                    return@foldIndexed found
+                }
+
+                var match = true
+                for (i in 0 until seedStartKey.size) {
+                    if (i + index == seedJsonChars.size) {
+                        return@foldIndexed -1
+                    }
+                    if (seedStartKey[i] != seedJsonChars[i + index]) {
+                        match = false
+                        break
+                    }
+                }
+                return@foldIndexed if (match) index else -1
+            }
+            seedJsonChars.fill('0', 0, seedStartIndex + seedStartKey.size)
+            seedStartIndex = seedJsonChars.indexOf('"')
+            seedJsonChars[seedStartIndex] = '0'
+
+            seedStartIndex++
+            val seedEndIndex = seedJsonChars.indexOf('"')
+            val seed = seedJsonChars.copyOfRange(seedStartIndex, seedEndIndex)
+            seedJsonChars.fill('0')
+
+            return seed
         }
 
-        private fun encryptSecretSeed(seed: String, iv: ByteArray, key: ByteArray): ByteArray {
-            val seedJson = JsonObject()
-            seedJson.addProperty("seed", seed)
-            return Aes256GCM(iv).encrypt(seedJson.toString().toByteArray(), key)
+        private fun encryptSecretSeed(seed: CharArray, iv: ByteArray, key: ByteArray): ByteArray {
+            val jsonStartChars = "{\"seed\":\"".toCharArray()
+            val jsonEndChars = "\"}".toCharArray()
+            val jsonChars = jsonStartChars.plus(seed).plus(jsonEndChars)
+
+            val jsonCharBuffer = CharBuffer.wrap(jsonChars)
+            val jsonByteBuffer = Charset.defaultCharset().encode(jsonCharBuffer)
+            jsonCharBuffer.clear()
+            jsonChars.fill('0')
+
+            val jsonBytes = jsonByteBuffer.array()
+            jsonByteBuffer.clear()
+
+            val encrypted = Aes256GCM(iv).encrypt(jsonBytes, key)
+            jsonBytes.fill(0)
+
+            return encrypted
         }
 
-        fun getWalletIdHex(login: String, password: String, kdfAttributes: KdfAttributes): String {
-            return String(deriveWallet(login.toByteArray(), password.toByteArray(),
+        fun getWalletIdHex(login: String, password: CharArray,
+                           kdfAttributes: KdfAttributes): String {
+            val passwordCharBuffer = CharBuffer.wrap(password)
+            val passwordByteBuffer = Charset.defaultCharset().encode(passwordCharBuffer)
+            passwordCharBuffer.clear()
+
+            val passwordBytes = passwordByteBuffer.array()
+            passwordByteBuffer.clear()
+
+            val result = String(deriveWallet(login.toByteArray(), passwordBytes,
                     WALLET_ID_MASTER_KEY.toByteArray(), kdfAttributes).encodeHex())
+            passwordBytes.fill(0)
+
+            return result
         }
 
-        fun encryptWalletKey(email: String, seed: String, accountId: String,
+        fun encryptWalletKey(email: String, seed: CharArray, accountId: String,
                              encryptionKey: ByteArray, keyDerivationSalt: ByteArray)
                 : EncryptedKey {
             val iv = SecureRandom.getSeed(IV_LENGTH)

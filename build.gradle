@@ -28,7 +28,7 @@ dependencies {
     compile 'com.squareup.okhttp3:logging-interceptor:3.5.0'
 
     compile 'org.tokend:crypto-cipher:1.0'
-    compile 'org.tokend:crypto-kdf:1.0'
+    compile 'org.tokend:crypto-kdf:1.0.1'
 }
 repositories {
     mavenCentral()
