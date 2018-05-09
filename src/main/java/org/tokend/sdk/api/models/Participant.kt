@@ -37,7 +37,7 @@ data class Participant(@SerializedName("account_id") val accountId: String? = nu
             val quoteAmount: BigDecimal
                 get() = BigDecimalUtil.valueOf(quoteAmountString)
             val price: BigDecimal
-                get() = BigDecimalUtil.valueOf(priceString)
+                get() = BigDecimalUtil.valueOf(priceString, BigDecimal.ONE)
         }
     }
 }

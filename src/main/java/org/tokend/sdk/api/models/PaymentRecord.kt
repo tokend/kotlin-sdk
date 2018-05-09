@@ -2,8 +2,8 @@ package org.tokend.sdk.api.models
 
 import com.google.gson.JsonElement
 import com.google.gson.annotations.SerializedName
-import org.tokend.sdk.api.models.transactions.Transaction
 import org.tokend.sdk.api.responses.Page
+import java.util.*
 
 /**
  * Created by Oleg Koretsky on 11/29/17.
@@ -12,9 +12,9 @@ class PaymentRecord {
     @SerializedName("_links")
     var links: Page.Links? = null
     @SerializedName("id")
-    var id: String? = null
+    var id: String = ""
     @SerializedName("paging_token")
-    var pagingToken: String? = null
+    var pagingToken: String = ""
     @SerializedName("source_account")
     var sourceAccount: String? = null
     @SerializedName("type")
@@ -26,7 +26,7 @@ class PaymentRecord {
     @SerializedName("identifier")
     var identifier: Long? = null
     @SerializedName("ledger_close_time")
-    var ledgerCloseTime: String? = null
+    var ledgerCloseTime: Date = Date()
     @SerializedName("participants")
     val participants: List<Participant>? = null
     @SerializedName("from")
@@ -54,7 +54,7 @@ class PaymentRecord {
     @SerializedName("fee_fixed")
     val fixedFee: String? = null
     @SerializedName("subject")
-    val subjectRaw: String? = null
+    val subject: String? = null
     @SerializedName("asset")
     val asset: String? = null
     @SerializedName("user_details")
@@ -71,20 +71,4 @@ class PaymentRecord {
     val destAsset: String? = null
     @SerializedName("dest_amount")
     val destAmount: String? = null
-
-    val subject: String
-        get() {
-            if (subjectRaw == null || subjectRaw.isEmpty()) {
-                return ""
-            }
-            return if (subjectRaw.contains("in: ") || subjectRaw.contains("gf: ")) {
-                if (subjectRaw.substring(0, 4) == "in: " || subjectRaw.substring(0, 4) == "gf: ") {
-                    subjectRaw.substring(4, subjectRaw.length)
-                } else {
-                    ""
-                }
-            } else {
-                subjectRaw
-            }
-        }
 }

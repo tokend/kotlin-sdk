@@ -7,16 +7,19 @@ object PaymentRecordConverter {
     fun toTransactions(items: List<PaymentRecord>,
                        contextAccountId: String, contextAsset: String): List<Transaction> {
         return items.map {
-            when (it.type) {
-                EmissionTransaction.TYPE_ISSUANCE ->
-                    listOf(EmissionTransaction.fromRecord(it))
-                WithdrawTransaction.TYPE_WITHDRAW ->
-                    listOf(WithdrawTransaction.fromRecord(it))
-                InvestmentTransaction.TYPE_INVESTMENT ->
-                    InvestmentTransaction.fromRecord(it, contextAsset, contextAccountId)
-                OfferMatchTransaction.TYPE_MANAGE_OFFER ->
-                        OfferMatchTransaction.fromRecord(it, contextAsset, contextAccountId)
-                else -> listOf(Transaction.fromRecord(it))
+            when (TransactionType.fromLiteral(it.type)) {
+                TransactionType.PAYMENT ->
+                    listOf(PaymentTransaction.fromPaymentRecord(it))
+                TransactionType.ISSUANCE ->
+                    listOf(IssuanceTransaction.fromPaymentRecord(it))
+                TransactionType.WITHDRAWAL ->
+                    listOf(WithdrawalTransaction.fromPaymentRecord(it))
+                TransactionType.OFFER_MATCH ->
+                    MatchTransaction.fromPaymentRecord(it, contextAsset, contextAccountId)
+                TransactionType.INVESTMENT ->
+                    InvestmentTransaction.fromPaymentRecord(it, contextAsset, contextAccountId)
+                else ->
+                    listOf(BaseTransaction.fromPaymentRecord(it))
             }
         }.fold(mutableListOf<Transaction>(), { acc, transactions ->
             acc.addAll(transactions)
