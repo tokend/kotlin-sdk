@@ -5,4 +5,7 @@ import java.math.BigDecimal
 class ComplexFee(
         val fixed: BigDecimal,
         val percent: BigDecimal
-)
+) {
+    val total: BigDecimal
+        get() = fixed + percent
+}
