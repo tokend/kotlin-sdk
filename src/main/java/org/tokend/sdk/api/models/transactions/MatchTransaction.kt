@@ -5,7 +5,7 @@ import org.tokend.sdk.utils.BigDecimalUtil
 import java.math.BigDecimal
 
 open class MatchTransaction(
-        base: BaseTransaction,
+        protected open val base: BaseTransaction,
         override val id: String,
         override val amount: BigDecimal,
         override val asset: String,

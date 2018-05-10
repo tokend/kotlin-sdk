@@ -1,5 +1,6 @@
 package org.tokend.sdk.api.models.transactions
 
+import com.google.gson.annotations.SerializedName
 import org.tokend.sdk.api.models.PaymentRecord
 import java.math.BigDecimal
 import java.math.MathContext
@@ -12,6 +13,7 @@ class InvestmentTransaction(
         fee: BigDecimal,
         matchData: MatchData
 ) : MatchTransaction(base, id, amount, asset, fee, matchData) {
+    @SerializedName("investment_type")
     override val type = TransactionType.INVESTMENT
 
     companion object {

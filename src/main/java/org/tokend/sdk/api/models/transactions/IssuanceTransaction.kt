@@ -4,7 +4,7 @@ import com.google.gson.JsonObject
 import org.tokend.sdk.api.models.PaymentRecord
 
 class IssuanceTransaction(
-        base: BaseTransaction,
+        private val base: BaseTransaction,
         val cause: String?,
         val reference: String?
 ) : Transaction by base {

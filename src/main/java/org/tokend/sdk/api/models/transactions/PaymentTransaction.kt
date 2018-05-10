@@ -4,7 +4,7 @@ import org.tokend.sdk.api.models.PaymentRecord
 import org.tokend.sdk.utils.BigDecimalUtil
 
 class PaymentTransaction(
-        base: Transaction,
+        private val base: BaseTransaction,
         override val sourceAccount: String,
         val destAccount: String,
         val senderFee: ComplexFee,
