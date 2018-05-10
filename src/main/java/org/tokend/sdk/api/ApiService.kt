@@ -1,14 +1,13 @@
 package org.tokend.sdk.api
 
-import com.google.gson.JsonObject
 import org.tokend.sdk.api.models.*
+import org.tokend.sdk.api.requests.AttributesEntity
 import org.tokend.sdk.api.requests.DataEntity
+import org.tokend.sdk.api.requests.models.*
 import org.tokend.sdk.api.responses.*
 import org.tokend.sdk.api.tfa.TfaBackend
 import retrofit2.Call
 import retrofit2.http.*
-import java.io.Serializable
-import java.util.*
 
 
 interface ApiService {
@@ -32,13 +31,13 @@ interface ApiService {
 
     @PUT("/wallets/{walletId}/verification")
     fun verifyWallet(@Path("walletId") walletId: String?,
-                     @Body data: DataEntity<HashMap<String, Serializable>>):
-            Call<ServerResponse<JsonObject, ServerError>>
+                     @Body data: DataEntity<AttributesEntity<VerifyWalletRequestBody>>):
+            Call<ServerResponse<Void, ServerError>>
 
     @PUT("/users/{accountId}")
     fun createUser(@Path("accountId") accountId: String?,
-                   @Body data: DataEntity<@JvmSuppressWildcards HashMap<String, Serializable>>):
-            Call<ServerResponse<JsonObject, ServerError>>
+                   @Body data: DataEntity<AttributesEntity<CreateUserRequestBody>>):
+            Call<ServerResponse<Void, ServerError>>
 
     @GET("/users/{accountId}")
     fun getUserInfo(@Path("accountId") accountId: String?):
@@ -46,7 +45,7 @@ interface ApiService {
 
     @PATCH("/users/{accountId}")
     fun patchUser(@Path("accountId") accountId: String?,
-                  @Body data: DataEntity<Map<String, Any>>):
+                  @Body data: DataEntity<AttributesEntity<PatchUserRequestBody>>):
             Call<Void>
 
     //region TFA
@@ -56,19 +55,19 @@ interface ApiService {
 
     @POST("/wallets/{walletId}/factors")
     fun createTfaBackend(@Path("walletId") walletId: String?,
-                         @Body data: DataEntity<Any>):
+                         @Body data: DataEntity<CreateTfaRequestBody>):
             Call<ServerResponse<TfaBackend, ServerError>>
 
     @DELETE("/wallets/{walletId}/factors/{id}")
     fun deleteTfaBackend(@Path("walletId") walletId: String?,
                          @Path("id") backendId: Int?):
-            Call<ServerResponse<JsonObject, ServerError>>
+            Call<ServerResponse<Void, ServerError>>
 
     @PATCH("/wallets/{walletId}/factors/{id}")
     fun updateTfaBackend(@Path("walletId") walletId: String?,
                          @Path("id") backendId: Int?,
-                         @Body data: DataEntity<Any>):
-            Call<ServerResponse<JsonObject, ServerError>>
+                         @Body data: DataEntity<UpdateTfaRequestBody>):
+            Call<ServerResponse<Void, ServerError>>
     //endregion TFA
 
     @GET("/fees/{feeType}")
@@ -78,7 +77,7 @@ interface ApiService {
                @Query("amount") amount: String?): Call<Fee>
 
     @GET("/user_id")
-    fun getAccountIdByEmail(@Query("email") email: String): Call<JsonObject>
+    fun getAccountIdByEmail(@Query("email") email: String): Call<AccountIdResponse>
 
     @GET("/accounts/{accountId}/balances")
     fun getAccountBalances(@Path("accountId") accountId: String):
@@ -90,7 +89,7 @@ interface ApiService {
     @GET("asset_pairs/convert")
     fun convertAssets(@Query("source_asset") sourceAsset: String?,
                       @Query("dest_asset") destAsset: String?,
-                      @Query("amount") amount: String?): Call<JsonObject>
+                      @Query("amount") amount: String?): Call<ConvertAssetsResponse>
 
     @GET("/accounts/{accountId}/payments")
     fun getPayments(@Path("accountId") accountId: String,
@@ -119,7 +118,7 @@ interface ApiService {
     fun getAssetDetails(@Path("asset") asset: String): Call<Asset>
 
     @POST("/details")
-    fun getAccountsDetails(@Body data: HashMap<String, List<String>>)
+    fun getAccountsDetails(@Body body: AccountsDetailsRequestBody)
             : Call<AccountsDetailsResponse>
 
     @GET("/accounts/{accountId}/offers")

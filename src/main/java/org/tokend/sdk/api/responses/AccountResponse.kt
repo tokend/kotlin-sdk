@@ -39,7 +39,6 @@ class AccountResponse : Response(), TransactionBuilderAccount {
                    val typeI: Int? = null)
 
     @SerializedName("account_id")
-    /* KeyPairTypeAdapter used */
     private val accountId: String? = null
     @SerializedName("id")
     private val id: String? = null
