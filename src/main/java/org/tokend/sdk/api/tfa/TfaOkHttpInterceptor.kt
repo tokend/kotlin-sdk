@@ -17,47 +17,41 @@ class TfaOkHttpInterceptor(
         private val verificationService: TfaVerificationService,
         private val tfaCallback: TfaCallback?) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        val request = chain.request()
-        var response = chain.proceed(request)
+        while (true) {
+            val request = chain.request()
+            val response = chain.proceed(request)
 
-        if (response.code() == HttpURLConnection.HTTP_FORBIDDEN) {
-            val exception = extractTfaException(response)
+            if (response.code() == HttpURLConnection.HTTP_FORBIDDEN) {
+                val exception = extractTfaException(response)
+                if (exception != null && tfaCallback != null) {
+                    // Wait for TFA verification in current thread.
+                    val latch = CountDownLatch(1)
+                    var cancelled = false
 
-            if (exception != null && tfaCallback != null) {
+                    val verifier = TfaVerifier(verificationService, exception)
+                            .onVerified {
+                                latch.countDown()
+                            }
+                            .onVerificationCancelled {
+                                cancelled = true
+                                latch.countDown()
+                            }
+                    tfaCallback.onTfaRequired(exception, verifier.verifierInterface)
 
-                // Wait for TFA verification in current thread.
-                val latch = CountDownLatch(1)
-                var cancelled = false
+                    latch.await()
 
-                val verifier = TfaVerifier(verificationService, exception)
-                        .onVerified {
-                            latch.countDown()
-                        }
-                        .onVerificationCancelled {
-                            cancelled = true
-                            latch.countDown()
-                        }
-                tfaCallback.onTfaRequired(exception, verifier.verifierInterface)
-
-                latch.await()
-
-                if (cancelled) {
-                    throw CancellationException()
+                    if (cancelled) {
+                        throw CancellationException()
+                    }
+                } else if (exception != null) {
+                    throw exception
+                } else {
+                    return response
                 }
-
-                // Retry after verification.
-                response = chain.proceed(request)
-
-                // If there is still TFA error, than this interceptor can't handle it.
-                if (response.code() == HttpURLConnection.HTTP_FORBIDDEN) {
-                    extractTfaException(response)?.let { throw it }
-                }
-            } else if (exception != null) {
-                throw exception
+            } else {
+                return response
             }
         }
-
-        return response
     }
 
     private fun extractTfaException(response: Response): NeedTfaException? {
