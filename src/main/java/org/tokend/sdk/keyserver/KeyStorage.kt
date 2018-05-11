@@ -10,6 +10,7 @@ import org.tokend.sdk.api.models.WalletData
 import org.tokend.sdk.api.models.WalletRelation
 import org.tokend.sdk.api.requests.CookieJarProvider
 import org.tokend.sdk.api.requests.DataEntity
+import org.tokend.sdk.api.requests.RequestSigner
 import org.tokend.sdk.api.tfa.TfaCallback
 import org.tokend.sdk.federation.EmailAlreadyTakenException
 import org.tokend.sdk.federation.EmailNotVerifiedException
@@ -26,10 +27,24 @@ import java.nio.CharBuffer
 import java.nio.charset.Charset
 import java.security.SecureRandom
 
-class KeyStorage @JvmOverloads constructor(keyServerUrl: String, tfaCallback: TfaCallback? = null,
-                                           cookieJarProvider: CookieJarProvider? = null) {
-    private val keyServerApiService =
-            KeyServerApiFactory.getApiService(keyServerUrl, tfaCallback, cookieJarProvider)
+class KeyStorage {
+    private val keyServerApiService: KeyServerApi
+
+    @JvmOverloads
+    constructor(keyServerUrl: String, tfaCallback: TfaCallback? = null,
+                cookieJarProvider: CookieJarProvider? = null) {
+        keyServerApiService =
+                KeyServerApiFactory.getApiService(keyServerUrl, tfaCallback, cookieJarProvider)
+    }
+
+    @JvmOverloads
+    constructor(keyServerUrl: String, accountId: String, requestSigner: RequestSigner,
+                tfaCallback: TfaCallback? = null,
+                cookieJarProvider: CookieJarProvider? = null) {
+        keyServerApiService =
+                KeyServerApiFactory.getApiService(keyServerUrl, accountId, requestSigner,
+                        tfaCallback, cookieJarProvider)
+    }
 
     // region Obtain
     @Throws(InvalidCredentialsException::class,
@@ -56,7 +71,12 @@ class KeyStorage @JvmOverloads constructor(keyServerUrl: String, tfaCallback: Tf
         val email = walletData.attributes?.email
                 ?: throw IllegalStateException("Wallet data has no email")
 
-        return WalletInfo(accountId, email, hexWalletId, decryptSecretSeed(iv, cipherText, walletKey))
+        if (isRecovery) {
+            return WalletInfo(accountId, email, hexWalletId, CharArray(0), loginParams)
+        } else {
+            return WalletInfo(accountId, email, hexWalletId,
+                    decryptSecretSeed(iv, cipherText, walletKey), loginParams)
+        }
     }
 
     @Throws(InvalidCredentialsException::class, HttpException::class)
@@ -68,7 +88,9 @@ class KeyStorage @JvmOverloads constructor(keyServerUrl: String, tfaCallback: Tf
             return data
         } else {
             when (response.code()) {
-                HttpURLConnection.HTTP_NOT_FOUND -> throw InvalidCredentialsException()
+                HttpURLConnection.HTTP_NOT_FOUND -> throw InvalidCredentialsException(
+                        InvalidCredentialsException.Credential.EMAIL
+                )
                 else -> throw HttpException(response)
             }
         }
@@ -86,33 +108,18 @@ class KeyStorage @JvmOverloads constructor(keyServerUrl: String, tfaCallback: Tf
         } else {
             when (response.code()) {
                 HttpURLConnection.HTTP_FORBIDDEN -> throw EmailNotVerifiedException(walletId)
-                HttpURLConnection.HTTP_NOT_FOUND -> throw InvalidCredentialsException()
+                HttpURLConnection.HTTP_NOT_FOUND -> throw InvalidCredentialsException(
+                        InvalidCredentialsException.Credential.PASSWORD
+                )
                 else -> throw HttpException(response)
             }
         }
     }
     // endregion
 
-    // region Create
-    fun createBaseWallet(
-            email: String,
-            salt: ByteArray,
-            walletIdHex: String,
-            walletKey: ByteArray,
-            seed: CharArray,
-            accountId: String,
-            kdfVersion: Long): WalletData {
-        val encryptedRoot =
-                encryptWalletKey(email, seed, accountId, walletKey, salt)
-
-        val relations = listOf(
-                WalletRelation(WalletRelation.RELATION_KDF, WalletRelation.RELATION_KDF,
-                        kdfVersion.toString())
-        )
-
-        return WalletData(walletIdHex, encryptedRoot, relations)
-    }
     // endregion
+
+    // region Save
     fun saveWallet(walletData: WalletData) {
         val response = keyServerApiService.createWallet(DataEntity(walletData)).execute()
         val success = response.isSuccessful
@@ -124,7 +131,16 @@ class KeyStorage @JvmOverloads constructor(keyServerUrl: String, tfaCallback: Tf
             }
         }
     }
-    // region Save
+
+    fun updateWallet(walletId: String, walletData: WalletData) {
+        val response = keyServerApiService.updateWallet(walletId, DataEntity(walletData)).execute()
+        val success = response.isSuccessful
+
+        if (!success) {
+            throw HttpException(response)
+        }
+    }
+    // endregion
 
     companion object {
         private const val WALLET_ID_MASTER_KEY = "WALLET_ID"
@@ -137,10 +153,10 @@ class KeyStorage @JvmOverloads constructor(keyServerUrl: String, tfaCallback: Tf
             val passwordByteBuffer = Charset.defaultCharset().encode(passwordCharBuffer)
             passwordCharBuffer.clear()
 
-            val passwordBytes = passwordByteBuffer.array()
-            passwordByteBuffer.clear()
+            val passwordBytes = ByteArray(passwordByteBuffer.remaining())
+            passwordByteBuffer.get(passwordBytes).clear()
 
-            val result =  deriveWallet(login.toByteArray(), passwordBytes,
+            val result = deriveWallet(login.toByteArray(), passwordBytes,
                     WALLET_KEY_MASTER_KEY.toByteArray(), kdfAttributes)
             passwordBytes.fill(0)
 
@@ -160,8 +176,8 @@ class KeyStorage @JvmOverloads constructor(keyServerUrl: String, tfaCallback: Tf
             val seedJsonCharBuffer = Charset.defaultCharset().decode(seedJsonByteBuffer)
             seedJsonByteBuffer.clear()
             seedJsonBytes.fill(0)
-            val seedJsonChars = seedJsonCharBuffer.array()
-            seedJsonCharBuffer.clear()
+            val seedJsonChars = CharArray(seedJsonCharBuffer.remaining())
+            seedJsonCharBuffer.get(seedJsonChars).clear()
 
             val seedStartKey = "\"seed\"".toCharArray()
             var seedStartIndex = seedJsonChars.foldIndexed(-1) { index, found, _ ->
@@ -203,8 +219,8 @@ class KeyStorage @JvmOverloads constructor(keyServerUrl: String, tfaCallback: Tf
             jsonCharBuffer.clear()
             jsonChars.fill('0')
 
-            val jsonBytes = jsonByteBuffer.array()
-            jsonByteBuffer.clear()
+            val jsonBytes = ByteArray(jsonByteBuffer.remaining())
+            jsonByteBuffer.get(jsonBytes).clear()
 
             val encrypted = Aes256GCM(iv).encrypt(jsonBytes, key)
             jsonBytes.fill(0)
@@ -218,8 +234,8 @@ class KeyStorage @JvmOverloads constructor(keyServerUrl: String, tfaCallback: Tf
             val passwordByteBuffer = Charset.defaultCharset().encode(passwordCharBuffer)
             passwordCharBuffer.clear()
 
-            val passwordBytes = passwordByteBuffer.array()
-            passwordByteBuffer.clear()
+            val passwordBytes = ByteArray(passwordByteBuffer.remaining())
+            passwordByteBuffer.get(passwordBytes).clear()
 
             val result = String(deriveWallet(login.toByteArray(), passwordBytes,
                     WALLET_ID_MASTER_KEY.toByteArray(), kdfAttributes).encodeHex())
@@ -245,6 +261,26 @@ class KeyStorage @JvmOverloads constructor(keyServerUrl: String, tfaCallback: Tf
                     Base64.toBase64String(keyDerivationSalt),
                     Base64.toBase64String(keychainDataJson.toByteArray())
             )
+        }
+
+        // region Create
+        fun createBaseWallet(
+                email: String,
+                salt: ByteArray,
+                walletIdHex: String,
+                walletKey: ByteArray,
+                seed: CharArray,
+                accountId: String,
+                kdfVersion: Long): WalletData {
+            val encryptedRoot =
+                    encryptWalletKey(email, seed, accountId, walletKey, salt)
+
+            val relations = listOf(
+                    WalletRelation(WalletRelation.RELATION_KDF, WalletRelation.RELATION_KDF,
+                            kdfVersion.toString())
+            )
+
+            return WalletData(walletIdHex, encryptedRoot, relations)
         }
     }
 }

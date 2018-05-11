@@ -12,7 +12,6 @@ import org.tokend.sdk.api.tfa.TfaCallback
 import org.tokend.sdk.api.tfa.TfaOkHttpInterceptor
 import org.tokend.sdk.api.tfa.TfaVerificationService
 import org.tokend.sdk.utils.ApiDateUtil
-import org.tokend.sdk.utils.extentions.hash
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -22,7 +21,7 @@ import javax.net.ssl.SSLContext
 
 object ApiFactory {
     private val REQUEST_TIMEOUT = 20 * 1000
-    private val SIGNATURE_VALID_SEC = 60
+    val SIGNATURE_VALID_SEC = 60
 
     private var apiService: ApiService? = null
     private var mApiUrl: String? = null
@@ -37,7 +36,7 @@ object ApiFactory {
     fun getApiService(url: String, tfaCallback: TfaCallback? = null,
                       cookieJar: CookieJarProvider? = null): ApiService {
         if (apiService == null || mApiUrl != url || cookieJarProvider != cookieJar) {
-            val client = getBaseHttpClientBuilder(false, cookieJar)
+            val client = getBaseHttpClientBuilder(cookieJar)
                     .addInterceptor(TfaOkHttpInterceptor(getTfaVerificationService(url),
                             tfaCallback))
                     .build()
@@ -58,9 +57,10 @@ object ApiFactory {
             this.accountId = accountId
             this.requestSigner = signer
 
-            val client = getBaseHttpClientBuilder(true, cookieJar)
+            val client = getBaseHttpClientBuilder(cookieJar)
                     .addInterceptor(TfaOkHttpInterceptor(getTfaVerificationService(apiUrl),
                             tfaCallback))
+                    .addInterceptor(SignInterceptor(accountId, signer, SIGNATURE_VALID_SEC))
                     .build()
             val retrofit = createBaseRetrofitConfig(apiUrl, client).build()
 
@@ -88,7 +88,7 @@ object ApiFactory {
 
     @JvmStatic
     @JvmOverloads
-    fun getBaseHttpClientBuilder(isSigned: Boolean = false, cookieJar: CookieJarProvider? = null)
+    fun getBaseHttpClientBuilder(cookieJar: CookieJarProvider? = null)
             : OkHttpClient.Builder {
         val sslContext = SSLContext.getInstance("TLSv1.2")
         sslContext.init(null, null, null)
@@ -112,9 +112,6 @@ object ApiFactory {
             val jar = cookieJar?.getCookieJar()
             if (jar != null)
                 cookieJar(jar)
-            if (isSigned) {
-                addInterceptor(createSignInterceptor())
-            }
             addInterceptor(createLoggingInterceptor())
         }
 
@@ -144,39 +141,9 @@ object ApiFactory {
     }
 
     @JvmStatic
-    private fun createSignInterceptor(): Interceptor {
-        return Interceptor { chain ->
-            val newRequest = buildSignedRequest(chain)
-            chain.proceed(newRequest)
-        }
-    }
-
-    @JvmStatic
     private fun getGsonDateDeserializer(): JsonDeserializer<Date?> {
         return JsonDeserializer<Date?> { json, _, _ ->
             ApiDateUtil.tryParseDate(json?.asString)
         }
-    }
-
-    @JvmStatic
-    private fun buildSignedRequest(chain: Interceptor.Chain): Request {
-        val validUntil = java.lang.Double.valueOf(Math.floor((Date().time / 1000 +
-                SIGNATURE_VALID_SEC).toDouble()))!!.toInt().toString()
-        val url = chain.request().url().url()
-        val fullUrlPath = if (!url.query.isNullOrEmpty()) {
-            "${url.path}?${url.query}"
-        } else {
-            url.path
-        }
-        val signatureBase = "{ uri: '$fullUrlPath', valid_untill: '$validUntil'}"
-        val data = signatureBase.toByteArray().hash()
-        val signedDataBase64 = requestSigner?.signToBase64(data) ?: ""
-
-        return chain.request().newBuilder()
-                .addHeader("Content-Type", "application/x-www-form-urlencoded")
-                .addHeader("X-AuthValidUnTillTimestamp", validUntil)
-                .addHeader("X-AuthPublicKey", accountId)
-                .addHeader("X-AuthSignature", signedDataBase64)
-                .build()
     }
 }

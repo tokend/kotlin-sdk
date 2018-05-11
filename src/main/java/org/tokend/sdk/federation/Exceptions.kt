@@ -37,7 +37,11 @@ class NeedTfaException(val backendId: Long,
     }
 }
 
-class InvalidCredentialsException : Exception()
+class InvalidCredentialsException(val credential: Credential) : Exception() {
+    enum class Credential {
+        EMAIL, PASSWORD
+    }
+}
 class EmailNotVerifiedException(val walletId: String)
     : ForbiddenException("email_not_verified", "Email is not verified")
 class EmailAlreadyTakenException : Exception()
