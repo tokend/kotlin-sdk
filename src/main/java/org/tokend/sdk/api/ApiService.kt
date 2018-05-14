@@ -32,12 +32,12 @@ interface ApiService {
     @PUT("/wallets/{walletId}/verification")
     fun verifyWallet(@Path("walletId") walletId: String?,
                      @Body data: DataEntity<AttributesEntity<VerifyWalletRequestBody>>):
-            Call<ServerResponse<Void, ServerError>>
+            Call<Void>
 
     @PUT("/users/{accountId}")
     fun createUser(@Path("accountId") accountId: String?,
                    @Body data: DataEntity<AttributesEntity<CreateUserRequestBody>>):
-            Call<ServerResponse<Void, ServerError>>
+            Call<Void>
 
     @GET("/users/{accountId}")
     fun getUserInfo(@Path("accountId") accountId: String?):
@@ -60,14 +60,12 @@ interface ApiService {
 
     @DELETE("/wallets/{walletId}/factors/{id}")
     fun deleteTfaBackend(@Path("walletId") walletId: String?,
-                         @Path("id") backendId: Int?):
-            Call<ServerResponse<Void, ServerError>>
+                         @Path("id") backendId: Int?): Call<Void>
 
     @PATCH("/wallets/{walletId}/factors/{id}")
     fun updateTfaBackend(@Path("walletId") walletId: String?,
                          @Path("id") backendId: Int?,
-                         @Body data: DataEntity<UpdateTfaRequestBody>):
-            Call<ServerResponse<Void, ServerError>>
+                         @Body data: DataEntity<UpdateTfaRequestBody>): Call<Void>
     //endregion TFA
 
     @GET("/fees/{feeType}")
