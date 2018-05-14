@@ -1,8 +1,9 @@
 package org.tokend.sdk.federation
 
 import org.tokend.sdk.api.responses.ServerError
+import java.io.IOException
 
-open class ForbiddenException(val type: String, detailMessage: String) : Exception(detailMessage)
+open class ForbiddenException(val type: String, detailMessage: String) : IOException(detailMessage)
 
 class NeedTfaException(val backendId: Long,
                        val backendType: String,

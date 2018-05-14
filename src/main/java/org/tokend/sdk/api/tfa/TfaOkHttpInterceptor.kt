@@ -6,8 +6,8 @@ import okhttp3.Response
 import org.tokend.sdk.api.ApiFactory
 import org.tokend.sdk.api.responses.ServerError
 import org.tokend.sdk.federation.NeedTfaException
+import java.io.InterruptedIOException
 import java.net.HttpURLConnection
-import java.util.concurrent.CancellationException
 import java.util.concurrent.CountDownLatch
 
 /**
@@ -41,7 +41,8 @@ class TfaOkHttpInterceptor(
                     latch.await()
 
                     if (cancelled) {
-                        throw CancellationException()
+                        throw InterruptedIOException("Request was interrupted due to the " +
+                                "cancelled TFA verification")
                     }
                 } else if (exception != null) {
                     throw exception
