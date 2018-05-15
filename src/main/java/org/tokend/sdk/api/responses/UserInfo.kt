@@ -14,14 +14,10 @@ class UserInfo(@SerializedName("type")
                      val email: String? = null,
                      @SerializedName("state")
                      val state: String? = null,
-                     @SerializedName("kyc_sequence")
-                     val kycSequence: Int? = null,
                      @SerializedName("reject_reason")
                      val rejectReason: String? = null,
                      @SerializedName("recovery_address")
                      val recoveryAddress: String? = null,
-                     @SerializedName("airdrop_state")
-                     val airdropState: String? = null,
                      @SerializedName("created_at")
                      val createdAt: Date? = null)
 
@@ -31,7 +27,5 @@ class UserInfo(@SerializedName("type")
         val STATE_APPROVED = "approved"
         val STATE_REJECTED = "rejected"
         val STATE_BLOCKED = "blocked"
-        val AIRDROP_STATE_CLAIMED = "claimed"
-        val AIRDROP_STATE_ELIGIBLE = "eligible"
     }
 }

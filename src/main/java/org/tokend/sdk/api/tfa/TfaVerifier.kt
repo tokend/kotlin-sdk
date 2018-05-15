@@ -1,6 +1,8 @@
 package org.tokend.sdk.api.tfa
 
+import org.tokend.sdk.api.requests.AttributesEntity
 import org.tokend.sdk.api.requests.DataEntity
+import org.tokend.sdk.api.requests.models.VerifyTfaRequestBody
 import org.tokend.sdk.federation.NeedTfaException
 import retrofit2.Call
 import retrofit2.Callback
@@ -64,15 +66,10 @@ class TfaVerifier(
 
     private fun verify(otp: String, onSuccess: EmptyCallback? = null,
                        onError: OptionalThrowableCallback? = null) {
-        val attributes = hashMapOf(
-                "token" to token,
-                "otp" to otp
-        )
+        val attributes = VerifyTfaRequestBody(token, otp)
 
         verificationService.verifyTfaBackend(walletId, backendId,
-                DataEntity(hashMapOf(
-                        "attributes" to attributes
-                )))
+                DataEntity(AttributesEntity(attributes)))
                 .enqueue(object : Callback<Void> {
                     override fun onFailure(call: Call<Void>?, t: Throwable?) {
                         onError?.invoke(t)
