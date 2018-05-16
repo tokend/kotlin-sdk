@@ -28,9 +28,15 @@ class AccountResponse : Response(), TransactionBuilderAccount {
     }
 
     class ExternalAccount(@SerializedName("data")
-                          val data: String? = null,
+                          val data: String,
                           @SerializedName("type")
-                          private val typeMap: HashMap<String, String> = hashMapOf()) {
+                          val type: Type) {
+        class Type(
+                @SerializedName("name")
+                val name: String,
+                @SerializedName("value")
+                val typeI: Int
+        )
     }
 
     class Referral(@SerializedName("account_id")
