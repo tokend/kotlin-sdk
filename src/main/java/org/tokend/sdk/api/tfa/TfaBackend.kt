@@ -3,6 +3,21 @@ package org.tokend.sdk.api.tfa
 import com.google.gson.annotations.SerializedName
 
 class TfaBackend {
+    enum class Type(val literal: String) {
+        @SerializedName("totp")
+        TOTP("totp"),
+        @SerializedName("password")
+        PASSWORD("password"),
+        UNKNOWN("unknown");
+
+        companion object {
+            @JvmStatic
+            fun fromLiteral(literal: String?): Type {
+                return values().find { it.literal == literal } ?: UNKNOWN
+            }
+        }
+    }
+
     class Attributes(@SerializedName("priority")
                      var priority: Int? = null,
                      @SerializedName("secret")
@@ -17,14 +32,9 @@ class TfaBackend {
                      val salt: String? = null)
 
     @SerializedName("type")
-    val type: String? = null
+    var type: TfaBackend.Type = TfaBackend.Type.UNKNOWN
     @SerializedName("id")
     val id: Int? = null
     @SerializedName("attributes")
     val attributes: Attributes? = null
-
-    companion object {
-        const val TYPE_TOTP = "totp"
-        const val TYPE_PASSWORD = "password"
-    }
 }
