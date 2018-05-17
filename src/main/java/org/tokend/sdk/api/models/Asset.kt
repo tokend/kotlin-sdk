@@ -1,6 +1,7 @@
 package org.tokend.sdk.api.models
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 import java.math.BigDecimal
 
 /**
@@ -12,11 +13,15 @@ data class Asset(
         @SerializedName("policy") val policy: Int,
         @SerializedName("details") val details: Details,
         @SerializedName("issued") val issued: BigDecimal,
-        @SerializedName("sales") val sales: List<Sale>? = null) {
+        @SerializedName("available_for_issuance") val available: BigDecimal,
+        @SerializedName("max_issuance_amount") val maximum: BigDecimal,
+        @Transient
+        @SerializedName("sales")
+        val sales: List<Sale>? = null): Serializable {
 
-    class Details(
+    data class Details(
             @SerializedName("name") val name: String,
             @SerializedName("logo") val logo: RemoteFile,
             @SerializedName("terms") val terms: RemoteFile
-    )
+    ) : Serializable
 }
