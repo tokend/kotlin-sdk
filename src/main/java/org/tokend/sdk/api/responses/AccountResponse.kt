@@ -1,7 +1,6 @@
 package org.tokend.sdk.api.responses
 
 import com.google.gson.annotations.SerializedName
-import java.math.BigDecimal
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -94,30 +93,6 @@ class AccountResponse : Response(), TransactionBuilderAccount {
         sequenceNumber?.plus(1)
     }
 
-    fun getLimit(limitType: LimitType): BigDecimal {
-        return BigDecimal(limits[limitType.key] ?: "200")
-    }
-
-    fun getStatistic(statType: StatisticType): BigDecimal {
-        return BigDecimal(statistics[statType.key] ?: "5")
-    }
-
-    fun getAssetBalance(asset: String): BigDecimal {
-        return BigDecimal(balances?.find { it.asset == asset }?.balance ?: "0")
-    }
-
-    fun getAssetLocked(asset: String): BigDecimal {
-        return BigDecimal(balances?.find { it.asset == asset }?.locked ?: "0")
-    }
-
-    fun getAssetBalanceId(asset: String): String? {
-        return balances?.find { it.asset == asset }?.balanceId
-    }
-
-    fun addBalance(asset: String, balanceId: String?, balance: String?, locked: String?) {
-        balances?.add(Balance(asset = asset, balanceId = balanceId, balance = balance, locked = locked))
-    }
-
     /**
      * Represents account thresholds.
      */
@@ -140,19 +115,19 @@ class AccountResponse : Response(), TransactionBuilderAccount {
      * Represents account balance.
      */
     class Balance internal constructor(@SerializedName("balance_id")
-                                       val balanceId: String?,
+                                       val balanceId: String,
                                        @SerializedName("balance")
-                                       var balance: String?,
+                                       var balanceString: String,
                                        @SerializedName("exchange_id")
-                                       val exchangeId: String? = null,
+                                       val exchangeId: String,
                                        @SerializedName("exchange_name")
-                                       val exchangeName: String? = null,
+                                       val exchangeName: String,
                                        @SerializedName("asset")
                                        val asset: String,
                                        @SerializedName("locked")
-                                       var locked: String?,
+                                       var lockedString: String,
                                        @SerializedName("incentive_per_coin")
-                                       val incentive: String? = null)
+                                       val incentive: String)
 
     /**
      * Represents account signers.
