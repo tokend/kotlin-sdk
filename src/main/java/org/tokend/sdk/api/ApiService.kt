@@ -121,11 +121,11 @@ interface ApiService {
 
     @GET("/accounts/{accountId}/offers")
     fun getOffers(@Path("accountId") accountId: String?,
-                  @Query("is_buy") isBuy: Boolean,
+                  @Query("is_buy") isBuy: Boolean?,
                   @Query("limit") limit: Int,
                   @Query("order") order: String,
                   @Query("cursor") cursor: String,
-                  @Query("order_book_id") saleId: Long?,
+                  @Query("order_book_id") orderBookId: Long?,
                   @Query("quote_asset") quoteAsset: String?,
                   @Query("base_asset") baseAsset: String?):
             Call<Page<Offer>>
@@ -154,4 +154,11 @@ interface ApiService {
     @POST("/transactions")
     fun pushTransaction(@Field("tx") envelopeXdrBase64: String):
             Call<SubmitTransactionResponse>
+
+    @GET("/order_book")
+    fun getOrderBook(@Query("is_buy") isBuy: Boolean,
+                     @Query("base_asset") baseAsset: String,
+                     @Query("quote_asset") quoteAsset: String,
+                     @Query("cursor") cursor: String,
+                     @Query("limit") limit: Int): Call<Page<Offer>>
 }
