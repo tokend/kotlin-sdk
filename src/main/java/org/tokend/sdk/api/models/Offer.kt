@@ -1,27 +1,21 @@
 package org.tokend.sdk.api.models
 
 import com.google.gson.annotations.SerializedName
-import org.tokend.sdk.utils.ApiDateUtil
+import java.io.Serializable
+import java.math.BigDecimal
 import java.util.*
 
-/**
- * Created by Oleg Koretsky on 1/5/18.
- */
 data class Offer(
-        @SerializedName("id") val id: String? = null,
-        @SerializedName("paging_token") val pagingToken: String? = null,
-        @SerializedName("offer_id") val offerId: Long? = null,
-        @SerializedName("base_balance_id") val baseBalance: String? = null,
-        @SerializedName("quote_balance_id") val quoteBalance: String? = null,
-        @SerializedName("base_asset_code") val baseAsset: String? = null,
-        @SerializedName("quote_asset_code") val quoteAsset: String? = null,
-        @SerializedName("fee") val fee: String? = null,
-        @SerializedName("is_buy") val isBuy: Boolean? = null,
-        @SerializedName("base_amount") val baseAmount: String? = null,
-        @SerializedName("quote_amount") val quoteAmount: String? = null,
-        @SerializedName("price") val price: String? = null,
-        @SerializedName("created_at") val createdAt: String? = null) {
-
-    val date: Date
-        get() = ApiDateUtil.tryParseDate(this.createdAt)
-}
+        @SerializedName("base_asset_code") val baseAsset: String,
+        @SerializedName("quote_asset_code") val quoteAsset: String,
+        @SerializedName("is_buy") val isBuy: Boolean = false,
+        @SerializedName("base_amount") val baseAmount: BigDecimal = BigDecimal.ZERO,
+        @SerializedName("quote_amount") val quoteAmount: BigDecimal = BigDecimal.ZERO,
+        @SerializedName("price") val price: BigDecimal = BigDecimal.ONE,
+        @SerializedName("offer_id") val id: Long = 0,
+        @SerializedName("paging_token") val pagingToken: String = "",
+        @SerializedName("created_at") val date: Date = Date(),
+        @SerializedName("fee") var fee: BigDecimal? = null,
+        @SerializedName("base_balance_id") var baseBalance: String? = null,
+        @SerializedName("quote_balance_id") var quoteBalance: String? = null
+) : Serializable
