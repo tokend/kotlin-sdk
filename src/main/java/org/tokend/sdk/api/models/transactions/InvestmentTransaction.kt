@@ -11,8 +11,9 @@ class InvestmentTransaction(
         amount: BigDecimal,
         asset: String,
         fee: BigDecimal,
+        feeAsset: String,
         matchData: MatchData
-) : MatchTransaction(base, id, amount, asset, fee, matchData) {
+) : MatchTransaction(base, id, amount, asset, fee, feeAsset, matchData) {
     @SerializedName("investment_type")
     override val type = TransactionType.INVESTMENT
 
@@ -77,7 +78,8 @@ class InvestmentTransaction(
                                 price = price,
                                 isBuy = !contextAssetIsQuote && effect.isBuy,
                                 orderId = null
-                        )
+                        ),
+                        feeAsset = quoteAsset
                 )
             } ?: listOf()
         }

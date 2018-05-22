@@ -11,6 +11,7 @@ open class MatchTransaction(
         override val amount: BigDecimal,
         override val asset: String,
         val fee: BigDecimal,
+        val feeAsset: String,
         val matchData: MatchData
 ) : Transaction by base {
     override val type = TransactionType.OFFER_MATCH
@@ -55,7 +56,8 @@ open class MatchTransaction(
                                 isBuy = !contextAssetIsQuote && effect.isBuy
                                         || contextAssetIsQuote && !effect.isBuy,
                                 orderId = null
-                        )
+                        ),
+                        feeAsset = quoteAsset
                 )
             } ?: listOf()
         }
@@ -82,7 +84,8 @@ open class MatchTransaction(
                             price = offer.price,
                             isBuy = offer.isBuy,
                             orderId = offer.id.toString()
-                    )
+                    ),
+                    feeAsset = offer.quoteAsset
             )
         }
     }
