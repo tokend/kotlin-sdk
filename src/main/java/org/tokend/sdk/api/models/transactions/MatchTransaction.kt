@@ -1,5 +1,6 @@
 package org.tokend.sdk.api.models.transactions
 
+import org.tokend.sdk.api.models.Offer
 import org.tokend.sdk.api.models.PaymentRecord
 import org.tokend.sdk.utils.BigDecimalUtil
 import java.math.BigDecimal
@@ -57,6 +58,32 @@ open class MatchTransaction(
                         )
                 )
             } ?: listOf()
+        }
+
+        fun fromOffer(offer: Offer): MatchTransaction {
+            return MatchTransaction(
+                    BaseTransaction(
+                            pagingToken = offer.pagingToken,
+                            date = offer.date,
+                            state = TransactionState.PENDING,
+                            type = TransactionType.OFFER_MATCH,
+                            sourceAccount = "",
+                            asset = "",
+                            amount = BigDecimal.ZERO,
+                            id = ""
+                    ),
+                    id = offer.id.toString(),
+                    fee = offer.fee ?: BigDecimal.ZERO,
+                    amount = offer.baseAmount,
+                    asset = offer.baseAsset,
+                    matchData = MatchData(
+                            quoteAmount = offer.quoteAmount,
+                            quoteAsset = offer.quoteAsset,
+                            price = offer.price,
+                            isBuy = offer.isBuy,
+                            orderId = offer.id.toString()
+                    )
+            )
         }
     }
 }
