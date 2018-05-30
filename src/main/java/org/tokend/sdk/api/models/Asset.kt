@@ -4,9 +4,6 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 import java.math.BigDecimal
 
-/**
- * Created by Oleg Koretsky on 1/4/18.
- */
 data class Asset(
         @SerializedName("code") val code: String,
         @SerializedName("owner") val ownerAccount: String,
@@ -17,11 +14,15 @@ data class Asset(
         @SerializedName("max_issuance_amount") val maximum: BigDecimal,
         @Transient
         @SerializedName("sales")
-        val sales: List<Sale>? = null): Serializable {
+        val sales: List<Sale>? = null) : Serializable {
 
     data class Details(
             @SerializedName("name") val name: String,
             @SerializedName("logo") val logo: RemoteFile,
-            @SerializedName("terms") val terms: RemoteFile
+            @SerializedName("terms") val terms: RemoteFile,
+            @SerializedName("external_system_type") val externalSystemType: Int?
     ) : Serializable
+
+    val isBackedByExternalSystem: Boolean
+        get() = details.externalSystemType != null
 }

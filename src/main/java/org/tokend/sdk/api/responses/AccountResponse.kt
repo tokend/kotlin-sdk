@@ -29,7 +29,9 @@ class AccountResponse : Response(), TransactionBuilderAccount {
     class ExternalAccount(@SerializedName("data")
                           val data: String,
                           @SerializedName("type")
-                          val type: Type) {
+                          val type: Type,
+                          @SerializedName("expires_at")
+                          val expirationDate: Date?) {
         class Type(
                 @SerializedName("name")
                 val name: String,
