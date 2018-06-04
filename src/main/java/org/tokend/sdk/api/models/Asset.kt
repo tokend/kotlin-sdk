@@ -8,7 +8,7 @@ data class Asset(
         @SerializedName("code") val code: String,
         @SerializedName("owner") val ownerAccount: String,
         @SerializedName("policy") val policy: Int,
-        @SerializedName("details") val details: Details,
+        @SerializedName("details") val details: Details?,
         @SerializedName("issued") val issued: BigDecimal,
         @SerializedName("available_for_issuance") val available: BigDecimal,
         @SerializedName("max_issuance_amount") val maximum: BigDecimal,
@@ -24,5 +24,5 @@ data class Asset(
     ) : Serializable
 
     val isBackedByExternalSystem: Boolean
-        get() = details.externalSystemType != null
+        get() = details?.externalSystemType != null
 }
