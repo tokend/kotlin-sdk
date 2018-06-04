@@ -65,7 +65,7 @@ class InvestmentTransaction(
                 val contextAssetIsQuote = !contextAssetIsBase
 
                 InvestmentTransaction(
-                        base = BaseTransaction.fromPaymentRecord(record),
+                        base = BaseTransaction.fromPaymentRecord(record, contextAccountId),
                         id = "${record.id}_$i",
                         fee = fee,
                         asset = if (contextAssetIsQuote) quoteAsset else baseAsset,

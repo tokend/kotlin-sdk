@@ -16,13 +16,11 @@ open class MatchTransaction(
 ) : Transaction by base {
     override val type = TransactionType.OFFER_MATCH
 
-    override fun isSent(account: String): Boolean {
-        return !matchData.isBuy
-    }
+    override val isReceived: Boolean
+        get() = matchData.isBuy
 
-    override fun isReceived(account: String): Boolean {
-        return !isSent(account)
-    }
+    override val isSent: Boolean
+        get() = !isReceived
 
     companion object {
         fun fromPaymentRecord(record: PaymentRecord, contextAsset: String,
@@ -37,12 +35,12 @@ open class MatchTransaction(
             val quoteAsset = effect?.quoteAsset ?: ""
             val contextAssetIsQuote = quoteAsset == contextAsset
 
-            return effect?.matches?.mapIndexed { i, match ->
+            return effect?.matches?.mapIndexed { _, match ->
                 val baseAmount = match.baseAmount
                 val quoteAmount = match.quoteAmount
 
                 MatchTransaction(
-                        base = BaseTransaction.fromPaymentRecord(record),
+                        base = BaseTransaction.fromPaymentRecord(record, contextAccountId),
                         id = "${record.id}_i",
                         fee = BigDecimalUtil.valueOf(match.feeString),
                         asset = if (contextAssetIsQuote) quoteAsset else baseAsset,
@@ -72,7 +70,8 @@ open class MatchTransaction(
                             sourceAccount = "",
                             asset = "",
                             amount = BigDecimal.ZERO,
-                            id = ""
+                            id = "",
+                            isReceived = false
                     ),
                     id = offer.id.toString(),
                     fee = offer.fee ?: BigDecimal.ZERO,

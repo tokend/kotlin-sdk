@@ -12,16 +12,8 @@ interface Transaction {
     val sourceAccount: String
     val amount: BigDecimal
     val asset: String
+    val isReceived: Boolean
 
-    /**
-     * @return [true] if given account is the sender of this transaction
-     */
-    fun isSent(account: String): Boolean
-
-    /**
-     * @return [true] if given account is the recipient of this transaction
-     */
-    fun isReceived(account: String): Boolean {
-        return !isSent(account)
-    }
+    val isSent: Boolean
+        get() = !isReceived
 }

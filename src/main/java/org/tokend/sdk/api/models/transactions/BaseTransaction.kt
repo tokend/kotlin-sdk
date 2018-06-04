@@ -13,14 +13,11 @@ open class BaseTransaction(
         override val type: TransactionType,
         override val sourceAccount: String,
         override val amount: BigDecimal,
-        override val asset: String
+        override val asset: String,
+        override val isReceived: Boolean
 ) : Transaction {
-    override fun isSent(account: String): Boolean {
-        return sourceAccount == account
-    }
-
     companion object {
-        fun fromPaymentRecord(record: PaymentRecord): BaseTransaction {
+        fun fromPaymentRecord(record: PaymentRecord, contextAccountId: String): BaseTransaction {
             return BaseTransaction(
                     id = record.id,
                     pagingToken = record.pagingToken,
@@ -29,7 +26,8 @@ open class BaseTransaction(
                     sourceAccount = record.sourceAccount ?: "",
                     state = TransactionState.fromCode(record.state),
                     type = TransactionType.UNKNOWN,
-                    date = record.ledgerCloseTime
+                    date = record.ledgerCloseTime,
+                    isReceived = contextAccountId != record.sourceAccount
             )
         }
     }

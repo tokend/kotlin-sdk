@@ -17,9 +17,9 @@ class PaymentTransaction(
     var counterpartyNickname: String? = null
 
     companion object {
-        fun fromPaymentRecord(record: PaymentRecord): PaymentTransaction {
+        fun fromPaymentRecord(record: PaymentRecord, contextAccountId: String): PaymentTransaction {
             return PaymentTransaction(
-                    base = BaseTransaction.fromPaymentRecord(record),
+                    base = BaseTransaction.fromPaymentRecord(record, contextAccountId),
                     sourceAccount = record.sourceAccount ?: record.from ?: "",
                     destAccount = record.to ?: "",
                     senderFee = ComplexFee(

@@ -9,17 +9,17 @@ object PaymentRecordConverter {
         return items.map {
             when (TransactionType.fromLiteral(it.type)) {
                 TransactionType.PAYMENT ->
-                    listOf(PaymentTransaction.fromPaymentRecord(it))
+                    listOf(PaymentTransaction.fromPaymentRecord(it, contextAccountId))
                 TransactionType.ISSUANCE ->
-                    listOf(IssuanceTransaction.fromPaymentRecord(it))
+                    listOf(IssuanceTransaction.fromPaymentRecord(it, contextAccountId))
                 TransactionType.WITHDRAWAL ->
-                    listOf(WithdrawalTransaction.fromPaymentRecord(it))
+                    listOf(WithdrawalTransaction.fromPaymentRecord(it, contextAccountId))
                 TransactionType.OFFER_MATCH ->
                     MatchTransaction.fromPaymentRecord(it, contextAsset, contextAccountId)
                 TransactionType.INVESTMENT ->
                     InvestmentTransaction.fromPaymentRecord(it, contextAsset, contextAccountId)
                 else ->
-                    listOf(BaseTransaction.fromPaymentRecord(it))
+                    listOf(BaseTransaction.fromPaymentRecord(it, contextAccountId))
             }
         }.fold(mutableListOf<Transaction>(), { acc, transactions ->
             acc.addAll(transactions)

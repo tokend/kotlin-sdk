@@ -11,12 +11,13 @@ class IssuanceTransaction(
     override val type = TransactionType.ISSUANCE
 
     companion object {
-        fun fromPaymentRecord(record: PaymentRecord): IssuanceTransaction {
+        fun fromPaymentRecord(record: PaymentRecord,
+                              contextAccountId: String): IssuanceTransaction {
             val externalDetails = record.externalDetails as? JsonObject
             val cause = externalDetails?.get("cause")?.asString
 
             return IssuanceTransaction(
-                    base = BaseTransaction.fromPaymentRecord(record),
+                    base = BaseTransaction.fromPaymentRecord(record, contextAccountId),
                     cause = cause,
                     reference = record.reference
             )

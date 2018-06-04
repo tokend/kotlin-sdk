@@ -15,12 +15,13 @@ class WithdrawalTransaction(
     override val type = TransactionType.WITHDRAWAL
 
     companion object {
-        fun fromPaymentRecord(record: PaymentRecord): WithdrawalTransaction {
+        fun fromPaymentRecord(record: PaymentRecord,
+                              contextAccountId: String): WithdrawalTransaction {
             val externalDetails = record.externalDetails as? JsonObject
             val destinationAddress = externalDetails?.get("address")?.asString
 
             return WithdrawalTransaction(
-                    base = BaseTransaction.fromPaymentRecord(record),
+                    base = BaseTransaction.fromPaymentRecord(record, contextAccountId),
                     asset = record.destAsset ?: "",
                     destAddress = destinationAddress,
                     destAmount = BigDecimalUtil.valueOf(record.destAmount),
