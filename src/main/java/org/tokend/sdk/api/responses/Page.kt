@@ -2,12 +2,9 @@ package org.tokend.sdk.api.responses
 
 
 import com.google.gson.annotations.SerializedName
-import com.google.gson.reflect.TypeToken
 import java.util.*
 
-class Page<T> constructor(private var type: TypeToken<Page<T>>? = object : TypeToken<Page<T>>() {})
-    : Response() {
-
+class Page<T> : Response() {
     @SerializedName("records")
     var records: List<T> = emptyList()
         get() = (if (field.isEmpty() && this.embeddedPage != null) {
@@ -20,18 +17,8 @@ class Page<T> constructor(private var type: TypeToken<Page<T>>? = object : TypeT
     @SerializedName("_links")
     private val embeddedLinks: Links? = null
 
-
-    constructor(records: ArrayList<T>, links: Links, type: TypeToken<Page<T>>) : this(type) {
-        this.records = records
-        this.links = links
-    }
-
     fun getLinks(): Links? {
         return this.links ?: this.embeddedLinks
-    }
-
-    private fun getType(): TypeToken<Page<T>>? {
-        return this.type ?: object : TypeToken<Page<T>>() {}
     }
 
     /**
