@@ -15,6 +15,8 @@ data class BalanceDetails(
         private val convertedBalanceString: String,
         @SerializedName("converted_locked")
         private val convertedLockedString: String,
+        @SerializedName("converted_to_asset")
+        val conversionAsset: String,
         @SerializedName("asset_details")
         val assetDetails: Asset? = null,
         @SerializedName("offers")
