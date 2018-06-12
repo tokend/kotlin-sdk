@@ -30,11 +30,13 @@ interface ApiService {
             Call<Void>
 
     @PUT("/wallets/{walletId}/verification")
+    @JvmSuppressWildcards
     fun verifyWallet(@Path("walletId") walletId: String?,
                      @Body data: DataEntity<AttributesEntity<VerifyWalletRequestBody>>):
             Call<Void>
 
     @PUT("/users/{accountId}")
+    @JvmSuppressWildcards
     fun createUser(@Path("accountId") accountId: String?,
                    @Body data: DataEntity<AttributesEntity<CreateUserRequestBody>>):
             Call<Void>
@@ -44,6 +46,7 @@ interface ApiService {
             Call<ServerResponse<UserInfo, ServerError>>
 
     @PATCH("/users/{accountId}")
+    @JvmSuppressWildcards
     fun patchUser(@Path("accountId") accountId: String?,
                   @Body data: DataEntity<AttributesEntity<PatchUserRequestBody>>):
             Call<Void>
@@ -54,6 +57,7 @@ interface ApiService {
             Call<ServerResponse<MutableList<TfaBackend>, ServerError>>
 
     @POST("/wallets/{walletId}/factors")
+    @JvmSuppressWildcards
     fun createTfaBackend(@Path("walletId") walletId: String?,
                          @Body data: DataEntity<CreateTfaRequestBody>):
             Call<ServerResponse<TfaBackend, ServerError>>
@@ -63,6 +67,7 @@ interface ApiService {
                          @Path("id") backendId: Int?): Call<Void>
 
     @PATCH("/wallets/{walletId}/factors/{id}")
+    @JvmSuppressWildcards
     fun updateTfaBackend(@Path("walletId") walletId: String?,
                          @Path("id") backendId: Int?,
                          @Body data: DataEntity<UpdateTfaRequestBody>): Call<Void>

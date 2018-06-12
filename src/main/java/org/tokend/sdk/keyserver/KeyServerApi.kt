@@ -25,11 +25,13 @@ interface KeyServerApi {
             : Call<ServerResponse<WalletData, ServerError>>
 
     @PUT("/wallets/{walletId}")
+    @JvmSuppressWildcards
     fun updateWallet(@Path("walletId") walletId: String?,
                      @Body data: DataEntity<WalletData>):
             Call<Void>
 
     @POST("/wallets")
+    @JvmSuppressWildcards
     fun createWallet(@Body data: DataEntity<WalletData>):
             Call<Void>
 }
