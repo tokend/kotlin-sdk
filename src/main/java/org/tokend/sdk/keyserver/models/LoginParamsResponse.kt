@@ -34,6 +34,6 @@ class KdfAttributes(
         get() = encodedSalt.decodeBase64()
 
     override fun toString(): String {
-        return "KdfAttributes(algorithm=$algorithm, bits=$bits, n=$n, p=$p, r=$r, encodedSalt=$encodedSalt, salt=${String(salt!!)})"
+        return "KdfAttributes(algorithm=$algorithm, bits=$bits, n=$n, p=$p, r=$r, encodedSalt=$encodedSalt, salt=${String(salt)})"
     }
 }

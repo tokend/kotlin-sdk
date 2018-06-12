@@ -1,7 +1,7 @@
 package org.tokend.sdk.api.models
 
 import com.google.gson.annotations.SerializedName
-import org.tokend.sdk.api.ApiFactory
+import org.tokend.sdk.factory.GsonFactory
 import org.tokend.sdk.utils.extentions.decodeBase64
 import org.tokend.sdk.utils.extentions.encodeBase64String
 
@@ -28,7 +28,7 @@ data class KeychainData(@SerializedName("IV")
         }
 
         fun fromJson(rawJson: String): KeychainData {
-            return ApiFactory.getBaseGson().fromJson(rawJson, KeychainData::class.java)
+            return GsonFactory().getBaseGson().fromJson(rawJson, KeychainData::class.java)
         }
 
         fun fromRawString(rawString: String): KeychainData {

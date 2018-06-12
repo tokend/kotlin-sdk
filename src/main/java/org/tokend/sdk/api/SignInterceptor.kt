@@ -7,9 +7,8 @@ import org.tokend.sdk.api.requests.RequestSigner
 import org.tokend.sdk.utils.extentions.hash
 import java.util.*
 
-class SignInterceptor(private val accountId: String,
-                      private val requestSigner: RequestSigner,
-                      private val signatureValidSeconds: Int): Interceptor {
+class SignInterceptor(private val requestSigner: RequestSigner,
+                      private val signatureValidSeconds: Int) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val newRequest = buildSignedRequest(chain)
         return chain.proceed(newRequest)
@@ -26,12 +25,12 @@ class SignInterceptor(private val accountId: String,
         }
         val signatureBase = "{ uri: '$fullUrlPath', valid_untill: '$validUntil'}"
         val data = signatureBase.toByteArray().hash()
-        val signedDataBase64 = requestSigner.signToBase64(data) ?: ""
+        val signedDataBase64 = requestSigner.signToBase64(data)
 
         return chain.request().newBuilder()
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
                 .addHeader("X-AuthValidUnTillTimestamp", validUntil)
-                .addHeader("X-AuthPublicKey", accountId)
+                .addHeader("X-AuthPublicKey", requestSigner.accountId)
                 .addHeader("X-AuthSignature", signedDataBase64)
                 .build()
     }

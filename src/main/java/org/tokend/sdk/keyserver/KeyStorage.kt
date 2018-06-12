@@ -3,7 +3,6 @@ package org.tokend.sdk.keyserver
 import org.spongycastle.util.encoders.Base64
 import org.tokend.crypto.cipher.Aes256GCM
 import org.tokend.kdf.ScryptWithMasterKeyDerivation
-import org.tokend.sdk.api.ApiFactory
 import org.tokend.sdk.api.models.EncryptedKey
 import org.tokend.sdk.api.models.KeychainData
 import org.tokend.sdk.api.models.WalletData
@@ -12,6 +11,8 @@ import org.tokend.sdk.api.requests.CookieJarProvider
 import org.tokend.sdk.api.requests.DataEntity
 import org.tokend.sdk.api.requests.RequestSigner
 import org.tokend.sdk.api.tfa.TfaCallback
+import org.tokend.sdk.factory.ApiFactory
+import org.tokend.sdk.factory.GsonFactory
 import org.tokend.sdk.federation.EmailAlreadyTakenException
 import org.tokend.sdk.federation.EmailNotVerifiedException
 import org.tokend.sdk.federation.InvalidCredentialsException
@@ -27,24 +28,14 @@ import java.nio.CharBuffer
 import java.nio.charset.Charset
 import java.security.SecureRandom
 
-class KeyStorage {
-    private val keyServerApiService: KeyServerApi
-
-    @JvmOverloads
-    constructor(keyServerUrl: String, tfaCallback: TfaCallback? = null,
-                cookieJarProvider: CookieJarProvider? = null) {
-        keyServerApiService =
-                KeyServerApiFactory.getApiService(keyServerUrl, tfaCallback, cookieJarProvider)
-    }
-
-    @JvmOverloads
-    constructor(keyServerUrl: String, accountId: String, requestSigner: RequestSigner,
-                tfaCallback: TfaCallback? = null,
-                cookieJarProvider: CookieJarProvider? = null) {
-        keyServerApiService =
-                KeyServerApiFactory.getApiService(keyServerUrl, accountId, requestSigner,
-                        tfaCallback, cookieJarProvider)
-    }
+class KeyStorage @JvmOverloads constructor(
+        keyServerUrl: String,
+        tfaCallback: TfaCallback? = null,
+        cookieJarProvider: CookieJarProvider? = null,
+        requestSigner: RequestSigner? = null
+) {
+    private val keyServerApiService: KeyServerApi =
+            ApiFactory(keyServerUrl).getKeyServerApi(tfaCallback, cookieJarProvider, requestSigner)
 
     // region Obtain
     @Throws(InvalidCredentialsException::class,
@@ -253,7 +244,7 @@ class KeyStorage {
                     Base64.toBase64String(iv),
                     Base64.toBase64String(encryptedSeed)
             )
-            val keychainDataJson = ApiFactory.getBaseGson().toJson(keychainData)
+            val keychainDataJson = GsonFactory().getBaseGson().toJson(keychainData)
 
             return EncryptedKey(
                     accountId,
@@ -283,4 +274,5 @@ class KeyStorage {
             return WalletData(walletIdHex, encryptedRoot, relations)
         }
     }
+
 }

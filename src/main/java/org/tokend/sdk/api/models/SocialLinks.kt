@@ -4,7 +4,7 @@ import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
-import org.tokend.sdk.api.ApiFactory
+import org.tokend.sdk.factory.GsonFactory
 import java.lang.reflect.Type
 
 /**
@@ -20,7 +20,7 @@ data class SocialLinks(val items: List<String>) {
                                  typeOfT: Type?,
                                  context: JsonDeserializationContext?): SocialLinks {
             val string = json?.asString
-            val obj = ApiFactory.getBaseGson().fromJson(string, JsonObject::class.java)
+            val obj = GsonFactory().getBaseGson().fromJson(string, JsonObject::class.java)
             val linksArray =
                     if (obj.has(ARRAY_KEY))
                         obj?.getAsJsonArray(ARRAY_KEY)
