@@ -14,11 +14,11 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 
 class ApiFactory(private val url: String) {
     @JvmOverloads
-    fun getApiService(tfaCallback: TfaCallback? = null,
-                      cookieJarProvider: CookieJarProvider? = null,
-                      requestSigner: RequestSigner? = null): ApiService {
-        return getCustomService(ApiService::class.java,
-                tfaCallback, cookieJarProvider, requestSigner)
+    fun getApiService(requestSigner: RequestSigner? = null,
+                      tfaCallback: TfaCallback? = null,
+                      cookieJarProvider: CookieJarProvider? = null): ApiService {
+        return getCustomService(ApiService::class.java, requestSigner,
+                tfaCallback, cookieJarProvider)
     }
 
     fun getTfaVerificationService(): TfaVerificationService {
@@ -26,18 +26,18 @@ class ApiFactory(private val url: String) {
                 HttpClientFactory().getBaseHttpClientBuilder().build())
     }
 
-    fun getKeyServerApi(tfaCallback: TfaCallback? = null,
-                        cookieJarProvider: CookieJarProvider? = null,
-                        requestSigner: RequestSigner? = null): KeyServerApi {
-        return getCustomService(KeyServerApi::class.java,
-                tfaCallback, cookieJarProvider, requestSigner)
+    fun getKeyServerApi(requestSigner: RequestSigner? = null,
+                        tfaCallback: TfaCallback? = null,
+                        cookieJarProvider: CookieJarProvider? = null): KeyServerApi {
+        return getCustomService(KeyServerApi::class.java, requestSigner,
+                tfaCallback, cookieJarProvider)
     }
 
     @JvmOverloads
     fun <T> getCustomService(serviceClass: Class<T>,
+                             requestSigner: RequestSigner? = null,
                              tfaCallback: TfaCallback? = null,
-                             cookieJarProvider: CookieJarProvider? = null,
-                             requestSigner: RequestSigner? = null): T {
+                             cookieJarProvider: CookieJarProvider? = null): T {
         val client =
                 HttpClientFactory().getBaseHttpClientBuilder(cookieJarProvider)
                         .addInterceptor(

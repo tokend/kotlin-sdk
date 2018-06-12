@@ -35,7 +35,7 @@ class KeyStorage @JvmOverloads constructor(
         requestSigner: RequestSigner? = null
 ) {
     private val keyServerApiService: KeyServerApi =
-            ApiFactory(keyServerUrl).getKeyServerApi(tfaCallback, cookieJarProvider, requestSigner)
+            ApiFactory(keyServerUrl).getKeyServerApi(requestSigner, tfaCallback, cookieJarProvider)
 
     // region Obtain
     @Throws(InvalidCredentialsException::class,
