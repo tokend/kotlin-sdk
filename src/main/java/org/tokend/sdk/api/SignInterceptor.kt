@@ -7,14 +7,14 @@ import org.tokend.sdk.api.requests.RequestSigner
 import org.tokend.sdk.utils.extentions.hash
 import java.util.*
 
-class SignInterceptor(private val requestSigner: RequestSigner,
+open class SignInterceptor(private val requestSigner: RequestSigner,
                       private val signatureValidSeconds: Int) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val newRequest = buildSignedRequest(chain)
         return chain.proceed(newRequest)
     }
 
-    private fun buildSignedRequest(chain: Interceptor.Chain): Request {
+    protected open fun buildSignedRequest(chain: Interceptor.Chain): Request {
         val validUntil = java.lang.Double.valueOf(Math.floor((Date().time / 1000 +
                 signatureValidSeconds).toDouble()))!!.toInt().toString()
         val url = chain.request().url().url()

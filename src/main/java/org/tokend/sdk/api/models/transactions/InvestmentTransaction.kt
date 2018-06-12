@@ -5,7 +5,7 @@ import org.tokend.sdk.api.models.PaymentRecord
 import java.math.BigDecimal
 import java.math.MathContext
 
-class InvestmentTransaction(
+open class InvestmentTransaction(
         base: BaseTransaction,
         id: String,
         amount: BigDecimal,

@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 import java.math.BigDecimal
 
-data class Asset(
+open class Asset(
         @SerializedName("code") val code: String,
         @SerializedName("owner") val ownerAccount: String,
         @SerializedName("policy") val policy: Int,
@@ -16,7 +16,7 @@ data class Asset(
         @SerializedName("sales")
         val sales: List<Sale>? = null) : Serializable {
 
-    data class Details(
+    open class Details(
             @SerializedName("name") val name: String,
             @SerializedName("logo") val logo: RemoteFile,
             @SerializedName("terms") val terms: RemoteFile,

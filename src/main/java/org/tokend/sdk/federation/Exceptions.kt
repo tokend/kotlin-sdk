@@ -6,7 +6,7 @@ import java.io.IOException
 
 open class ForbiddenException(val type: String, detailMessage: String) : IOException(detailMessage)
 
-class NeedTfaException(val backendId: Long,
+open class NeedTfaException(val backendId: Long,
                        val backendType: TfaBackend.Type,
                        val token: String,
                        val keychainData: String,
@@ -40,11 +40,11 @@ class NeedTfaException(val backendId: Long,
     }
 }
 
-class InvalidCredentialsException(val credential: Credential) : Exception() {
+open class InvalidCredentialsException(val credential: Credential) : Exception() {
     enum class Credential {
         EMAIL, PASSWORD
     }
 }
-class EmailNotVerifiedException(val walletId: String)
+open class EmailNotVerifiedException(val walletId: String)
     : ForbiddenException("email_not_verified", "Email is not verified")
-class EmailAlreadyTakenException : Exception()
+open class EmailAlreadyTakenException : Exception()

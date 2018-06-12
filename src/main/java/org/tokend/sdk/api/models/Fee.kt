@@ -5,7 +5,7 @@ import org.tokend.sdk.utils.BigDecimalUtil
 import java.io.Serializable
 import java.math.BigDecimal
 
-data class Fee(
+open class Fee(
         @SerializedName("fee_type") val feeType: Int,
         @SerializedName("asset") val asset: String,
         @SerializedName("fixed") private val fixedString: String,

@@ -5,7 +5,7 @@ import org.tokend.sdk.api.models.PaymentRecord
 import org.tokend.sdk.utils.BigDecimalUtil
 import java.math.BigDecimal
 
-class WithdrawalTransaction(
+open class WithdrawalTransaction(
         private val base: BaseTransaction,
         override val asset: String,
         val destAddress: String?,

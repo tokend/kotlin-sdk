@@ -1,6 +1,6 @@
 package org.tokend.sdk.api.models
 
-class EncryptedKey(
+open class EncryptedKey(
         var accountId: String,
         var email: String,
         var salt: String,

@@ -1,3 +1,3 @@
 package org.tokend.sdk.api.tfa
 
-class InvalidOtpException: Exception()
+open class InvalidOtpException: Exception()

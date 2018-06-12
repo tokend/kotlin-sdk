@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import org.tokend.sdk.api.requests.DataEntity
 import org.tokend.sdk.utils.extentions.decodeBase64
 
-class WalletData(
+open class WalletData(
         @SerializedName("type")
         var type: String,
         @SerializedName("id")
@@ -15,7 +15,7 @@ class WalletData(
         @SerializedName("relationships")
         var relationships: MutableMap<String, DataEntity<Any>>
 ) {
-    class WalletAttributes(
+    open class WalletAttributes(
             @SerializedName("account_id")
             var accountId: String,
             @SerializedName("email")

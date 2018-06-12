@@ -13,7 +13,7 @@ import java.util.concurrent.CountDownLatch
 /**
  * Catches and handles TFA errors.
  */
-class TfaOkHttpInterceptor(
+open class TfaOkHttpInterceptor(
         private val verificationService: TfaVerificationService,
         private val tfaCallback: TfaCallback?) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -55,7 +55,7 @@ class TfaOkHttpInterceptor(
         }
     }
 
-    private fun extractTfaException(response: Response): NeedTfaException? {
+    protected open fun extractTfaException(response: Response): NeedTfaException? {
         val responseString = response.peekBody(response.body().contentLength()).string()
         val responseJson = JsonParser().parse(responseString).asJsonObject
         val errors = responseJson["errors"]?.asJsonArray

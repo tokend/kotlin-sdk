@@ -4,7 +4,7 @@ package org.tokend.sdk.api.responses
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
-class Page<T> : Response() {
+open class Page<T> : Response() {
     @SerializedName("records")
     var records: List<T> = emptyList()
         get() = (if (field.isEmpty() && this.embeddedPage != null) {

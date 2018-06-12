@@ -3,7 +3,7 @@ package org.tokend.sdk.api.models
 import com.google.gson.annotations.SerializedName
 import java.math.BigDecimal
 
-data class AssetPair(
+open class AssetPair(
         @SerializedName("base") val base: String,
         @SerializedName("quote") val quote: String,
         @SerializedName("current_price") val price: BigDecimal,

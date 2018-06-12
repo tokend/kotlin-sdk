@@ -1,6 +1,6 @@
 package org.tokend.sdk.api.models
 
-data class WalletRelation(val name: String,
+open class WalletRelation(val name: String,
                           private val type: String,
                           private val id: String?,
                           private val accountId: String? = null,

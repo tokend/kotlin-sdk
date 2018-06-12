@@ -6,10 +6,7 @@ import org.tokend.sdk.utils.BigDecimalUtil
 import java.math.BigDecimal
 import java.util.*
 
-/**
- * Created by Oleg Koretsky on 1/3/18.
- */
-data class Sale(@SerializedName("id")
+open class Sale(@SerializedName("id")
            val id: Long? = null,
            @SerializedName("paging_token")
            val pagingToken: String? = null,

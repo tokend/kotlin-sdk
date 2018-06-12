@@ -5,7 +5,7 @@ import java.io.Serializable
 import java.math.BigDecimal
 import java.util.*
 
-data class Offer(
+open class Offer(
         @SerializedName("base_asset_code") val baseAsset: String,
         @SerializedName("quote_asset_code") val quoteAsset: String,
         @SerializedName("is_buy") val isBuy: Boolean = false,

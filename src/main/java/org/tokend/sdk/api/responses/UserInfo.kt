@@ -3,7 +3,7 @@ package org.tokend.sdk.api.responses
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
-class UserInfo(@SerializedName("type")
+open class UserInfo(@SerializedName("type")
                val type: String? = null,
                @SerializedName("id")
                val id: String? = null,

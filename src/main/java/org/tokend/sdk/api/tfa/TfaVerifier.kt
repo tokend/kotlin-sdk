@@ -11,7 +11,7 @@ import retrofit2.Response
 /**
  * Performs OTP verification.
  */
-class TfaVerifier(
+open class TfaVerifier(
         private val verificationService: TfaVerificationService,
         private val walletId: String,
         private val backendId: Long,
@@ -54,17 +54,17 @@ class TfaVerifier(
     protected var onVerifiedCallback: EmptyCallback? = null
     protected var onVerificationCancelledCallback: EmptyCallback? = null
 
-    fun onVerified(callback: EmptyCallback): TfaVerifier {
+    open fun onVerified(callback: EmptyCallback): TfaVerifier {
         onVerifiedCallback = callback
         return this
     }
 
-    fun onVerificationCancelled(callback: EmptyCallback): TfaVerifier {
+    open fun onVerificationCancelled(callback: EmptyCallback): TfaVerifier {
         onVerificationCancelledCallback = callback
         return this
     }
 
-    private fun verify(otp: String, onSuccess: EmptyCallback? = null,
+    protected open fun verify(otp: String, onSuccess: EmptyCallback? = null,
                        onError: OptionalThrowableCallback? = null) {
         val attributes = VerifyTfaRequestBody(token, otp)
 

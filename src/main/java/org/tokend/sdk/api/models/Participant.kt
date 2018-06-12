@@ -7,7 +7,7 @@ import java.math.BigDecimal
 /**
  * Created by Oleg Koretsky on 11/29/17.
  */
-data class Participant(@SerializedName("account_id") val accountId: String? = null,
+open class Participant(@SerializedName("account_id") val accountId: String? = null,
                   @SerializedName("balance_id") val balanceId: String? = null,
                   @SerializedName("nickname") val nickname: String? = null,
                   @SerializedName("effects") val effects: List<Effect>? = null) {

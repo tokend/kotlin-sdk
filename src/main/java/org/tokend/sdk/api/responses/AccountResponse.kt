@@ -5,7 +5,7 @@ import java.util.*
 import kotlin.collections.HashMap
 
 
-class AccountResponse : Response(), TransactionBuilderAccount {
+open class AccountResponse : Response() {
     companion object {
         val BLOCK_REASON_RECOVERY_REQUEST = 1
         val BLOCK_REASON_KYC_UPDATE = 2
@@ -26,12 +26,12 @@ class AccountResponse : Response(), TransactionBuilderAccount {
         ANNUAL_OUTCOME("annual_outcome")
     }
 
-    class ExternalAccount(@SerializedName("data")
-                          val data: String,
-                          @SerializedName("type")
-                          val type: Type,
-                          @SerializedName("expires_at")
-                          val expirationDate: Date?) {
+    open class ExternalAccount(@SerializedName("data")
+                               val data: String,
+                               @SerializedName("type")
+                               val type: Type,
+                               @SerializedName("expires_at")
+                               val expirationDate: Date?) {
         class Type(
                 @SerializedName("name")
                 val name: String,
@@ -40,10 +40,10 @@ class AccountResponse : Response(), TransactionBuilderAccount {
         )
     }
 
-    class Referral(@SerializedName("account_id")
-                   val accountId: String? = null,
-                   @SerializedName("account_type_i")
-                   val typeI: Int? = null)
+    open class Referral(@SerializedName("account_id")
+                        val accountId: String? = null,
+                        @SerializedName("account_type_i")
+                        val typeI: Int? = null)
 
     @SerializedName("account_id")
     private val accountId: String? = null
@@ -85,57 +85,47 @@ class AccountResponse : Response(), TransactionBuilderAccount {
     @SerializedName("referrals")
     val referrals: List<Referral> = listOf()
 
-    override fun getAccountId() = accountId
-
-    override fun getSequenceNumber() = sequenceNumber
-
-    override fun getIncrementedSequenceNumber() = sequenceNumber!! + 1
-
-    override fun incrementSequenceNumber() {
-        sequenceNumber?.plus(1)
-    }
-
     /**
      * Represents account thresholds.
      */
-    class Thresholds internal constructor(@SerializedName("low_threshold")
-                                          val lowThreshold: Int,
-                                          @SerializedName("med_threshold")
-                                          val medThreshold: Int,
-                                          @SerializedName("high_threshold")
-                                          val highThreshold: Int)
+    open class Thresholds internal constructor(@SerializedName("low_threshold")
+                                               val lowThreshold: Int,
+                                               @SerializedName("med_threshold")
+                                               val medThreshold: Int,
+                                               @SerializedName("high_threshold")
+                                               val highThreshold: Int)
 
     /**
      * Represents account flags.
      */
-    class Flags internal constructor(@SerializedName("auth_required")
-                                     val authRequired: Boolean,
-                                     @SerializedName("auth_revocable")
-                                     val authRevocable: Boolean)
+    open class Flags internal constructor(@SerializedName("auth_required")
+                                          val authRequired: Boolean,
+                                          @SerializedName("auth_revocable")
+                                          val authRevocable: Boolean)
 
     /**
      * Represents account balance.
      */
-    class Balance internal constructor(@SerializedName("balance_id")
-                                       val balanceId: String,
-                                       @SerializedName("balance")
-                                       var balanceString: String,
-                                       @SerializedName("exchange_id")
-                                       val exchangeId: String,
-                                       @SerializedName("exchange_name")
-                                       val exchangeName: String,
-                                       @SerializedName("asset")
-                                       val asset: String,
-                                       @SerializedName("locked")
-                                       var lockedString: String,
-                                       @SerializedName("incentive_per_coin")
-                                       val incentive: String)
+    open class Balance internal constructor(@SerializedName("balance_id")
+                                            val balanceId: String,
+                                            @SerializedName("balance")
+                                            var balanceString: String,
+                                            @SerializedName("exchange_id")
+                                            val exchangeId: String,
+                                            @SerializedName("exchange_name")
+                                            val exchangeName: String,
+                                            @SerializedName("asset")
+                                            val asset: String,
+                                            @SerializedName("locked")
+                                            var lockedString: String,
+                                            @SerializedName("incentive_per_coin")
+                                            val incentive: String)
 
     /**
      * Represents account signers.
      */
-    class Signer(accountId: String, weight: Int,
-                 type: Int, identity: Int) {
+    open class Signer(accountId: String, weight: Int,
+                      type: Int, identity: Int) {
 
         constructor(accountId: String) : this(accountId, 255, Int.MAX_VALUE, 1)
 
@@ -152,10 +142,10 @@ class AccountResponse : Response(), TransactionBuilderAccount {
     /**
      * Links connected to account.
      */
-    class Links internal constructor(@SerializedName("effects")
-                                     val effects: Link, @SerializedName("offers")
-                                     val offers: Link, @SerializedName("operations")
-                                     val operations: Link, @SerializedName("self")
-                                     val self: Link, @SerializedName("transactions")
-                                     val transactions: Link)
+    open class Links internal constructor(@SerializedName("effects")
+                                          val effects: Link, @SerializedName("offers")
+                                          val offers: Link, @SerializedName("operations")
+                                          val operations: Link, @SerializedName("self")
+                                          val self: Link, @SerializedName("transactions")
+                                          val transactions: Link)
 }

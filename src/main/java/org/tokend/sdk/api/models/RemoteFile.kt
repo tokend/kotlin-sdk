@@ -3,10 +3,7 @@ package org.tokend.sdk.api.models
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-/**
- * Created by Oleg Koretsky on 1/3/18.
- */
-data class RemoteFile(@SerializedName("name")
+open class RemoteFile(@SerializedName("name")
                       val name: String? = null,
                       @SerializedName("type")
                       val mimeType: String? = null,

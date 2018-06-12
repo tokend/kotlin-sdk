@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 /**
  * Created by Oleg Koretsky on 1/8/18.
  */
-data class Blob(
+open class Blob(
         @SerializedName("id") val id: String? = null,
         @SerializedName("type") val type: String? = null,
         @SerializedName("attributes") private val attributes: Attributes? = null) {

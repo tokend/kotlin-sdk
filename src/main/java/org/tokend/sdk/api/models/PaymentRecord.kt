@@ -8,7 +8,7 @@ import java.util.*
 /**
  * Created by Oleg Koretsky on 11/29/17.
  */
-class PaymentRecord {
+open class PaymentRecord {
     @SerializedName("_links")
     var links: Page.Links? = null
     @SerializedName("id")

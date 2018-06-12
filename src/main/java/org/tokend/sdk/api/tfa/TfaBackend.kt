@@ -2,7 +2,7 @@ package org.tokend.sdk.api.tfa
 
 import com.google.gson.annotations.SerializedName
 
-class TfaBackend {
+open class TfaBackend {
     enum class Type(val literal: String) {
         @SerializedName("totp")
         TOTP("totp"),
@@ -18,7 +18,7 @@ class TfaBackend {
         }
     }
 
-    class Attributes(@SerializedName("priority")
+    open class Attributes(@SerializedName("priority")
                      var priority: Int? = null,
                      @SerializedName("secret")
                      val secret: String? = null,

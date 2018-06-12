@@ -5,8 +5,7 @@ import org.tokend.sdk.factory.GsonFactory
 import org.tokend.sdk.utils.extentions.decodeBase64
 import org.tokend.sdk.utils.extentions.encodeBase64String
 
-//Todo: test me
-data class KeychainData(@SerializedName("IV")
+open class KeychainData(@SerializedName("IV")
                         private val rawIV: String,
                         @SerializedName("cipherText")
                         private val rawCipherText: String,

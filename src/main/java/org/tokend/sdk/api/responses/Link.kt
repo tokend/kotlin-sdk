@@ -8,7 +8,7 @@ import java.net.URISyntaxException
 /**
  * Represents links in responses.
  */
-class Link internal constructor(@field:SerializedName("href")
+open class Link internal constructor(@field:SerializedName("href")
                                 val href: String,
                                 @field:SerializedName("templated")
                                 val isTemplated: Boolean) {

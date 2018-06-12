@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import org.tokend.sdk.utils.BigDecimalUtil
 import java.math.BigDecimal
 
-data class BalanceDetails(
+open class BalanceDetails(
         @SerializedName("balance_id")
         val balanceId: String,
         @SerializedName("balance")

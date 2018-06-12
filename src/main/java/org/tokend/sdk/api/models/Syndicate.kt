@@ -3,10 +3,7 @@ package org.tokend.sdk.api.models
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
-/**
- * Created by Oleg Koretsky on 1/15/18.
- */
-data class Syndicate(
+open class Syndicate(
         @SerializedName("name") val name: String? = null,
         @SerializedName("homepage") val homepage: String? = null,
         @SerializedName("headquarters") val location: String? = null,

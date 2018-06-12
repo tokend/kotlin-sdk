@@ -7,10 +7,7 @@ import com.google.gson.JsonObject
 import org.tokend.sdk.factory.GsonFactory
 import java.lang.reflect.Type
 
-/**
- * Created by Oleg Koretsky on 1/15/18.
- */
-data class SocialLinks(val items: List<String>) {
+open class SocialLinks(val items: List<String>) {
     companion object {
         private const val ARRAY_KEY = "parsedArray"
     }
