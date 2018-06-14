@@ -13,6 +13,7 @@ open class Offer(
         @SerializedName("quote_amount") val quoteAmount: BigDecimal = BigDecimal.ZERO,
         @SerializedName("price") val price: BigDecimal = BigDecimal.ONE,
         @SerializedName("offer_id") val id: Long = 0,
+        @SerializedName("order_book_id") val orderBookId: Long = 0,
         @SerializedName("paging_token") val pagingToken: String = "",
         @SerializedName("created_at") val date: Date = Date(),
         @SerializedName("fee") var fee: BigDecimal? = null,
