@@ -7,38 +7,38 @@ import java.math.BigDecimal
 import java.util.*
 
 open class Sale(@SerializedName("id")
-           val id: Long? = null,
-           @SerializedName("paging_token")
-           val pagingToken: String? = null,
-           @SerializedName("owner_id")
-           val ownerAccount: String? = null,
-           @SerializedName("base_asset")
-           val baseAsset: String? = null,
-           @SerializedName("default_quote_asset")
-           val defaultQuoteAsset: String? = null,
-           @SerializedName("start_time")
-           private val startTimeString: String? = null,
-           @SerializedName("end_time")
-           private val endTimeString: String? = null,
-           @SerializedName("soft_cap")
-           val softCapString: String? = null,
-           @SerializedName("hard_cap")
-           val hardCapString: String? = null,
-           @SerializedName("current_cap")
-           val currentCapString: String? = null,
-           @SerializedName("base_hard_cap")
-           val baseHardCapString: String? = null,
-           @SerializedName("base_current_cap")
-           val baseCurrentCapString: String? = null,
-           @SerializedName("details")
-           val details: Details? = null,
-           @SerializedName("state")
-           private val mState: State? = null,
-           @SerializedName("sale_type")
-           private val mType: Type? = null,
-           @SerializedName("statistics")
-           val statistics: Statistics? = null,
-           var ownerDetails: AccountsDetailsResponse.AccountDetails? = null) {
+                val id: Long,
+                @SerializedName("paging_token")
+                val pagingToken: String,
+                @SerializedName("owner_id")
+                val ownerAccount: String,
+                @SerializedName("base_asset")
+                val baseAsset: String,
+                @SerializedName("default_quote_asset")
+                val defaultQuoteAsset: String,
+                @SerializedName("start_time")
+                private val startTimeString: String? = null,
+                @SerializedName("end_time")
+                private val endTimeString: String? = null,
+                @SerializedName("soft_cap")
+                val softCapString: String? = null,
+                @SerializedName("hard_cap")
+                val hardCapString: String? = null,
+                @SerializedName("current_cap")
+                val currentCapString: String? = null,
+                @SerializedName("base_hard_cap")
+                val baseHardCapString: String? = null,
+                @SerializedName("base_current_cap")
+                val baseCurrentCapString: String? = null,
+                @SerializedName("details")
+                val details: Details? = null,
+                @SerializedName("state")
+                private val mState: State? = null,
+                @SerializedName("sale_type")
+                private val mType: Type? = null,
+                @SerializedName("statistics")
+                val statistics: Statistics? = null,
+                var ownerDetails: AccountsDetailsResponse.AccountDetails? = null) {
 
     class Details(@SerializedName("name")
                   val name: String? = null,
@@ -84,7 +84,7 @@ open class Sale(@SerializedName("id")
                               val items: List<QuoteAsset>? = null)
 
     class QuoteAsset(@SerializedName("asset")
-                     val code: String? = null,
+                     val code: String,
                      @SerializedName("price")
                      private val priceString: String? = null,
                      @SerializedName("current_cap")
