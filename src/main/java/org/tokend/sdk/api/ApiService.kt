@@ -144,11 +144,10 @@ interface ApiService {
             Call<ServerResponse<Blob, ServerError>>
 
     @GET("/users/{accountId}/blobs")
-    fun getBlobs(@Path("accountId") accountId: String?,
-                 @Query("fund_id") fundId: Long?,
-                 @Query("token_code") asset: String?,
-                 @Query("fund_owner") fundOwner: String?,
-                 @Query("type") type: Int?):
+    @JvmSuppressWildcards
+    fun getBlobs(@Path("accountId") accountId: String,
+                 @Query("type") type: Int? = null,
+                 @QueryMap filters: Map<String, Any>? = null):
             Call<ServerResponse<List<Blob>, ServerError>>
 
     @GET("/accounts/{accountId}/balances/details")
