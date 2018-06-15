@@ -1,28 +1,23 @@
 package org.tokend.sdk.api.models
 
 import com.google.gson.annotations.SerializedName
+import org.tokend.sdk.factory.GsonFactory
+import java.lang.reflect.Type
 
-/**
- * Created by Oleg Koretsky on 1/8/18.
- */
 open class Blob(
-        @SerializedName("id") val id: String? = null,
-        @SerializedName("type") val type: String? = null,
-        @SerializedName("attributes") private val attributes: Attributes? = null) {
+        @SerializedName("id") val id: String,
+        @SerializedName("type") val type: String,
+        @SerializedName("attributes") private val attributes: Attributes) {
+    class Attributes(@SerializedName("value") val value: String)
 
-    companion object {
-        const val TYPE_ASSET_DESCRIPTION = 1
-        const val TYPE_FUND_OVERVIEW = 2
-        const val TYPE_FUND_UPDATE = 4
-        const val TYPE_NAV_UPDATE = 8
-        const val TYPE_FUND_DOCUMENT = 16
-        const val TYPE_SYNDICATE_KYC = 32
-        const val TYPE_TOKEN_TERMS = 512
-        const val TYPE_TOKEN_METRICS = 1024
+    val valueString: String
+        get() = attributes.value
+
+    fun <T> getValue(typeClass: Class<T>): T {
+        return GsonFactory().getBaseGson().fromJson(valueString, typeClass)
     }
 
-    class Attributes(@SerializedName("value") val value: String? = null)
-
-    val valueString: String?
-        get() = attributes?.value
+    fun <T> getValue(type: Type): T {
+        return GsonFactory().getBaseGson().fromJson(valueString, type)
+    }
 }
