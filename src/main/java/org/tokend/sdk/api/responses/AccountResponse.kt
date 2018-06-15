@@ -1,29 +1,68 @@
 package org.tokend.sdk.api.responses
 
 import com.google.gson.annotations.SerializedName
+import java.math.BigDecimal
 import java.util.*
-import kotlin.collections.HashMap
 
 
-open class AccountResponse : Response() {
+open class AccountResponse(
+        @SerializedName("account_id")
+        val accountId: String,
+        @SerializedName("paging_token")
+        val pagingToken: String,
+        @SerializedName("subentry_count")
+        val subentryCount: Int,
+        @SerializedName("is_blocked")
+        val isBlocked: Boolean,
+        @SerializedName("account_type_i")
+        val typeI: Int,
+        @SerializedName("block_reasons_i")
+        val block_reasons: Int,
+        @SerializedName("account_type")
+        private val typeString: String,
+        @SerializedName("thresholds")
+        val thresholds: Thresholds,
+        @SerializedName("balances")
+        val balances: MutableList<Balance>,
+        @SerializedName("signers")
+        val signers: List<Signer>,
+        @SerializedName("limits")
+        val limits: Limits,
+        @SerializedName("statistics")
+        val statistics: Statistics,
+        @SerializedName("external_system_accounts")
+        val externalAccounts: List<ExternalAccount>,
+        @SerializedName("referrals")
+        val referrals: List<Referral>,
+        @SerializedName("referrer")
+        val referrer: String
+) : Response() {
     companion object {
-        val BLOCK_REASON_RECOVERY_REQUEST = 1
-        val BLOCK_REASON_KYC_UPDATE = 2
-        val BLOCK_REASON_SUSPICIOUS_BEHAVIOR = 4
+        const val BLOCK_REASON_RECOVERY_REQUEST = 1
+        const val BLOCK_REASON_KYC_UPDATE = 2
+        const val BLOCK_REASON_SUSPICIOUS_BEHAVIOR = 4
     }
 
-    enum class LimitType(val key: String) {
-        DAILY_OUT("daily_out"),
-        WEEKLY_OUT("weekly_out"),
-        MONTHLY_OUT("monthly_out"),
-        ANNUAL_OUT("annual_out")
+    open class Limits {
+        @SerializedName("annual_out")
+        val annualOut: BigDecimal = BigDecimal.ZERO
+        @SerializedName("daily_out")
+        val dailyOut: BigDecimal = BigDecimal.ZERO
+        @SerializedName("monthly_out")
+        val mounthlyOut: BigDecimal = BigDecimal.ZERO
+        @SerializedName("weekly_out")
+        val weeklyOut: BigDecimal = BigDecimal.ZERO
     }
 
-    enum class StatisticType(val key: String) {
-        DAILY_OUTCOME("daily_outcome"),
-        WEEKLY_OUTCOME("weekly_outcome"),
-        MONTHLY_OUTCOME("monthly_outcome"),
-        ANNUAL_OUTCOME("annual_outcome")
+    open class Statistics {
+        @SerializedName("daily_outcome")
+        val dailyOut: BigDecimal = BigDecimal.ZERO
+        @SerializedName("weekly_outcome")
+        val weeklyOut: BigDecimal = BigDecimal.ZERO
+        @SerializedName("monthly_outcome")
+        val mounthlyOut: BigDecimal = BigDecimal.ZERO
+        @SerializedName("annual_outcome")
+        val annualOut: BigDecimal = BigDecimal.ZERO
     }
 
     open class ExternalAccount(@SerializedName("data")
@@ -45,46 +84,6 @@ open class AccountResponse : Response() {
                         @SerializedName("account_type_i")
                         val typeI: Int? = null)
 
-    @SerializedName("account_id")
-    private val accountId: String? = null
-    @SerializedName("id")
-    private val id: String? = null
-    @SerializedName("sequence")
-    private var sequenceNumber: Long? = Date().time / 1000
-    @SerializedName("paging_token")
-    val pagingToken: String? = null
-    @SerializedName("subentry_count")
-    val subentryCount: Int? = null
-    @SerializedName("is_blocked")
-    val isBlocked: Boolean = false
-    @SerializedName("account_type_i")
-    private val accountTypeI: Int = 0
-    @SerializedName("block_reasons_i")
-    val block_reasons: Int = 0
-    @SerializedName("account_type")
-    private val accountType: String? = null
-    @SerializedName("incentive_per_coin_expires_at")
-    val buyNowExpiresAt: Long? = null
-    @SerializedName("thresholds")
-    val thresholds: Thresholds? = null
-    @SerializedName("flags")
-    val flags: Flags? = null
-    @SerializedName("balances")
-    var balances: MutableList<Balance>? = null
-        private set
-    @SerializedName("signers")
-    val signers: List<Signer>? = null
-    @SerializedName("_links")
-    val links: Links? = null
-    @SerializedName("limits")
-    private var limits: HashMap<String, String> = HashMap()
-    @SerializedName("statistics")
-    private var statistics: HashMap<String, String> = HashMap()
-    @SerializedName("external_system_accounts")
-    val externalAccounts: List<ExternalAccount> = listOf()
-    @SerializedName("referrals")
-    val referrals: List<Referral> = listOf()
-
     /**
      * Represents account thresholds.
      */
@@ -94,14 +93,6 @@ open class AccountResponse : Response() {
                                                val medThreshold: Int,
                                                @SerializedName("high_threshold")
                                                val highThreshold: Int)
-
-    /**
-     * Represents account flags.
-     */
-    open class Flags internal constructor(@SerializedName("auth_required")
-                                          val authRequired: Boolean,
-                                          @SerializedName("auth_revocable")
-                                          val authRevocable: Boolean)
 
     /**
      * Represents account balance.
@@ -138,14 +129,4 @@ open class AccountResponse : Response() {
         @SerializedName("signer_identity")
         val identity: Int = checkNotNull(identity, { "weight cannot be null" })
     }
-
-    /**
-     * Links connected to account.
-     */
-    open class Links internal constructor(@SerializedName("effects")
-                                          val effects: Link, @SerializedName("offers")
-                                          val offers: Link, @SerializedName("operations")
-                                          val operations: Link, @SerializedName("self")
-                                          val self: Link, @SerializedName("transactions")
-                                          val transactions: Link)
 }
