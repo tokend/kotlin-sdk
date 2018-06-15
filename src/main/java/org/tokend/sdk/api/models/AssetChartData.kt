@@ -5,12 +5,10 @@ import org.tokend.sdk.utils.ApiDateUtil
 import java.math.BigDecimal
 import java.util.*
 
-/**
- * Created by Oleg Koretsky on 1/8/18.
- */
 open class AssetChartData(
-        @SerializedName("day") val day: List<ChartPoint>? = null,
         @SerializedName("hour") val hour: List<ChartPoint>? = null,
+        @SerializedName("day") val day: List<ChartPoint>? = null,
+        @SerializedName("week") val week: List<ChartPoint>? = null,
         @SerializedName("month") val month: List<ChartPoint>? = null,
         @SerializedName("year") val year: List<ChartPoint>? = null) {
 
