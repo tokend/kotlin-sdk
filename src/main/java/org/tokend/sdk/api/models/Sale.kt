@@ -3,6 +3,7 @@ package org.tokend.sdk.api.models
 import com.google.gson.annotations.SerializedName
 import org.tokend.sdk.utils.ApiDateUtil
 import org.tokend.sdk.utils.BigDecimalUtil
+import java.io.Serializable
 import java.math.BigDecimal
 import java.util.*
 
@@ -31,41 +32,42 @@ open class Sale(@SerializedName("id")
                 @SerializedName("base_current_cap")
                 val baseCurrentCapString: String? = null,
                 @SerializedName("details")
-                val details: Details? = null,
+                open val details: Details? = null,
                 @SerializedName("state")
-                private val mState: State? = null,
+                protected open val mState: State? = null,
                 @SerializedName("sale_type")
-                private val mType: Type? = null,
+                protected open val mType: Type? = null,
                 @SerializedName("statistics")
-                val statistics: Statistics? = null,
-                var ownerDetails: AccountsDetailsResponse.AccountDetails? = null) {
+                open val statistics: Statistics? = null,
+                open var ownerDetails: AccountsDetailsResponse.AccountDetails? = null
+) : Serializable {
 
-    class Details(@SerializedName("name")
-                  val name: String? = null,
-                  @SerializedName("short_description")
-                  val shortDescription: String? = null,
-                  @SerializedName("description")
-                  val description: String? = null,
-                  @SerializedName("logo")
-                  val logo: RemoteFile? = null,
-                  @SerializedName("youtube_video_id")
-                  val youtubeVideoId: String? = null) {
+    open class Details(@SerializedName("name")
+                       val name: String? = null,
+                       @SerializedName("short_description")
+                       val shortDescription: String? = null,
+                       @SerializedName("description")
+                       val description: String? = null,
+                       @SerializedName("logo")
+                       open val logo: RemoteFile? = null,
+                       @SerializedName("youtube_video_id")
+                       val youtubeVideoId: String? = null) : Serializable {
 
-        val youtubeVideoPreviewImage: String?
+        open val youtubeVideoPreviewImage: String?
             get() =
                 if (youtubeVideoId != null)
                     "https://img.youtube.com/vi/$youtubeVideoId/hqdefault.jpg"
                 else null
 
-        val youtubeVideoUrl: String?
+        open val youtubeVideoUrl: String?
             get() =
                 if (youtubeVideoId != null)
                     "http://m.youtube.com/watch?v=$youtubeVideoId"
                 else null
     }
 
-    class State(@SerializedName("value")
-                val value: Int? = null) {
+    open class State(@SerializedName("value")
+                     val value: Int? = null) : Serializable {
 
         companion object {
             val OPEN = 1
@@ -74,76 +76,76 @@ open class Sale(@SerializedName("id")
         }
     }
 
-    class Type(@SerializedName("value")
-               val value: Int? = null)
+    open class Type(@SerializedName("value")
+                    val value: Int? = null) : Serializable
 
-    class Statistics(@SerializedName("investors")
-                     val investors: Int? = null)
+    open class Statistics(@SerializedName("investors")
+                          val investors: Int? = null) : Serializable
 
-    private class QuoteAssets(@SerializedName("quote_assets")
-                              val items: List<QuoteAsset>? = null)
+    protected open class QuoteAssets(@SerializedName("quote_assets")
+                                     open val items: List<QuoteAsset>? = null) : Serializable
 
-    class QuoteAsset(@SerializedName("asset")
-                     val code: String,
-                     @SerializedName("price")
-                     private val priceString: String? = null,
-                     @SerializedName("current_cap")
-                     private val currentCapString: String? = null,
-                     @SerializedName("total_current_cap")
-                     private val totalCurrentCapString: String? = null,
-                     @SerializedName("hard_cap")
-                     private val hardCapString: String? = null) {
+    open class QuoteAsset(@SerializedName("asset")
+                          val code: String,
+                          @SerializedName("price")
+                          private val priceString: String? = null,
+                          @SerializedName("current_cap")
+                          private val currentCapString: String? = null,
+                          @SerializedName("total_current_cap")
+                          private val totalCurrentCapString: String? = null,
+                          @SerializedName("hard_cap")
+                          private val hardCapString: String? = null) {
 
-        val price: BigDecimal
+        open val price: BigDecimal
             get() = BigDecimalUtil.valueOf(priceString)
-        val currentCap: BigDecimal
+        open val currentCap: BigDecimal
             get() = BigDecimalUtil.valueOf(currentCapString)
-        val totalCurrentCap: BigDecimal
+        open val totalCurrentCap: BigDecimal
             get() = BigDecimalUtil.valueOf(totalCurrentCapString)
-        val hardCap: BigDecimal
+        open val hardCap: BigDecimal
             get() = BigDecimalUtil.valueOf(hardCapString)
     }
 
     @SerializedName("quote_assets")
-    private val mQuoteAssets: QuoteAssets? = null
+    protected open val mQuoteAssets: QuoteAssets? = null
 
-    val startDate: Date
+    open val startDate: Date
         get() = ApiDateUtil.tryParseDate(this.startTimeString)
-    val endDate: Date
+    open val endDate: Date
         get() = ApiDateUtil.tryParseDate(this.endTimeString)
 
-    val isAvailable: Boolean
+    open val isAvailable: Boolean
         get() = !isUpcoming && !isEnded
 
-    val isUpcoming: Boolean
+    open val isUpcoming: Boolean
         get() = startDate.after(Date())
 
-    val isEnded: Boolean
+    open val isEnded: Boolean
         get() = isClosed || isCanceled
 
-    val isClosed: Boolean
+    open val isClosed: Boolean
         get() = state == State.CLOSED
 
-    val isCanceled: Boolean
+    open val isCanceled: Boolean
         get() = state == State.CANCELED
 
-    val state: Int?
+    open val state: Int?
         get() = mState?.value
 
-    val type: Int?
+    open val type: Int?
         get() = mType?.value
 
-    val quoteAssets: List<QuoteAsset>?
+    open val quoteAssets: List<QuoteAsset>?
         get() = mQuoteAssets?.items
 
-    val hardCap: BigDecimal
+    open val hardCap: BigDecimal
         get() = BigDecimalUtil.valueOf(hardCapString)
-    val softCap: BigDecimal
+    open val softCap: BigDecimal
         get() = BigDecimalUtil.valueOf(softCapString)
-    val currentCap: BigDecimal
+    open val currentCap: BigDecimal
         get() = BigDecimalUtil.valueOf(currentCapString)
-    val baseHardCap: BigDecimal
+    open val baseHardCap: BigDecimal
         get() = BigDecimalUtil.valueOf(baseHardCapString)
-    val baseCurrentCap: BigDecimal
+    open val baseCurrentCap: BigDecimal
         get() = BigDecimalUtil.valueOf(baseCurrentCapString)
 }
