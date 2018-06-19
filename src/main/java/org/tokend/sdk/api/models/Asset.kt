@@ -12,17 +12,15 @@ open class Asset(
         @SerializedName("issued") val issued: BigDecimal,
         @SerializedName("available_for_issuance") val available: BigDecimal,
         @SerializedName("max_issuance_amount") val maximum: BigDecimal,
-        @Transient
-        @SerializedName("sales")
-        val sales: List<Sale>? = null) : Serializable {
+        @SerializedName("sales") open val sales: List<Sale>? = null) : Serializable {
 
     open class Details(
             @SerializedName("name") val name: String,
-            @SerializedName("logo") val logo: RemoteFile,
-            @SerializedName("terms") val terms: RemoteFile,
+            @SerializedName("logo") open val logo: RemoteFile,
+            @SerializedName("terms") open val terms: RemoteFile,
             @SerializedName("external_system_type") val externalSystemType: Int?
     ) : Serializable
 
-    val isBackedByExternalSystem: Boolean
+    open val isBackedByExternalSystem: Boolean
         get() = details?.externalSystemType != null
 }
