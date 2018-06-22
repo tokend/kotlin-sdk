@@ -1,6 +1,7 @@
 package org.tokend.sdk.api.models
 
 import com.google.gson.annotations.SerializedName
+import org.tokend.sdk.utils.HashCodes
 import java.io.Serializable
 import java.math.BigDecimal
 import java.util.*
@@ -19,4 +20,14 @@ open class Offer(
         @SerializedName("fee") var fee: BigDecimal? = null,
         @SerializedName("base_balance_id") var baseBalance: String? = null,
         @SerializedName("quote_balance_id") var quoteBalance: String? = null
-) : Serializable
+) : Serializable {
+    override fun equals(other: Any?): Boolean {
+        return other is Offer
+                && other.id == this.id
+                && other.orderBookId == this.orderBookId
+    }
+
+    override fun hashCode(): Int {
+        return HashCodes.ofMany(id, orderBookId)
+    }
+}

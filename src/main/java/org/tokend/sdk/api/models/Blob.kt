@@ -20,4 +20,12 @@ open class Blob(
     fun <T> getValue(type: Type): T {
         return GsonFactory().getBaseGson().fromJson(valueString, type)
     }
+
+    override fun equals(other: Any?): Boolean {
+        return other is Blob && other.id == this.id
+    }
+
+    override fun hashCode(): Int {
+        return id.hashCode()
+    }
 }

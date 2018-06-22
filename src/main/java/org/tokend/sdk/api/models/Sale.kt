@@ -3,6 +3,7 @@ package org.tokend.sdk.api.models
 import com.google.gson.annotations.SerializedName
 import org.tokend.sdk.utils.ApiDateUtil
 import org.tokend.sdk.utils.BigDecimalUtil
+import org.tokend.sdk.utils.HashCodes
 import java.io.Serializable
 import java.math.BigDecimal
 import java.util.*
@@ -64,6 +65,17 @@ open class Sale(@SerializedName("id")
                 if (youtubeVideoId != null)
                     "http://m.youtube.com/watch?v=$youtubeVideoId"
                 else null
+
+        override fun equals(other: Any?): Boolean {
+            return other is Details
+                    && other.name == this.name
+                    && other.description == other.description
+                    && other.shortDescription == other.shortDescription
+        }
+
+        override fun hashCode(): Int {
+            return HashCodes.ofMany(name, description, shortDescription)
+        }
     }
 
     open class State(@SerializedName("value")
@@ -80,7 +92,16 @@ open class Sale(@SerializedName("id")
                     val value: Int? = null) : Serializable
 
     open class Statistics(@SerializedName("investors")
-                          val investors: Int? = null) : Serializable
+                          val investors: Int? = null) : Serializable {
+        override fun equals(other: Any?): Boolean {
+            return other is Statistics
+                    && other.investors == this.investors
+        }
+
+        override fun hashCode(): Int {
+            return HashCodes.ofMany(investors)
+        }
+    }
 
     protected open class QuoteAssets(@SerializedName("quote_assets")
                                      open val items: List<QuoteAsset>? = null) : Serializable
@@ -148,4 +169,17 @@ open class Sale(@SerializedName("id")
         get() = BigDecimalUtil.valueOf(baseHardCapString)
     open val baseCurrentCap: BigDecimal
         get() = BigDecimalUtil.valueOf(baseCurrentCapString)
+
+    override fun equals(other: Any?): Boolean {
+        return other is Sale
+                && other.id == this.id
+                && other.currentCap == other.currentCap
+                && other.state == this.state
+                && other.statistics == this.statistics
+                && other.details == this.details
+    }
+
+    override fun hashCode(): Int {
+        return HashCodes.ofMany(id, currentCap, state, statistics, details)
+    }
 }

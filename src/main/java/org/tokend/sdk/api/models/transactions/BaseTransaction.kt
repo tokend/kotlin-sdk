@@ -2,6 +2,7 @@ package org.tokend.sdk.api.models.transactions
 
 import org.tokend.sdk.api.models.PaymentRecord
 import org.tokend.sdk.utils.BigDecimalUtil
+import org.tokend.sdk.utils.HashCodes
 import java.math.BigDecimal
 import java.util.*
 
@@ -30,5 +31,16 @@ open class BaseTransaction(
                     isReceived = contextAccountId != record.sourceAccount
             )
         }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return other is Transaction
+                && other.id == this.id
+                && other.pagingToken == this.pagingToken
+                && other.state == this.state
+    }
+
+    override fun hashCode(): Int {
+        return HashCodes.ofMany(id, pagingToken, state)
     }
 }
