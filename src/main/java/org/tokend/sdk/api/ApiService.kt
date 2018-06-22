@@ -165,4 +165,16 @@ interface ApiService {
                      @Query("quote_asset") quoteAsset: String,
                      @Query("cursor") cursor: String,
                      @Query("limit") limit: Int): Call<Page<Offer>>
+
+    @POST("/users/{accountId}/favorites")
+    fun addToFavorites(@Path("accountId") accountId: String,
+                       @Body entry: FavoriteEntry): Call<Void>
+
+    @DELETE("/users/{accountId}/favorites/{entryId}")
+    fun removeFromFavorites(@Path("accountId") accountId: String,
+                            @Path("entryId") id: Long): Call<Void>
+
+    @GET("/users/{accountId}/favorites")
+    fun getFavorites(@Path("accountId") accountId: String):
+            Call<ServerResponse<List<FavoriteEntry>, ServerError>>
 }
