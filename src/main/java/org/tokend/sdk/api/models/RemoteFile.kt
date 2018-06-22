@@ -3,22 +3,41 @@ package org.tokend.sdk.api.models
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-open class RemoteFile(@SerializedName("name")
+open class RemoteFile(@SerializedName("key")
+                      val key: String,
+                      @SerializedName("name")
                       val name: String? = null,
-                      @SerializedName("type")
-                      val mimeType: String? = null,
-                      @SerializedName("url")
-                      private val mUrl: String? = null,
-                      @SerializedName("key")
-                      val key: String? = null) : Serializable {
+                      mimeType: String? = null
+) : Serializable {
+    // Legacy.
+    @SerializedName("url")
+    protected val mUrl: String? = null
 
-    fun getUrl(storageRoot: String?): String? {
-        return if (storageRoot != null && key != null)
+    // Legacy.
+    @SerializedName("type")
+    protected val mType: String? = null
+
+    @SerializedName("mime_type")
+    protected val mMimeType: String? = mimeType
+
+    open fun getUrl(storageRoot: String?): String? {
+        return if (storageRoot != null && key.isNotEmpty())
             storageRoot + key
         else
             mUrl
     }
 
-    val isImage: Boolean
+    open val mimeType: String?
+        get() = mMimeType?.takeIf { it.isNotEmpty() } ?: mType
+
+    open val isImage: Boolean
         get() = mimeType?.contains("image/") ?: false
+
+    override fun equals(other: Any?): Boolean {
+        return other is RemoteFile && other.key == this.key
+    }
+
+    override fun hashCode(): Int {
+        return key.hashCode()
+    }
 }
