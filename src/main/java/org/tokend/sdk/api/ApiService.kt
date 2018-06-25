@@ -130,6 +130,7 @@ interface ApiService {
                   @Query("limit") limit: Int,
                   @Query("order") order: String,
                   @Query("cursor") cursor: String,
+                  @Query("only_primary") onlyPrimary: Boolean,
                   @Query("order_book_id") orderBookId: Long?,
                   @Query("quote_asset") quoteAsset: String?,
                   @Query("base_asset") baseAsset: String?):
