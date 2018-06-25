@@ -18,18 +18,42 @@ open class PaymentTransaction(
 
     companion object {
         fun fromPaymentRecord(record: PaymentRecord, contextAccountId: String): PaymentTransaction {
+            val baseTransaction = BaseTransaction.fromPaymentRecord(record, contextAccountId)
+
+            val senderFee =
+                    if (record.sourceFeeData != null)
+                        ComplexFee(
+                                fixed = record.sourceFeeData.fixedFee,
+                                percent = record.sourceFeeData.paymentFee,
+                                asset = record.sourceFeeData.asset
+                        )
+                    else
+                        ComplexFee(
+                                fixed = BigDecimalUtil.valueOf(record.sourceFixedFee),
+                                percent = BigDecimalUtil.valueOf(record.sourcePaymentFee),
+                                asset = baseTransaction.asset
+                        )
+
+            val recipientFee =
+                    if (record.destFeeData != null)
+                        ComplexFee(
+                                fixed = record.destFeeData.fixedFee,
+                                percent = record.destFeeData.paymentFee,
+                                asset = record.destFeeData.asset
+                        )
+                    else
+                        ComplexFee(
+                                fixed = BigDecimalUtil.valueOf(record.destFixedFee),
+                                percent = BigDecimalUtil.valueOf(record.destPaymentFee),
+                                asset = baseTransaction.asset
+                        )
+
             return PaymentTransaction(
-                    base = BaseTransaction.fromPaymentRecord(record, contextAccountId),
+                    base = baseTransaction,
                     sourceAccount = record.sourceAccount ?: record.from ?: "",
                     destAccount = record.to ?: "",
-                    senderFee = ComplexFee(
-                            fixed = BigDecimalUtil.valueOf(record.sourceFixedFee),
-                            percent = BigDecimalUtil.valueOf(record.sourcePaymentFee)
-                    ),
-                    recipientFee = ComplexFee(
-                            fixed = BigDecimalUtil.valueOf(record.destFixedFee),
-                            percent = BigDecimalUtil.valueOf(record.destPaymentFee)
-                    ),
+                    senderFee = senderFee,
+                    recipientFee = recipientFee,
                     feePaidBySender = record.isFeeFromSource,
                     subject = record.subject
             )

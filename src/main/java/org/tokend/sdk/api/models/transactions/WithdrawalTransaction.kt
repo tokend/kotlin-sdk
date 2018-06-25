@@ -20,15 +20,28 @@ open class WithdrawalTransaction(
             val externalDetails = record.externalDetails as? JsonObject
             val destinationAddress = externalDetails?.get("address")?.asString
 
+            val baseTransaction = BaseTransaction.fromPaymentRecord(record, contextAccountId)
+
+            val fee =
+                    if (record.sourceFeeData != null)
+                        ComplexFee(
+                                fixed = record.sourceFeeData.fixedFee,
+                                percent = record.sourceFeeData.paymentFee,
+                                asset = record.sourceFeeData.asset
+                        )
+                    else
+                        ComplexFee(
+                                fixed = BigDecimalUtil.valueOf(record.sourceFixedFee),
+                                percent = BigDecimalUtil.valueOf(record.sourcePaymentFee),
+                                asset = baseTransaction.asset
+                        )
+
             return WithdrawalTransaction(
-                    base = BaseTransaction.fromPaymentRecord(record, contextAccountId),
+                    base = baseTransaction,
                     asset = record.destAsset ?: "",
                     destAddress = destinationAddress,
                     destAmount = BigDecimalUtil.valueOf(record.destAmount),
-                    fee = ComplexFee(
-                            fixed = BigDecimalUtil.valueOf(record.sourceFixedFee),
-                            percent = BigDecimalUtil.valueOf(record.sourcePaymentFee)
-                    )
+                    fee = fee
             )
         }
     }

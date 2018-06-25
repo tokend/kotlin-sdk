@@ -3,6 +3,7 @@ package org.tokend.sdk.api.models
 import com.google.gson.JsonElement
 import com.google.gson.annotations.SerializedName
 import org.tokend.sdk.api.responses.Page
+import java.math.BigDecimal
 import java.util.*
 
 /**
@@ -71,4 +72,17 @@ open class PaymentRecord {
     val destAsset: String? = null
     @SerializedName("dest_amount")
     val destAmount: String? = null
+    @SerializedName("source_fee_data")
+    val sourceFeeData: FeeData? = null
+    @SerializedName("destination_fee_data")
+    val destFeeData: FeeData? = null
+
+    class FeeData(
+            @SerializedName("actual_payment_fee")
+            val paymentFee: BigDecimal,
+            @SerializedName("fixed_fee")
+            val fixedFee: BigDecimal,
+            @SerializedName("actual_payment_fee_asset_code")
+            val asset: String
+    )
 }

@@ -77,7 +77,8 @@ interface ApiService {
     fun getFee(@Path("feeType") feeType: Int,
                @Query("account") accountId: String,
                @Query("asset") asset: String,
-               @Query("amount") amount: String?): Call<Fee>
+               @Query("amount") amount: String?,
+               @Query("subtype") subtype: Int): Call<Fee>
 
     @GET("/user_id")
     fun getAccountIdByEmail(@Query("email") email: String): Call<AccountIdResponse>

@@ -7,7 +7,8 @@ import java.math.BigDecimal
 
 open class Fee(
         @SerializedName("fee_type") val feeType: Int,
-        @SerializedName("asset") val asset: String,
+        @SerializedName("asset") val requestAsset: String,
+        @SerializedName("fee_asset") val asset: String,
         @SerializedName("fixed") private val fixedString: String,
         @SerializedName("percent") private val percentString: String,
         @SerializedName("lower_bound") private val lowBoundString: String) : Serializable {
