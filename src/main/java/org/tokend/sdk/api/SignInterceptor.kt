@@ -7,16 +7,19 @@ import org.tokend.sdk.api.requests.RequestSigner
 import org.tokend.sdk.utils.extentions.hash
 import java.util.*
 
-open class SignInterceptor(private val requestSigner: RequestSigner,
-                      private val signatureValidSeconds: Int) : Interceptor {
+internal open class SignInterceptor(
+        private val requestSigner: RequestSigner,
+        private val timeCorrectionProvider: TimeCorrectionProvider,
+        private val signatureValidSeconds: Int
+) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val newRequest = buildSignedRequest(chain)
         return chain.proceed(newRequest)
     }
 
     protected open fun buildSignedRequest(chain: Interceptor.Chain): Request {
-        val validUntil = java.lang.Double.valueOf(Math.floor((Date().time / 1000 +
-                signatureValidSeconds).toDouble()))!!.toInt().toString()
+        val time = Date().time / 1000 + timeCorrectionProvider.getTimeCorrection()
+        val validUntil = time + signatureValidSeconds
         val url = chain.request().url().url()
         val fullUrlPath = if (!url.query.isNullOrEmpty()) {
             "${url.path}?${url.query}"
@@ -29,7 +32,7 @@ open class SignInterceptor(private val requestSigner: RequestSigner,
 
         return chain.request().newBuilder()
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
-                .addHeader("X-AuthValidUnTillTimestamp", validUntil)
+                .addHeader("X-AuthValidUnTillTimestamp", validUntil.toString())
                 .addHeader("X-AuthPublicKey", requestSigner.accountId)
                 .addHeader("X-AuthSignature", signedDataBase64)
                 .build()

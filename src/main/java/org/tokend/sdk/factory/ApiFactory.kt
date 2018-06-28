@@ -3,6 +3,7 @@ package org.tokend.sdk.factory
 import okhttp3.OkHttpClient
 import org.tokend.sdk.api.ApiService
 import org.tokend.sdk.api.SignInterceptor
+import org.tokend.sdk.api.TimeCorrectionProvider
 import org.tokend.sdk.api.requests.CookieJarProvider
 import org.tokend.sdk.api.requests.RequestSigner
 import org.tokend.sdk.api.tfa.TfaCallback
@@ -11,6 +12,7 @@ import org.tokend.sdk.api.tfa.TfaVerificationService
 import org.tokend.sdk.keyserver.KeyServerApi
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import java.util.*
 
 class ApiFactory(private val url: String) {
     @JvmOverloads
@@ -46,7 +48,13 @@ class ApiFactory(private val url: String) {
                         )
                         .apply {
                             if (requestSigner != null) {
-                                addInterceptor(SignInterceptor(requestSigner, SIGNATURE_VALID_SEC))
+                                addInterceptor(
+                                        SignInterceptor(
+                                                requestSigner,
+                                                getTimeCorrectionProvider(),
+                                                SIGNATURE_VALID_SEC
+                                        )
+                                )
                             }
                         }
                         .build()
@@ -71,7 +79,32 @@ class ApiFactory(private val url: String) {
                 .client(httpClient)
     }
 
+    private fun getTimeCorrectionProvider(): TimeCorrectionProvider {
+        return object : TimeCorrectionProvider {
+            override fun getTimeCorrection(): Long {
+                return timeCorrections.getOrPut(url) {
+                    return@getOrPut try {
+                        val currentTime = Date().time / 1000
+                        val serverTime = getApiService()
+                                .getSystemInfo()
+                                .execute()
+                                .body()
+                                .currentTime
+
+                        serverTime - currentTime
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        0L
+                    }
+                }
+            }
+        }
+    }
+
     companion object {
+        // Time corrections by URL.
+        private var timeCorrections = mutableMapOf<String, Long>()
+
         const val SIGNATURE_VALID_SEC = 60
     }
 }
