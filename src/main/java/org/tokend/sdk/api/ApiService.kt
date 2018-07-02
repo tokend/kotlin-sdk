@@ -179,4 +179,8 @@ interface ApiService {
     @GET("/users/{accountId}/favorites")
     fun getFavorites(@Path("accountId") accountId: String):
             Call<ServerResponse<List<FavoriteEntry>, ServerError>>
+
+    @GET("/sale_antes")
+    fun getSaleAntes(@Query("participant_balance_id") balanceId: String,
+                     @Query("sale_id") saleId: Long): Call<Page<SaleAnte>>
 }
