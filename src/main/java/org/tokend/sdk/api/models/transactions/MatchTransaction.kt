@@ -82,7 +82,7 @@ open class MatchTransaction(
                             quoteAsset = offer.quoteAsset,
                             price = offer.price,
                             isBuy = offer.isBuy,
-                            orderId = offer.id.toString()
+                            orderId = offer.id
                     ),
                     feeAsset = offer.quoteAsset
             )
