@@ -1,6 +1,7 @@
 package org.tokend.sdk.api
 
 import org.tokend.sdk.api.models.*
+import org.tokend.sdk.api.models.sale.SimpleSale
 import org.tokend.sdk.api.requests.AttributesEntity
 import org.tokend.sdk.api.requests.DataEntity
 import org.tokend.sdk.api.requests.models.*
@@ -110,16 +111,16 @@ interface ApiService {
                  @Query("cursor") cursor: String,
                  @Query("base_asset") baseAsset: String? = null,
                  @Query("name") name: String? = null,
-                 @Query("open_only") openOnly: Boolean = true): Call<Page<Sale>>
+                 @Query("open_only") openOnly: Boolean = true): Call<Page<SimpleSale>>
 
     @GET("/sales/{saleId}")
-    fun getSale(@Path("saleId") id: Long): Call<Sale>
+    fun getSale(@Path("saleId") id: Long): Call<SimpleSale>
 
     @GET("/assets")
-    fun getAssetsDetails(): Call<List<Asset>>
+    fun getAssetsDetails(): Call<List<SimpleAsset>>
 
     @GET("/assets/{asset}")
-    fun getAssetDetails(@Path("asset") asset: String): Call<Asset>
+    fun getAssetDetails(@Path("asset") asset: String): Call<SimpleAsset>
 
     @POST("/details")
     fun getAccountsDetails(@Body body: AccountsDetailsRequestBody)

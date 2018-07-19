@@ -1,6 +1,7 @@
 package org.tokend.sdk.api.models
 
 import com.google.gson.annotations.SerializedName
+import org.tokend.sdk.api.models.sale.SimpleSale
 import org.tokend.sdk.utils.BigDecimalUtil
 import org.tokend.sdk.utils.HashCodes
 import java.math.BigDecimal
@@ -19,7 +20,7 @@ open class BalanceDetails(
         @SerializedName("converted_to_asset")
         val conversionAsset: String,
         @SerializedName("asset_details")
-        val assetDetails: Asset? = null,
+        val assetDetails: SimpleAsset? = null,
         @SerializedName("offers")
         var offers: List<Offer>? = null) {
 

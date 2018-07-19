@@ -1,6 +1,7 @@
 package org.tokend.sdk.api.responses
 
 import com.google.gson.annotations.SerializedName
+import org.tokend.sdk.api.models.NameValue
 import java.math.BigDecimal
 import java.util.*
 
@@ -68,16 +69,9 @@ open class AccountResponse(
     open class ExternalAccount(@SerializedName("data")
                                val data: String,
                                @SerializedName("type")
-                               val type: Type,
+                               val type: NameValue<Int>,
                                @SerializedName("expires_at")
-                               val expirationDate: Date?) {
-        class Type(
-                @SerializedName("name")
-                val name: String,
-                @SerializedName("value")
-                val typeI: Int
-        )
-    }
+                               val expirationDate: Date?)
 
     open class Referral(@SerializedName("account_id")
                         val accountId: String? = null,

@@ -5,7 +5,7 @@ import org.tokend.sdk.utils.HashCodes
 import java.io.Serializable
 import java.math.BigDecimal
 
-open class Asset(
+open class Asset<SaleType>(
         @SerializedName("code") val code: String,
         @SerializedName("owner") val ownerAccount: String,
         @SerializedName("policy") val policy: Int,
@@ -13,7 +13,7 @@ open class Asset(
         @SerializedName("issued") val issued: BigDecimal,
         @SerializedName("available_for_issuance") val available: BigDecimal,
         @SerializedName("max_issuance_amount") val maximum: BigDecimal,
-        @SerializedName("sales") open val sales: List<Sale>? = null) : Serializable {
+        @SerializedName("sales") open val sales: List<SaleType>? = null) : Serializable {
 
     open class Details(
             @SerializedName("name") val name: String,
@@ -41,7 +41,7 @@ open class Asset(
         get() = details?.externalSystemType != null
 
     override fun equals(other: Any?): Boolean {
-        return other is Asset
+        return other is Asset<*>
                 && other.code == this.code
                 && other.issued == this.issued
                 && other.policy == this.policy
