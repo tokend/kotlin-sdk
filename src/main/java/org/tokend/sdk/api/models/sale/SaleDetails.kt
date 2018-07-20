@@ -16,8 +16,8 @@ open class SaleDetails(@SerializedName("name")
                        open val logo: RemoteFile,
                        @SerializedName("youtube_video_id")
                        private val mYoutubeVideo: String? = null) : Serializable {
-    open val youtubeVideo: String? =
-            if (mYoutubeVideo.isNullOrEmpty()) null else mYoutubeVideo
+    open val youtubeVideo: String?
+        get() = if (mYoutubeVideo.isNullOrEmpty()) null else mYoutubeVideo
 
     open val youtubeVideoId: String?
         get() {
