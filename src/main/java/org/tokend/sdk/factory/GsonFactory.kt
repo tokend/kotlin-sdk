@@ -1,8 +1,6 @@
 package org.tokend.sdk.factory
 
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonDeserializer
+import com.google.gson.*
 import org.tokend.sdk.api.models.SocialLinks
 import org.tokend.sdk.utils.ApiDateUtil
 import retrofit2.converter.gson.GsonConverterFactory
@@ -13,6 +11,7 @@ class GsonFactory {
         return baseGson ?: GsonBuilder()
                 .serializeNulls()
                 .registerTypeAdapter(SocialLinks::class.java, SocialLinks.SocialLinksDeserializer())
+                .registerTypeAdapter(Date::class.java, getGsonDateSerializer())
                 .registerTypeAdapter(Date::class.java, getGsonDateDeserializer())
                 .create()
                 .also { baseGson = it }
@@ -26,6 +25,12 @@ class GsonFactory {
     private fun getGsonDateDeserializer(): JsonDeserializer<Date?> {
         return JsonDeserializer { json, _, _ ->
             ApiDateUtil.tryParseDate(json?.asString)
+        }
+    }
+
+    private fun getGsonDateSerializer(): JsonSerializer<Date?> {
+        return JsonSerializer { source, _, _ ->
+            JsonPrimitive(ApiDateUtil.formatDateForRequest(source))
         }
     }
 
