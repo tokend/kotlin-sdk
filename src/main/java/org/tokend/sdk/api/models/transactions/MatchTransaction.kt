@@ -35,13 +35,13 @@ open class MatchTransaction(
             val quoteAsset = effect?.quoteAsset ?: ""
             val contextAssetIsQuote = quoteAsset == contextAsset
 
-            return effect?.matches?.mapIndexed { _, match ->
+            return effect?.matches?.mapIndexed { i, match ->
                 val baseAmount = match.baseAmount
                 val quoteAmount = match.quoteAmount
 
                 MatchTransaction(
                         base = BaseTransaction.fromPaymentRecord(record, contextAccountId),
-                        id = "${record.id}_i",
+                        id = "${record.id}_$i",
                         fee = BigDecimalUtil.valueOf(match.feeString),
                         asset = if (contextAssetIsQuote) quoteAsset else baseAsset,
                         amount = if (contextAssetIsQuote) quoteAmount else baseAmount,

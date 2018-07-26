@@ -1,16 +1,22 @@
 package org.tokend.sdk.api.models.transactions
 
-enum class TransactionState {
-    PENDING, SUCCESS, REJECTED, CANCELED;
+enum class TransactionState(val literal: String) {
+    PENDING("pending"),
+    SUCCESS("success"),
+    REJECTED("rejected"),
+    CANCELED("canceled"),
+    FAILED("failed");
 
     companion object {
-        fun fromCode(code: Int?): TransactionState {
-            return when (code) {
-                2 -> SUCCESS
-                3 -> REJECTED
-                4 -> CANCELED
-                else -> PENDING
+        const val FULLY_MATCHED_LITERAL = "fully matched"
+
+        @JvmStatic
+        fun fromLiteral(literal: String?): TransactionState {
+            literal ?: return PENDING
+            if (literal == FULLY_MATCHED_LITERAL) {
+                return SUCCESS
             }
+            return values().find { it.literal == literal } ?: PENDING
         }
     }
 }

@@ -25,7 +25,7 @@ open class BaseTransaction(
                     asset = record.asset ?: "",
                     amount = BigDecimalUtil.valueOf(record.amount),
                     sourceAccount = record.sourceAccount ?: "",
-                    state = TransactionState.fromCode(record.state),
+                    state = TransactionState.fromLiteral(record.state),
                     type = TransactionType.UNKNOWN,
                     date = record.ledgerCloseTime,
                     isReceived = contextAccountId != record.sourceAccount

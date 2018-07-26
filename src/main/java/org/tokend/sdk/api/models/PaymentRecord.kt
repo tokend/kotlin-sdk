@@ -22,8 +22,8 @@ open class PaymentRecord {
     var type: String? = null
     @SerializedName("type_i")
     var typeI: Int? = null
-    @SerializedName("state_i")
-    var state: Int? = null
+    @SerializedName("state")
+    var state: String? = null
     @SerializedName("identifier")
     var identifier: Long? = null
     @SerializedName("ledger_close_time")
