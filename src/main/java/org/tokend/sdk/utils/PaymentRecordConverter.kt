@@ -21,9 +21,6 @@ object PaymentRecordConverter {
                 else ->
                     listOf(BaseTransaction.fromPaymentRecord(it, contextAccountId))
             }
-        }.fold(mutableListOf<Transaction>(), { acc, transactions ->
-            acc.addAll(transactions)
-            acc
-        }).toList()
+        }.flatten()
     }
 }
