@@ -103,7 +103,9 @@ interface ApiService {
                     @Query("cursor") cursor: String? = null,
                     @Query("asset") asset: String? = null,
                     @Query("since") sinceDate: String? = null,
-                    @Query("to") toDate: String? = null): Call<Page<PaymentRecord>>
+                    @Query("to") toDate: String? = null,
+                    @Query("completed_only") completedOnly: Boolean? = null,
+                    @Query("pending_only") pendingOnly: Boolean? = null): Call<Page<PaymentRecord>>
 
     @GET("/sales")
     fun getSales(@Query("limit") limit: Int,
