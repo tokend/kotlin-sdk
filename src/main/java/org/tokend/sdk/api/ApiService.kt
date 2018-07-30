@@ -12,79 +12,79 @@ import retrofit2.http.*
 
 
 interface ApiService {
-    @GET("/")
+    @GET(".")
     fun getSystemInfo(): Call<SystemInfo>
 
-    @GET("/accounts/{accountId}")
+    @GET("accounts/{accountId}")
     fun getAccount(@Path("accountId") accountId: String?):
             Call<AccountResponse>
 
     /**
      * Will return empty account with only 'signers' filled.
      */
-    @GET("/accounts/{accountId}/signers")
+    @GET("accounts/{accountId}/signers")
     fun getAccountSigners(@Path("accountId") accountId: String?):
             Call<AccountResponse>
 
-    @POST("/wallets/{walletId}/verification")
+    @POST("wallets/{walletId}/verification")
     fun requestVerificationLink(@Path("walletId") walletId: String?):
             Call<Void>
 
-    @PUT("/wallets/{walletId}/verification")
+    @PUT("wallets/{walletId}/verification")
     @JvmSuppressWildcards
     fun verifyWallet(@Path("walletId") walletId: String?,
                      @Body data: DataEntity<AttributesEntity<VerifyWalletRequestBody>>):
             Call<Void>
 
-    @PUT("/users/{accountId}")
+    @PUT("users/{accountId}")
     @JvmSuppressWildcards
     fun createUser(@Path("accountId") accountId: String?,
                    @Body data: DataEntity<AttributesEntity<CreateUserRequestBody>>):
             Call<Void>
 
-    @GET("/users/{accountId}")
+    @GET("users/{accountId}")
     fun getUserInfo(@Path("accountId") accountId: String?):
             Call<ServerResponse<UserInfo, ServerError>>
 
-    @PATCH("/users/{accountId}")
+    @PATCH("users/{accountId}")
     @JvmSuppressWildcards
     fun patchUser(@Path("accountId") accountId: String?,
                   @Body data: DataEntity<AttributesEntity<PatchUserRequestBody>>):
             Call<Void>
 
     //region TFA
-    @GET("/wallets/{walletId}/factors")
+    @GET("wallets/{walletId}/factors")
     fun getTfaBackends(@Path("walletId") walletId: String?):
             Call<ServerResponse<MutableList<TfaBackend>, ServerError>>
 
-    @POST("/wallets/{walletId}/factors")
+    @POST("wallets/{walletId}/factors")
     @JvmSuppressWildcards
     fun createTfaBackend(@Path("walletId") walletId: String?,
                          @Body data: DataEntity<CreateTfaRequestBody>):
             Call<ServerResponse<TfaBackend, ServerError>>
 
-    @DELETE("/wallets/{walletId}/factors/{id}")
+    @DELETE("wallets/{walletId}/factors/{id}")
     fun deleteTfaBackend(@Path("walletId") walletId: String?,
                          @Path("id") backendId: Int?): Call<Void>
 
-    @PATCH("/wallets/{walletId}/factors/{id}")
+    @PATCH("wallets/{walletId}/factors/{id}")
     @JvmSuppressWildcards
     fun updateTfaBackend(@Path("walletId") walletId: String?,
                          @Path("id") backendId: Int?,
                          @Body data: DataEntity<UpdateTfaRequestBody>): Call<Void>
     //endregion TFA
 
-    @GET("/fees/{feeType}")
+    @GET("fees/{feeType}")
     fun getFee(@Path("feeType") feeType: Int,
                @Query("account") accountId: String,
                @Query("asset") asset: String,
                @Query("amount") amount: String?,
                @Query("subtype") subtype: Int): Call<Fee>
 
-    @GET("/user_id")
+    @GET("user_id")
     fun getAccountIdByEmail(@Query("email") email: String): Call<AccountIdResponse>
 
-    @GET("/accounts/{accountId}/balances")
+    @GET("accounts/{accountId}/balances")
     fun getAccountBalances(@Path("accountId") accountId: String):
             Call<List<AccountResponse.Balance>>
 
@@ -96,7 +96,7 @@ interface ApiService {
                       @Query("dest_asset") destAsset: String?,
                       @Query("amount") amount: String?): Call<ConvertAssetsResponse>
 
-    @GET("/accounts/{accountId}/payments")
+    @GET("accounts/{accountId}/payments")
     fun getPayments(@Path("accountId") accountId: String,
                     @Query("limit") limit: Int = 25,
                     @Query("order") order: String = "desc",
@@ -107,7 +107,7 @@ interface ApiService {
                     @Query("completed_only") completedOnly: Boolean? = null,
                     @Query("pending_only") pendingOnly: Boolean? = null): Call<Page<PaymentRecord>>
 
-    @GET("/sales")
+    @GET("sales")
     fun getSales(@Query("limit") limit: Int,
                  @Query("order") order: String,
                  @Query("cursor") cursor: String,
@@ -115,20 +115,20 @@ interface ApiService {
                  @Query("name") name: String? = null,
                  @Query("open_only") openOnly: Boolean = true): Call<Page<SimpleSale>>
 
-    @GET("/sales/{saleId}")
+    @GET("sales/{saleId}")
     fun getSale(@Path("saleId") id: Long): Call<SimpleSale>
 
-    @GET("/assets")
+    @GET("assets")
     fun getAssetsDetails(): Call<List<SimpleAsset>>
 
-    @GET("/assets/{asset}")
+    @GET("assets/{asset}")
     fun getAssetDetails(@Path("asset") asset: String): Call<SimpleAsset>
 
-    @POST("/details")
+    @POST("details")
     fun getAccountsDetails(@Body body: AccountsDetailsRequestBody)
             : Call<AccountsDetailsResponse>
 
-    @GET("/accounts/{accountId}/offers")
+    @GET("accounts/{accountId}/offers")
     fun getOffers(@Path("accountId") accountId: String?,
                   @Query("is_buy") isBuy: Boolean?,
                   @Query("limit") limit: Int,
@@ -140,50 +140,50 @@ interface ApiService {
                   @Query("base_asset") baseAsset: String?):
             Call<Page<Offer>>
 
-    @GET("/charts/{asset}")
+    @GET("charts/{asset}")
     fun getAssetChart(@Path("asset") asset: String): Call<AssetChartData>
 
-    @GET("/users/{accountId}/blobs/{blobId}")
+    @GET("users/{accountId}/blobs/{blobId}")
     fun getBlob(@Path("accountId") accountId: String?,
                 @Path("blobId") blobId: String?):
             Call<ServerResponse<Blob, ServerError>>
 
-    @GET("/users/{accountId}/blobs")
+    @GET("users/{accountId}/blobs")
     @JvmSuppressWildcards
     fun getBlobs(@Path("accountId") accountId: String,
                  @Query("type") type: Int? = null,
                  @QueryMap filters: Map<String, Any>? = null):
             Call<ServerResponse<List<Blob>, ServerError>>
 
-    @GET("/accounts/{accountId}/balances/details")
+    @GET("accounts/{accountId}/balances/details")
     fun getBalancesDetails(@Path("accountId") accountId: String?):
             Call<List<BalanceDetails>>
 
     @FormUrlEncoded
-    @POST("/transactions")
+    @POST("transactions")
     fun pushTransaction(@Field("tx") envelopeXdrBase64: String):
             Call<SubmitTransactionResponse>
 
-    @GET("/order_book")
+    @GET("order_book")
     fun getOrderBook(@Query("is_buy") isBuy: Boolean,
                      @Query("base_asset") baseAsset: String,
                      @Query("quote_asset") quoteAsset: String,
                      @Query("cursor") cursor: String,
                      @Query("limit") limit: Int): Call<Page<Offer>>
 
-    @POST("/users/{accountId}/favorites")
+    @POST("users/{accountId}/favorites")
     fun addToFavorites(@Path("accountId") accountId: String,
                        @Body entry: FavoriteEntry): Call<Void>
 
-    @DELETE("/users/{accountId}/favorites/{entryId}")
+    @DELETE("users/{accountId}/favorites/{entryId}")
     fun removeFromFavorites(@Path("accountId") accountId: String,
                             @Path("entryId") id: Long): Call<Void>
 
-    @GET("/users/{accountId}/favorites")
+    @GET("users/{accountId}/favorites")
     fun getFavorites(@Path("accountId") accountId: String):
             Call<ServerResponse<List<FavoriteEntry>, ServerError>>
 
-    @GET("/sale_antes")
+    @GET("sale_antes")
     fun getSaleAntes(@Query("participant_balance_id") balanceId: String,
                      @Query("sale_id") saleId: Long): Call<Page<SaleAnte>>
 }

@@ -15,22 +15,22 @@ interface KeyServerApi {
      * If login is an empty string - returns an actual network login params
      * without salt.
      */
-    @GET("/wallets/kdf")
+    @GET("wallets/kdf")
     fun getLoginParams(@Query("email") login: String? = "",
                        @Query("is_recovery") isRecovery: Boolean = false)
             : Call<ServerResponse<LoginParamsResponse, ServerError>>
 
-    @GET("/wallets/{walletId}")
+    @GET("wallets/{walletId}")
     fun getWalletData(@Path("walletId") walletId: String)
             : Call<ServerResponse<WalletData, ServerError>>
 
-    @PUT("/wallets/{walletId}")
+    @PUT("wallets/{walletId}")
     @JvmSuppressWildcards
     fun updateWallet(@Path("walletId") walletId: String?,
                      @Body data: DataEntity<WalletData>):
             Call<Void>
 
-    @POST("/wallets")
+    @POST("wallets")
     @JvmSuppressWildcards
     fun createWallet(@Body data: DataEntity<WalletData>):
             Call<Void>
