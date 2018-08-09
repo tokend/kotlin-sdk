@@ -157,7 +157,7 @@ interface ApiService {
 
     @GET("accounts/{accountId}/balances/details")
     fun getBalancesDetails(@Path("accountId") accountId: String?):
-            Call<List<BalanceDetails>>
+            Call<List<SimpleBalanceDetails>>
 
     @FormUrlEncoded
     @POST("transactions")

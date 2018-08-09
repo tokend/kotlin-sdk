@@ -1,12 +1,11 @@
 package org.tokend.sdk.api.models
 
 import com.google.gson.annotations.SerializedName
-import org.tokend.sdk.api.models.sale.SimpleSale
 import org.tokend.sdk.utils.BigDecimalUtil
 import org.tokend.sdk.utils.HashCodes
 import java.math.BigDecimal
 
-open class BalanceDetails(
+open class BalanceDetails<AssetType : Asset<*, *>>(
         @SerializedName("balance_id")
         val balanceId: String,
         @SerializedName("balance")
@@ -20,7 +19,7 @@ open class BalanceDetails(
         @SerializedName("converted_to_asset")
         val conversionAsset: String,
         @SerializedName("asset_details")
-        val assetDetails: SimpleAsset? = null,
+        val assetDetails: AssetType? = null,
         @SerializedName("offers")
         var offers: List<Offer>? = null) {
 
@@ -37,7 +36,7 @@ open class BalanceDetails(
         get() = BigDecimalUtil.valueOf(convertedLockedString)
 
     override fun equals(other: Any?): Boolean {
-        return other is BalanceDetails
+        return other is BalanceDetails<*>
                 && other.balanceId == this.balanceId
                 && other.balance == this.balance
                 && other.convertedBalance == this.convertedBalance
