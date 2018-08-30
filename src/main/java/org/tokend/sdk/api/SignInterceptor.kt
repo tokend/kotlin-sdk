@@ -8,6 +8,7 @@ import org.tokend.sdk.utils.extentions.hash
 import java.util.*
 
 internal open class SignInterceptor(
+        private val baseUrl: String,
         private val requestSigner: RequestSigner,
         private val timeCorrectionProvider: TimeCorrectionProvider,
         private val signatureValidSeconds: Int
@@ -21,12 +22,15 @@ internal open class SignInterceptor(
         val time = Date().time / 1000 + timeCorrectionProvider.getTimeCorrection()
         val validUntil = time + signatureValidSeconds
         val url = chain.request().url().url()
-        val fullUrlPath = if (!url.query.isNullOrEmpty()) {
-            "${url.path}?${url.query}"
-        } else {
-            url.path
+
+        var urlPartToSign = url.toString().substringAfter(baseUrl,
+                "${url.path}?${url.query}")
+        if (!urlPartToSign.startsWith("/")) {
+            urlPartToSign = "/$urlPartToSign"
         }
-        val signatureBase = "{ uri: '$fullUrlPath', valid_untill: '$validUntil'}"
+
+        // "valid_untill" has a typo but don't touch it.
+        val signatureBase = "{ uri: '$urlPartToSign', valid_untill: '$validUntil'}"
         val data = signatureBase.toByteArray().hash()
         val signedDataBase64 = requestSigner.signToBase64(data)
 

@@ -50,6 +50,7 @@ class ApiFactory(private val url: String) {
                             if (requestSigner != null) {
                                 addInterceptor(
                                         SignInterceptor(
+                                                url,
                                                 requestSigner,
                                                 getTimeCorrectionProvider(),
                                                 SIGNATURE_VALID_SEC
