@@ -8,6 +8,8 @@ open class TfaBackend {
         TOTP("totp"),
         @SerializedName("password")
         PASSWORD("password"),
+        @SerializedName("email")
+        EMAIL("email"),
         UNKNOWN("unknown");
 
         companion object {
@@ -19,17 +21,17 @@ open class TfaBackend {
     }
 
     open class Attributes(@SerializedName("priority")
-                     var priority: Int? = null,
-                     @SerializedName("secret")
-                     val secret: String? = null,
-                     @SerializedName("seed")
-                     val seed: String? = null,
-                     @SerializedName("account_id")
-                     val accountId: String? = null,
-                     @SerializedName("keychain_data")
-                     val keychainData: String? = null,
-                     @SerializedName("salt")
-                     val salt: String? = null)
+                          var priority: Int? = null,
+                          @SerializedName("secret")
+                          val secret: String? = null,
+                          @SerializedName("seed")
+                          val seed: String? = null,
+                          @SerializedName("account_id")
+                          val accountId: String? = null,
+                          @SerializedName("keychain_data")
+                          val keychainData: String? = null,
+                          @SerializedName("salt")
+                          val salt: String? = null)
 
     @SerializedName("type")
     var type: TfaBackend.Type = TfaBackend.Type.UNKNOWN
