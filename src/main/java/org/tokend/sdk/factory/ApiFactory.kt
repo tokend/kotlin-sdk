@@ -14,7 +14,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.*
 
-class ApiFactory(private val url: String) {
+class ApiFactory(private val url: String,
+                 private val userAgent: String? = null) {
     @JvmOverloads
     fun getApiService(requestSigner: RequestSigner? = null,
                       tfaCallback: TfaCallback? = null,
@@ -25,7 +26,9 @@ class ApiFactory(private val url: String) {
 
     fun getTfaVerificationService(): TfaVerificationService {
         return getCustomService(TfaVerificationService::class.java,
-                HttpClientFactory().getBaseHttpClientBuilder().build())
+                HttpClientFactory().getBaseHttpClientBuilder(
+                        userAgent = userAgent
+                ).build())
     }
 
     fun getKeyServerApi(requestSigner: RequestSigner? = null,
@@ -41,7 +44,10 @@ class ApiFactory(private val url: String) {
                              tfaCallback: TfaCallback? = null,
                              cookieJarProvider: CookieJarProvider? = null): T {
         val client =
-                HttpClientFactory().getBaseHttpClientBuilder(cookieJarProvider)
+                HttpClientFactory().getBaseHttpClientBuilder(
+                        cookieJarProvider = cookieJarProvider,
+                        userAgent = userAgent
+                )
                         .addInterceptor(
                                 TfaOkHttpInterceptor(getTfaVerificationService(),
                                         tfaCallback)
