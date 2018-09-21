@@ -8,9 +8,11 @@ open class SystemInfo(
         @SerializedName("current_time")
         val currentTime: Long,
         @SerializedName("commission_account_id")
-        val comissionAccountId: String,
+        val commissionAccountId: String,
         @SerializedName("operational_account_id")
         val operationalAccountId: String,
         @SerializedName("master_account_id")
-        val masterExchangeAccountId: String
+        val masterExchangeAccountId: String,
+        @SerializedName("master_exchange_name")
+        val masterExchangeName: String
 )
