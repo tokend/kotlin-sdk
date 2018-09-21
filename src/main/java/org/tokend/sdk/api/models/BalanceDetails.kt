@@ -5,7 +5,7 @@ import org.tokend.sdk.utils.BigDecimalUtil
 import org.tokend.sdk.utils.HashCodes
 import java.math.BigDecimal
 
-open class BalanceDetails<AssetType : Asset<*, *>>(
+open class BalanceDetails<AssetType : Asset<*>>(
         @SerializedName("balance_id")
         val balanceId: String,
         @SerializedName("balance")
