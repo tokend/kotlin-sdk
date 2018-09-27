@@ -110,7 +110,9 @@ open class AccountResponse(
      * Represents account signers.
      */
     open class Signer(accountId: String, weight: Int,
-                      type: Int, identity: Int) {
+                      type: Int, identity: Int,
+                      @SerializedName("signer_name")
+                      val name: String = "") {
 
         constructor(accountId: String) : this(accountId, 255, Int.MAX_VALUE, 1)
 
