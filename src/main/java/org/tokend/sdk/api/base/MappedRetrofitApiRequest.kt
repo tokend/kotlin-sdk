@@ -1,5 +1,6 @@
 package org.tokend.sdk.api.base
 
+import org.tokend.sdk.api.base.model.ApiResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.HttpException
@@ -36,11 +37,17 @@ open class MappedRetrofitApiRequest<CallType, ResponseType>(
             override fun onResponse(call: Call<CallType>, response: Response<CallType>) {
                 if (!call.isCanceled) {
                     if (response.isSuccessful) {
-                        callback.onSuccess(
-                                ApiResponse(
-                                        mapResponse(response.body())
-                                )
-                        )
+                        try {
+                            callback.onSuccess(
+                                    ApiResponse(
+                                            mapResponse(response.body())
+                                    )
+                            )
+                        } catch (error: Throwable) {
+                            callback.onError(
+                                    mapError(error)
+                            )
+                        }
                     } else {
                         callback.onError(
                                 mapError(HttpException(response))

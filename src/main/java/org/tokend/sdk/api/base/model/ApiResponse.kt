@@ -1,4 +1,4 @@
-package org.tokend.sdk.api.base
+package org.tokend.sdk.api.base.model
 
 class ApiResponse<T>(
         private val value: T?
