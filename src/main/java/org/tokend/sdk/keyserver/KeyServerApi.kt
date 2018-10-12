@@ -1,10 +1,7 @@
 package org.tokend.sdk.keyserver
 
-import com.google.gson.JsonObject
 import org.tokend.sdk.api.models.WalletData
 import org.tokend.sdk.api.requests.DataEntity
-import org.tokend.sdk.api.responses.ServerError
-import org.tokend.sdk.api.responses.ServerResponse
 import org.tokend.sdk.keyserver.models.LoginParamsResponse
 import retrofit2.Call
 import retrofit2.http.*
@@ -18,11 +15,11 @@ interface KeyServerApi {
     @GET("wallets/kdf")
     fun getLoginParams(@Query("email") login: String? = "",
                        @Query("is_recovery") isRecovery: Boolean = false)
-            : Call<ServerResponse<LoginParamsResponse, ServerError>>
+            : Call<DataEntity<LoginParamsResponse>>
 
     @GET("wallets/{walletId}")
     fun getWalletData(@Path("walletId") walletId: String)
-            : Call<ServerResponse<WalletData, ServerError>>
+            : Call<DataEntity<WalletData>>
 
     @PUT("wallets/{walletId}")
     @JvmSuppressWildcards

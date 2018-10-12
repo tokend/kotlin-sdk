@@ -3,8 +3,6 @@ package org.tokend.sdk.api.users
 import org.tokend.sdk.api.requests.AttributesEntity
 import org.tokend.sdk.api.requests.DataEntity
 import org.tokend.sdk.api.requests.models.CreateUserRequestBody
-import org.tokend.sdk.api.responses.ServerError
-import org.tokend.sdk.api.responses.ServerResponse
 import org.tokend.sdk.api.users.model.SimpleUser
 import org.tokend.sdk.api.users.model.UserAttributes
 import retrofit2.Call
@@ -19,7 +17,7 @@ interface UsersService {
 
     @GET("users/{accountId}")
     fun getUserInfo(@Path("accountId") accountId: String?):
-            Call<ServerResponse<SimpleUser, ServerError>>
+            Call<DataEntity<SimpleUser>>
 
     @PATCH("users/{accountId}")
     @JvmSuppressWildcards
