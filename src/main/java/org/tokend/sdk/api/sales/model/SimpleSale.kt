@@ -1,4 +1,4 @@
-package org.tokend.sdk.api.models.sale
+package org.tokend.sdk.api.sales.model
 
 import org.tokend.sdk.api.accounts.model.AccountsDetailsResponse
 import org.tokend.sdk.api.models.NameValue

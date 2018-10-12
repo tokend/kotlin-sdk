@@ -1,4 +1,4 @@
-package org.tokend.sdk.api.models.sale
+package org.tokend.sdk.api.sales.model
 
 import com.google.gson.annotations.SerializedName
 import org.tokend.sdk.utils.HashCodes

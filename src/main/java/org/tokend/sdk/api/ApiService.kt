@@ -2,7 +2,7 @@ package org.tokend.sdk.api
 
 import org.tokend.sdk.api.accounts.model.AccountsDetailsResponse
 import org.tokend.sdk.api.models.*
-import org.tokend.sdk.api.models.sale.SimpleSale
+import org.tokend.sdk.api.sales.model.SimpleSale
 import org.tokend.sdk.api.requests.AttributesEntity
 import org.tokend.sdk.api.requests.DataEntity
 import org.tokend.sdk.api.requests.models.*

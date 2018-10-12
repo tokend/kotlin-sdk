@@ -4,6 +4,8 @@ import org.tokend.sdk.api.accounts.AccountsApi
 import org.tokend.sdk.api.accounts.AccountsService
 import org.tokend.sdk.api.requests.CookieJarProvider
 import org.tokend.sdk.api.requests.RequestSigner
+import org.tokend.sdk.api.sales.SalesApi
+import org.tokend.sdk.api.sales.SalesService
 import org.tokend.sdk.api.tfa.TfaCallback
 import org.tokend.sdk.api.transactions.TransactionsApi
 import org.tokend.sdk.api.transactions.TransactionsService
@@ -28,5 +30,9 @@ open class TokendApi
 
     open val users: UsersApi by lazy {
         UsersApi(getService(UsersService::class.java))
+    }
+
+    open val sales: SalesApi by lazy {
+        SalesApi(getService(SalesService::class.java))
     }
 }
