@@ -18,13 +18,13 @@ import org.tokend.sdk.utils.PaymentRecordConverter
 open class AccountsApi(
         protected open val accountsService: AccountsService
 ) {
-    fun get(accountId: String): ApiRequest<AccountResponse> {
+    open fun get(accountId: String): ApiRequest<AccountResponse> {
         return SimpleRetrofitApiRequest(
                 accountsService.getAccount(accountId)
         )
     }
 
-    fun getSigners(accountId: String): ApiRequest<List<AccountResponse.Signer>> {
+    open fun getSigners(accountId: String): ApiRequest<List<AccountResponse.Signer>> {
         return MappedRetrofitApiRequest(
                 accountsService.getSigners(accountId),
                 { accountResponse ->
@@ -33,19 +33,19 @@ open class AccountsApi(
         )
     }
 
-    fun getBalances(accountId: String): ApiRequest<List<AccountResponse.Balance>> {
+    open fun getBalances(accountId: String): ApiRequest<List<AccountResponse.Balance>> {
         return SimpleRetrofitApiRequest(
                 accountsService.getBalances(accountId)
         )
     }
 
-    fun getBalancesDetails(accountId: String): ApiRequest<List<SimpleBalanceDetails>> {
+    open fun getBalancesDetails(accountId: String): ApiRequest<List<SimpleBalanceDetails>> {
         return SimpleRetrofitApiRequest(
                 accountsService.getBalancesDetails(accountId)
         )
     }
 
-    fun getPayments(accountId: String,
+    open fun getPayments(accountId: String,
                     paymentsParams: PaymentsParams? = null
     ): ApiRequest<DataPage<PaymentRecord>> {
         return MappedRetrofitApiRequest(
@@ -57,7 +57,7 @@ open class AccountsApi(
         )
     }
 
-    fun getPaymentTransactions(accountId: String,
+    open fun getPaymentTransactions(accountId: String,
                                paymentsParams: PaymentsParams
     ): ApiRequest<DataPage<Transaction>> {
         val contextAsset = paymentsParams.asset
@@ -84,7 +84,7 @@ open class AccountsApi(
         )
     }
 
-    fun getPendingOffers(accountId: String,
+    open fun getPendingOffers(accountId: String,
                          offersParams: OffersParams? = null): ApiRequest<List<Offer>> {
         return MappedRetrofitApiRequest(
                 accountsService.getPendingOffers(
@@ -95,7 +95,7 @@ open class AccountsApi(
         )
     }
 
-    fun getDetails(accountIds: Collection<String>): ApiRequest<AccountsDetailsResponse> {
+    open fun getDetails(accountIds: Collection<String>): ApiRequest<AccountsDetailsResponse> {
         return SimpleRetrofitApiRequest(
                 accountsService.getAccountsDetails(
                         AccountsDetailsRequestBody(accountIds)

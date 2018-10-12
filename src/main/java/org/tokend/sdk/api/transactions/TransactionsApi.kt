@@ -3,17 +3,17 @@ package org.tokend.sdk.api.transactions
 import okhttp3.ResponseBody
 import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.SimpleRetrofitApiRequest
+import org.tokend.sdk.api.base.factory.GsonFactory
 import org.tokend.sdk.api.transactions.model.SubmitTransactionResponse
 import org.tokend.sdk.api.transactions.model.TransactionFailedException
-import org.tokend.sdk.api.base.factory.GsonFactory
 import retrofit2.HttpException
 import java.net.HttpURLConnection
 import java.nio.charset.Charset
 
-class TransactionsApi(
-        private val transactionsService: TransactionsService
+open class TransactionsApi(
+        protected val transactionsService: TransactionsService
 ) {
-    fun postTransaction(envelopeBase64: String): ApiRequest<SubmitTransactionResponse> {
+    open fun postTransaction(envelopeBase64: String): ApiRequest<SubmitTransactionResponse> {
         return SimpleRetrofitApiRequest(
                 transactionsService.pushTransaction(envelopeBase64)
         ) { error ->
@@ -31,7 +31,7 @@ class TransactionsApi(
         }
     }
 
-    private fun getResponseFromErrorBody(errorBody: ResponseBody): SubmitTransactionResponse? {
+    protected open fun getResponseFromErrorBody(errorBody: ResponseBody): SubmitTransactionResponse? {
         val buffer = errorBody.source().buffer().clone()
         val string = buffer.readString(Charset.defaultCharset())
         return try {
