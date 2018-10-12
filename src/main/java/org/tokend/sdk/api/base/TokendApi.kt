@@ -8,6 +8,8 @@ import org.tokend.sdk.api.favorites.FavoritesApi
 import org.tokend.sdk.api.favorites.FavoritesService
 import org.tokend.sdk.api.fees.FeesApi
 import org.tokend.sdk.api.fees.FeesService
+import org.tokend.sdk.api.general.GeneralApi
+import org.tokend.sdk.api.general.GeneralService
 import org.tokend.sdk.api.requests.CookieJarProvider
 import org.tokend.sdk.api.requests.RequestSigner
 import org.tokend.sdk.api.sales.SalesApi
@@ -58,5 +60,9 @@ open class TokendApi
 
     open val favorites: FavoritesApi by lazy {
         FavoritesApi(getService(FavoritesService::class.java))
+    }
+
+    open val general: GeneralApi by lazy {
+        GeneralApi(getService(GeneralService::class.java))
     }
 }
