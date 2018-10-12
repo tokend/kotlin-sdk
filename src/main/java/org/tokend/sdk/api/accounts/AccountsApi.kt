@@ -12,7 +12,7 @@ import org.tokend.sdk.api.models.PaymentRecord
 import org.tokend.sdk.api.models.SimpleBalanceDetails
 import org.tokend.sdk.api.models.transactions.Transaction
 import org.tokend.sdk.api.requests.models.AccountsDetailsRequestBody
-import org.tokend.sdk.api.responses.AccountResponse
+import org.tokend.sdk.api.accounts.model.AccountResponse
 import org.tokend.sdk.utils.PaymentRecordConverter
 
 open class AccountsApi(

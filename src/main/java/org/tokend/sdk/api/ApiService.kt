@@ -1,5 +1,6 @@
 package org.tokend.sdk.api
 
+import org.tokend.sdk.api.accounts.model.AccountResponse
 import org.tokend.sdk.api.accounts.model.AccountsDetailsResponse
 import org.tokend.sdk.api.models.*
 import org.tokend.sdk.api.sales.model.SimpleSale

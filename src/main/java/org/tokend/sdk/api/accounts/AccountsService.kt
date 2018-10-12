@@ -5,7 +5,7 @@ import org.tokend.sdk.api.models.Offer
 import org.tokend.sdk.api.models.PaymentRecord
 import org.tokend.sdk.api.models.SimpleBalanceDetails
 import org.tokend.sdk.api.requests.models.AccountsDetailsRequestBody
-import org.tokend.sdk.api.responses.AccountResponse
+import org.tokend.sdk.api.accounts.model.AccountResponse
 import org.tokend.sdk.api.responses.Page
 import retrofit2.Call
 import retrofit2.http.*

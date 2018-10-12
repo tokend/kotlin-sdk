@@ -16,15 +16,10 @@ open class UserAttributes(
         open val airdropState: String
 ) {
     companion object {
-        @JvmStatic
-        val STATE_NEED_DOCUMENTS = "need_documents"
-        @JvmStatic
-        val STATE_WAITING_FOR_APPROVAL = "waiting_for_approval"
-        @JvmStatic
-        val STATE_APPROVED = "approved"
-        @JvmStatic
-        val STATE_REJECTED = "rejected"
-        @JvmStatic
-        val STATE_BLOCKED = "blocked"
+        const val STATE_NEED_DOCUMENTS = "need_documents"
+        const val STATE_WAITING_FOR_APPROVAL = "waiting_for_approval"
+        const val STATE_APPROVED = "approved"
+        const val STATE_REJECTED = "rejected"
+        const val STATE_BLOCKED = "blocked"
     }
 }

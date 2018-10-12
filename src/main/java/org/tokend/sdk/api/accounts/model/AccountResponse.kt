@@ -1,7 +1,8 @@
-package org.tokend.sdk.api.responses
+package org.tokend.sdk.api.accounts.model
 
 import com.google.gson.annotations.SerializedName
 import org.tokend.sdk.api.models.NameValue
+import org.tokend.sdk.api.responses.Response
 import java.math.BigDecimal
 import java.util.*
 
