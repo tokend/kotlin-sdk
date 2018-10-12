@@ -1,7 +1,7 @@
 package org.tokend.sdk.api.models.sale
 
 import com.google.gson.annotations.SerializedName
-import org.tokend.sdk.api.models.AccountsDetailsResponse
+import org.tokend.sdk.api.accounts.model.AccountsDetailsResponse
 import org.tokend.sdk.api.models.NameValue
 import org.tokend.sdk.utils.HashCodes
 import java.io.Serializable

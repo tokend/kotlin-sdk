@@ -1,6 +1,6 @@
 package org.tokend.sdk.api.models.sale
 
-import org.tokend.sdk.api.models.AccountsDetailsResponse
+import org.tokend.sdk.api.accounts.model.AccountsDetailsResponse
 import org.tokend.sdk.api.models.NameValue
 import java.math.BigDecimal
 import java.util.*
