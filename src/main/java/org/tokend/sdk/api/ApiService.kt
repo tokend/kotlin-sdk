@@ -13,7 +13,7 @@ import org.tokend.sdk.api.requests.AttributesEntity
 import org.tokend.sdk.api.requests.DataEntity
 import org.tokend.sdk.api.requests.models.*
 import org.tokend.sdk.api.responses.*
-import org.tokend.sdk.api.tfa.TfaBackend
+import org.tokend.sdk.api.tfa.model.TfaFactor
 import org.tokend.sdk.api.transactions.model.SubmitTransactionResponse
 import org.tokend.sdk.api.users.model.SimpleUser
 import retrofit2.Call
@@ -64,22 +64,22 @@ interface ApiService {
     //region TFA
     @GET("wallets/{walletId}/factors")
     fun getTfaBackends(@Path("walletId") walletId: String?):
-            Call<ServerResponse<MutableList<TfaBackend>, ServerError>>
+            Call<ServerResponse<MutableList<TfaFactor>, ServerError>>
 
     @POST("wallets/{walletId}/factors")
     @JvmSuppressWildcards
     fun createTfaBackend(@Path("walletId") walletId: String?,
                          @Body data: DataEntity<CreateTfaRequestBody>):
-            Call<ServerResponse<TfaBackend, ServerError>>
+            Call<ServerResponse<TfaFactor, ServerError>>
 
     @DELETE("wallets/{walletId}/factors/{id}")
     fun deleteTfaBackend(@Path("walletId") walletId: String?,
-                         @Path("id") backendId: Int?): Call<Void>
+                         @Path("id") backendId: Long?): Call<Void>
 
     @PATCH("wallets/{walletId}/factors/{id}")
     @JvmSuppressWildcards
     fun updateTfaBackend(@Path("walletId") walletId: String?,
-                         @Path("id") backendId: Int?,
+                         @Path("id") backendId: Long?,
                          @Body data: DataEntity<UpdateTfaRequestBody>): Call<Void>
     //endregion TFA
 

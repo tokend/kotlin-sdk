@@ -10,7 +10,9 @@ import org.tokend.sdk.api.requests.CookieJarProvider
 import org.tokend.sdk.api.requests.RequestSigner
 import org.tokend.sdk.api.sales.SalesApi
 import org.tokend.sdk.api.sales.SalesService
-import org.tokend.sdk.api.tfa.TfaCallback
+import org.tokend.sdk.api.tfa.TfaApi
+import org.tokend.sdk.api.tfa.TfaService
+import org.tokend.sdk.api.tfa.model.TfaCallback
 import org.tokend.sdk.api.transactions.TransactionsApi
 import org.tokend.sdk.api.transactions.TransactionsService
 import org.tokend.sdk.api.users.UsersApi
@@ -46,5 +48,9 @@ open class TokendApi
 
     open val fees: FeesApi by lazy {
         FeesApi(getService(FeesService::class.java))
+    }
+
+    open val tfa: TfaApi by lazy {
+        TfaApi(getService(TfaService::class.java))
     }
 }

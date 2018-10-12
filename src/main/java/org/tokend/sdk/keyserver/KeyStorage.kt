@@ -10,7 +10,7 @@ import org.tokend.sdk.api.models.WalletRelation
 import org.tokend.sdk.api.requests.CookieJarProvider
 import org.tokend.sdk.api.requests.DataEntity
 import org.tokend.sdk.api.requests.RequestSigner
-import org.tokend.sdk.api.tfa.TfaCallback
+import org.tokend.sdk.api.tfa.model.TfaCallback
 import org.tokend.sdk.api.base.factory.ServiceFactory
 import org.tokend.sdk.api.base.factory.GsonFactory
 import org.tokend.sdk.federation.EmailAlreadyTakenException

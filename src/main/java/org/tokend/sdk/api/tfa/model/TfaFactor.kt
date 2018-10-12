@@ -1,8 +1,15 @@
-package org.tokend.sdk.api.tfa
+package org.tokend.sdk.api.tfa.model
 
 import com.google.gson.annotations.SerializedName
 
-open class TfaBackend {
+open class TfaFactor(
+        @SerializedName("id")
+        val id: Long,
+        @SerializedName("type")
+        val type: Type,
+        @SerializedName("attributes")
+        val attributes: Attributes
+) {
     enum class Type(val literal: String) {
         @SerializedName("totp")
         TOTP("totp"),
@@ -21,7 +28,7 @@ open class TfaBackend {
     }
 
     open class Attributes(@SerializedName("priority")
-                          var priority: Int? = null,
+                          var priority: Int,
                           @SerializedName("secret")
                           val secret: String? = null,
                           @SerializedName("seed")
@@ -32,11 +39,4 @@ open class TfaBackend {
                           val keychainData: String? = null,
                           @SerializedName("salt")
                           val salt: String? = null)
-
-    @SerializedName("type")
-    var type: TfaBackend.Type = TfaBackend.Type.UNKNOWN
-    @SerializedName("id")
-    val id: Int? = null
-    @SerializedName("attributes")
-    val attributes: Attributes? = null
 }

@@ -6,7 +6,7 @@ import org.tokend.sdk.api.SignInterceptor
 import org.tokend.sdk.api.TimeCorrectionProvider
 import org.tokend.sdk.api.requests.CookieJarProvider
 import org.tokend.sdk.api.requests.RequestSigner
-import org.tokend.sdk.api.tfa.TfaCallback
+import org.tokend.sdk.api.tfa.model.TfaCallback
 import org.tokend.sdk.api.tfa.TfaOkHttpInterceptor
 import org.tokend.sdk.api.tfa.TfaVerificationService
 import org.tokend.sdk.keyserver.KeyServerApi

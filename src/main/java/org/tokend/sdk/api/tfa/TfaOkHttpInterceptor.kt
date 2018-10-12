@@ -5,6 +5,8 @@ import okhttp3.Interceptor
 import okhttp3.Response
 import org.tokend.sdk.api.responses.ServerError
 import org.tokend.sdk.api.base.factory.GsonFactory
+import org.tokend.sdk.api.tfa.model.TfaCallback
+import org.tokend.sdk.api.tfa.model.TfaVerifier
 import org.tokend.sdk.federation.NeedTfaException
 import java.io.InterruptedIOException
 import java.net.HttpURLConnection

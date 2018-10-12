@@ -1,4 +1,4 @@
-package org.tokend.sdk.api.tfa
+package org.tokend.sdk.api.tfa.model
 
 import org.tokend.sdk.federation.NeedTfaException
 

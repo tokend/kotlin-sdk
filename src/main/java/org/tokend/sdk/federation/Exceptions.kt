@@ -1,18 +1,18 @@
 package org.tokend.sdk.federation
 
 import org.tokend.sdk.api.responses.ServerError
-import org.tokend.sdk.api.tfa.TfaBackend
+import org.tokend.sdk.api.tfa.model.TfaFactor
 import java.io.IOException
 
 open class ForbiddenException(val type: String, detailMessage: String) : IOException(detailMessage)
 
 open class NeedTfaException(val backendId: Long,
-                       val backendType: TfaBackend.Type,
-                       val token: String,
-                       val keychainData: String,
-                       val salt: String,
-                       val walletId: String)
-    : ForbiddenException("tfa_required", "Need $backendType TFA") {
+                            val factorType: TfaFactor.Type,
+                            val token: String,
+                            val keychainData: String,
+                            val salt: String,
+                            val walletId: String)
+    : ForbiddenException("tfa_required", "Need $factorType TFA") {
 
     companion object {
         private const val TOKEN = "token"
@@ -28,7 +28,7 @@ open class NeedTfaException(val backendId: Long,
                 return NeedTfaException(
                         (error.meta?.get(BACKEND_ID) as? Double)?.toLong() ?: 0L,
                         (error.meta?.get(BACKEND_TYPE) as? String).toString()
-                                .let { TfaBackend.Type.fromLiteral(it) },
+                                .let { TfaFactor.Type.fromLiteral(it) },
                         (error.meta?.get(TOKEN) as? String).toString(),
                         (error.meta?.get(KEYCHAIN_DATA) as? String).toString(),
                         (error.meta?.get(SALT) as? String).toString(),
