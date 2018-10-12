@@ -2,6 +2,8 @@ package org.tokend.sdk.api.base
 
 import org.tokend.sdk.api.accounts.AccountsApi
 import org.tokend.sdk.api.accounts.AccountsService
+import org.tokend.sdk.api.blobs.BlobsApi
+import org.tokend.sdk.api.blobs.BlobsService
 import org.tokend.sdk.api.requests.CookieJarProvider
 import org.tokend.sdk.api.requests.RequestSigner
 import org.tokend.sdk.api.sales.SalesApi
@@ -34,5 +36,9 @@ open class TokendApi
 
     open val sales: SalesApi by lazy {
         SalesApi(getService(SalesService::class.java))
+    }
+
+    open val blobs: BlobsApi by lazy {
+        BlobsApi(getService(BlobsService::class.java))
     }
 }
