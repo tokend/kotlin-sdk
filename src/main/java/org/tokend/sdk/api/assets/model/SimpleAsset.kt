@@ -1,4 +1,4 @@
-package org.tokend.sdk.api.models
+package org.tokend.sdk.api.assets.model
 
 import java.math.BigDecimal
 

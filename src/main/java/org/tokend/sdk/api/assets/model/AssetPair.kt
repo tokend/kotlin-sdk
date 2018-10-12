@@ -1,4 +1,4 @@
-package org.tokend.sdk.api.models
+package org.tokend.sdk.api.assets.model
 
 import com.google.gson.annotations.SerializedName
 import org.tokend.sdk.utils.HashCodes

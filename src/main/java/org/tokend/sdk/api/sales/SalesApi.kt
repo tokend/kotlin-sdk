@@ -10,13 +10,13 @@ import org.tokend.sdk.api.sales.params.SalesParams
 open class SalesApi(
         protected val salesService: SalesService
 ) {
-    fun get(id: Long): ApiRequest<SimpleSale> {
+    open fun get(id: Long): ApiRequest<SimpleSale> {
         return SimpleRetrofitApiRequest(
                 salesService.getSale(id)
         )
     }
 
-    fun getAll(params: SalesParams? = null): ApiRequest<DataPage<SimpleSale>> {
+    open fun getAll(params: SalesParams? = null): ApiRequest<DataPage<SimpleSale>> {
         return MappedRetrofitApiRequest(
                 salesService.getSales(params?.map()),
                 { DataPage.fromPage(it) }

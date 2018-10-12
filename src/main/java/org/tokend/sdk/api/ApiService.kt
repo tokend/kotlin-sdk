@@ -2,6 +2,10 @@ package org.tokend.sdk.api
 
 import org.tokend.sdk.api.accounts.model.AccountResponse
 import org.tokend.sdk.api.accounts.model.AccountsDetailsResponse
+import org.tokend.sdk.api.assets.model.AssetChartData
+import org.tokend.sdk.api.assets.model.AssetPair
+import org.tokend.sdk.api.assets.model.ConvertAssetsResponse
+import org.tokend.sdk.api.assets.model.SimpleAsset
 import org.tokend.sdk.api.models.*
 import org.tokend.sdk.api.sales.model.SimpleSale
 import org.tokend.sdk.api.requests.AttributesEntity
