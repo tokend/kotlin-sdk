@@ -4,6 +4,8 @@ import org.tokend.sdk.api.accounts.AccountsApi
 import org.tokend.sdk.api.accounts.AccountsService
 import org.tokend.sdk.api.blobs.BlobsApi
 import org.tokend.sdk.api.blobs.BlobsService
+import org.tokend.sdk.api.fees.FeesApi
+import org.tokend.sdk.api.fees.FeesService
 import org.tokend.sdk.api.requests.CookieJarProvider
 import org.tokend.sdk.api.requests.RequestSigner
 import org.tokend.sdk.api.sales.SalesApi
@@ -40,5 +42,9 @@ open class TokendApi
 
     open val blobs: BlobsApi by lazy {
         BlobsApi(getService(BlobsService::class.java))
+    }
+
+    open val fees: FeesApi by lazy {
+        FeesApi(getService(FeesService::class.java))
     }
 }
