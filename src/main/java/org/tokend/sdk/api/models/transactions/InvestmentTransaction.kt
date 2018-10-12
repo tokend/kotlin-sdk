@@ -1,7 +1,7 @@
 package org.tokend.sdk.api.models.transactions
 
 import com.google.gson.annotations.SerializedName
-import org.tokend.sdk.api.models.Offer
+import org.tokend.sdk.api.trades.model.Offer
 import org.tokend.sdk.api.models.PaymentRecord
 import java.math.BigDecimal
 import java.math.MathContext

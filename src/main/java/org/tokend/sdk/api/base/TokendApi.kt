@@ -17,6 +17,8 @@ import org.tokend.sdk.api.sales.SalesService
 import org.tokend.sdk.api.tfa.TfaApi
 import org.tokend.sdk.api.tfa.TfaService
 import org.tokend.sdk.api.tfa.model.TfaCallback
+import org.tokend.sdk.api.trades.TradesApi
+import org.tokend.sdk.api.trades.TradesService
 import org.tokend.sdk.api.transactions.TransactionsApi
 import org.tokend.sdk.api.transactions.TransactionsService
 import org.tokend.sdk.api.users.UsersApi
@@ -64,5 +66,9 @@ open class TokendApi
 
     open val general: GeneralApi by lazy {
         GeneralApi(getService(GeneralService::class.java))
+    }
+
+    open val trades: TradesApi by lazy {
+        TradesApi(getService(TradesService::class.java))
     }
 }

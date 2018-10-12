@@ -7,7 +7,7 @@ import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.base.SimpleRetrofitApiRequest
 import org.tokend.sdk.api.base.model.DataPage
-import org.tokend.sdk.api.models.Offer
+import org.tokend.sdk.api.trades.model.Offer
 import org.tokend.sdk.api.models.PaymentRecord
 import org.tokend.sdk.api.models.SimpleBalanceDetails
 import org.tokend.sdk.api.models.transactions.Transaction

@@ -2,6 +2,7 @@ package org.tokend.sdk.api.models
 
 import org.tokend.sdk.api.accounts.model.BalanceDetails
 import org.tokend.sdk.api.assets.model.SimpleAsset
+import org.tokend.sdk.api.trades.model.Offer
 
 open class SimpleBalanceDetails(balanceId: String, balanceString: String,
                                 lockedString: String, convertedBalanceString: String,

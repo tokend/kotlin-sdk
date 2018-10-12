@@ -2,7 +2,7 @@ package org.tokend.sdk.api.accounts.model
 
 import com.google.gson.annotations.SerializedName
 import org.tokend.sdk.api.assets.model.Asset
-import org.tokend.sdk.api.models.Offer
+import org.tokend.sdk.api.trades.model.Offer
 import org.tokend.sdk.utils.BigDecimalUtil
 import org.tokend.sdk.utils.HashCodes
 import java.math.BigDecimal

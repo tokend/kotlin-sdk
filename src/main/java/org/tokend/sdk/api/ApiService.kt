@@ -15,6 +15,7 @@ import org.tokend.sdk.api.requests.DataEntity
 import org.tokend.sdk.api.requests.models.*
 import org.tokend.sdk.api.responses.*
 import org.tokend.sdk.api.tfa.model.TfaFactor
+import org.tokend.sdk.api.trades.model.Offer
 import org.tokend.sdk.api.transactions.model.SubmitTransactionResponse
 import org.tokend.sdk.api.users.model.SimpleUser
 import retrofit2.Call

@@ -1,6 +1,6 @@
 package org.tokend.sdk.api.models.transactions
 
-import org.tokend.sdk.api.models.Offer
+import org.tokend.sdk.api.trades.model.Offer
 import org.tokend.sdk.api.models.PaymentRecord
 import org.tokend.sdk.utils.BigDecimalUtil
 import java.math.BigDecimal

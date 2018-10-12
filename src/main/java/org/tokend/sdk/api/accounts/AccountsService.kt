@@ -1,7 +1,7 @@
 package org.tokend.sdk.api.accounts
 
 import org.tokend.sdk.api.accounts.model.AccountsDetailsResponse
-import org.tokend.sdk.api.models.Offer
+import org.tokend.sdk.api.trades.model.Offer
 import org.tokend.sdk.api.models.PaymentRecord
 import org.tokend.sdk.api.models.SimpleBalanceDetails
 import org.tokend.sdk.api.requests.models.AccountsDetailsRequestBody
