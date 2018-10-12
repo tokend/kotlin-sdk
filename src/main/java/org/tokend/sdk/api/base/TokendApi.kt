@@ -4,6 +4,8 @@ import org.tokend.sdk.api.accounts.AccountsApi
 import org.tokend.sdk.api.accounts.AccountsService
 import org.tokend.sdk.api.blobs.BlobsApi
 import org.tokend.sdk.api.blobs.BlobsService
+import org.tokend.sdk.api.favorites.FavoritesApi
+import org.tokend.sdk.api.favorites.FavoritesService
 import org.tokend.sdk.api.fees.FeesApi
 import org.tokend.sdk.api.fees.FeesService
 import org.tokend.sdk.api.requests.CookieJarProvider
@@ -52,5 +54,9 @@ open class TokendApi
 
     open val tfa: TfaApi by lazy {
         TfaApi(getService(TfaService::class.java))
+    }
+
+    open val favorites: FavoritesApi by lazy {
+        FavoritesApi(getService(FavoritesService::class.java))
     }
 }
