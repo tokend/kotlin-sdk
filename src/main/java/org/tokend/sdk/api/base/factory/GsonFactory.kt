@@ -1,4 +1,4 @@
-package org.tokend.sdk.factory
+package org.tokend.sdk.api.base.factory
 
 import com.google.gson.*
 import org.tokend.sdk.api.models.SocialLinks

@@ -1,7 +1,7 @@
 package org.tokend.sdk.api.models
 
 import com.google.gson.annotations.SerializedName
-import org.tokend.sdk.factory.GsonFactory
+import org.tokend.sdk.api.base.factory.GsonFactory
 import java.lang.reflect.Type
 
 open class Blob(

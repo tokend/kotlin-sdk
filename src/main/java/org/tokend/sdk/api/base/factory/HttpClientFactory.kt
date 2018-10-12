@@ -1,4 +1,4 @@
-package org.tokend.sdk.factory
+package org.tokend.sdk.api.base.factory
 
 import okhttp3.ConnectionSpec
 import okhttp3.Interceptor

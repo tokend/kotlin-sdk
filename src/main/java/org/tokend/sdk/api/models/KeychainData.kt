@@ -1,7 +1,7 @@
 package org.tokend.sdk.api.models
 
 import com.google.gson.annotations.SerializedName
-import org.tokend.sdk.factory.GsonFactory
+import org.tokend.sdk.api.base.factory.GsonFactory
 import org.tokend.sdk.utils.extentions.decodeBase64
 import org.tokend.sdk.utils.extentions.encodeBase64String
 

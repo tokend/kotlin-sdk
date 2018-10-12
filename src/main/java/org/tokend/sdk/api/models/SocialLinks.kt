@@ -4,7 +4,7 @@ import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
-import org.tokend.sdk.factory.GsonFactory
+import org.tokend.sdk.api.base.factory.GsonFactory
 import java.lang.reflect.Type
 
 open class SocialLinks(val items: List<String>) {

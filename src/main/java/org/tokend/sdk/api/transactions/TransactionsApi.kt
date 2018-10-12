@@ -5,7 +5,7 @@ import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.SimpleRetrofitApiRequest
 import org.tokend.sdk.api.transactions.model.SubmitTransactionResponse
 import org.tokend.sdk.api.transactions.model.TransactionFailedException
-import org.tokend.sdk.factory.GsonFactory
+import org.tokend.sdk.api.base.factory.GsonFactory
 import retrofit2.HttpException
 import java.net.HttpURLConnection
 import java.nio.charset.Charset

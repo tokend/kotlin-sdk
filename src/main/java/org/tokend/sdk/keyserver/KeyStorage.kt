@@ -11,8 +11,8 @@ import org.tokend.sdk.api.requests.CookieJarProvider
 import org.tokend.sdk.api.requests.DataEntity
 import org.tokend.sdk.api.requests.RequestSigner
 import org.tokend.sdk.api.tfa.TfaCallback
-import org.tokend.sdk.factory.ApiFactory
-import org.tokend.sdk.factory.GsonFactory
+import org.tokend.sdk.api.base.factory.ServiceFactory
+import org.tokend.sdk.api.base.factory.GsonFactory
 import org.tokend.sdk.federation.EmailAlreadyTakenException
 import org.tokend.sdk.federation.EmailNotVerifiedException
 import org.tokend.sdk.federation.InvalidCredentialsException
@@ -36,7 +36,7 @@ class KeyStorage @JvmOverloads constructor(
         userAgent: String? = null
 ) {
     private val keyServerApiService: KeyServerApi =
-            ApiFactory(keyServerUrl, userAgent)
+            ServiceFactory(keyServerUrl, userAgent)
                     .getKeyServerApi(requestSigner, tfaCallback, cookieJarProvider)
 
     // region Obtain

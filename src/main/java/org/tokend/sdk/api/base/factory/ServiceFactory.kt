@@ -1,4 +1,4 @@
-package org.tokend.sdk.factory
+package org.tokend.sdk.api.base.factory
 
 import okhttp3.OkHttpClient
 import org.tokend.sdk.api.ApiService
@@ -14,8 +14,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.*
 
-class ApiFactory(private val url: String,
-                 private val userAgent: String? = null) {
+class ServiceFactory(private val url: String,
+                     private val userAgent: String? = null) {
     @JvmOverloads
     fun getApiService(requestSigner: RequestSigner? = null,
                       tfaCallback: TfaCallback? = null,
