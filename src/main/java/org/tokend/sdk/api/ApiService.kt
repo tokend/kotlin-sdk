@@ -9,6 +9,7 @@ import org.tokend.sdk.api.requests.models.*
 import org.tokend.sdk.api.responses.*
 import org.tokend.sdk.api.tfa.TfaBackend
 import org.tokend.sdk.api.transactions.model.SubmitTransactionResponse
+import org.tokend.sdk.api.users.model.SimpleUser
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -46,7 +47,7 @@ interface ApiService {
 
     @GET("users/{accountId}")
     fun getUserInfo(@Path("accountId") accountId: String?):
-            Call<ServerResponse<UserInfo, ServerError>>
+            Call<ServerResponse<SimpleUser, ServerError>>
 
     @PATCH("users/{accountId}")
     @JvmSuppressWildcards

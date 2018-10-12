@@ -7,6 +7,8 @@ import org.tokend.sdk.api.requests.RequestSigner
 import org.tokend.sdk.api.tfa.TfaCallback
 import org.tokend.sdk.api.transactions.TransactionsApi
 import org.tokend.sdk.api.transactions.TransactionsService
+import org.tokend.sdk.api.users.UsersApi
+import org.tokend.sdk.api.users.UsersService
 
 open class TokendApi
 @JvmOverloads constructor(
@@ -22,5 +24,9 @@ open class TokendApi
 
     open val transactions: TransactionsApi by lazy {
         TransactionsApi(getService(TransactionsService::class.java))
+    }
+
+    open val users: UsersApi by lazy {
+        UsersApi(getService(UsersService::class.java))
     }
 }
