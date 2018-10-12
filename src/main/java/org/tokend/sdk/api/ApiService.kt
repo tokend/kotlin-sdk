@@ -8,6 +8,7 @@ import org.tokend.sdk.api.requests.DataEntity
 import org.tokend.sdk.api.requests.models.*
 import org.tokend.sdk.api.responses.*
 import org.tokend.sdk.api.tfa.TfaBackend
+import org.tokend.sdk.api.transactions.model.SubmitTransactionResponse
 import retrofit2.Call
 import retrofit2.http.*
 
