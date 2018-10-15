@@ -3,7 +3,7 @@ package org.tokend.sdk.api.transactions
 import okhttp3.ResponseBody
 import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.SimpleRetrofitApiRequest
-import org.tokend.sdk.api.base.factory.GsonFactory
+import org.tokend.sdk.factory.GsonFactory
 import org.tokend.sdk.api.transactions.model.SubmitTransactionResponse
 import org.tokend.sdk.api.transactions.model.TransactionFailedException
 import retrofit2.HttpException
@@ -13,7 +13,7 @@ import java.nio.charset.Charset
 open class TransactionsApi(
         protected val transactionsService: TransactionsService
 ) {
-    open fun postTransaction(envelopeBase64: String): ApiRequest<SubmitTransactionResponse> {
+    open fun submit(envelopeBase64: String): ApiRequest<SubmitTransactionResponse> {
         return SimpleRetrofitApiRequest(
                 transactionsService.pushTransaction(envelopeBase64)
         ) { error ->

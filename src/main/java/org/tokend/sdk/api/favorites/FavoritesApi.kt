@@ -3,7 +3,7 @@ package org.tokend.sdk.api.favorites
 import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.base.SimpleRetrofitApiRequest
-import org.tokend.sdk.api.models.FavoriteEntry
+import org.tokend.sdk.api.favorites.model.FavoriteEntry
 
 open class FavoritesApi(
         protected val favoritesService: FavoritesService

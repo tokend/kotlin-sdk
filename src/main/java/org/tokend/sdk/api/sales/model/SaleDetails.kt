@@ -2,7 +2,7 @@ package org.tokend.sdk.api.sales.model
 
 import com.google.gson.annotations.SerializedName
 import okhttp3.HttpUrl
-import org.tokend.sdk.api.models.RemoteFile
+import org.tokend.sdk.api.base.model.RemoteFile
 import org.tokend.sdk.utils.HashCodes
 import java.io.Serializable
 

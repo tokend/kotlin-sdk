@@ -2,7 +2,7 @@ package org.tokend.sdk.api.models
 
 
 import com.google.gson.annotations.SerializedName
-import org.tokend.sdk.api.requests.DataEntity
+import org.tokend.sdk.api.base.model.DataEntity
 import org.tokend.sdk.utils.extentions.decodeBase64
 
 open class WalletData(

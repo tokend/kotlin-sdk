@@ -1,6 +1,5 @@
 package org.tokend.sdk.api.base.model
 
-import org.tokend.sdk.api.responses.Page
 import java.util.regex.Pattern
 
 /**

@@ -2,7 +2,6 @@ package org.tokend.sdk.api.transactions.model
 
 import com.google.gson.JsonObject
 import com.google.gson.annotations.SerializedName
-import org.tokend.sdk.api.responses.Response
 import java.util.*
 
 open class SubmitTransactionResponse constructor(@SerializedName("extras")
@@ -14,7 +13,7 @@ open class SubmitTransactionResponse constructor(@SerializedName("extras")
                                                  @SerializedName("envelope_xdr")
                                                  private val envelopeXdr: String,
                                                  @SerializedName("result_xdr")
-                                                 private val resultXdr: String) : Response() {
+                                                 private val resultXdr: String) {
 
     val isSuccess: Boolean
         get() = ledger != null

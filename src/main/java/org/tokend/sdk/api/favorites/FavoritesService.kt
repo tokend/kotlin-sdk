@@ -1,7 +1,7 @@
 package org.tokend.sdk.api.favorites
 
-import org.tokend.sdk.api.models.FavoriteEntry
-import org.tokend.sdk.api.requests.DataEntity
+import org.tokend.sdk.api.favorites.model.FavoriteEntry
+import org.tokend.sdk.api.base.model.DataEntity
 import retrofit2.Call
 import retrofit2.http.*
 

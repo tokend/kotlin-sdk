@@ -1,7 +1,7 @@
 package org.tokend.sdk.keyserver
 
 import org.tokend.sdk.api.models.WalletData
-import org.tokend.sdk.api.requests.DataEntity
+import org.tokend.sdk.api.base.model.DataEntity
 import org.tokend.sdk.keyserver.models.LoginParamsResponse
 import retrofit2.Call
 import retrofit2.http.*

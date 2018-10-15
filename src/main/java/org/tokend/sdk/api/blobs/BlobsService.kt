@@ -1,7 +1,7 @@
 package org.tokend.sdk.api.blobs
 
-import org.tokend.sdk.api.models.Blob
-import org.tokend.sdk.api.requests.DataEntity
+import org.tokend.sdk.api.blobs.model.Blob
+import org.tokend.sdk.api.base.model.DataEntity
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

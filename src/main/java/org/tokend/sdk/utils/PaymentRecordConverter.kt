@@ -1,7 +1,14 @@
 package org.tokend.sdk.utils
 
-import org.tokend.sdk.api.models.PaymentRecord
-import org.tokend.sdk.api.models.transactions.*
+import org.tokend.sdk.api.base.model.transactions.BaseTransaction
+import org.tokend.sdk.api.base.model.transactions.InvestmentTransaction
+import org.tokend.sdk.api.base.model.transactions.IssuanceTransaction
+import org.tokend.sdk.api.base.model.transactions.MatchTransaction
+import org.tokend.sdk.api.base.model.transactions.PaymentTransaction
+import org.tokend.sdk.api.base.model.transactions.Transaction
+import org.tokend.sdk.api.base.model.transactions.TransactionType
+import org.tokend.sdk.api.base.model.transactions.WithdrawalTransaction
+import org.tokend.sdk.api.accounts.model.PaymentRecord
 
 object PaymentRecordConverter {
     fun toTransactions(items: List<PaymentRecord>,

@@ -2,30 +2,30 @@ package org.tokend.sdk.api.accounts
 
 import org.tokend.sdk.api.accounts.model.AccountsDetailsResponse
 import org.tokend.sdk.api.trades.model.Offer
-import org.tokend.sdk.api.models.PaymentRecord
-import org.tokend.sdk.api.models.SimpleBalanceDetails
-import org.tokend.sdk.api.requests.models.AccountsDetailsRequestBody
-import org.tokend.sdk.api.accounts.model.AccountResponse
-import org.tokend.sdk.api.models.AccountIdResponse
-import org.tokend.sdk.api.responses.Page
+import org.tokend.sdk.api.accounts.model.PaymentRecord
+import org.tokend.sdk.api.accounts.model.SimpleBalanceDetails
+import org.tokend.sdk.api.accounts.model.AccountsDetailsRequestBody
+import org.tokend.sdk.api.accounts.model.Account
+import org.tokend.sdk.api.accounts.model.AccountIdResponse
+import org.tokend.sdk.api.base.model.Page
 import retrofit2.Call
 import retrofit2.http.*
 
 interface AccountsService {
     @GET("accounts/{accountId}")
     fun getAccount(@Path("accountId") accountId: String?):
-            Call<AccountResponse>
+            Call<Account>
 
     /**
      * Will return empty account with only 'signers' filled.
      */
     @GET("accounts/{accountId}/signers")
     fun getSigners(@Path("accountId") accountId: String?):
-            Call<AccountResponse>
+            Call<Account>
 
     @GET("accounts/{accountId}/balances")
     fun getBalances(@Path("accountId") accountId: String):
-            Call<List<AccountResponse.Balance>>
+            Call<List<Account.Balance>>
 
     @GET("accounts/{accountId}/balances/details")
     fun getBalancesDetails(@Path("accountId") accountId: String?):

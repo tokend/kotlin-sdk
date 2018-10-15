@@ -3,7 +3,7 @@ package org.tokend.sdk.api.blobs
 import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.blobs.params.BlobsParams
-import org.tokend.sdk.api.models.Blob
+import org.tokend.sdk.api.blobs.model.Blob
 
 open class BlobsApi(
         protected val blobsService: BlobsService

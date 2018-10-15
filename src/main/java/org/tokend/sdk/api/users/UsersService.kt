@@ -1,8 +1,8 @@
 package org.tokend.sdk.api.users
 
-import org.tokend.sdk.api.requests.AttributesEntity
-import org.tokend.sdk.api.requests.DataEntity
-import org.tokend.sdk.api.requests.models.CreateUserRequestBody
+import org.tokend.sdk.api.base.model.AttributesEntity
+import org.tokend.sdk.api.base.model.DataEntity
+import org.tokend.sdk.api.users.model.CreateUserRequestBody
 import org.tokend.sdk.api.users.model.SimpleUser
 import org.tokend.sdk.api.users.model.UserAttributes
 import retrofit2.Call

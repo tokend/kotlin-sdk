@@ -1,7 +1,7 @@
 package org.tokend.sdk.api.sales.model
 
 import org.tokend.sdk.api.accounts.model.AccountsDetailsResponse
-import org.tokend.sdk.api.models.NameValue
+import org.tokend.sdk.api.base.model.NameValue
 import java.math.BigDecimal
 import java.util.*
 

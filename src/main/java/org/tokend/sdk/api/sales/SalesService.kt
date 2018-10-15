@@ -1,7 +1,7 @@
 package org.tokend.sdk.api.sales
 
-import org.tokend.sdk.api.models.SaleAnte
-import org.tokend.sdk.api.responses.Page
+import org.tokend.sdk.api.sales.model.SaleAnte
+import org.tokend.sdk.api.base.model.Page
 import org.tokend.sdk.api.sales.model.SimpleSale
 import retrofit2.Call
 import retrofit2.http.GET

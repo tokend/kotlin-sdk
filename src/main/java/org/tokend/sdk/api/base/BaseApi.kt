@@ -1,9 +1,9 @@
 package org.tokend.sdk.api.base
 
-import org.tokend.sdk.api.requests.CookieJarProvider
-import org.tokend.sdk.api.requests.RequestSigner
-import org.tokend.sdk.api.tfa.model.TfaCallback
-import org.tokend.sdk.api.base.factory.ServiceFactory
+import org.tokend.sdk.utils.CookieJarProvider
+import org.tokend.sdk.signing.RequestSigner
+import org.tokend.sdk.tfa.TfaCallback
+import org.tokend.sdk.factory.ServiceFactory
 
 abstract class BaseApi
 @JvmOverloads constructor(

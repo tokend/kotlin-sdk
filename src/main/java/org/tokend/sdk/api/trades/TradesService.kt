@@ -1,7 +1,7 @@
 package org.tokend.sdk.api.trades
 
 import org.tokend.sdk.api.trades.model.Offer
-import org.tokend.sdk.api.responses.Page
+import org.tokend.sdk.api.base.model.Page
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.QueryMap

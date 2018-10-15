@@ -1,8 +1,8 @@
 package org.tokend.sdk.api.tfa
 
-import org.tokend.sdk.api.requests.AttributesEntity
-import org.tokend.sdk.api.requests.DataEntity
-import org.tokend.sdk.api.requests.models.CreateTfaRequestBody
+import org.tokend.sdk.api.base.model.AttributesEntity
+import org.tokend.sdk.api.base.model.DataEntity
+import org.tokend.sdk.api.tfa.model.CreateTfaRequestBody
 import org.tokend.sdk.api.tfa.model.TfaFactor
 import retrofit2.Call
 import retrofit2.http.*

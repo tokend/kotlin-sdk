@@ -1,6 +1,7 @@
 package org.tokend.sdk.api.sales.params
 
 import org.tokend.sdk.api.base.params.PagingParams
+import org.tokend.sdk.api.base.params.PagingParamsHolder
 import org.tokend.sdk.api.base.params.QueryParams
 
 open class SalesParams(
@@ -12,7 +13,11 @@ open class SalesParams(
         val upcoming: Boolean? = null,
         val voting: Boolean? = null,
         val promotions: Boolean? = null
-) : QueryParams {
+) : QueryParams, PagingParamsHolder {
+    override val order = pagingParams?.order
+    override val cursor = pagingParams?.cursor
+    override val limit = pagingParams?.limit
+
     override fun map(): Map<String, Any> {
         return mutableMapOf<String, Any>().apply {
             pagingParams?.also { putAll(it.map()) }
