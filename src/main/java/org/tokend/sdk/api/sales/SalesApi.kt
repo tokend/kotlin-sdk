@@ -12,7 +12,7 @@ import org.tokend.sdk.api.sales.params.SalesParams
 open class SalesApi(
         protected val salesService: SalesService
 ) {
-    open fun get(id: Long): ApiRequest<SimpleSale> {
+    open fun getById(id: Long): ApiRequest<SimpleSale> {
         return SimpleRetrofitApiRequest(
                 salesService.getSale(id)
         )
