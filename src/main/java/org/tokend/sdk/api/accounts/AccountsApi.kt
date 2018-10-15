@@ -14,7 +14,7 @@ import org.tokend.sdk.utils.PaymentRecordConverter
 open class AccountsApi(
         protected open val accountsService: AccountsService
 ) {
-    open fun get(accountId: String): ApiRequest<Account> {
+    open fun getById(accountId: String): ApiRequest<Account> {
         return SimpleRetrofitApiRequest(
                 accountsService.getAccount(accountId)
         )
