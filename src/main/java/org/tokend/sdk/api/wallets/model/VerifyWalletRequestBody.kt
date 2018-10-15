@@ -1,4 +1,4 @@
-package org.tokend.sdk.api.requests.models
+package org.tokend.sdk.api.wallets.model
 
 import com.google.gson.annotations.SerializedName
 

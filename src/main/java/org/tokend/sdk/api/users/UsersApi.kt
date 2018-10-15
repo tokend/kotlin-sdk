@@ -15,7 +15,7 @@ open class UsersApi(
     open fun get(accountId: String): ApiRequest<SimpleUser> {
         return MappedRetrofitApiRequest(
                 usersService.getUserInfo(accountId),
-                { it.data!! }
+                { it.data }
         )
     }
 

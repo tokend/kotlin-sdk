@@ -1,4 +1,4 @@
-package org.tokend.sdk.api.models
+package org.tokend.sdk.keyserver.models
 
 import com.google.gson.annotations.SerializedName
 

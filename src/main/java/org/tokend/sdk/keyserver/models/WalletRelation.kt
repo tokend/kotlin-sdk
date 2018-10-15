@@ -1,4 +1,4 @@
-package org.tokend.sdk.api.models
+package org.tokend.sdk.keyserver.models
 
 open class WalletRelation(val name: String,
                           private val type: String,

@@ -23,6 +23,8 @@ import org.tokend.sdk.api.transactions.TransactionsApi
 import org.tokend.sdk.api.transactions.TransactionsService
 import org.tokend.sdk.api.users.UsersApi
 import org.tokend.sdk.api.users.UsersService
+import org.tokend.sdk.api.wallets.WalletsApi
+import org.tokend.sdk.api.wallets.WalletsService
 import org.tokend.sdk.signing.RequestSigner
 import org.tokend.sdk.tfa.TfaCallback
 import org.tokend.sdk.utils.CookieJarProvider
@@ -77,5 +79,9 @@ open class TokenDApi
 
     open val assets: AssetsApi by lazy {
         AssetsApi(getService(AssetsService::class.java))
+    }
+
+    open val wallets: WalletsApi by lazy {
+        WalletsApi(getService(WalletsService::class.java))
     }
 }

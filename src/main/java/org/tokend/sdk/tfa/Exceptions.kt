@@ -1,8 +1,8 @@
 package org.tokend.sdk.tfa
 
+import org.tokend.sdk.api.base.model.ForbiddenException
 import org.tokend.sdk.api.base.model.ServerError
 import org.tokend.sdk.api.tfa.model.TfaFactor
-import org.tokend.sdk.federation.ForbiddenException
 
 open class InvalidOtpException: Exception()
 

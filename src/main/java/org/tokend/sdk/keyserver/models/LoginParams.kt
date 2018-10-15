@@ -3,7 +3,7 @@ package org.tokend.sdk.keyserver.models
 import com.google.gson.annotations.SerializedName
 import org.tokend.sdk.utils.extentions.decodeBase64
 
-data class LoginParamsResponse(
+data class LoginParams(
         @SerializedName("type")
         val type: String,
         @SerializedName("id")

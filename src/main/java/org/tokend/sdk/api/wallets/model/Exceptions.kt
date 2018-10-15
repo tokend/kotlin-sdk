@@ -1,14 +1,14 @@
-package org.tokend.sdk.federation
+package org.tokend.sdk.api.wallets.model
 
-import java.io.IOException
-
-open class ForbiddenException(val type: String, detailMessage: String) : IOException(detailMessage)
+import org.tokend.sdk.api.base.model.ForbiddenException
 
 open class InvalidCredentialsException(val credential: Credential) : Exception() {
     enum class Credential {
         EMAIL, PASSWORD
     }
 }
+
 open class EmailNotVerifiedException(val walletId: String)
     : ForbiddenException("email_not_verified", "Email is not verified")
+
 open class EmailAlreadyTakenException : Exception()

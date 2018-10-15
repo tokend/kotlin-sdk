@@ -2,7 +2,6 @@ package org.tokend.sdk.factory
 
 import okhttp3.OkHttpClient
 import org.tokend.sdk.api.general.GeneralService
-import org.tokend.sdk.keyserver.KeyServerApi
 import org.tokend.sdk.signing.RequestSigner
 import org.tokend.sdk.signing.SignInterceptor
 import org.tokend.sdk.tfa.TfaCallback
@@ -16,26 +15,11 @@ import java.util.*
 
 class ServiceFactory(private val url: String,
                      private val userAgent: String? = null) {
-//    @JvmOverloads
-//    fun getApiService(requestSigner: RequestSigner? = null,
-//                      tfaCallback: TfaCallback? = null,
-//                      cookieJarProvider: CookieJarProvider? = null): ApiService {
-//        return getCustomService(ApiService::class.java, requestSigner,
-//                tfaCallback, cookieJarProvider)
-//    }
-
     fun getTfaVerificationService(): TfaVerificationService {
         return getCustomService(TfaVerificationService::class.java,
                 HttpClientFactory().getBaseHttpClientBuilder(
                         userAgent = userAgent
                 ).build())
-    }
-
-    fun getKeyServerApi(requestSigner: RequestSigner? = null,
-                        tfaCallback: TfaCallback? = null,
-                        cookieJarProvider: CookieJarProvider? = null): KeyServerApi {
-        return getCustomService(KeyServerApi::class.java, requestSigner,
-                tfaCallback, cookieJarProvider)
     }
 
     @JvmOverloads
