@@ -39,4 +39,13 @@ open class TfaFactor(
                           val keychainData: String? = null,
                           @SerializedName("salt")
                           val salt: String? = null)
+
+    override fun equals(other: Any?): Boolean {
+        return other is TfaFactor
+                && other.id == id
+    }
+
+    override fun hashCode(): Int {
+        return id.hashCode()
+    }
 }

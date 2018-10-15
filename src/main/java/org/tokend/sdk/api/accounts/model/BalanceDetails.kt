@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName
 import org.tokend.sdk.api.assets.model.Asset
 import org.tokend.sdk.api.trades.model.Offer
 import org.tokend.sdk.utils.BigDecimalUtil
-import org.tokend.sdk.utils.HashCodes
 import java.math.BigDecimal
 
 open class BalanceDetails<AssetType : Asset<*>>(
@@ -40,15 +39,9 @@ open class BalanceDetails<AssetType : Asset<*>>(
     override fun equals(other: Any?): Boolean {
         return other is BalanceDetails<*>
                 && other.balanceId == this.balanceId
-                && other.balance == this.balance
-                && other.convertedBalance == this.convertedBalance
-                && other.lockedBalance == this.lockedBalance
-                && other.convertedLockedBalance == this.convertedLockedBalance
-                && other.assetDetails == this.assetDetails
     }
 
     override fun hashCode(): Int {
-        return HashCodes.ofMany(balance, balance, convertedBalance,
-                lockedBalance, convertedLockedBalance, assetDetails)
+        return balanceId.hashCode()
     }
 }

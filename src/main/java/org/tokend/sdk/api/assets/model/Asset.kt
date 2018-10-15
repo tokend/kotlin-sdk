@@ -1,7 +1,6 @@
 package org.tokend.sdk.api.assets.model
 
 import com.google.gson.annotations.SerializedName
-import org.tokend.sdk.utils.HashCodes
 import java.io.Serializable
 import java.math.BigDecimal
 
@@ -20,12 +19,9 @@ open class Asset<DetailsType : AssetDetails>(
     override fun equals(other: Any?): Boolean {
         return other is Asset<*>
                 && other.code == this.code
-                && other.issued == this.issued
-                && other.policy == this.policy
-                && other.details == this.details
     }
 
     override fun hashCode(): Int {
-        return HashCodes.ofMany(code, policy, details, issued)
+        return code.hashCode()
     }
 }

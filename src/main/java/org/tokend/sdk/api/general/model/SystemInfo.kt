@@ -1,6 +1,7 @@
 package org.tokend.sdk.api.general.model
 
 import com.google.gson.annotations.SerializedName
+import org.tokend.sdk.utils.HashCodes
 
 open class SystemInfo(
         @SerializedName("network_passphrase")
@@ -15,4 +16,15 @@ open class SystemInfo(
         val masterExchangeAccountId: String,
         @SerializedName("master_exchange_name")
         val masterExchangeName: String
-)
+) {
+    override fun equals(other: Any?): Boolean {
+        return other is SystemInfo
+                && other.passphrase == passphrase
+                && other.masterExchangeName == masterExchangeName
+                && other.masterExchangeAccountId == masterExchangeAccountId
+    }
+
+    override fun hashCode(): Int {
+        return HashCodes.ofMany(passphrase, masterExchangeName, masterExchangeAccountId)
+    }
+}

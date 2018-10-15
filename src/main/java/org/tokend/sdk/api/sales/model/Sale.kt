@@ -3,7 +3,6 @@ package org.tokend.sdk.api.sales.model
 import com.google.gson.annotations.SerializedName
 import org.tokend.sdk.api.accounts.model.AccountsDetailsResponse
 import org.tokend.sdk.api.base.model.NameValue
-import org.tokend.sdk.utils.HashCodes
 import java.io.Serializable
 import java.math.BigDecimal
 import java.util.*
@@ -68,14 +67,10 @@ open class Sale<DetailsType, StatisticsType, QuoteAssetType>(@SerializedName("id
     override fun equals(other: Any?): Boolean {
         return other is Sale<*, *, *>
                 && other.id == this.id
-                && other.currentCap == other.currentCap
-                && other.state == this.state
-                && other.statistics == this.statistics
-                && other.details == this.details
     }
 
     override fun hashCode(): Int {
-        return HashCodes.ofMany(id, currentCap, state, statistics, details)
+        return id.hashCode()
     }
 
     companion object {
