@@ -14,12 +14,20 @@ import org.tokend.sdk.utils.PaymentRecordConverter
 open class AccountsApi(
         protected open val accountsService: AccountsService
 ) {
+    /**
+     * Will return specific account by ID.
+     * See <a href="https://tokend.gitlab.io/docs/?kotlin#get-account-by-id">Docs</a>
+     * */
     open fun getById(accountId: String): ApiRequest<Account> {
         return SimpleRetrofitApiRequest(
                 accountsService.getAccount(accountId)
         )
     }
 
+    /**
+     * Will return information about all account signers.
+     * See <a href="https://tokend.gitlab.io/docs/?http#get-account-signers">Docs</a>
+     */
     open fun getSigners(accountId: String): ApiRequest<List<Account.Signer>> {
         return MappedRetrofitApiRequest(
                 accountsService.getSigners(accountId),
@@ -29,18 +37,31 @@ open class AccountsApi(
         )
     }
 
+    /**
+     * Will return account balances.
+     * See <a href="https://tokend.gitlab.io/docs/?http#get-account-balances">Docs</a>
+     */
     open fun getBalances(accountId: String): ApiRequest<List<Account.Balance>> {
         return SimpleRetrofitApiRequest(
                 accountsService.getBalances(accountId)
         )
     }
 
+    /**
+     * Will return extended account balances details.
+     * Includes asset details for every balance and sales created for this asset, if present.
+     * See <a href="https://tokend.gitlab.io/docs/?http#get-account-balances-details">Docs</a>
+     */
     open fun getBalancesDetails(accountId: String): ApiRequest<List<SimpleBalanceDetails>> {
         return SimpleRetrofitApiRequest(
                 accountsService.getBalancesDetails(accountId)
         )
     }
 
+    /**
+     * Will return list of account payments.
+     * See <a href="https://tokend.gitlab.io/docs/?http#get-account-payments">Docs</a>
+     */
     open fun getPayments(accountId: String,
                          paymentsParams: PaymentsParams? = null
     ): ApiRequest<DataPage<PaymentRecord>> {
@@ -53,6 +74,10 @@ open class AccountsApi(
         )
     }
 
+    /**
+     * Will return list of account transactions.
+     * See <a href="https://tokend.gitlab.io/docs/?http#get-account-transactions">Docs</a>
+     */
     open fun getPaymentTransactions(accountId: String,
                                     paymentsParams: PaymentsParams
     ): ApiRequest<DataPage<Transaction>> {
@@ -80,6 +105,10 @@ open class AccountsApi(
         )
     }
 
+    /**
+     * Will return list of pending offers for specified account.
+     * See <a href="https://tokend.gitlab.io/docs/?http#get-account-pending-offers">Docs</a>
+     */
     open fun getPendingOffers(accountId: String,
                               offersParams: OffersParams? = null): ApiRequest<DataPage<Offer>> {
         return MappedRetrofitApiRequest(

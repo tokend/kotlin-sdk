@@ -8,6 +8,10 @@ import org.tokend.sdk.api.fees.model.Fee
 open class FeesApi(
         protected val feesService: FeesService
 ) {
+    /**
+     * Will return specific fee information.
+     * See <a href="https://tokend.gitlab.io/docs/?http#get-fee-by-type">Docs</a>
+     */
     open fun getByType(feeType: Int,
                        params: FeeParams): ApiRequest<Fee> {
         return SimpleRetrofitApiRequest(

@@ -12,6 +12,10 @@ import org.tokend.sdk.api.users.model.UserAttributes
 open class UsersApi(
         protected val usersService: UsersService
 ) {
+    /**
+     * Will return user by given accountId.
+     * See <a href="https://tokend.gitlab.io/docs/?http#get-user">Docs</a>
+     */
     open fun get(accountId: String): ApiRequest<SimpleUser> {
         return MappedRetrofitApiRequest(
                 usersService.getUserInfo(accountId),
@@ -19,6 +23,10 @@ open class UsersApi(
         )
     }
 
+    /**
+     * Will create user for given accountId
+     * See <a href="https://tokend.gitlab.io/docs/?http#create-user">Docs</a>
+     */
     open fun create(accountId: String,
                     userType: String): ApiRequest<Void> {
         return SimpleRetrofitApiRequest(
