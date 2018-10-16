@@ -1,8 +1,9 @@
 package org.tokend.sdk.keyserver
 
+import org.tokend.sdk.keyserver.models.KdfAttributes
 import org.tokend.sdk.keyserver.models.WalletData
 import org.tokend.sdk.keyserver.models.WalletRelation
-import org.tokend.sdk.keyserver.models.KdfAttributes
+import java.security.SecureRandom
 
 class WalletBuilder(
         val email: String,
@@ -38,7 +39,7 @@ class WalletBuilder(
         val walletKey = KeyStorage.getWalletKey(email, password, kdfAttributes)
         val walletId = KeyStorage.getWalletIdHex(email, password, kdfAttributes)
 
-        val kdfSalt = kdfAttributes.salt
+        val kdfSalt = kdfAttributes.salt ?: generateKdfSalt()
 
         val encryptedSeed = KeyStorage.encryptWalletKey(
                 email,
@@ -103,4 +104,12 @@ class WalletBuilder(
         return wallet
     }
 
+    companion object {
+        const val KDF_SALT_LENGTH_BYTES = 16
+
+        @JvmStatic
+        fun generateKdfSalt(): ByteArray {
+            return SecureRandom().generateSeed(KDF_SALT_LENGTH_BYTES)
+        }
+    }
 }

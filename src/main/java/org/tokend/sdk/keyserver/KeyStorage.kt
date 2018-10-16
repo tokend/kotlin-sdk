@@ -3,17 +3,12 @@ package org.tokend.sdk.keyserver
 import org.spongycastle.util.encoders.Base64
 import org.tokend.crypto.cipher.Aes256GCM
 import org.tokend.kdf.ScryptWithMasterKeyDerivation
-import org.tokend.sdk.keyserver.models.EncryptedKey
-import org.tokend.sdk.keyserver.models.KeychainData
-import org.tokend.sdk.keyserver.models.WalletData
 import org.tokend.sdk.api.wallets.WalletsApi
 import org.tokend.sdk.api.wallets.model.EmailAlreadyTakenException
 import org.tokend.sdk.api.wallets.model.EmailNotVerifiedException
 import org.tokend.sdk.api.wallets.model.InvalidCredentialsException
 import org.tokend.sdk.factory.GsonFactory
-import org.tokend.sdk.keyserver.models.KdfAttributes
-import org.tokend.sdk.keyserver.models.LoginParams
-import org.tokend.sdk.keyserver.models.WalletInfo
+import org.tokend.sdk.keyserver.models.*
 import org.tokend.sdk.utils.extentions.encodeHex
 import org.tokend.sdk.utils.extentions.toBytes
 import retrofit2.HttpException
@@ -110,10 +105,15 @@ class KeyStorage constructor(
             return result
         }
 
-        private fun deriveKey(login: ByteArray, password: ByteArray, masterKey: ByteArray, kdfAttributes: KdfAttributes): ByteArray {
+        private fun deriveKey(login: ByteArray,
+                              password: ByteArray,
+                              masterKey: ByteArray,
+                              kdfAttributes: KdfAttributes): ByteArray {
             val derivation = ScryptWithMasterKeyDerivation(kdfAttributes.n, kdfAttributes.r,
                     kdfAttributes.p, login, masterKey)
-            return derivation.derive(password, kdfAttributes.salt, kdfAttributes.bits.toBytes())
+            val salt = kdfAttributes.salt
+                    ?: throw IllegalArgumentException("KDF salt is required for derivation")
+            return derivation.derive(password, salt, kdfAttributes.bits.toBytes())
         }
 
         fun decryptSecretSeed(iv: ByteArray, cipherText: ByteArray, key: ByteArray): CharArray {
