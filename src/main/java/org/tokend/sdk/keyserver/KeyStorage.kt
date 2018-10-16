@@ -21,6 +21,9 @@ class KeyStorage constructor(
         private val walletsApi: WalletsApi
 ) {
     // region Obtain
+    /**
+     * Loads user's wallet and decrypts secret seed.
+     */
     @Throws(InvalidCredentialsException::class,
             EmailNotVerifiedException::class,
             HttpException::class
@@ -53,12 +56,18 @@ class KeyStorage constructor(
         }
     }
 
+    /**
+     * Loads KDF params.
+     */
     @Throws(InvalidCredentialsException::class, HttpException::class)
     fun getLoginParams(login: String? = null, isRecovery: Boolean = false): LoginParams {
         val response = walletsApi.getLoginParams(login, isRecovery).execute()
         return response.get()
     }
 
+    /**
+     * Loads wallet by wallet ID.
+     */
     @Throws(InvalidCredentialsException::class,
             EmailNotVerifiedException::class,
             HttpException::class)
@@ -68,9 +77,10 @@ class KeyStorage constructor(
     }
     // endregion
 
-    // endregion
-
     // region Save
+    /**
+     * Submits given wallet to the system.
+     */
     @Throws(
             EmailAlreadyTakenException::class,
             HttpException::class
@@ -79,6 +89,9 @@ class KeyStorage constructor(
         walletsApi.create(walletData).execute()
     }
 
+    /**
+     * Updates wallet by given wallet ID with given data.
+     */
     fun updateWallet(walletId: String, walletData: WalletData) {
         walletsApi.update(walletId, walletData).execute()
     }
@@ -89,6 +102,9 @@ class KeyStorage constructor(
         private const val WALLET_KEY_MASTER_KEY = "WALLET_KEY"
         private const val IV_LENGTH = 12
 
+        /**
+         * @return key for secret seed encryption/decryption
+         */
         fun getWalletKey(login: String, password: CharArray,
                          kdfAttributes: KdfAttributes): ByteArray {
             val passwordCharBuffer = CharBuffer.wrap(password)
@@ -116,6 +132,15 @@ class KeyStorage constructor(
             return derivation.derive(password, salt, kdfAttributes.bits.toBytes())
         }
 
+        /**
+         * Decrypts secret seed with given key.
+         * @param iv cipher init vector
+         * @param cipherText encrypted secret seed
+         * @param key decryption key
+         *
+         * @see KeychainData
+         * @see KeyStorage.getWalletKey
+         */
         fun decryptSecretSeed(iv: ByteArray, cipherText: ByteArray, key: ByteArray): CharArray {
             val seedJsonBytes = Aes256GCM(iv).decrypt(cipherText, key)
             val seedJsonByteBuffer = ByteBuffer.wrap(seedJsonBytes)
@@ -156,6 +181,9 @@ class KeyStorage constructor(
             return seed
         }
 
+        /**
+         * Encrypts given secret seed with given key
+         */
         private fun encryptSecretSeed(seed: CharArray, iv: ByteArray, key: ByteArray): ByteArray {
             val jsonStartChars = "{\"seed\":\"".toCharArray()
             val jsonEndChars = "\"}".toCharArray()
@@ -175,6 +203,9 @@ class KeyStorage constructor(
             return encrypted
         }
 
+        /**
+         * @return HEX-encoded wallet ID
+         */
         fun getWalletIdHex(login: String, password: CharArray,
                            kdfAttributes: KdfAttributes): String {
             val passwordCharBuffer = CharBuffer.wrap(password)
@@ -191,8 +222,14 @@ class KeyStorage constructor(
             return result
         }
 
-        fun encryptWalletKey(email: String, seed: CharArray, accountId: String,
-                             encryptionKey: ByteArray, keyDerivationSalt: ByteArray)
+        /**
+         * Encrypts given account data.
+         */
+        fun encryptWalletAccount(email: String,
+                                 seed: CharArray,
+                                 accountId: String,
+                                 encryptionKey: ByteArray,
+                                 keyDerivationSalt: ByteArray)
                 : EncryptedKey {
             val iv = SecureRandom.getSeed(IV_LENGTH)
             val encryptedSeed = encryptSecretSeed(seed, iv, encryptionKey)

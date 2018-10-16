@@ -5,6 +5,18 @@ import org.tokend.sdk.keyserver.models.WalletData
 import org.tokend.sdk.keyserver.models.WalletRelation
 import java.security.SecureRandom
 
+/**
+ * Builder of TokenD wallet.
+ *
+ * @param email user's email
+ * @param password user's password
+ * @param secretSeed seed of the keypair
+ * @param originalAccountId account ID i.e. public key of the keypair
+ * @param kdfAttributes system KDF attributes.
+ * For password change or recovery use existing
+ * @param kdfVersion system KDF version.
+ * For password change or recovery use existing
+ */
 class WalletBuilder(
         val email: String,
         val password: CharArray,
@@ -19,6 +31,13 @@ class WalletBuilder(
     private var recoverySeed: CharArray? = null
     private var recoveryAccount: String? = null
 
+    /**
+     * Adds relation for password TFA factor.
+     * To increase security you have to use separate keypair for this relation.
+     *
+     * @param factorSeed seed of the keypair
+     * @param factorAccountId account ID i.e. public key of the keypair
+     */
     fun addPasswordFactorRelation(factorSeed: CharArray,
                                   factorAccountId: String): WalletBuilder {
         this.passwordFactorSeed = factorSeed
@@ -27,6 +46,15 @@ class WalletBuilder(
         return this
     }
 
+    /**
+     * Adds wallet recovery relation.
+     * You have to use separate keypair for this relation.
+     * Recovery seed is the only way to recover access to the account
+     * in case of password loss so it has to be saved by user.
+     *
+     * @param recoverySeed seed of recovery keypair
+     * @param recoveryAccountId account ID i.e. public key of recovery keypair
+     */
     fun addRecoveryRelation(recoverySeed: CharArray,
                             recoveryAccountId: String): WalletBuilder {
         this.recoverySeed = recoverySeed
@@ -35,13 +63,16 @@ class WalletBuilder(
         return this
     }
 
+    /**
+     * @return result wallet data
+     */
     fun build(): WalletData {
         val walletKey = KeyStorage.getWalletKey(email, password, kdfAttributes)
         val walletId = KeyStorage.getWalletIdHex(email, password, kdfAttributes)
 
         val kdfSalt = kdfAttributes.salt ?: generateKdfSalt()
 
-        val encryptedSeed = KeyStorage.encryptWalletKey(
+        val encryptedSeed = KeyStorage.encryptWalletAccount(
                 email,
                 secretSeed,
                 originalAccountId,
@@ -61,7 +92,7 @@ class WalletBuilder(
 
         if (passwordFactorSeed != null && passwordFactorAccount != null) {
             val encryptedPasswordFactor =
-                    KeyStorage.encryptWalletKey(
+                    KeyStorage.encryptWalletAccount(
                             email,
                             passwordFactorSeed!!,
                             passwordFactorAccount!!,
@@ -83,7 +114,7 @@ class WalletBuilder(
             val recoveryWalletId = KeyStorage.getWalletIdHex(email, recoverySeed!!, kdfAttributes)
 
             val encryptedRecovery =
-                    KeyStorage.encryptWalletKey(
+                    KeyStorage.encryptWalletAccount(
                             email,
                             recoverySeed!!,
                             recoveryAccount!!,
