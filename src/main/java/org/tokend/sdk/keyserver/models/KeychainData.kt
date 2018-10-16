@@ -21,15 +21,18 @@ open class KeychainData(@SerializedName("IV")
         get() = rawCipherText.decodeBase64()
 
     companion object {
+        @JvmStatic
         fun fromDecoded(decodedIV: ByteArray, decodedCipherText: ByteArray): KeychainData {
             return KeychainData(decodedIV.encodeBase64String(),
                     decodedCipherText.encodeBase64String())
         }
 
+        @JvmStatic
         fun fromJson(rawJson: String): KeychainData {
             return GsonFactory().getBaseGson().fromJson(rawJson, KeychainData::class.java)
         }
 
+        @JvmStatic
         fun fromRawString(rawString: String): KeychainData {
             return fromJson(String(rawString.decodeBase64()))
         }
