@@ -5,6 +5,9 @@ import org.tokend.sdk.signing.RequestSigner
 import org.tokend.sdk.tfa.TfaCallback
 import org.tokend.sdk.factory.ServiceFactory
 
+/**
+ * Represent a base TokenD API.
+ */
 abstract class BaseApi
 @JvmOverloads constructor(
         val rootUrl: String,

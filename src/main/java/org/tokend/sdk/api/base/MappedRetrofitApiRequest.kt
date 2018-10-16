@@ -6,6 +6,12 @@ import retrofit2.Callback
 import retrofit2.HttpException
 import retrofit2.Response
 
+/**
+ * API request based on Retrofit [Call] with response and error mapping.
+ * @param call base Retrofit call
+ * @param responseMapper transformation function for the response
+ * @param errorMapper transformation function for errors
+ */
 open class MappedRetrofitApiRequest<CallType, ResponseType>(
         protected val call: Call<CallType>,
         protected val responseMapper: (CallType) -> ResponseType,

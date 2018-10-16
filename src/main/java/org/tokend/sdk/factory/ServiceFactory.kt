@@ -13,6 +13,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.*
 
+/**
+ * Constructs API services from Retrofit interfaces.
+ */
 class ServiceFactory(private val url: String,
                      private val userAgent: String? = null) {
     fun getTfaVerificationService(): TfaVerificationService {
@@ -22,6 +25,13 @@ class ServiceFactory(private val url: String,
                 ).build())
     }
 
+    /**
+     * Constructs API service from given Retrofit interface.
+     * @param requestSigner required to perform requests
+     * with signature check
+     * @param tfaCallback required to handle TFA requests
+     * @param cookieJarProvider persistent cookie storage
+     */
     @JvmOverloads
     fun <T> getCustomService(serviceClass: Class<T>,
                              requestSigner: RequestSigner? = null,
@@ -55,6 +65,10 @@ class ServiceFactory(private val url: String,
         return retrofit.create(serviceClass)
     }
 
+    /**
+     * Constructs API service from given Retrofit interface
+     * using given HTTP client.
+     */
     fun <T> getCustomService(serviceClass: Class<T>, httpClient: OkHttpClient): T {
         return getBaseRetrofitConfig(httpClient)
                 .build()

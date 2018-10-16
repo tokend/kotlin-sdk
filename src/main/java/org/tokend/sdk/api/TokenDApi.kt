@@ -30,7 +30,18 @@ import org.tokend.sdk.tfa.TfaCallback
 import org.tokend.sdk.utils.CookieJarProvider
 
 open class TokenDApi
-@JvmOverloads constructor(
+/**
+ * Creates TokenD API instance.
+ * @param rootUrl root URL of TokenD instance
+ * @param requestSigner required to perform requests
+ * with signature check. If not set such requests will be uncompletable
+ * @param tfaCallback required to handle 2FA (2 factor auth) requests.
+ * If not set requests protected by 2FA will be uncompletable
+ * @param cookieJarProvider if set will be used to store cookies
+ * @param userAgent overrides default user agent
+ */
+@JvmOverloads
+constructor(
         rootUrl: String,
         requestSigner: RequestSigner? = null,
         tfaCallback: TfaCallback? = null,
