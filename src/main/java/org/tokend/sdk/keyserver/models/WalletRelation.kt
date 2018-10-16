@@ -18,7 +18,7 @@ open class WalletRelation(val name: String,
             if (accountId != null && encryptedKey != null) {
                 val attributes = WalletData.WalletAttributes(
                         accountId = accountId,
-                        keychainDataString = encryptedKey.keychainData,
+                        keychainDataString = encryptedKey.encodedKeychainData,
                         salt = encryptedKey.salt,
                         email = "",
                         isVerified = true

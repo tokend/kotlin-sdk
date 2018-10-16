@@ -50,7 +50,7 @@ open class WalletData(
                     accountId = encryptedKey.accountId,
                     email = encryptedKey.email,
                     salt = encryptedKey.salt,
-                    keychainDataString = encryptedKey.keychainData,
+                    keychainDataString = encryptedKey.encodedKeychainData,
                     isVerified = false
             ),
             relationships = HashMap()
