@@ -5,26 +5,39 @@ import org.tokend.sdk.factory.GsonFactory
 import org.tokend.sdk.utils.extentions.decodeBase64
 import org.tokend.sdk.utils.extentions.encodeBase64String
 
-open class KeychainData(@SerializedName("IV")
-                        private val rawIV: String,
-                        @SerializedName("cipherText")
-                        private val rawCipherText: String,
-                        @SerializedName("cipherName")
-                        private val cipherName: String = "aes",
-                        @SerializedName("modeName")
-                        private val cipherMode: String = "gcm") {
-
+/**
+ * Holds encrypted data and cipher params for decryption.
+ *
+ * @param encodedIv cipher init vector encoded using Base64
+ * @param encodedCipherText encrypted data encoded using Base64
+ */
+open class KeychainData
+@JvmOverloads
+constructor(@SerializedName("IV")
+            private val encodedIv: String,
+            @SerializedName("cipherText")
+            private val encodedCipherText: String,
+            @SerializedName("cipherName")
+            private val cipherName: String = "aes",
+            @SerializedName("modeName")
+            private val cipherMode: String = "gcm"
+) {
+    /**
+     * Raw bytes of the init vector.
+     */
     val iv: ByteArray
-        get() = rawIV.decodeBase64()
+        get() = encodedIv.decodeBase64()
 
+    /**
+     * Raw bytes of the encrypted data
+     */
     val cipherText: ByteArray
-        get() = rawCipherText.decodeBase64()
+        get() = encodedCipherText.decodeBase64()
 
     companion object {
         @JvmStatic
-        fun fromDecoded(decodedIV: ByteArray, decodedCipherText: ByteArray): KeychainData {
-            return KeychainData(decodedIV.encodeBase64String(),
-                    decodedCipherText.encodeBase64String())
+        fun fromRaw(iv: ByteArray, cipherText: ByteArray): KeychainData {
+            return KeychainData(iv.encodeBase64String(), cipherText.encodeBase64String())
         }
 
         @JvmStatic
@@ -33,7 +46,7 @@ open class KeychainData(@SerializedName("IV")
         }
 
         @JvmStatic
-        fun fromRawString(rawString: String): KeychainData {
+        fun fromJsonString(rawString: String): KeychainData {
             return fromJson(String(rawString.decodeBase64()))
         }
     }
