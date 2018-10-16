@@ -1,0 +1,49 @@
+buildscript {
+    ext.kotlin_version = '1.2.31'
+    ext.retrofitVersion = '2.2.0'
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'kotlin'
+
+compileJava {
+    sourceCompatibility = 1.6
+    targetCompatibility = 1.6
+}
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    compile "com.squareup.retrofit2:retrofit:${retrofitVersion}"
+    compile "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
+    compile "com.squareup.retrofit2:converter-scalars:${retrofitVersion}"
+    compile 'com.squareup.okhttp3:logging-interceptor:3.5.0'
+
+    compile 'org.tokend:crypto-cipher:1.0'
+    compile 'org.tokend:crypto-kdf:1.0.1'
+}
+repositories {
+    mavenCentral()
+    maven { url "https://maven.tokend.org" }
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.6"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.6"
+}
+
+apply from: 'deploy.gradle'
+
+group 'org.tokend'
+version '1.0'
+uploadArchives.repositories.mavenDeployer.pom.artifactId = 'sdk'
