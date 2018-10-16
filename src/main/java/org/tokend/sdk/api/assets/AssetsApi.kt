@@ -17,7 +17,7 @@ open class AssetsApi(
 ) {
     /**
      * Will return all existing assets in the system.
-     * See <a href="https://tokend.gitlab.io/docs/?http#assets">Docs</a>
+     * @see <a href="https://tokend.gitlab.io/docs/?http#assets">Docs</a>
      */
     open fun get(): ApiRequest<List<SimpleAsset>> {
         return SimpleRetrofitApiRequest(
@@ -27,7 +27,7 @@ open class AssetsApi(
 
     /**
      * Will return specific asset by it's code.
-     * See <a href="https://tokend.gitlab.io/docs/?http#get-asset-by-code">Docs</a>
+     * @see <a href="https://tokend.gitlab.io/docs/?http#get-asset-by-code">Docs</a>
      */
     open fun getByCode(assetCode: String): ApiRequest<SimpleAsset> {
         return SimpleRetrofitApiRequest(
@@ -37,7 +37,7 @@ open class AssetsApi(
 
     /**
      * Will return all existing asset pairs in the system.
-     * See <a href="https://tokend.gitlab.io/docs/?http#get-asset-pairs-list">Docs</a>
+     * @see <a href="https://tokend.gitlab.io/docs/?http#get-asset-pairs-list">Docs</a>
      */
     open fun getPairs(): ApiRequest<List<AssetPair>> {
         return SimpleRetrofitApiRequest(

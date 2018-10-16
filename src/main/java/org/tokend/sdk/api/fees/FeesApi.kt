@@ -10,7 +10,7 @@ open class FeesApi(
 ) {
     /**
      * Will return specific fee information.
-     * See <a href="https://tokend.gitlab.io/docs/?http#get-fee-by-type">Docs</a>
+     * @see <a href="https://tokend.gitlab.io/docs/?http#get-fee-by-type">Docs</a>
      */
     open fun getByType(feeType: Int,
                        params: FeeParams): ApiRequest<Fee> {

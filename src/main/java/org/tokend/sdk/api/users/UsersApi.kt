@@ -14,7 +14,7 @@ open class UsersApi(
 ) {
     /**
      * Will return user by given accountId.
-     * See <a href="https://tokend.gitlab.io/docs/?http#get-user">Docs</a>
+     * @see <a href="https://tokend.gitlab.io/docs/?http#get-user">Docs</a>
      */
     open fun get(accountId: String): ApiRequest<SimpleUser> {
         return MappedRetrofitApiRequest(
@@ -25,7 +25,7 @@ open class UsersApi(
 
     /**
      * Will create user for given accountId
-     * See <a href="https://tokend.gitlab.io/docs/?http#create-user">Docs</a>
+     * @see <a href="https://tokend.gitlab.io/docs/?http#create-user">Docs</a>
      */
     open fun create(accountId: String,
                     userType: String): ApiRequest<Void> {

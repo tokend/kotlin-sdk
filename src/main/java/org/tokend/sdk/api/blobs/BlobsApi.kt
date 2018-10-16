@@ -10,7 +10,7 @@ open class BlobsApi(
 ) {
     /**
      * Will return list of blobs filtered with given params
-     * See <a href="https://tokend.gitlab.io/docs/?http#filter-blobs">Docs</a>
+     * @see <a href="https://tokend.gitlab.io/docs/?http#filter-blobs">Docs</a>
      */
     fun get(accountId: String,
             params: BlobsParams? = null): ApiRequest<List<Blob>> {
@@ -25,7 +25,7 @@ open class BlobsApi(
 
     /**
      * Will return specific blob by it's id.
-     * See <a href="https://tokend.gitlab.io/docs/?http#get">Docs</a>
+     * @see <a href="https://tokend.gitlab.io/docs/?http#get">Docs</a>
      */
     fun getById(accountId: String,
                 blobId: String): ApiRequest<Blob> {

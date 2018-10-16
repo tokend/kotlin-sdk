@@ -15,7 +15,7 @@ open class TransactionsApi(
 ) {
     /**
      * Submits given transaction.
-     * See <a href="https://tokend.gitlab.io/docs/?http#submit-a-transaction">Docs</a>
+     * @see <a href="https://tokend.gitlab.io/docs/?http#submit-a-transaction">Docs</a>
      */
     open fun submit(envelopeBase64: String): ApiRequest<SubmitTransactionResponse> {
         return SimpleRetrofitApiRequest(

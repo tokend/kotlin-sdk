@@ -14,7 +14,7 @@ open class SalesApi(
 ) {
     /**
      * Will return detailed information about the sale with specified ID.
-     * See <a href="https://tokend.gitlab.io/docs/?http#get-sale-by-id">Docs</a>
+     * @see <a href="https://tokend.gitlab.io/docs/?http#get-sale-by-id">Docs</a>
      */
     open fun getById(id: Long): ApiRequest<SimpleSale> {
         return SimpleRetrofitApiRequest(
@@ -24,7 +24,7 @@ open class SalesApi(
 
     /**
      * Will return sales that match specified filters.
-     * See <a href="https://tokend.gitlab.io/docs/?http#get-sales">Docs</a>
+     * @see <a href="https://tokend.gitlab.io/docs/?http#get-sales">Docs</a>
      */
     open fun getAll(params: SalesParams? = null): ApiRequest<DataPage<SimpleSale>> {
         return MappedRetrofitApiRequest(
@@ -35,7 +35,7 @@ open class SalesApi(
 
     /**
      * Will return list of charged antes.
-     * See <a href="https://tokend.gitlab.io/docs/?http#get-sale-antes">Docs</a>
+     * @see <a href="https://tokend.gitlab.io/docs/?http#get-sale-antes">Docs</a>
      */
     open fun getAntes(params: AntesParams? = null): ApiRequest<DataPage<SaleAnte>> {
         return MappedRetrofitApiRequest(

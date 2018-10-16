@@ -11,7 +11,7 @@ open class TradesApi(
 ) {
     /**
      * Will return order book – a list of active orders for given params.
-     * See <a href="https://tokend.gitlab.io/docs/?http#trades">Docs</a>
+     * @see <a href="https://tokend.gitlab.io/docs/?http#trades">Docs</a>
      */
     open fun getOrderBook(params: OrderBookParams): ApiRequest<DataPage<Offer>> {
         return MappedRetrofitApiRequest(
