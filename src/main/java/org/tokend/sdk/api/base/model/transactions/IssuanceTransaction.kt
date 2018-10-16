@@ -3,6 +3,10 @@ package org.tokend.sdk.api.base.model.transactions
 import com.google.gson.JsonObject
 import org.tokend.sdk.api.accounts.model.PaymentRecord
 
+/**
+ * Represents an issuance of some amount of some asset.
+ * It may be a deposit or a bonus.
+ */
 class IssuanceTransaction(
         private val base: BaseTransaction,
         val cause: String?,

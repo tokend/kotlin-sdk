@@ -3,6 +3,9 @@ package org.tokend.sdk.api.base.model.transactions
 import java.math.BigDecimal
 import java.util.*
 
+/**
+ * Represents an operation of transferring some amount of some asset.
+ */
 interface Transaction {
     val id: String
     val pagingToken: String

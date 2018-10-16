@@ -5,6 +5,10 @@ import org.tokend.sdk.api.accounts.model.PaymentRecord
 import org.tokend.sdk.utils.BigDecimalUtil
 import java.math.BigDecimal
 
+/**
+ * Represents operation of withdrawal some amount of some asset
+ * to the external payment system.
+ */
 open class WithdrawalTransaction(
         private val base: BaseTransaction,
         override val asset: String,

@@ -1,11 +1,18 @@
 package org.tokend.sdk.api.base.model.transactions
 
 import com.google.gson.annotations.SerializedName
-import org.tokend.sdk.api.trades.model.Offer
 import org.tokend.sdk.api.accounts.model.PaymentRecord
+import org.tokend.sdk.api.trades.model.Offer
 import java.math.BigDecimal
 import java.math.MathContext
 
+/**
+ * Represents investment in some fund.
+ * It is related to the asset in whose history it is listed.
+ * For example, if there is an investment of 10 BTC to RTOKEN fund that
+ * gave 100 RTOKEN then in BTC history it will be listed as "Spent 10 BTC investing in RTOKEN"
+ * and in ETH history it will be listed as "Got 100 RTOKEN from BTC investment"
+ */
 open class InvestmentTransaction(
         base: BaseTransaction,
         id: String,

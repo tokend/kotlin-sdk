@@ -3,6 +3,10 @@ package org.tokend.sdk.api.base.model.transactions
 import org.tokend.sdk.api.accounts.model.PaymentRecord
 import org.tokend.sdk.utils.BigDecimalUtil
 
+/**
+ * Represents operation of transferring some amount of some asset
+ * between two accounts.
+ */
 open class PaymentTransaction(
         private val base: BaseTransaction,
         override val sourceAccount: String,

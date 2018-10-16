@@ -5,6 +5,13 @@ import org.tokend.sdk.api.accounts.model.PaymentRecord
 import org.tokend.sdk.utils.BigDecimalUtil
 import java.math.BigDecimal
 
+/**
+ * Represents trading match.
+ * It is related to the asset in whose history it is listed.
+ * For example, if there is a match of buying 10 BTC for 100 ETH
+ * then in BTC history it will be listed as "Bought 10 BTC for 100 ETH"
+ * and in ETH history it will be listed as "Sold 100 ETH for 10 BTC"
+ */
 open class MatchTransaction(
         protected open val base: BaseTransaction,
         override val id: String,
