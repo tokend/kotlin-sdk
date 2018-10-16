@@ -1,7 +1,7 @@
 package org.tokend.sdk.factory
 
 import com.google.gson.*
-import org.tokend.sdk.api.models.SocialLinks
+import org.tokend.sdk.api.sales.model.SocialLinks
 import org.tokend.sdk.utils.ApiDateUtil
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*

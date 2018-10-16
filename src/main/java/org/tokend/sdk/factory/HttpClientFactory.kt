@@ -5,8 +5,8 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.TlsVersion
 import okhttp3.logging.HttpLoggingInterceptor
-import org.tokend.sdk.api.UserAgentInterceptor
-import org.tokend.sdk.api.requests.CookieJarProvider
+import org.tokend.sdk.utils.UserAgentInterceptor
+import org.tokend.sdk.utils.CookieJarProvider
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.net.ssl.SSLContext

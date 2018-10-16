@@ -3,50 +3,34 @@ package org.tokend.sdk.keyserver
 import org.spongycastle.util.encoders.Base64
 import org.tokend.crypto.cipher.Aes256GCM
 import org.tokend.kdf.ScryptWithMasterKeyDerivation
-import org.tokend.sdk.api.models.EncryptedKey
-import org.tokend.sdk.api.models.KeychainData
-import org.tokend.sdk.api.models.WalletData
-import org.tokend.sdk.api.models.WalletRelation
-import org.tokend.sdk.api.requests.CookieJarProvider
-import org.tokend.sdk.api.requests.DataEntity
-import org.tokend.sdk.api.requests.RequestSigner
-import org.tokend.sdk.api.tfa.TfaCallback
-import org.tokend.sdk.factory.ApiFactory
+import org.tokend.sdk.api.wallets.WalletsApi
+import org.tokend.sdk.api.wallets.model.EmailAlreadyTakenException
+import org.tokend.sdk.api.wallets.model.EmailNotVerifiedException
+import org.tokend.sdk.api.wallets.model.InvalidCredentialsException
 import org.tokend.sdk.factory.GsonFactory
-import org.tokend.sdk.federation.EmailAlreadyTakenException
-import org.tokend.sdk.federation.EmailNotVerifiedException
-import org.tokend.sdk.federation.InvalidCredentialsException
-import org.tokend.sdk.keyserver.models.KdfAttributes
-import org.tokend.sdk.keyserver.models.LoginParamsResponse
-import org.tokend.sdk.keyserver.models.WalletInfo
+import org.tokend.sdk.keyserver.models.*
 import org.tokend.sdk.utils.extentions.encodeHex
 import org.tokend.sdk.utils.extentions.toBytes
 import retrofit2.HttpException
-import java.net.HttpURLConnection
 import java.nio.ByteBuffer
 import java.nio.CharBuffer
 import java.nio.charset.Charset
 import java.security.SecureRandom
 
-class KeyStorage @JvmOverloads constructor(
-        keyServerUrl: String,
-        tfaCallback: TfaCallback? = null,
-        cookieJarProvider: CookieJarProvider? = null,
-        requestSigner: RequestSigner? = null,
-        userAgent: String? = null
+class KeyStorage constructor(
+        private val walletsApi: WalletsApi
 ) {
-    private val keyServerApiService: KeyServerApi =
-            ApiFactory(keyServerUrl, userAgent)
-                    .getKeyServerApi(requestSigner, tfaCallback, cookieJarProvider)
-
     // region Obtain
+    /**
+     * Loads user's wallet and decrypts secret seed.
+     */
     @Throws(InvalidCredentialsException::class,
             EmailNotVerifiedException::class,
             HttpException::class
     )
     fun getWalletInfo(login: String, password: CharArray,
                       isRecovery: Boolean = false): WalletInfo {
-        val loginParams = getApiLoginParams(login, isRecovery)
+        val loginParams = getLoginParams(login, isRecovery)
 
         val tempLogin = if (loginParams.id == 2L) login.toLowerCase() else login
 
@@ -72,66 +56,44 @@ class KeyStorage @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Loads KDF params.
+     */
     @Throws(InvalidCredentialsException::class, HttpException::class)
-    fun getApiLoginParams(login: String? = null, isRecovery: Boolean = false): LoginParamsResponse {
-        val response = keyServerApiService.getLoginParams(login, isRecovery).execute()
-        val data = response.body()?.data
-
-        if (data != null) {
-            return data
-        } else {
-            when (response.code()) {
-                HttpURLConnection.HTTP_NOT_FOUND -> throw InvalidCredentialsException(
-                        InvalidCredentialsException.Credential.EMAIL
-                )
-                else -> throw HttpException(response)
-            }
-        }
+    fun getLoginParams(login: String? = null, isRecovery: Boolean = false): LoginParams {
+        val response = walletsApi.getLoginParams(login, isRecovery).execute()
+        return response.get()
     }
 
+    /**
+     * Loads wallet by wallet ID.
+     */
     @Throws(InvalidCredentialsException::class,
             EmailNotVerifiedException::class,
             HttpException::class)
     fun getWalletData(walletId: String): WalletData {
-        val response = keyServerApiService.getWalletData(walletId).execute()
-        val data = response.body()?.data
-
-        if (data != null) {
-            return data
-        } else {
-            when (response.code()) {
-                HttpURLConnection.HTTP_FORBIDDEN -> throw EmailNotVerifiedException(walletId)
-                HttpURLConnection.HTTP_NOT_FOUND -> throw InvalidCredentialsException(
-                        InvalidCredentialsException.Credential.PASSWORD
-                )
-                else -> throw HttpException(response)
-            }
-        }
+        val response = walletsApi.getById(walletId).execute()
+        return response.get()
     }
-    // endregion
-
     // endregion
 
     // region Save
+    /**
+     * Submits given wallet to the system.
+     */
+    @Throws(
+            EmailAlreadyTakenException::class,
+            HttpException::class
+    )
     fun saveWallet(walletData: WalletData) {
-        val response = keyServerApiService.createWallet(DataEntity(walletData)).execute()
-        val success = response.isSuccessful
-
-        if (!success) {
-            when (response.code()) {
-                HttpURLConnection.HTTP_CONFLICT -> throw EmailAlreadyTakenException()
-                else -> throw HttpException(response)
-            }
-        }
+        walletsApi.create(walletData).execute()
     }
 
+    /**
+     * Updates wallet by given wallet ID with given data.
+     */
     fun updateWallet(walletId: String, walletData: WalletData) {
-        val response = keyServerApiService.updateWallet(walletId, DataEntity(walletData)).execute()
-        val success = response.isSuccessful
-
-        if (!success) {
-            throw HttpException(response)
-        }
+        walletsApi.update(walletId, walletData).execute()
     }
     // endregion
 
@@ -140,6 +102,9 @@ class KeyStorage @JvmOverloads constructor(
         private const val WALLET_KEY_MASTER_KEY = "WALLET_KEY"
         private const val IV_LENGTH = 12
 
+        /**
+         * @return key for secret seed encryption/decryption
+         */
         fun getWalletKey(login: String, password: CharArray,
                          kdfAttributes: KdfAttributes): ByteArray {
             val passwordCharBuffer = CharBuffer.wrap(password)
@@ -149,19 +114,33 @@ class KeyStorage @JvmOverloads constructor(
             val passwordBytes = ByteArray(passwordByteBuffer.remaining())
             passwordByteBuffer.get(passwordBytes).clear()
 
-            val result = deriveWallet(login.toByteArray(), passwordBytes,
+            val result = deriveKey(login.toByteArray(), passwordBytes,
                     WALLET_KEY_MASTER_KEY.toByteArray(), kdfAttributes)
             passwordBytes.fill(0)
 
             return result
         }
 
-        private fun deriveWallet(login: ByteArray, password: ByteArray, masterKey: ByteArray, kdfAttributes: KdfAttributes): ByteArray {
+        private fun deriveKey(login: ByteArray,
+                              password: ByteArray,
+                              masterKey: ByteArray,
+                              kdfAttributes: KdfAttributes): ByteArray {
             val derivation = ScryptWithMasterKeyDerivation(kdfAttributes.n, kdfAttributes.r,
                     kdfAttributes.p, login, masterKey)
-            return derivation.derive(password, kdfAttributes.salt, kdfAttributes.bits.toBytes())
+            val salt = kdfAttributes.salt
+                    ?: throw IllegalArgumentException("KDF salt is required for derivation")
+            return derivation.derive(password, salt, kdfAttributes.bits.toBytes())
         }
 
+        /**
+         * Decrypts secret seed with given key.
+         * @param iv cipher init vector
+         * @param cipherText encrypted secret seed
+         * @param key decryption key
+         *
+         * @see KeychainData
+         * @see KeyStorage.getWalletKey
+         */
         fun decryptSecretSeed(iv: ByteArray, cipherText: ByteArray, key: ByteArray): CharArray {
             val seedJsonBytes = Aes256GCM(iv).decrypt(cipherText, key)
             val seedJsonByteBuffer = ByteBuffer.wrap(seedJsonBytes)
@@ -202,6 +181,9 @@ class KeyStorage @JvmOverloads constructor(
             return seed
         }
 
+        /**
+         * Encrypts given secret seed with given key
+         */
         private fun encryptSecretSeed(seed: CharArray, iv: ByteArray, key: ByteArray): ByteArray {
             val jsonStartChars = "{\"seed\":\"".toCharArray()
             val jsonEndChars = "\"}".toCharArray()
@@ -221,6 +203,9 @@ class KeyStorage @JvmOverloads constructor(
             return encrypted
         }
 
+        /**
+         * @return HEX-encoded wallet ID
+         */
         fun getWalletIdHex(login: String, password: CharArray,
                            kdfAttributes: KdfAttributes): String {
             val passwordCharBuffer = CharBuffer.wrap(password)
@@ -230,15 +215,21 @@ class KeyStorage @JvmOverloads constructor(
             val passwordBytes = ByteArray(passwordByteBuffer.remaining())
             passwordByteBuffer.get(passwordBytes).clear()
 
-            val result = String(deriveWallet(login.toByteArray(), passwordBytes,
+            val result = String(deriveKey(login.toByteArray(), passwordBytes,
                     WALLET_ID_MASTER_KEY.toByteArray(), kdfAttributes).encodeHex())
             passwordBytes.fill(0)
 
             return result
         }
 
-        fun encryptWalletKey(email: String, seed: CharArray, accountId: String,
-                             encryptionKey: ByteArray, keyDerivationSalt: ByteArray)
+        /**
+         * Encrypts given account data.
+         */
+        fun encryptWalletAccount(email: String,
+                                 seed: CharArray,
+                                 accountId: String,
+                                 encryptionKey: ByteArray,
+                                 keyDerivationSalt: ByteArray)
                 : EncryptedKey {
             val iv = SecureRandom.getSeed(IV_LENGTH)
             val encryptedSeed = encryptSecretSeed(seed, iv, encryptionKey)
@@ -255,26 +246,5 @@ class KeyStorage @JvmOverloads constructor(
                     Base64.toBase64String(keychainDataJson.toByteArray())
             )
         }
-
-        // region Create
-        fun createBaseWallet(
-                email: String,
-                salt: ByteArray,
-                walletIdHex: String,
-                walletKey: ByteArray,
-                seed: CharArray,
-                accountId: String,
-                kdfVersion: Long): WalletData {
-            val encryptedRoot =
-                    encryptWalletKey(email, seed, accountId, walletKey, salt)
-
-            val relations = listOf(
-                    WalletRelation(WalletRelation.RELATION_KDF, WalletRelation.RELATION_KDF,
-                            kdfVersion.toString())
-            )
-
-            return WalletData(walletIdHex, encryptedRoot, relations)
-        }
     }
-
 }
