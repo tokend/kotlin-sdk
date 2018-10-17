@@ -11,6 +11,10 @@ import org.tokend.sdk.factory.GsonFactory
 import org.tokend.sdk.keyserver.models.*
 import org.tokend.sdk.utils.extentions.encodeHex
 import org.tokend.sdk.utils.extentions.toBytes
+import org.tokend.wallet.*
+import org.tokend.wallet.xdr.Operation
+import org.tokend.wallet.xdr.op_extensions.RemoveMasterKeyOp
+import org.tokend.wallet.xdr.op_extensions.UpdateSignerOp
 import retrofit2.HttpException
 import java.nio.ByteBuffer
 import java.nio.CharBuffer
@@ -101,10 +105,12 @@ class KeyStorage constructor(
         private const val WALLET_ID_MASTER_KEY = "WALLET_ID"
         private const val WALLET_KEY_MASTER_KEY = "WALLET_KEY"
         private const val IV_LENGTH = 12
+        const val KDF_SALT_LENGTH_BYTES = 16
 
         /**
          * @return key for secret seed encryption/decryption
          */
+        @JvmStatic
         fun getWalletKey(login: String, password: CharArray,
                          kdfAttributes: KdfAttributes): ByteArray {
             val passwordCharBuffer = CharBuffer.wrap(password)
@@ -121,6 +127,7 @@ class KeyStorage constructor(
             return result
         }
 
+        @JvmStatic
         private fun deriveKey(login: ByteArray,
                               password: ByteArray,
                               masterKey: ByteArray,
@@ -141,6 +148,7 @@ class KeyStorage constructor(
          * @see KeychainData
          * @see KeyStorage.getWalletKey
          */
+        @JvmStatic
         fun decryptSecretSeed(iv: ByteArray, cipherText: ByteArray, key: ByteArray): CharArray {
             val seedJsonBytes = Aes256GCM(iv).decrypt(cipherText, key)
             val seedJsonByteBuffer = ByteBuffer.wrap(seedJsonBytes)
@@ -184,6 +192,7 @@ class KeyStorage constructor(
         /**
          * Encrypts given secret seed with given key
          */
+        @JvmStatic
         private fun encryptSecretSeed(seed: CharArray, iv: ByteArray, key: ByteArray): ByteArray {
             val jsonStartChars = "{\"seed\":\"".toCharArray()
             val jsonEndChars = "\"}".toCharArray()
@@ -206,6 +215,7 @@ class KeyStorage constructor(
         /**
          * @return HEX-encoded wallet ID
          */
+        @JvmStatic
         fun getWalletIdHex(login: String, password: CharArray,
                            kdfAttributes: KdfAttributes): String {
             val passwordCharBuffer = CharBuffer.wrap(password)
@@ -225,6 +235,7 @@ class KeyStorage constructor(
         /**
          * Encrypts given account data.
          */
+        @JvmStatic
         fun encryptWalletAccount(email: String,
                                  seed: CharArray,
                                  accountId: String,
@@ -245,6 +256,181 @@ class KeyStorage constructor(
                     Base64.toBase64String(keyDerivationSalt),
                     Base64.toBase64String(keychainDataJson.toByteArray())
             )
+        }
+
+        /**
+         * @return completed wallet for sign up or update
+         * @param email user's email
+         * @param password user's password
+         * @param kdfAttributes system KDF attributes.
+         * For password change or recovery use existing
+         * @param kdfVersion system KDF version.
+         * For password change or recovery use existing
+         */
+        @JvmStatic
+        @JvmOverloads
+        fun createWallet(
+                email: String,
+                password: CharArray,
+                kdfAttributes: KdfAttributes,
+                kdfVersion: Long,
+                rootAccount: Account = Account.random(),
+                recoveryAccount: Account = Account.random()
+        ): WalletCreateResult {
+            val rootAccountSeed = rootAccount.secretSeed
+                    ?: throw IllegalArgumentException("Root account must have private key")
+            val recoveryAccountSeed = recoveryAccount.secretSeed
+                    ?: throw IllegalArgumentException("Recovery account must have private key")
+
+            val walletKey = KeyStorage.getWalletKey(email, password, kdfAttributes)
+            val walletId = KeyStorage.getWalletIdHex(email, password, kdfAttributes)
+
+            val kdfSalt = kdfAttributes.salt ?: generateKdfSalt()
+
+            val encryptedSeed = KeyStorage.encryptWalletAccount(
+                    email,
+                    rootAccountSeed,
+                    rootAccount.accountId,
+                    walletKey,
+                    kdfSalt
+            )
+
+            val wallet = WalletData(walletId, encryptedSeed, listOf())
+
+            wallet.addRelation(
+                    WalletRelation(
+                            WalletRelation.RELATION_KDF,
+                            WalletRelation.RELATION_KDF,
+                            kdfVersion.toString()
+                    )
+            )
+
+            val passwordFactorAccount = Account.random()
+            val encryptedPasswordFactor =
+                    KeyStorage.encryptWalletAccount(
+                            email,
+                            passwordFactorAccount.secretSeed!!,
+                            passwordFactorAccount.accountId,
+                            walletKey,
+                            kdfSalt
+                    )
+            wallet.addRelation(
+                    WalletRelation(
+                            WalletRelation.RELATION_PASSWORD_FACTOR,
+                            WalletRelation.RELATION_PASSWORD,
+                            walletId,
+                            passwordFactorAccount.accountId,
+                            encryptedPasswordFactor
+                    )
+            )
+
+            val recoveryWalletKey = KeyStorage.getWalletKey(
+                    email, recoveryAccountSeed, kdfAttributes)
+            val recoveryWalletId = KeyStorage.getWalletIdHex(email,
+                    recoveryAccountSeed, kdfAttributes)
+
+            val encryptedRecovery =
+                    KeyStorage.encryptWalletAccount(
+                            email,
+                            recoveryAccount.secretSeed!!,
+                            recoveryAccount.accountId,
+                            recoveryWalletKey,
+                            kdfSalt
+                    )
+
+            wallet.addRelation(
+                    WalletRelation(
+                            WalletRelation.RELATION_RECOVERY,
+                            WalletRelation.RELATION_RECOVERY,
+                            recoveryWalletId,
+                            recoveryAccount.accountId,
+                            encryptedRecovery)
+            )
+
+            return WalletCreateResult(
+                    wallet,
+                    rootAccount,
+                    recoveryAccount
+            )
+        }
+
+        /**
+         * @return transaction for password change or recovery
+         * @param networkParams params of current TokenD network
+         * @param originalAccountId original account ID of the wallet
+         * @param signers list of current account signers
+         * @param currentAccount active or recovery keypair
+         * @param newAccount keypair to set as active
+         */
+        fun createSignersUpdateTransaction(networkParams: NetworkParams,
+                                           originalAccountId: String,
+                                           currentAccount: Account,
+                                           signers: Collection<org.tokend.sdk.api.accounts.model.Account.Signer>,
+                                           newAccount: Account): Transaction {
+            val operationBodies = mutableListOf<Operation.OperationBody>()
+
+            // Add new signer.
+            val currentSigner =
+                    signers.find {
+                        it.accountId == currentAccount.accountId
+                    } ?: org.tokend.sdk.api.accounts.model.Account.Signer(originalAccountId)
+
+            operationBodies.add(
+                    Operation.OperationBody.SetOptions(
+                            UpdateSignerOp(
+                                    newAccount.accountId,
+                                    currentSigner.weight,
+                                    currentSigner.type,
+                                    currentSigner.identity
+                            )
+                    )
+            )
+
+            // Remove other signers.
+            signers
+                    .sortedBy {
+                        // Remove current signer lastly, otherwise tx will be failed.
+                        it.accountId == currentAccount.accountId
+                    }
+                    .forEach {
+                        if (it.accountId != newAccount.accountId) {
+                            // Master key removal is specific.
+                            if (it.accountId == originalAccountId) {
+                                operationBodies.add(
+                                        Operation.OperationBody.SetOptions(
+                                                RemoveMasterKeyOp()
+                                        )
+                                )
+                            } else {
+                                // Other keys can be removed by setting 0 weight.
+                                operationBodies.add(
+                                        Operation.OperationBody.SetOptions(
+                                                UpdateSignerOp(it.accountId,
+                                                        0, 1, it.identity)
+                                        )
+                                )
+                            }
+                        }
+                    }
+
+            val transaction =
+                    TransactionBuilder(networkParams,
+                            PublicKeyFactory.fromAccountId(originalAccountId))
+                            .apply {
+                                operationBodies.forEach { operationBody ->
+                                    addOperation(operationBody)
+                                }
+                            }
+                            .build()
+
+            transaction.addSignature(currentAccount)
+
+            return transaction
+        }
+
+        @JvmStatic
+        fun generateKdfSalt(): ByteArray {
+            return SecureRandom().generateSeed(KDF_SALT_LENGTH_BYTES)
         }
     }
 }

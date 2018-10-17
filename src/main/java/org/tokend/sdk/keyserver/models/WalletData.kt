@@ -4,6 +4,7 @@ package org.tokend.sdk.keyserver.models
 import com.google.gson.annotations.SerializedName
 import org.tokend.sdk.api.base.model.DataEntity
 import org.tokend.sdk.utils.extentions.decodeBase64
+import org.tokend.wallet.Transaction
 
 open class WalletData(
         @SerializedName("type")
@@ -62,5 +63,14 @@ open class WalletData(
 
     fun addRelation(relation: WalletRelation) {
         relationships.put(relation.name, DataEntity(relation.walletData))
+    }
+
+    fun addTransactionRelation(transaction: Transaction) {
+        relationships["transaction"] =
+                DataEntity(hashMapOf(
+                        "attributes" to hashMapOf(
+                                "envelope" to transaction.getEnvelope().toBase64()
+                        ))
+                )
     }
 }
