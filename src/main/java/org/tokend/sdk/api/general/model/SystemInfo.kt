@@ -2,6 +2,7 @@ package org.tokend.sdk.api.general.model
 
 import com.google.gson.annotations.SerializedName
 import org.tokend.sdk.utils.HashCodes
+import org.tokend.wallet.NetworkParams
 
 open class SystemInfo(
         @SerializedName("network_passphrase")
@@ -26,5 +27,9 @@ open class SystemInfo(
 
     override fun hashCode(): Int {
         return HashCodes.ofMany(passphrase, masterExchangeName, masterExchangeAccountId)
+    }
+
+    fun toNetworkParams(): NetworkParams {
+        return NetworkParams(passphrase)
     }
 }

@@ -13,6 +13,10 @@ import java.nio.charset.Charset
 open class TransactionsApi(
         protected val transactionsService: TransactionsService
 ) {
+    /**
+     * Submits given transaction.
+     * @see <a href="https://tokend.gitlab.io/docs/?http#submit-a-transaction">Docs</a>
+     */
     open fun submit(envelopeBase64: String): ApiRequest<SubmitTransactionResponse> {
         return SimpleRetrofitApiRequest(
                 transactionsService.pushTransaction(envelopeBase64)

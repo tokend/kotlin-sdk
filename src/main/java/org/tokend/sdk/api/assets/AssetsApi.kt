@@ -15,18 +15,30 @@ import java.net.HttpURLConnection
 open class AssetsApi(
         protected val assetsService: AssetsService
 ) {
+    /**
+     * Will return all existing assets in the system.
+     * @see <a href="https://tokend.gitlab.io/docs/?http#assets">Docs</a>
+     */
     open fun get(): ApiRequest<List<SimpleAsset>> {
         return SimpleRetrofitApiRequest(
                 assetsService.getAssets()
         )
     }
 
+    /**
+     * Will return specific asset by it's code.
+     * @see <a href="https://tokend.gitlab.io/docs/?http#get-asset-by-code">Docs</a>
+     */
     open fun getByCode(assetCode: String): ApiRequest<SimpleAsset> {
         return SimpleRetrofitApiRequest(
                 assetsService.getAsset(assetCode)
         )
     }
 
+    /**
+     * Will return all existing asset pairs in the system.
+     * @see <a href="https://tokend.gitlab.io/docs/?http#get-asset-pairs-list">Docs</a>
+     */
     open fun getPairs(): ApiRequest<List<AssetPair>> {
         return SimpleRetrofitApiRequest(
                 assetsService.getAssetPairs()

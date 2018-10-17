@@ -25,6 +25,7 @@ import org.tokend.sdk.api.users.UsersApi
 import org.tokend.sdk.api.users.UsersService
 import org.tokend.sdk.api.wallets.WalletsApi
 import org.tokend.sdk.api.wallets.WalletsService
+import org.tokend.sdk.signing.AccountRequestSigner
 import org.tokend.sdk.signing.RequestSigner
 import org.tokend.sdk.tfa.TfaCallback
 import org.tokend.sdk.utils.CookieJarProvider
@@ -39,6 +40,8 @@ open class TokenDApi
  * If not set requests protected by 2FA will be uncompletable
  * @param cookieJarProvider if set will be used to store cookies
  * @param userAgent overrides default user agent
+ *
+ * @see [AccountRequestSigner]
  */
 @JvmOverloads
 constructor(

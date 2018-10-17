@@ -2,6 +2,7 @@ package org.tokend.sdk.keyserver.models
 
 import com.google.gson.annotations.SerializedName
 import org.tokend.sdk.utils.extentions.decodeBase64
+import org.tokend.sdk.utils.extentions.encodeBase64String
 
 data class LoginParams(
         @SerializedName("type")
@@ -26,6 +27,9 @@ data class KdfAttributes(
         @SerializedName("salt")
         var encodedSalt: String?
 ) {
-    val salt: ByteArray?
+    var salt: ByteArray?
         get() = encodedSalt?.decodeBase64()
+        set(value) {
+            encodedSalt = value?.encodeBase64String()
+        }
 }

@@ -17,6 +17,11 @@ import java.net.HttpURLConnection
 open class WalletsApi(
         protected val walletsService: WalletsService
 ) {
+
+    /**
+     * Will return specific wallet by given id.
+     * @see <a href="https://tokend.gitlab.io/docs/?http#get-wallet">Docs</a>
+     */
     open fun getById(walletId: String): ApiRequest<WalletData> {
         return MappedRetrofitApiRequest(
                 walletsService.getById(walletId),
@@ -36,6 +41,10 @@ open class WalletsApi(
         }
     }
 
+    /**
+     * Will create new wallet.
+     * @see <a href="https://tokend.gitlab.io/docs/?http#create-wallet">Docs</a>
+     */
     open fun create(data: WalletData): ApiRequest<Void> {
         return SimpleRetrofitApiRequest(
                 walletsService.create(
@@ -50,6 +59,11 @@ open class WalletsApi(
         }
     }
 
+    /**
+     * Request is similar to wallet [create] but also contains additional transaction resource
+     * used to update account signers.
+     * @see <a href="https://tokend.gitlab.io/docs/?http#update-wallet">Docs</a>
+     */
     open fun update(walletId: String,
                     data: WalletData): ApiRequest<Void> {
         return SimpleRetrofitApiRequest(
@@ -60,6 +74,11 @@ open class WalletsApi(
         )
     }
 
+    /**
+     * Once wallet is created and verified is false user should receive email
+     * with verification link with client router payload.
+     * @see <a href="https://tokend.gitlab.io/docs/?http#wallet-verification">Docs</a>
+     */
     open fun verify(walletId: String,
                     token: String): ApiRequest<Void> {
         return SimpleRetrofitApiRequest(
@@ -74,12 +93,20 @@ open class WalletsApi(
         )
     }
 
+    /**
+     * Will requesting verification resend.
+     * @see <a href="https://tokend.gitlab.io/docs/?http#requesting-verification-resend">Docs</a>
+     */
     open fun requestVerification(walletId: String): ApiRequest<Void> {
         return SimpleRetrofitApiRequest(
                 walletsService.requestVerification(walletId)
         )
     }
 
+    /**
+     * Will return current default derivation parameters or parameters used to derive specific wallet.
+     * @see <a href="https://tokend.gitlab.io/docs/?http#get-kdf-params">Docs</a>
+     */
     open fun getLoginParams(email: String?,
                             isRecovery: Boolean): ApiRequest<LoginParams> {
         return MappedRetrofitApiRequest(
