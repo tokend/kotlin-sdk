@@ -11,6 +11,10 @@ import org.tokend.sdk.api.tfa.model.TfaFactor
 open class TfaApi(
         protected val tfaService: TfaService
 ) {
+    /**
+     * Returns list of factors used for 2Factor Auth.
+     * @see <a href="https://tokend.gitlab.io/docs/#get-factors">Docs</a>
+     */
     open fun getFactors(walletId: String): ApiRequest<List<TfaFactor>> {
         return MappedRetrofitApiRequest(
                 tfaService.getFactors(walletId),
@@ -18,6 +22,10 @@ open class TfaApi(
         )
     }
 
+    /**
+     * Creates non-active TFA factor of given type.
+     * @see <a href="https://tokend.gitlab.io/docs/#create-factor">Docs</a>
+     */
     open fun createFactor(walletId: String,
                           type: TfaFactor.Type): ApiRequest<TfaFactor> {
         return MappedRetrofitApiRequest(
@@ -31,6 +39,10 @@ open class TfaApi(
         )
     }
 
+    /**
+     * Updates given TFA factor.
+     * @see <a href="https://tokend.gitlab.io/docs/#update-factor">Docs</a>
+     */
     open fun updateFactor(walletId: String,
                           factorId: Long,
                           attributes: TfaFactor.Attributes): ApiRequest<Void> {
@@ -45,6 +57,10 @@ open class TfaApi(
         )
     }
 
+    /**
+     * Deletes given TFA factor.
+     * @see <a href="https://tokend.gitlab.io/docs/#delete-factor">Docs</a>
+     */
     open fun deleteFactor(walletId: String,
                           factorId: Long): ApiRequest<Void> {
         return SimpleRetrofitApiRequest(
