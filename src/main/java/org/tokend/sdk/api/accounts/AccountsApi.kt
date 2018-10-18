@@ -7,9 +7,9 @@ import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.base.SimpleRetrofitApiRequest
 import org.tokend.sdk.api.base.model.DataPage
-import org.tokend.sdk.api.base.model.transactions.Transaction
+import org.tokend.sdk.api.base.model.operations.TransferOperation
 import org.tokend.sdk.api.trades.model.Offer
-import org.tokend.sdk.utils.PaymentRecordConverter
+import org.tokend.sdk.utils.UnifiedOperationRecordsConverter
 
 open class AccountsApi(
         protected open val accountsService: AccountsService
@@ -59,12 +59,12 @@ open class AccountsApi(
     }
 
     /**
-     * Will return list of account payments.
+     * Will return list of account payments represented by [UnifiedOperationRecord].
      * @see <a href="https://tokend.gitlab.io/docs/?http#get-account-payments">Docs</a>
      */
-    open fun getPayments(accountId: String,
-                         paymentsParams: PaymentsParams? = null
-    ): ApiRequest<DataPage<PaymentRecord>> {
+    open fun getRawPayments(accountId: String,
+                            paymentsParams: PaymentsParams? = null
+    ): ApiRequest<DataPage<UnifiedOperationRecord>> {
         return MappedRetrofitApiRequest(
                 accountsService.getPayments(
                         accountId,
@@ -75,12 +75,13 @@ open class AccountsApi(
     }
 
     /**
-     * Will return list of account transactions.
-     * @see <a href="https://tokend.gitlab.io/docs/?http#get-account-transactions">Docs</a>
+     * Will return list of account payments represented by [TransferOperation]s.
+     * @see getRawPayments()
+     * @see TransferOperation
      */
-    open fun getPaymentTransactions(accountId: String,
-                                    paymentsParams: PaymentsParams
-    ): ApiRequest<DataPage<Transaction>> {
+    open fun getPayments(accountId: String,
+                         paymentsParams: PaymentsParams
+    ): ApiRequest<DataPage<TransferOperation>> {
         val contextAsset = paymentsParams.asset
                 ?: throw IllegalArgumentException(
                         "To convert payment records to transactions " +
@@ -97,8 +98,8 @@ open class AccountsApi(
                     val isLast = DataPage.isLast(page)
                     val nextCursor = DataPage.getNextCursor(page)
 
-                    val transactions = PaymentRecordConverter
-                            .toTransactions(items, accountId, contextAsset)
+                    val transactions = UnifiedOperationRecordsConverter
+                            .toTransferOperations(items, accountId, contextAsset)
 
                     DataPage(nextCursor, transactions, isLast)
                 }

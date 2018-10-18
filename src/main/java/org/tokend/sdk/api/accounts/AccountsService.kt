@@ -2,7 +2,7 @@ package org.tokend.sdk.api.accounts
 
 import org.tokend.sdk.api.accounts.model.AccountsDetailsResponse
 import org.tokend.sdk.api.trades.model.Offer
-import org.tokend.sdk.api.accounts.model.PaymentRecord
+import org.tokend.sdk.api.accounts.model.UnifiedOperationRecord
 import org.tokend.sdk.api.accounts.model.SimpleBalanceDetails
 import org.tokend.sdk.api.accounts.model.AccountsDetailsRequestBody
 import org.tokend.sdk.api.accounts.model.Account
@@ -34,7 +34,7 @@ interface AccountsService {
     @JvmSuppressWildcards
     @GET("accounts/{accountId}/payments")
     fun getPayments(@Path("accountId") accountId: String,
-                    @QueryMap query: Map<String, Any>?): Call<Page<PaymentRecord>>
+                    @QueryMap query: Map<String, Any>?): Call<Page<UnifiedOperationRecord>>
 
     @JvmSuppressWildcards
     @GET("accounts/{accountId}/offers")

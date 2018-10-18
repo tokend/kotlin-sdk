@@ -11,6 +11,8 @@ import org.tokend.sdk.api.wallets.model.InvalidCredentialsException
 import org.tokend.sdk.api.wallets.model.VerifyWalletRequestBody
 import org.tokend.sdk.keyserver.models.LoginParams
 import org.tokend.sdk.keyserver.models.WalletData
+import org.tokend.sdk.redirects.ClientRedirectPayload
+import org.tokend.sdk.redirects.ClientRedirectType
 import retrofit2.HttpException
 import java.net.HttpURLConnection
 
@@ -75,8 +77,7 @@ open class WalletsApi(
     }
 
     /**
-     * Once wallet is created and verified is false user should receive email
-     * with verification link with client router payload.
+     * Verifies wallet with given ID.
      * @see <a href="https://tokend.gitlab.io/docs/?http#wallet-verification">Docs</a>
      */
     open fun verify(walletId: String,
@@ -91,6 +92,25 @@ open class WalletsApi(
                         )
                 )
         )
+    }
+
+    /**
+     * Verifies wallet by given redirect payload.
+     * @see verify(walletId, token)
+     */
+    open fun verify(redirectPayload: ClientRedirectPayload): ApiRequest<Void> {
+        if (!redirectPayload.isSuccessful
+                || redirectPayload.type != ClientRedirectType.EMAIL_VERIFICATION) {
+            throw IllegalArgumentException("Invalid redirect payload")
+        }
+
+        val walletId = redirectPayload.meta.get(VERIFICATION_META_WALLET_ID)?.asString
+                ?: throw IllegalArgumentException("Missing '$VERIFICATION_META_WALLET_ID' in meta data")
+
+        val token = redirectPayload.meta.get(VERIFICATION_META_TOKEN)?.asString
+                ?: throw IllegalArgumentException("Missing '$VERIFICATION_META_TOKEN' in meta data")
+
+        return verify(walletId, token)
     }
 
     /**
@@ -119,5 +139,10 @@ open class WalletsApi(
             else
                 error
         }
+    }
+
+    companion object {
+        private const val VERIFICATION_META_WALLET_ID = "wallet_id"
+        private const val VERIFICATION_META_TOKEN = "token"
     }
 }

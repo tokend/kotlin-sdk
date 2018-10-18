@@ -1,7 +1,7 @@
-package org.tokend.sdk.api.base.model.transactions
+package org.tokend.sdk.api.base.model.operations
 
 import com.google.gson.JsonObject
-import org.tokend.sdk.api.accounts.model.PaymentRecord
+import org.tokend.sdk.api.accounts.model.UnifiedOperationRecord
 import org.tokend.sdk.utils.BigDecimalUtil
 import java.math.BigDecimal
 
@@ -9,22 +9,22 @@ import java.math.BigDecimal
  * Represents operation of withdrawal some amount of some asset
  * to the external payment system.
  */
-open class WithdrawalTransaction(
-        private val base: BaseTransaction,
+open class WithdrawalOperation(
+        private val base: BaseTransferOperation,
         override val asset: String,
         val destAddress: String?,
         val destAmount: BigDecimal,
         val fee: ComplexFee
-) : Transaction by base {
-    override val type = TransactionType.WITHDRAWAL
+) : TransferOperation by base {
+    override val type = OperationType.WITHDRAWAL
 
     companion object {
-        fun fromPaymentRecord(record: PaymentRecord,
-                              contextAccountId: String): WithdrawalTransaction {
+        fun fromUnifiedOperationRecord(record: UnifiedOperationRecord,
+                                       contextAccountId: String): WithdrawalOperation {
             val externalDetails = record.externalDetails as? JsonObject
             val destinationAddress = externalDetails?.get("address")?.asString
 
-            val baseTransaction = BaseTransaction.fromPaymentRecord(record, contextAccountId)
+            val baseTransaction = BaseTransferOperation.fromPaymentRecord(record, contextAccountId)
 
             val fee =
                     if (record.sourceFeeData != null)
@@ -35,12 +35,12 @@ open class WithdrawalTransaction(
                         )
                     else
                         ComplexFee(
-                                fixed = BigDecimalUtil.valueOf(record.sourceFixedFee),
-                                percent = BigDecimalUtil.valueOf(record.sourcePaymentFee),
+                                fixed = record.sourceFixedFee ?: BigDecimal.ZERO,
+                                percent = record.sourcePaymentFee ?: BigDecimal.ZERO,
                                 asset = baseTransaction.asset
                         )
 
-            return WithdrawalTransaction(
+            return WithdrawalOperation(
                     base = baseTransaction,
                     asset = record.destAsset ?: "",
                     destAddress = destinationAddress,

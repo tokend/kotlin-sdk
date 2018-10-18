@@ -13,6 +13,8 @@ import org.tokend.sdk.api.fees.FeesApi
 import org.tokend.sdk.api.fees.FeesService
 import org.tokend.sdk.api.general.GeneralApi
 import org.tokend.sdk.api.general.GeneralService
+import org.tokend.sdk.api.keyvaluestorage.KeyValueStorageApi
+import org.tokend.sdk.api.keyvaluestorage.KeyValueStorageService
 import org.tokend.sdk.api.sales.SalesApi
 import org.tokend.sdk.api.sales.SalesService
 import org.tokend.sdk.api.tfa.TfaApi
@@ -97,5 +99,9 @@ constructor(
 
     open val wallets: WalletsApi by lazy {
         WalletsApi(getService(WalletsService::class.java))
+    }
+
+    open val keyValueEntries: KeyValueStorageApi by lazy {
+        KeyValueStorageApi(getService(KeyValueStorageService::class.java))
     }
 }
