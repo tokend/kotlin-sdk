@@ -1,7 +1,7 @@
-package org.tokend.sdk.api.base.model.transactions
+package org.tokend.sdk.api.base.model.operations
 
 import org.tokend.sdk.api.trades.model.Offer
-import org.tokend.sdk.api.accounts.model.PaymentRecord
+import org.tokend.sdk.api.accounts.model.UnifiedOperationRecord
 import org.tokend.sdk.utils.BigDecimalUtil
 import java.math.BigDecimal
 
@@ -12,16 +12,16 @@ import java.math.BigDecimal
  * then in BTC history it will be listed as "Bought 10 BTC for 100 ETH"
  * and in ETH history it will be listed as "Sold 100 ETH for 10 BTC"
  */
-open class MatchTransaction(
-        protected open val base: BaseTransaction,
+open class OfferMatchOperation(
+        protected open val base: BaseTransferOperation,
         override val id: String,
         override val amount: BigDecimal,
         override val asset: String,
         val fee: BigDecimal,
         val feeAsset: String,
         val matchData: MatchData
-) : Transaction by base {
-    override val type = TransactionType.OFFER_MATCH
+) : TransferOperation by base {
+    override val type = OperationType.OFFER_MATCH
 
     override val isReceived: Boolean
         get() = matchData.isBuy
@@ -30,8 +30,8 @@ open class MatchTransaction(
         get() = !isReceived
 
     companion object {
-        fun fromPaymentRecord(record: PaymentRecord, contextAsset: String,
-                              contextAccountId: String): List<MatchTransaction> {
+        fun fromUnifiedOperationRecord(record: UnifiedOperationRecord, contextAsset: String,
+                                       contextAccountId: String): List<OfferMatchOperation> {
             val ourParticipant = record.participants?.first {
                 it.accountId == contextAccountId
             }
@@ -46,8 +46,8 @@ open class MatchTransaction(
                 val baseAmount = match.baseAmount
                 val quoteAmount = match.quoteAmount
 
-                MatchTransaction(
-                        base = BaseTransaction.fromPaymentRecord(record, contextAccountId),
+                OfferMatchOperation(
+                        base = BaseTransferOperation.fromPaymentRecord(record, contextAccountId),
                         id = "${record.id}_$i",
                         fee = BigDecimalUtil.valueOf(match.feeString),
                         asset = if (contextAssetIsQuote) quoteAsset else baseAsset,
@@ -67,13 +67,13 @@ open class MatchTransaction(
             } ?: listOf()
         }
 
-        fun fromOffer(offer: Offer): MatchTransaction {
-            return MatchTransaction(
-                    BaseTransaction(
+        fun fromOffer(offer: Offer): OfferMatchOperation {
+            return OfferMatchOperation(
+                    BaseTransferOperation(
                             pagingToken = offer.pagingToken,
                             date = offer.date,
-                            state = TransactionState.PENDING,
-                            type = TransactionType.OFFER_MATCH,
+                            state = OperationState.PENDING,
+                            type = OperationType.OFFER_MATCH,
                             sourceAccount = "",
                             asset = "",
                             amount = BigDecimal.ZERO,

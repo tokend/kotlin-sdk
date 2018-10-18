@@ -1,28 +1,28 @@
-package org.tokend.sdk.api.base.model.transactions
+package org.tokend.sdk.api.base.model.operations
 
-import org.tokend.sdk.api.accounts.model.PaymentRecord
-import org.tokend.sdk.utils.BigDecimalUtil
+import org.tokend.sdk.api.accounts.model.UnifiedOperationRecord
+import java.math.BigDecimal
 
 /**
  * Represents operation of transferring some amount of some asset
  * between two accounts.
  */
-open class PaymentTransaction(
-        private val base: BaseTransaction,
+open class PaymentOperation(
+        private val base: BaseTransferOperation,
         override val sourceAccount: String,
         val destAccount: String,
         val senderFee: ComplexFee,
         val recipientFee: ComplexFee,
         val feePaidBySender: Boolean,
         val subject: String?
-) : Transaction by base {
-    override val type = TransactionType.PAYMENT
+) : TransferOperation by base {
+    override val type = OperationType.PAYMENT
 
     var counterpartyNickname: String? = null
 
     companion object {
-        fun fromPaymentRecord(record: PaymentRecord, contextAccountId: String): PaymentTransaction {
-            val baseTransaction = BaseTransaction.fromPaymentRecord(record, contextAccountId)
+        fun fromUnifiedOperationRecord(record: UnifiedOperationRecord, contextAccountId: String): PaymentOperation {
+            val baseTransaction = BaseTransferOperation.fromPaymentRecord(record, contextAccountId)
 
             val senderFee =
                     if (record.sourceFeeData != null)
@@ -33,8 +33,8 @@ open class PaymentTransaction(
                         )
                     else
                         ComplexFee(
-                                fixed = BigDecimalUtil.valueOf(record.sourceFixedFee),
-                                percent = BigDecimalUtil.valueOf(record.sourcePaymentFee),
+                                fixed = record.sourceFixedFee ?: BigDecimal.ZERO,
+                                percent = record.sourcePaymentFee ?: BigDecimal.ZERO,
                                 asset = baseTransaction.asset
                         )
 
@@ -47,12 +47,12 @@ open class PaymentTransaction(
                         )
                     else
                         ComplexFee(
-                                fixed = BigDecimalUtil.valueOf(record.destFixedFee),
-                                percent = BigDecimalUtil.valueOf(record.destPaymentFee),
+                                fixed = record.destFixedFee ?: BigDecimal.ZERO,
+                                percent = record.destPaymentFee ?: BigDecimal.ZERO,
                                 asset = baseTransaction.asset
                         )
 
-            return PaymentTransaction(
+            return PaymentOperation(
                     base = baseTransaction,
                     sourceAccount = record.sourceAccount ?: record.from ?: "",
                     destAccount = record.to ?: "",

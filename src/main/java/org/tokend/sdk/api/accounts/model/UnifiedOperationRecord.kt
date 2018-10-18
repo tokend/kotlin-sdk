@@ -6,54 +6,51 @@ import org.tokend.sdk.api.base.model.Page
 import java.math.BigDecimal
 import java.util.*
 
-/**
- * Created by Oleg Koretsky on 11/29/17.
- */
-open class PaymentRecord {
+open class UnifiedOperationRecord {
     @SerializedName("_links")
-    var links: Page.Links? = null
+    val links: Page.Links? = null
     @SerializedName("id")
-    var id: String = ""
+    val id: String = ""
     @SerializedName("paging_token")
-    var pagingToken: String = ""
+    val pagingToken: String = ""
     @SerializedName("source_account")
-    var sourceAccount: String? = null
+    val sourceAccount: String? = null
     @SerializedName("type")
-    var type: String? = null
+    val type: String? = null
     @SerializedName("type_i")
-    var typeI: Int? = null
+    val typeI: Int? = null
     @SerializedName("state")
-    var state: String? = null
+    val state: String? = null
     @SerializedName("identifier")
-    var identifier: Long? = null
+    val identifier: Long? = null
     @SerializedName("ledger_close_time")
-    var ledgerCloseTime: Date = Date()
+    val ledgerCloseTime: Date = Date()
     @SerializedName("participants")
     val participants: List<Participant>? = null
     @SerializedName("from")
-    var from: String? = null
+    val from: String? = null
     @SerializedName("to")
-    var to: String? = null
+    val to: String? = null
     @SerializedName("from_balance")
-    var fromBalance: String? = null
+    val fromBalance: String? = null
     @SerializedName("to_balance")
-    var toBalance: String? = null
+    val toBalance: String? = null
     @SerializedName("amount")
-    var amount: String? = null
+    val amount: BigDecimal? = null
     @SerializedName("source_pays_for_dest")
-    var isFeeFromSource: Boolean = false
+    val isFeeFromSource: Boolean = false
     @SerializedName("source_payment_fee")
-    val sourcePaymentFee: String? = null
+    val sourcePaymentFee: BigDecimal? = null
     @SerializedName("destination_payment_fee")
-    val destPaymentFee: String? = null
+    val destPaymentFee: BigDecimal? = null
     @SerializedName("source_fixed_fee")
-    val sourceFixedFee: String? = null
+    val sourceFixedFee: BigDecimal? = null
     @SerializedName("destination_fixed_fee")
-    val destFixedFee: String? = null
+    val destFixedFee: BigDecimal? = null
     @SerializedName("fee_percent")
-    val percentFee: String? = null
+    val percentFee: BigDecimal? = null
     @SerializedName("fee_fixed")
-    val fixedFee: String? = null
+    val fixedFee: BigDecimal? = null
     @SerializedName("subject")
     val subject: String? = null
     @SerializedName("asset")

@@ -1,4 +1,4 @@
-package org.tokend.sdk.api.base.model.transactions
+package org.tokend.sdk.api.base.model.operations
 
 import java.math.BigDecimal
 

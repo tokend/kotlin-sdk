@@ -1,7 +1,7 @@
-package org.tokend.sdk.api.base.model.transactions
+package org.tokend.sdk.api.base.model.operations
 
 import com.google.gson.annotations.SerializedName
-import org.tokend.sdk.api.accounts.model.PaymentRecord
+import org.tokend.sdk.api.accounts.model.UnifiedOperationRecord
 import org.tokend.sdk.api.trades.model.Offer
 import java.math.BigDecimal
 import java.math.MathContext
@@ -13,21 +13,21 @@ import java.math.MathContext
  * gave 100 RTOKEN then in BTC history it will be listed as "Spent 10 BTC investing in RTOKEN"
  * and in ETH history it will be listed as "Got 100 RTOKEN from BTC investment"
  */
-open class InvestmentTransaction(
-        base: BaseTransaction,
+open class InvestmentOperation(
+        base: BaseTransferOperation,
         id: String,
         amount: BigDecimal,
         asset: String,
         fee: BigDecimal,
         feeAsset: String,
         matchData: MatchData
-) : MatchTransaction(base, id, amount, asset, fee, feeAsset, matchData) {
+) : OfferMatchOperation(base, id, amount, asset, fee, feeAsset, matchData) {
     @SerializedName("investment_type")
-    override val type = TransactionType.INVESTMENT
+    override val type = OperationType.INVESTMENT
 
     companion object {
-        fun fromPaymentRecord(record: PaymentRecord, contextAsset: String,
-                              contextAccountId: String): List<InvestmentTransaction> {
+        fun fromUnifiedOperationRecord(record: UnifiedOperationRecord, contextAsset: String,
+                                       contextAccountId: String): List<InvestmentOperation> {
             val ourParticipants = record.participants?.filter {
                 it.accountId == contextAccountId
             }
@@ -54,15 +54,15 @@ open class InvestmentTransaction(
                 val baseAsset = effect.baseAsset ?: ""
                 val quoteAsset = effect.quoteAsset ?: ""
 
-                val quoteAmount = matches?.fold(BigDecimal.ZERO, { acc, item ->
+                val quoteAmount = matches?.fold(BigDecimal.ZERO) { acc, item ->
                     acc.add(item.quoteAmount)
-                }) ?: BigDecimal.ZERO
-                val baseAmount = matches?.fold(BigDecimal.ZERO, { acc, item ->
+                } ?: BigDecimal.ZERO
+                val baseAmount = matches?.fold(BigDecimal.ZERO) { acc, item ->
                     acc.add(item.baseAmount)
-                }) ?: BigDecimal.ZERO
-                val fee = matches?.fold(BigDecimal.ZERO, { acc, item ->
+                } ?: BigDecimal.ZERO
+                val fee = matches?.fold(BigDecimal.ZERO) { acc, item ->
                     acc.add(item.fee)
-                }) ?: BigDecimal.ZERO
+                } ?: BigDecimal.ZERO
 
                 val price =
                         (if (baseAmount == null || baseAmount.signum() == 0)
@@ -72,8 +72,8 @@ open class InvestmentTransaction(
 
                 val contextAssetIsQuote = !contextAssetIsBase
 
-                InvestmentTransaction(
-                        base = BaseTransaction.fromPaymentRecord(record, contextAccountId),
+                InvestmentOperation(
+                        base = BaseTransferOperation.fromPaymentRecord(record, contextAccountId),
                         id = "${record.id}_$i",
                         fee = fee,
                         asset = if (contextAssetIsQuote) quoteAsset else baseAsset,
@@ -92,13 +92,13 @@ open class InvestmentTransaction(
             } ?: listOf()
         }
 
-        fun fromOffer(offer: Offer): InvestmentTransaction {
-            return InvestmentTransaction(
-                    BaseTransaction(
+        fun fromOffer(offer: Offer): InvestmentOperation {
+            return InvestmentOperation(
+                    BaseTransferOperation(
                             pagingToken = offer.pagingToken,
                             date = offer.date,
-                            state = TransactionState.PENDING,
-                            type = TransactionType.INVESTMENT,
+                            state = OperationState.PENDING,
+                            type = OperationType.INVESTMENT,
                             sourceAccount = "",
                             asset = "",
                             amount = BigDecimal.ZERO,

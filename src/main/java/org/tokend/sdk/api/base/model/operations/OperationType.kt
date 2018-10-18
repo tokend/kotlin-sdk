@@ -1,6 +1,6 @@
-package org.tokend.sdk.api.base.model.transactions
+package org.tokend.sdk.api.base.model.operations
 
-enum class TransactionType(val literal: String) {
+enum class OperationType(val literal: String) {
     PAYMENT("payment"),
     ISSUANCE("create_issuance_request"),
     WITHDRAWAL("create_withdrawal_request"),
@@ -11,7 +11,7 @@ enum class TransactionType(val literal: String) {
     companion object {
         const val PAYMENT_V2_LITERAL = "payment_v2"
         @JvmStatic
-        fun fromLiteral(literal: String?): TransactionType {
+        fun fromLiteral(literal: String?): OperationType {
             literal ?: return UNKNOWN
             if (literal == PAYMENT_V2_LITERAL) {
                 return PAYMENT

@@ -1,31 +1,30 @@
-package org.tokend.sdk.api.base.model.transactions
+package org.tokend.sdk.api.base.model.operations
 
-import org.tokend.sdk.api.accounts.model.PaymentRecord
-import org.tokend.sdk.utils.BigDecimalUtil
+import org.tokend.sdk.api.accounts.model.UnifiedOperationRecord
 import java.math.BigDecimal
 import java.util.*
 
-open class BaseTransaction(
+open class BaseTransferOperation(
         override val id: String,
         override val pagingToken: String,
         override val date: Date,
-        override val state: TransactionState,
-        override val type: TransactionType,
+        override val state: OperationState,
+        override val type: OperationType,
         override val sourceAccount: String,
         override val amount: BigDecimal,
         override val asset: String,
         override val isReceived: Boolean
-) : Transaction {
+) : TransferOperation {
     companion object {
-        fun fromPaymentRecord(record: PaymentRecord, contextAccountId: String): BaseTransaction {
-            return BaseTransaction(
+        fun fromPaymentRecord(record: UnifiedOperationRecord, contextAccountId: String): BaseTransferOperation {
+            return BaseTransferOperation(
                     id = record.id,
                     pagingToken = record.pagingToken,
                     asset = record.asset ?: "",
-                    amount = BigDecimalUtil.valueOf(record.amount),
+                    amount = record.amount ?: BigDecimal.ZERO,
                     sourceAccount = record.sourceAccount ?: "",
-                    state = TransactionState.fromLiteral(record.state),
-                    type = TransactionType.UNKNOWN,
+                    state = OperationState.fromLiteral(record.state),
+                    type = OperationType.UNKNOWN,
                     date = record.ledgerCloseTime,
                     isReceived = contextAccountId != record.sourceAccount
             )
@@ -33,7 +32,7 @@ open class BaseTransaction(
     }
 
     override fun equals(other: Any?): Boolean {
-        return other is Transaction
+        return other is TransferOperation
                 && other.id == this.id
     }
 

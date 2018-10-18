@@ -1,6 +1,6 @@
-package org.tokend.sdk.api.base.model.transactions
+package org.tokend.sdk.api.base.model.operations
 
-enum class TransactionState(val literal: String) {
+enum class OperationState(val literal: String) {
     PENDING("pending"),
     SUCCESS("success"),
     REJECTED("rejected"),
@@ -11,7 +11,7 @@ enum class TransactionState(val literal: String) {
         const val FULLY_MATCHED_LITERAL = "fully matched"
 
         @JvmStatic
-        fun fromLiteral(literal: String?): TransactionState {
+        fun fromLiteral(literal: String?): OperationState {
             literal ?: return PENDING
             if (literal == FULLY_MATCHED_LITERAL) {
                 return SUCCESS
