@@ -48,48 +48,59 @@ open class InvestmentOperation(
                                     && it.effects.find { it.quoteAsset == contextAsset } != null
                         }
 
-            return ourParticipant?.effects?.mapIndexed { i, effect ->
-                val matches = effect.matches
+            ourParticipant ?: return emptyList()
 
-                val baseAsset = effect.baseAsset ?: ""
-                val quoteAsset = effect.quoteAsset ?: ""
+            return ourParticipant.effects
+                    ?.filter {
+                        it.baseAsset != null
+                                && it.quoteAsset != null
+                    }
+                    ?.mapIndexed { i, effect ->
+                        val matches = effect.matches
 
-                val quoteAmount = matches?.fold(BigDecimal.ZERO) { acc, item ->
-                    acc.add(item.quoteAmount)
-                } ?: BigDecimal.ZERO
-                val baseAmount = matches?.fold(BigDecimal.ZERO) { acc, item ->
-                    acc.add(item.baseAmount)
-                } ?: BigDecimal.ZERO
-                val fee = matches?.fold(BigDecimal.ZERO) { acc, item ->
-                    acc.add(item.fee)
-                } ?: BigDecimal.ZERO
+                        val baseAsset = effect.baseAsset!!
+                        val quoteAsset = effect.quoteAsset!!
 
-                val price =
-                        (if (baseAmount == null || baseAmount.signum() == 0)
-                            null
-                        else quoteAmount?.divide(baseAmount, MathContext.DECIMAL128))
-                                ?: BigDecimal.ONE
+                        val quoteAmount = matches?.fold(BigDecimal.ZERO) { acc, item ->
+                            acc.add(item.quoteAmount)
+                        } ?: BigDecimal.ZERO
+                        val baseAmount = matches?.fold(BigDecimal.ZERO) { acc, item ->
+                            acc.add(item.baseAmount)
+                        } ?: BigDecimal.ZERO
+                        val fee = matches?.fold(BigDecimal.ZERO) { acc, item ->
+                            acc.add(item.fee)
+                        } ?: BigDecimal.ZERO
 
-                val contextAssetIsQuote = !contextAssetIsBase
+                        val price =
+                                (if (baseAmount == null || baseAmount.signum() == 0)
+                                    null
+                                else quoteAmount?.divide(baseAmount, MathContext.DECIMAL128))
+                                        ?: BigDecimal.ONE
 
-                InvestmentOperation(
-                        base = BaseTransferOperation.fromPaymentRecord(record, contextAccountId),
-                        id = "${record.id}_$i",
-                        fee = fee,
-                        asset = if (contextAssetIsQuote) quoteAsset else baseAsset,
-                        amount = if (contextAssetIsQuote) quoteAmount else baseAmount,
-                        matchData = MatchData(
-                                quoteAsset =
-                                if (contextAssetIsQuote) baseAsset else quoteAsset,
-                                quoteAmount =
-                                if (contextAssetIsQuote) baseAmount else quoteAmount,
-                                price = price,
-                                isBuy = !contextAssetIsQuote && effect.isBuy,
-                                orderId = null
-                        ),
-                        feeAsset = quoteAsset
-                )
-            } ?: listOf()
+                        val contextAssetIsQuote = !contextAssetIsBase
+
+                        InvestmentOperation(
+                                base = BaseTransferOperation.fromPaymentRecord(record, contextAccountId),
+                                id = "${record.id}_$i",
+                                fee = fee,
+                                asset = contextAsset,
+                                amount = if (contextAssetIsQuote) quoteAmount else baseAmount,
+                                matchData = MatchData(
+                                        quoteAsset =
+                                        if (contextAssetIsQuote) baseAsset else quoteAsset,
+                                        quoteAmount =
+                                        if (contextAssetIsQuote) baseAmount else quoteAmount,
+                                        price =
+                                        if (contextAssetIsQuote)
+                                            BigDecimal.ONE.divide(price, MathContext.DECIMAL128)
+                                        else
+                                            price,
+                                        isBuy = contextAssetIsQuote != effect.isBuy,
+                                        orderId = null
+                                ),
+                                feeAsset = quoteAsset
+                        )
+                    } ?: listOf()
         }
 
         fun fromOffer(offer: Offer): InvestmentOperation {

@@ -1,9 +1,9 @@
 package org.tokend.sdk.api.base.model.operations
 
-import org.tokend.sdk.api.trades.model.Offer
 import org.tokend.sdk.api.accounts.model.UnifiedOperationRecord
-import org.tokend.sdk.utils.BigDecimalUtil
+import org.tokend.sdk.api.trades.model.Offer
 import java.math.BigDecimal
+import java.math.MathContext
 
 /**
  * Represents trading match.
@@ -37,34 +37,47 @@ open class OfferMatchOperation(
             }
 
             val effect = ourParticipant?.effects?.firstOrNull()
+                    ?: return emptyList()
 
-            val baseAsset = effect?.baseAsset ?: ""
-            val quoteAsset = effect?.quoteAsset ?: ""
-            val contextAssetIsQuote = quoteAsset == contextAsset
+            val effectBaseAsset = effect.baseAsset
+                    ?: return emptyList()
+            val effectQuoteAsset = effect.quoteAsset
+                    ?: return emptyList()
+            val contextAssetIsQuote = effectQuoteAsset == contextAsset
 
-            return effect?.matches?.mapIndexed { i, match ->
-                val baseAmount = match.baseAmount
-                val quoteAmount = match.quoteAmount
+            return effect.matches
+                    ?.asSequence()
+                    ?.filter {
+                        it.baseAmount.signum() != 0
+                                && it.quoteAmount.signum() != 0
+                    }
+                    ?.mapIndexed { i, match ->
+                        val baseAmount = match.baseAmount
+                        val quoteAmount = match.quoteAmount
 
-                OfferMatchOperation(
-                        base = BaseTransferOperation.fromPaymentRecord(record, contextAccountId),
-                        id = "${record.id}_$i",
-                        fee = BigDecimalUtil.valueOf(match.feeString),
-                        asset = if (contextAssetIsQuote) quoteAsset else baseAsset,
-                        amount = if (contextAssetIsQuote) quoteAmount else baseAmount,
-                        matchData = MatchData(
-                                quoteAsset =
-                                if (contextAssetIsQuote) baseAsset else quoteAsset,
-                                quoteAmount =
-                                if (contextAssetIsQuote) baseAmount else quoteAmount,
-                                price = match.price,
-                                isBuy = !contextAssetIsQuote && effect.isBuy
-                                        || contextAssetIsQuote && !effect.isBuy,
-                                orderId = null
-                        ),
-                        feeAsset = quoteAsset
-                )
-            } ?: listOf()
+                        OfferMatchOperation(
+                                base = BaseTransferOperation.fromPaymentRecord(record, contextAccountId),
+                                id = "${record.id}_$i",
+                                fee = match.fee,
+                                asset = contextAsset,
+                                amount = if (contextAssetIsQuote) quoteAmount else baseAmount,
+                                matchData = MatchData(
+                                        quoteAsset =
+                                        if (contextAssetIsQuote) effectBaseAsset else effectQuoteAsset,
+                                        quoteAmount =
+                                        if (contextAssetIsQuote) baseAmount else quoteAmount,
+                                        price =
+                                        if (contextAssetIsQuote)
+                                            BigDecimal.ONE.divide(match.price, MathContext.DECIMAL128)
+                                        else
+                                            match.price,
+                                        isBuy = contextAssetIsQuote != effect.isBuy,
+                                        orderId = null
+                                ),
+                                feeAsset = effectQuoteAsset
+                        )
+                    }
+                    ?.toList() ?: emptyList()
         }
 
         fun fromOffer(offer: Offer): OfferMatchOperation {
