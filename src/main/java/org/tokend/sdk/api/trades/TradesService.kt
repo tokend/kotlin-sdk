@@ -10,4 +10,7 @@ interface TradesService {
     @GET("order_book")
     @JvmSuppressWildcards
     fun getOrderBook(@QueryMap query: Map<String, Any>): Call<Page<Offer>>
+
+    @GET("trades")
+    fun getMatchedOrders(@QueryMap query: Map<String, Any>): Call<Page<Offer>>
 }
