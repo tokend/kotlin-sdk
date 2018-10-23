@@ -8,6 +8,7 @@ import java.util.*
 
 /**
  * Constructs and provides base Gson and base converter factory
+ * with type adapters for SDK models.
  */
 class GsonFactory {
     fun getBaseGson(): Gson {
