@@ -1,7 +1,11 @@
 package org.tokend.sdk.api.base.params
 
 import java.util.*
+import org.tokend.sdk.api.accounts.params.PaymentsParams
 
+/**
+ * Need to create [PaymentsParams] with specific params.
+ */
 class OperationsParams(
         val since: Date? = null,
         val to: Date? = null,

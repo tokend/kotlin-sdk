@@ -3,7 +3,12 @@ package org.tokend.sdk.api.trades.params
 import org.tokend.sdk.api.base.params.PagingParamsHolder
 import org.tokend.sdk.api.base.params.QueryParams
 import org.tokend.sdk.api.base.params.PagingParams
+import org.tokend.sdk.api.trades.TradesApi
 
+/**
+ * Need to create a query to get specific order book.
+ * @see [TradesApi.getOrderBook]
+ */
 class OrderBookParams(
         val baseAsset: String,
         val quoteAsset: String,

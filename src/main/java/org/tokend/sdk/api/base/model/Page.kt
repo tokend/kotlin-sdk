@@ -4,6 +4,9 @@ package org.tokend.sdk.api.base.model
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
+/**
+ * Response with list of specific [T] items
+ */
 open class Page<T> {
     @SerializedName("records")
     var records: List<T> = emptyList()

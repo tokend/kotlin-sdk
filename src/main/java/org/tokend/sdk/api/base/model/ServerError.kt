@@ -3,6 +3,9 @@ package org.tokend.sdk.api.base.model
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
+/**
+ * Represents Server error.
+ */
 open class ServerError {
     @SerializedName("title")
     @Expose

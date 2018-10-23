@@ -45,6 +45,9 @@ open class AssetsApi(
         )
     }
 
+    /**
+     * Will return [amount] of [sourceAsset] converted to [destAsset].
+     */
     open fun convert(sourceAsset: String,
                      destAsset: String,
                      amount: BigDecimal): ApiRequest<BigDecimal> {
@@ -65,12 +68,18 @@ open class AssetsApi(
         )
     }
 
+    /**
+     * Will return [AssetChartData] for given asset code.
+     */
     open fun getChart(assetCode: String): ApiRequest<AssetChartData> {
         return SimpleRetrofitApiRequest(
                 assetsService.getChart(assetCode)
         )
     }
 
+    /**
+     * Will return [AssetChartData] for given asset pair.
+     */
     open fun getChart(baseAsset: String,
                       quoteAsset: String): ApiRequest<AssetChartData> {
         return getChart("$baseAsset-$quoteAsset")

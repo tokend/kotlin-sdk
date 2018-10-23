@@ -1,10 +1,15 @@
 package org.tokend.sdk.api.accounts.params
 
+import org.tokend.sdk.api.accounts.AccountsApi
 import org.tokend.sdk.api.base.params.OperationsParams
 import org.tokend.sdk.api.base.params.PagingParamsHolder
 import org.tokend.sdk.api.base.params.QueryParams
 import org.tokend.sdk.api.base.params.PagingParams
 
+/**
+ * Need to make a query to get account payments.
+ * @see AccountsApi.getRawPayments
+ */
 class PaymentsParams(
         val pagingParams: PagingParams? = null,
         val operationsParams: OperationsParams? = null,

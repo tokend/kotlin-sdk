@@ -1,9 +1,14 @@
 package org.tokend.sdk.api.fees.params
 
 import org.tokend.sdk.api.base.params.QueryParams
+import org.tokend.sdk.api.fees.FeesApi
 import org.tokend.sdk.utils.BigDecimalUtil
 import java.math.BigDecimal
 
+/**
+ * Need to create a query to get specific fee.
+ * @see [FeesApi.getByType]
+ */
 open class FeeParams(
         val asset: String,
         val accountId: String? = null,
