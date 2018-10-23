@@ -4,6 +4,10 @@ import org.tokend.sdk.api.accounts.model.UnifiedOperationRecord
 import org.tokend.sdk.api.base.model.operations.*
 
 object UnifiedOperationRecordsConverter {
+
+    /**
+     * Transforms list of [UnifiedOperationRecord] to list of specific operations.
+     */
     fun toTransferOperations(items: List<UnifiedOperationRecord>,
                              contextAccountId: String, contextAsset: String): List<TransferOperation> {
         return items.map {

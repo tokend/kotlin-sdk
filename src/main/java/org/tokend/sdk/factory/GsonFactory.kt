@@ -6,6 +6,10 @@ import org.tokend.sdk.utils.ApiDateUtil
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 
+/**
+ * Constructs and provides base Gson and base converter factory
+ * with type adapters for SDK models.
+ */
 class GsonFactory {
     fun getBaseGson(): Gson {
         return baseGson ?: GsonBuilder()

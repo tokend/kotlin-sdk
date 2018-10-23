@@ -16,9 +16,6 @@ interface AccountsService {
     fun getAccount(@Path("accountId") accountId: String?):
             Call<Account>
 
-    /**
-     * Will return empty account with only 'signers' filled.
-     */
     @GET("accounts/{accountId}/signers")
     fun getSigners(@Path("accountId") accountId: String?):
             Call<Account>

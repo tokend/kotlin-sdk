@@ -13,6 +13,10 @@ object ApiDateUtil {
             SimpleDateFormat("yyyy-MM-dd HH:mm"),
             SimpleDateFormat("yyyy-MM-dd"))
 
+    /**
+     * Allow to safety parse Date from String.
+     * @return parsed value or current Date.
+     */
     fun tryParseDate(strDate: String?): Date {
         if (strDate.isNullOrEmpty())
             return Date()
@@ -26,6 +30,10 @@ object ApiDateUtil {
         return Date()
     }
 
+    /**
+     * Format Date to String.
+     * @return formatted String or empty String if [dateForRequest] is null.
+     */
     fun formatDateForRequest(dateForRequest: Date?): String {
         dateForRequest?.let { date ->
             val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)

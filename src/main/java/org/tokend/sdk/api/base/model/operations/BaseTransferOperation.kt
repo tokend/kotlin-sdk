@@ -4,6 +4,9 @@ import org.tokend.sdk.api.accounts.model.UnifiedOperationRecord
 import java.math.BigDecimal
 import java.util.*
 
+/**
+ * Represents base transfer operation with no type.
+ */
 open class BaseTransferOperation(
         override val id: String,
         override val pagingToken: String,

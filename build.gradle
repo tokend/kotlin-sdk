@@ -28,8 +28,8 @@ dependencies {
     compile 'com.squareup.okhttp3:logging-interceptor:3.5.0'
 
     compile 'org.tokend:crypto-cipher:1.0'
-    compile 'org.tokend:crypto-kdf:1.0.1'
-    compile 'org.tokend:wallet:1.0.8'
+    compile 'org.tokend:crypto-kdf:1.0.2'
+    compile 'org.tokend:wallet:1.0.9'
 }
 repositories {
     mavenCentral()
@@ -46,5 +46,5 @@ compileTestKotlin {
 apply from: 'deploy.gradle'
 
 group 'org.tokend'
-version '1.2'
+version '1.2.1'
 uploadArchives.repositories.mavenDeployer.pom.artifactId = 'sdk'

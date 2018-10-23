@@ -107,7 +107,7 @@ open class AccountsApi(
     }
 
     /**
-     * Will return list of pending offers for specified account.
+     * Will return list of pending offers for specified [Account].
      * @see <a href="https://tokend.gitlab.io/docs/?http#get-account-pending-offers">Docs</a>
      */
     open fun getPendingOffers(accountId: String,
@@ -121,6 +121,9 @@ open class AccountsApi(
         )
     }
 
+    /**
+     * Will return list of account details for given list of account ids.
+     */
     open fun getDetails(accountIds: Collection<String>): ApiRequest<AccountsDetailsResponse> {
         return SimpleRetrofitApiRequest(
                 accountsService.getAccountsDetails(
@@ -129,6 +132,9 @@ open class AccountsApi(
         )
     }
 
+    /**
+     * Will return [Account] for given email.
+     */
     open fun getAccountIdByEmail(email: String): ApiRequest<String> {
         return MappedRetrofitApiRequest(
                 accountsService.getAccountIdByEmail(email),

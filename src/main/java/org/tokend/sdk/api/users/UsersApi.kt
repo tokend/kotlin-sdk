@@ -24,7 +24,7 @@ open class UsersApi(
     }
 
     /**
-     * Will create user for given accountId
+     * Will create user for given accountId.
      * @see <a href="https://tokend.gitlab.io/docs/?http#create-user">Docs</a>
      */
     open fun create(accountId: String,
@@ -41,6 +41,9 @@ open class UsersApi(
         )
     }
 
+    /**
+     * Will update existing user for given accountId.
+     */
     open fun patch(accountId: String,
                    attributes: UserAttributes): ApiRequest<Void> {
         return SimpleRetrofitApiRequest(
