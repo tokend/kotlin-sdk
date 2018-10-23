@@ -4,7 +4,9 @@ import java.util.*
 import org.tokend.sdk.api.accounts.params.PaymentsParams
 
 /**
- * Need to create [PaymentsParams] with specific params.
+ * Base query params for all ledger index requests.
+ *
+ * @see <a href="https://tokend.gitlab.io/docs/#ledger-index">Ledger index docs</a>
  */
 class OperationsParams(
         val since: Date? = null,
