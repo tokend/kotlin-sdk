@@ -9,6 +9,7 @@ import org.tokend.sdk.api.base.params.PagingParams
 /**
  * Need to make a query to get account payments.
  * @see AccountsApi.getRawPayments
+ * @see AccountsApi.getPayments
  */
 class PaymentsParams(
         val pagingParams: PagingParams? = null,
