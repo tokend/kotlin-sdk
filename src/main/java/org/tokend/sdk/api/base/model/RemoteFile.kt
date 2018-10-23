@@ -2,7 +2,14 @@ package org.tokend.sdk.api.base.model
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
+import org.tokend.sdk.api.assets.model.AssetDetails
+import org.tokend.sdk.api.sales.model.SaleDetails
 
+/**
+ * Represents reference to remote file.
+ * @see AssetDetails
+ * @see SaleDetails
+ */
 open class RemoteFile(@SerializedName("key")
                       val key: String,
                       @SerializedName("name")

@@ -3,7 +3,12 @@ package org.tokend.sdk.api.sales.params
 import org.tokend.sdk.api.base.params.PagingParamsHolder
 import org.tokend.sdk.api.base.params.QueryParams
 import org.tokend.sdk.api.base.params.PagingParams
+import org.tokend.sdk.api.sales.SalesApi
 
+/**
+ * Need to create a query to get specific antes.
+ * @see [SalesApi.getAntes]
+ */
 open class AntesParams(
         val pagingParams: PagingParams? = null,
         val participantBalanceId: String? = null,

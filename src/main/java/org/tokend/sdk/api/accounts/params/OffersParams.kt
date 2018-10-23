@@ -1,9 +1,14 @@
 package org.tokend.sdk.api.accounts.params
 
+import org.tokend.sdk.api.accounts.AccountsApi
 import org.tokend.sdk.api.base.params.PagingParamsHolder
 import org.tokend.sdk.api.base.params.QueryParams
 import org.tokend.sdk.api.base.params.PagingParams
 
+/**
+ * Need to make a query to get pending offers.
+ * @see [AccountsApi.getPendingOffers]
+ */
 class OffersParams(
         val pagingParams: PagingParams? = null,
         val baseAsset: String? = null,

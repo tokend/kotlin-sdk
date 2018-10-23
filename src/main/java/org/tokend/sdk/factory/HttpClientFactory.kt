@@ -11,6 +11,9 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.net.ssl.SSLContext
 
+/**
+ * Constructs base http client builder.
+ */
 class HttpClientFactory {
     @JvmOverloads
     fun getBaseHttpClientBuilder(cookieJarProvider: CookieJarProvider? = null,
