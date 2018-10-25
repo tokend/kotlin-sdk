@@ -101,6 +101,39 @@ class KeyStorage constructor(
     }
     // endregion
 
+    /**
+     * Loads default login params, creates a wallet and submits it to the system.
+     *
+     * @see createWallet
+     * @see saveWallet
+     * @see getLoginParams
+     */
+    @JvmOverloads
+    @Throws(EmailAlreadyTakenException::class)
+    fun createAndSaveWallet(email: String,
+                            password: CharArray,
+                            rootAccount: Account = Account.random(),
+                            recoveryAccount: Account = Account.random()
+    ): WalletCreateResult {
+        val loginParams = getLoginParams()
+
+        val kdf = loginParams.kdfAttributes
+        val kdfVersion = loginParams.id
+
+        val result = KeyStorage.createWallet(
+                email,
+                password,
+                kdf,
+                kdfVersion,
+                rootAccount,
+                recoveryAccount
+        )
+
+        saveWallet(result.walletData)
+
+        return result
+    }
+
     companion object {
         private const val WALLET_ID_MASTER_KEY = "WALLET_ID"
         private const val WALLET_KEY_MASTER_KEY = "WALLET_KEY"
