@@ -27,8 +27,9 @@ open class UsersApi(
      * Will create user for given accountId.
      * @see <a href="https://tokend.gitlab.io/docs/?http#create-user">Docs</a>
      */
+    @JvmOverloads
     open fun create(accountId: String,
-                    userType: String): ApiRequest<Void> {
+                    userType: String = DEFAULT_USER_TYPE): ApiRequest<Void> {
         return SimpleRetrofitApiRequest(
                 usersService.createUser(
                         accountId,
@@ -54,5 +55,9 @@ open class UsersApi(
                         )
                 )
         )
+    }
+
+    companion object {
+        const val DEFAULT_USER_TYPE = "not_verified"
     }
 }
