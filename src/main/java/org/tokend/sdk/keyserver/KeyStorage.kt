@@ -388,6 +388,30 @@ class KeyStorage constructor(
         }
 
         /**
+         * @return completed wallet for sign up or update
+         * @param email user's email
+         * @param password user's password
+         * @param loginParams system KDF params.
+         * For password change or recovery use existing
+         * @param kdfVersion system KDF version.
+         * For password change or recovery use existing
+         */
+        @JvmStatic
+        @JvmOverloads
+        fun createWallet(
+                email: String,
+                password: CharArray,
+                loginParams: LoginParams,
+                rootAccount: Account = Account.random(),
+                recoveryAccount: Account = Account.random()
+        ): WalletCreateResult {
+            val kdf = loginParams.kdfAttributes
+            val kdfVersion = loginParams.id
+
+            return createWallet(email, password, kdf, kdfVersion, rootAccount, recoveryAccount)
+        }
+
+        /**
          * @return transaction for password change or recovery
          * @param networkParams params of current TokenD network
          * @param originalAccountId original account ID of the wallet
