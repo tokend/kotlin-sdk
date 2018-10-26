@@ -7,6 +7,8 @@ import org.tokend.sdk.api.assets.AssetsService
 import org.tokend.sdk.api.base.BaseApi
 import org.tokend.sdk.api.blobs.BlobsApi
 import org.tokend.sdk.api.blobs.BlobsService
+import org.tokend.sdk.api.documents.DocumentsApi
+import org.tokend.sdk.api.documents.DocumentsService
 import org.tokend.sdk.api.favorites.FavoritesApi
 import org.tokend.sdk.api.favorites.FavoritesService
 import org.tokend.sdk.api.fees.FeesApi
@@ -103,5 +105,9 @@ constructor(
 
     open val keyValueEntries: KeyValueStorageApi by lazy {
         KeyValueStorageApi(getService(KeyValueStorageService::class.java))
+    }
+
+    open val documents: DocumentsApi by lazy {
+        DocumentsApi(getService(DocumentsService::class.java))
     }
 }

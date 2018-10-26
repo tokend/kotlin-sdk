@@ -101,6 +101,39 @@ class KeyStorage constructor(
     }
     // endregion
 
+    /**
+     * Loads default login params, creates a wallet and submits it to the system.
+     *
+     * @see createWallet
+     * @see saveWallet
+     * @see getLoginParams
+     */
+    @JvmOverloads
+    @Throws(EmailAlreadyTakenException::class)
+    fun createAndSaveWallet(email: String,
+                            password: CharArray,
+                            rootAccount: Account = Account.random(),
+                            recoveryAccount: Account = Account.random()
+    ): WalletCreateResult {
+        val loginParams = getLoginParams()
+
+        val kdf = loginParams.kdfAttributes
+        val kdfVersion = loginParams.id
+
+        val result = KeyStorage.createWallet(
+                email,
+                password,
+                kdf,
+                kdfVersion,
+                rootAccount,
+                recoveryAccount
+        )
+
+        saveWallet(result.walletData)
+
+        return result
+    }
+
     companion object {
         private const val WALLET_ID_MASTER_KEY = "WALLET_ID"
         private const val WALLET_KEY_MASTER_KEY = "WALLET_KEY"
@@ -352,6 +385,30 @@ class KeyStorage constructor(
                     rootAccount,
                     recoveryAccount
             )
+        }
+
+        /**
+         * @return completed wallet for sign up or update
+         * @param email user's email
+         * @param password user's password
+         * @param loginParams system KDF params.
+         * For password change or recovery use existing
+         * @param kdfVersion system KDF version.
+         * For password change or recovery use existing
+         */
+        @JvmStatic
+        @JvmOverloads
+        fun createWallet(
+                email: String,
+                password: CharArray,
+                loginParams: LoginParams,
+                rootAccount: Account = Account.random(),
+                recoveryAccount: Account = Account.random()
+        ): WalletCreateResult {
+            val kdf = loginParams.kdfAttributes
+            val kdfVersion = loginParams.id
+
+            return createWallet(email, password, kdf, kdfVersion, rootAccount, recoveryAccount)
         }
 
         /**
