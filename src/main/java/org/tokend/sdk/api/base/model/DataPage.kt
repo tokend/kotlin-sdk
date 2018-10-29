@@ -12,6 +12,7 @@ class DataPage<T>(val nextCursor: String?,
         fun <T> getNextCursor(page: Page<T>): String? {
             val nextLink = page.getLinks()?.next?.href ?: return null
             return getNumberParamFromLink(nextLink, "cursor")
+                    ?: getNumberParamFromLink(nextLink, "page")
         }
 
         private fun getNumberParamFromLink(link: String, param: String): String? {

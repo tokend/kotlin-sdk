@@ -3,7 +3,9 @@ package org.tokend.sdk.api.base.params
 /**
  * Converts common paging params to Query map.
  */
-class PagingParams(
+open class PagingParams
+@JvmOverloads
+constructor(
         override val order: PagingOrder? = null,
         override val limit: Int? = null,
         override val cursor: String? = null
