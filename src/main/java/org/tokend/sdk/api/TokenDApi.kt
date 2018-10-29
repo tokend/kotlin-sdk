@@ -44,6 +44,7 @@ open class TokenDApi
  * If not set requests protected by 2FA will be uncompletable
  * @param cookieJarProvider if set will be used to store cookies
  * @param userAgent overrides default user agent
+ * @param forceContentType send 'Accept' header with specific content type, affects errors format
  *
  * @see [AccountRequestSigner]
  */
@@ -53,8 +54,9 @@ constructor(
         requestSigner: RequestSigner? = null,
         tfaCallback: TfaCallback? = null,
         cookieJarProvider: CookieJarProvider? = null,
-        userAgent: String? = null
-) : BaseApi(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent) {
+        userAgent: String? = null,
+        forceContentType: Boolean = false
+) : BaseApi(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent, forceContentType) {
     open val accounts: AccountsApi by lazy {
         AccountsApi(getService(AccountsService::class.java))
     }

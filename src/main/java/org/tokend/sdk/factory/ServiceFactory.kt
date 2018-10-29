@@ -17,11 +17,12 @@ import java.util.*
  * Constructs API services from Retrofit interfaces.
  */
 class ServiceFactory(private val url: String,
-                     private val userAgent: String? = null) {
+                     private val userAgent: String? = null,
+                     private val forceContentType: Boolean = false) {
     fun getTfaVerificationService(): TfaVerificationService {
         return getCustomService(TfaVerificationService::class.java,
                 HttpClientFactory().getBaseHttpClientBuilder(
-                        userAgent = userAgent
+                        headers = getDefaultHeaders(userAgent)
                 ).build())
     }
 
@@ -40,7 +41,7 @@ class ServiceFactory(private val url: String,
         val client =
                 HttpClientFactory().getBaseHttpClientBuilder(
                         cookieJarProvider = cookieJarProvider,
-                        userAgent = userAgent
+                        headers = getDefaultHeaders(userAgent)
                 )
                         .addInterceptor(
                                 TfaInterceptor(getTfaVerificationService(),
@@ -106,10 +107,29 @@ class ServiceFactory(private val url: String,
         }
     }
 
+    private fun getDefaultHeaders(userAgent: String?): Map<String, String?> {
+        if (forceContentType) {
+            return mapOf(
+                    HEADER_USER_AGENT_NAME to userAgent,
+                    HEADER_CONTENT_TYPE_NAME to CONTENT_TYPE,
+                    HEADER_ACCEPT_NAME to CONTENT_TYPE
+            )
+        } else {
+            return mapOf(
+                    HEADER_USER_AGENT_NAME to userAgent
+            )
+        }
+    }
+
     companion object {
         // Time corrections by URL.
         private var timeCorrections = mutableMapOf<String, Long>()
 
         const val SIGNATURE_VALID_SEC = 60
+
+        private const val HEADER_USER_AGENT_NAME = "User-Agent"
+        private const val HEADER_ACCEPT_NAME = "Accept"
+        private const val HEADER_CONTENT_TYPE_NAME = "Content-Type"
+        private const val CONTENT_TYPE = "application/vnd.api+json"
     }
 }

@@ -1,10 +1,8 @@
 package org.tokend.sdk.tfa
 
-import com.google.gson.JsonParser
 import okhttp3.Interceptor
 import okhttp3.Response
-import org.tokend.sdk.api.base.model.ServerError
-import org.tokend.sdk.factory.GsonFactory
+import org.tokend.sdk.api.base.model.ErrorBody
 import java.io.InterruptedIOException
 import java.net.HttpURLConnection
 import java.util.concurrent.CountDownLatch
@@ -56,14 +54,16 @@ open class TfaInterceptor(
 
     protected open fun extractTfaException(response: Response): NeedTfaException? {
         val responseString = response.peekBody(response.body().contentLength()).string()
-        val responseJson = JsonParser().parse(responseString).asJsonObject
-        val errors = responseJson["errors"]?.asJsonArray
+        val error = try {
+            ErrorBody.fromJsonString(responseString).firstOrNull
+        } catch (_: Exception) {
+            null
+        } ?: return null
 
-        if (errors != null && errors.size() > 0) {
-            val error = GsonFactory().getBaseGson().fromJson(errors[0], ServerError::class.java)
-            return NeedTfaException.fromError(error)
+        return try {
+            NeedTfaException.fromError(error)
+        } catch (_: java.lang.Exception) {
+            null
         }
-
-        return null
     }
 }

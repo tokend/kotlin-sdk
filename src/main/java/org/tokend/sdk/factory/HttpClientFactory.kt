@@ -5,8 +5,8 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.TlsVersion
 import okhttp3.logging.HttpLoggingInterceptor
-import org.tokend.sdk.utils.UserAgentInterceptor
 import org.tokend.sdk.utils.CookieJarProvider
+import org.tokend.sdk.utils.CustomHeadersInterceptor
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.net.ssl.SSLContext
@@ -18,7 +18,7 @@ class HttpClientFactory {
     @JvmOverloads
     fun getBaseHttpClientBuilder(cookieJarProvider: CookieJarProvider? = null,
                                  requestTimeoutMs: Long = REQUEST_TIMEOUT,
-                                 userAgent: String? = null)
+                                 headers: Map<String, String?>? = null)
             : OkHttpClient.Builder {
         val sslContext = SSLContext.getInstance("TLSv1.2")
         sslContext.init(null, null, null)
@@ -38,8 +38,8 @@ class HttpClientFactory {
             connectionSpecs(Arrays.asList(connectionSpec, ConnectionSpec.CLEARTEXT))
             cookieJarProvider?.getCookieJar()?.also { cookieJar(it) }
 
-            if (userAgent != null) {
-                addInterceptor(UserAgentInterceptor(userAgent))
+            if (headers != null) {
+                addInterceptor(CustomHeadersInterceptor(headers))
             }
 
             addInterceptor(getLoggingInterceptor())

@@ -1,5 +1,6 @@
 package org.tokend.sdk.api.base.model
 
+import com.google.gson.JsonElement
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
@@ -18,5 +19,5 @@ open class ServerError {
     val detail: String? = null
     @SerializedName("meta")
     @Expose
-    val meta: Map<String, Any>? = null
+    val meta: JsonElement? = null
 }
