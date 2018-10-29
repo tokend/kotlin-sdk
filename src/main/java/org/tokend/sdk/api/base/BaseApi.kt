@@ -1,9 +1,9 @@
 package org.tokend.sdk.api.base
 
-import org.tokend.sdk.utils.CookieJarProvider
+import org.tokend.sdk.factory.ServiceFactory
 import org.tokend.sdk.signing.RequestSigner
 import org.tokend.sdk.tfa.TfaCallback
-import org.tokend.sdk.factory.ServiceFactory
+import org.tokend.sdk.utils.CookieJarProvider
 
 /**
  * Represent a base TokenD API.
@@ -14,9 +14,10 @@ abstract class BaseApi
         protected val requestSigner: RequestSigner? = null,
         protected val tfaCallback: TfaCallback? = null,
         protected val cookieJarProvider: CookieJarProvider? = null,
-        protected val userAgent: String? = null
+        protected val userAgent: String? = null,
+        protected val forceContentType: Boolean = false
 ) {
-    protected val serviceFactory = ServiceFactory(rootUrl, userAgent)
+    protected val serviceFactory = ServiceFactory(rootUrl, userAgent, forceContentType)
 
     open val isSigned: Boolean
         get() = requestSigner != null

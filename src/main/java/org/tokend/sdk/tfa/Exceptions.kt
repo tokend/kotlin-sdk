@@ -4,7 +4,7 @@ import org.tokend.sdk.api.base.model.ForbiddenException
 import org.tokend.sdk.api.base.model.ServerError
 import org.tokend.sdk.api.tfa.model.TfaFactor
 
-open class InvalidOtpException: Exception()
+open class InvalidOtpException : Exception()
 
 open class NeedTfaException(val backendId: Long,
                             val factorType: TfaFactor.Type,
@@ -25,14 +25,16 @@ open class NeedTfaException(val backendId: Long,
         @JvmStatic
         fun fromError(error: ServerError): NeedTfaException? {
             if (error.detail?.contains("factor") == true) {
+                val meta = error.meta?.asJsonObject
+
                 return NeedTfaException(
-                        (error.meta?.get(BACKEND_ID) as? Double)?.toLong() ?: 0L,
-                        (error.meta?.get(BACKEND_TYPE) as? String).toString()
+                        meta?.get(BACKEND_ID)?.asLong ?: 0L,
+                        (meta?.get(BACKEND_TYPE)?.asString).toString()
                                 .let { TfaFactor.Type.fromLiteral(it) },
-                        (error.meta?.get(TOKEN) as? String).toString(),
-                        (error.meta?.get(KEYCHAIN_DATA) as? String).toString(),
-                        (error.meta?.get(SALT) as? String).toString(),
-                        (error.meta?.get(WALLET_ID) as? String).toString())
+                        (meta?.get(TOKEN)?.asString).toString(),
+                        (meta?.get(KEYCHAIN_DATA)?.asString).toString(),
+                        (meta?.get(SALT)?.asString).toString(),
+                        (meta?.get(WALLET_ID)?.asString).toString())
             }
 
             return null
