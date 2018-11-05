@@ -45,6 +45,7 @@ open class TokenDApi
  * @param cookieJarProvider if set will be used to store cookies
  * @param userAgent overrides default user agent
  * @param forceContentType send 'Accept' header with specific content type, affects errors format
+ * @param withLogs enable/disable HTTP Logs. True by default.
  *
  * @see [AccountRequestSigner]
  */
@@ -55,8 +56,10 @@ constructor(
         tfaCallback: TfaCallback? = null,
         cookieJarProvider: CookieJarProvider? = null,
         userAgent: String? = null,
-        forceContentType: Boolean = false
-) : BaseApi(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent, forceContentType) {
+        forceContentType: Boolean = false,
+        withLogs: Boolean = true
+) : BaseApi(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent, forceContentType, withLogs) {
+
     open val accounts: AccountsApi by lazy {
         AccountsApi(getService(AccountsService::class.java))
     }

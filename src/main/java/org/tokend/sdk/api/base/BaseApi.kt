@@ -15,9 +15,10 @@ abstract class BaseApi
         protected val tfaCallback: TfaCallback? = null,
         protected val cookieJarProvider: CookieJarProvider? = null,
         protected val userAgent: String? = null,
-        protected val forceContentType: Boolean = false
+        protected val forceContentType: Boolean = false,
+        protected val withLogs: Boolean
 ) {
-    protected val serviceFactory = ServiceFactory(rootUrl, userAgent, forceContentType)
+    protected val serviceFactory = ServiceFactory(rootUrl, userAgent, forceContentType, withLogs)
 
     open val isSigned: Boolean
         get() = requestSigner != null
