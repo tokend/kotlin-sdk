@@ -296,7 +296,8 @@ class KeyStorage constructor(
          * @param email user's email
          * @param password user's password
          * @param kdfAttributes system KDF attributes.
-         * For password change or recovery use existing
+         * For password change or recovery use existing.
+         * If kdf salt is null it will be generated.
          * @param kdfVersion system KDF version.
          * For password change or recovery use existing
          */
@@ -392,7 +393,8 @@ class KeyStorage constructor(
          * @param email user's email
          * @param password user's password
          * @param loginParams system KDF params.
-         * For password change or recovery use existing
+         * For password change or recovery use existing.
+         * If kdf salt is null it will be generated.
          * @param kdfVersion system KDF version.
          * For password change or recovery use existing
          */
@@ -485,6 +487,9 @@ class KeyStorage constructor(
             return transaction
         }
 
+        /**
+         * Generate salt for system KDF params.
+         */
         @JvmStatic
         fun generateKdfSalt(): ByteArray {
             return SecureRandom().generateSeed(KDF_SALT_LENGTH_BYTES)
