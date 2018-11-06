@@ -1,5 +1,6 @@
 package org.tokend.sdk.api
 
+import com.sun.org.apache.xpath.internal.operations.Bool
 import org.tokend.sdk.api.accounts.AccountsApi
 import org.tokend.sdk.api.accounts.AccountsService
 import org.tokend.sdk.api.assets.AssetsApi
@@ -115,4 +116,59 @@ constructor(
     open val documents: DocumentsApi by lazy {
         DocumentsApi(getService(DocumentsService::class.java))
     }
+
+    class Builder {
+        private lateinit var rootUrl: String
+        private var requestSigner: RequestSigner? = null
+        private var tfaCallback: TfaCallback? = null
+        private var cookieJarProvider: CookieJarProvider? = null
+        private var userAgent: String? = null
+        private var forceContentType: Boolean = false
+        private var withLogs: Boolean = true
+
+        fun setRootUrl(rootUrl: String): Builder {
+            this.rootUrl = rootUrl
+            return this
+        }
+
+        fun setRequestSigner(requestSigner: RequestSigner): Builder {
+            this.requestSigner = requestSigner
+            return this
+        }
+
+        fun setTfaCallback(tfaCallback: TfaCallback): Builder {
+            this.tfaCallback = tfaCallback
+            return this
+        }
+
+        fun setCookieJarProvider(cookieJarProvider: CookieJarProvider): Builder {
+            this.cookieJarProvider = cookieJarProvider
+            return this
+        }
+
+        fun setUserAgent(userAgent: String): Builder {
+            this.userAgent = userAgent
+            return this
+        }
+
+        fun forceContentType(forceContentType: Boolean): Builder {
+            this.forceContentType = forceContentType
+            return this
+        }
+
+        fun withLogs(withLogs: Boolean): Builder {
+            this.withLogs = withLogs
+            return this
+        }
+
+        fun build() = TokenDApi(
+                rootUrl,
+                requestSigner,
+                tfaCallback,
+                cookieJarProvider,
+                userAgent,
+                forceContentType,
+                withLogs)
+    }
+
 }
