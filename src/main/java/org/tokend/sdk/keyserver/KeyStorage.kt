@@ -10,7 +10,6 @@ import org.tokend.sdk.api.wallets.model.InvalidCredentialsException
 import org.tokend.sdk.factory.GsonFactory
 import org.tokend.sdk.keyserver.models.*
 import org.tokend.sdk.utils.extentions.encodeHex
-import org.tokend.sdk.utils.extentions.toBytes
 import org.tokend.wallet.*
 import org.tokend.wallet.xdr.Operation
 import org.tokend.wallet.xdr.op_extensions.RemoveMasterKeyOp
@@ -169,7 +168,7 @@ class KeyStorage constructor(
                     kdfAttributes.p, login, masterKey)
             val salt = kdfAttributes.salt
                     ?: throw IllegalArgumentException("KDF salt is required for derivation")
-            return derivation.derive(password, salt, kdfAttributes.bits.toBytes())
+            return derivation.derive(password, salt, kdfAttributes.bytes)
         }
 
         /**
