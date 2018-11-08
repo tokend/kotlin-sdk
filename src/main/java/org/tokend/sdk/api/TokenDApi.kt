@@ -45,6 +45,7 @@ open class TokenDApi
  * @param cookieJarProvider if set will be used to store cookies
  * @param userAgent overrides default user agent
  * @param forceContentType send 'Accept' header with specific content type, affects errors format
+ * @param withLogs enable/disable HTTP Logs. True by default.
  *
  * @see [AccountRequestSigner]
  */
@@ -55,8 +56,10 @@ constructor(
         tfaCallback: TfaCallback? = null,
         cookieJarProvider: CookieJarProvider? = null,
         userAgent: String? = null,
-        forceContentType: Boolean = false
-) : BaseApi(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent, forceContentType) {
+        forceContentType: Boolean = false,
+        withLogs: Boolean = true
+) : BaseApi(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent, forceContentType, withLogs) {
+
     open val accounts: AccountsApi by lazy {
         AccountsApi(getService(AccountsService::class.java))
     }
@@ -112,4 +115,77 @@ constructor(
     open val documents: DocumentsApi by lazy {
         DocumentsApi(getService(DocumentsService::class.java))
     }
+
+    /**
+     * Builds TokenDApi instance.
+     * @param rootUrl root URL of TokenD instance.
+     */
+    class Builder(private val rootUrl: String) {
+        private var requestSigner: RequestSigner? = null
+        private var tfaCallback: TfaCallback? = null
+        private var cookieJarProvider: CookieJarProvider? = null
+        private var userAgent: String? = null
+        private var forceContentType: Boolean = false
+        private var withLogs: Boolean = true
+
+        /**
+         * Required to perform requests with signature check.
+         * If not set such requests will be uncompletable.
+         */
+        fun setRequestSigner(requestSigner: RequestSigner): Builder {
+            this.requestSigner = requestSigner
+            return this
+        }
+
+        /**
+         * Required to handle 2FA (2 factor auth) requests.
+         * If not set requests protected by 2FA will be uncompletable.
+         */
+        fun setTfaCallback(tfaCallback: TfaCallback): Builder {
+            this.tfaCallback = tfaCallback
+            return this
+        }
+
+        /**
+         * If set will be used to store cookies.
+         */
+        fun setCookieJarProvider(cookieJarProvider: CookieJarProvider): Builder {
+            this.cookieJarProvider = cookieJarProvider
+            return this
+        }
+
+        /**
+         * Overrides default user agent.
+         */
+        fun setUserAgent(userAgent: String): Builder {
+            this.userAgent = userAgent
+            return this
+        }
+
+        /**
+         * Send 'Accept' header with specific content type, affects errors format.
+         */
+        fun forceContentType(forceContentType: Boolean): Builder {
+            this.forceContentType = forceContentType
+            return this
+        }
+
+        /**
+         * Enable/disable HTTP Logs. True by default.
+         */
+        fun withLogs(withLogs: Boolean): Builder {
+            this.withLogs = withLogs
+            return this
+        }
+
+        fun build() = TokenDApi(
+                rootUrl,
+                requestSigner,
+                tfaCallback,
+                cookieJarProvider,
+                userAgent,
+                forceContentType,
+                withLogs)
+    }
+
 }

@@ -32,4 +32,7 @@ data class KdfAttributes(
         set(value) {
             encodedSalt = value?.encodeBase64String()
         }
+
+    val bytes: Int
+        get() = bits / 8
 }

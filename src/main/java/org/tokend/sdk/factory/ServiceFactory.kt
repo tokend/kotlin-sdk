@@ -18,11 +18,14 @@ import java.util.*
  */
 class ServiceFactory(private val url: String,
                      private val userAgent: String? = null,
-                     private val forceContentType: Boolean = false) {
+                     private val forceContentType: Boolean = false,
+                     private val withLogs: Boolean) {
     fun getTfaVerificationService(): TfaVerificationService {
         return getCustomService(TfaVerificationService::class.java,
                 HttpClientFactory().getBaseHttpClientBuilder(
-                        headers = getDefaultHeaders(userAgent)
+                        headers = getDefaultHeaders(userAgent),
+                        withLogs = withLogs
+
                 ).build())
     }
 
@@ -41,7 +44,8 @@ class ServiceFactory(private val url: String,
         val client =
                 HttpClientFactory().getBaseHttpClientBuilder(
                         cookieJarProvider = cookieJarProvider,
-                        headers = getDefaultHeaders(userAgent)
+                        headers = getDefaultHeaders(userAgent),
+                        withLogs = withLogs
                 )
                         .addInterceptor(
                                 TfaInterceptor(getTfaVerificationService(),
