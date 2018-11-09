@@ -9,8 +9,6 @@ import java.util.*
 open class Account(
         @SerializedName("account_id")
         val accountId: String,
-        @SerializedName("paging_token")
-        val pagingToken: String,
         @SerializedName("subentry_count")
         val subentryCount: Int,
         @SerializedName("is_blocked")
@@ -27,10 +25,6 @@ open class Account(
         val balances: MutableList<Balance>,
         @SerializedName("signers")
         val signers: List<Signer>,
-        @SerializedName("limits")
-        val limits: Limits,
-        @SerializedName("statistics")
-        val statistics: Statistics,
         @SerializedName("external_system_accounts")
         val externalAccounts: List<ExternalAccount>,
         @SerializedName("referrals")
@@ -42,28 +36,6 @@ open class Account(
         const val BLOCK_REASON_RECOVERY_REQUEST = 1
         const val BLOCK_REASON_KYC_UPDATE = 2
         const val BLOCK_REASON_SUSPICIOUS_BEHAVIOR = 4
-    }
-
-    open class Limits {
-        @SerializedName("annual_out")
-        val annualOut: BigDecimal = BigDecimal.ZERO
-        @SerializedName("daily_out")
-        val dailyOut: BigDecimal = BigDecimal.ZERO
-        @SerializedName("monthly_out")
-        val mounthlyOut: BigDecimal = BigDecimal.ZERO
-        @SerializedName("weekly_out")
-        val weeklyOut: BigDecimal = BigDecimal.ZERO
-    }
-
-    open class Statistics {
-        @SerializedName("daily_outcome")
-        val dailyOut: BigDecimal = BigDecimal.ZERO
-        @SerializedName("weekly_outcome")
-        val weeklyOut: BigDecimal = BigDecimal.ZERO
-        @SerializedName("monthly_outcome")
-        val mounthlyOut: BigDecimal = BigDecimal.ZERO
-        @SerializedName("annual_outcome")
-        val annualOut: BigDecimal = BigDecimal.ZERO
     }
 
     open class ExternalAccount(@SerializedName("data")
@@ -94,17 +66,11 @@ open class Account(
     open class Balance internal constructor(@SerializedName("balance_id")
                                             val balanceId: String,
                                             @SerializedName("balance")
-                                            var balanceString: String,
-                                            @SerializedName("exchange_id")
-                                            val exchangeId: String,
-                                            @SerializedName("exchange_name")
-                                            val exchangeName: String,
+                                            val balance: BigDecimal?,
                                             @SerializedName("asset")
                                             val asset: String,
                                             @SerializedName("locked")
-                                            var lockedString: String,
-                                            @SerializedName("incentive_per_coin")
-                                            val incentive: String)
+                                            val locked: BigDecimal?)
 
     /**
      * Represents account signers.
