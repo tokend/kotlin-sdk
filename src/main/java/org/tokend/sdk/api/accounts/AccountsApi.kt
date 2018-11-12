@@ -68,7 +68,7 @@ open class AccountsApi(
         return MappedRetrofitApiRequest(
                 accountsService.getPayments(
                         accountId,
-                        paymentsParams?.map()
+                        paymentsParams?.map() ?: emptyMap()
                 ),
                 { DataPage.fromPage(it) }
         )

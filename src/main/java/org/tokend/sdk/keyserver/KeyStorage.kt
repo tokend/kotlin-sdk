@@ -315,10 +315,12 @@ class KeyStorage constructor(
             val recoveryAccountSeed = recoveryAccount.secretSeed
                     ?: throw IllegalArgumentException("Recovery account must have private key")
 
+            val kdfSalt = kdfAttributes.salt ?: generateKdfSalt()
+            kdfAttributes.salt = kdfSalt
+
             val walletKey = KeyStorage.getWalletKey(email, password, kdfAttributes)
             val walletId = KeyStorage.getWalletIdHex(email, password, kdfAttributes)
 
-            val kdfSalt = kdfAttributes.salt ?: generateKdfSalt()
 
             val encryptedSeed = KeyStorage.encryptWalletAccount(
                     email,
