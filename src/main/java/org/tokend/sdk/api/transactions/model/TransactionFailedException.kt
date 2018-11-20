@@ -27,5 +27,6 @@ class TransactionFailedException(val submitResponse: SubmitTransactionResponse):
         const val OP_OFFER_CROSS_SELF = "op_cross_self"
         const val OP_NO_AVAILABLE_EXTERNAL_ACCOUNTS = "op_no_available_id"
         const val OP_AMOUNT_LESS_THEN_DEST_FEE = "op_payment_amount_is_less_than_dest_fee"
+        const val OP_REQUIRES_KYC = "op_requires_kyc"
     }
 }
