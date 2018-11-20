@@ -27,6 +27,14 @@ data class KdfAttributes(
         @SerializedName("salt")
         var encodedSalt: String?
 ) {
+    constructor(algorithm: String,
+                bits: Int,
+                n: Int,
+                p: Int,
+                r: Int,
+                salt: ByteArray?
+    ) : this(algorithm, bits, n, p, r, salt?.encodeBase64String())
+
     var salt: ByteArray?
         get() = encodedSalt?.decodeBase64()
         set(value) {
