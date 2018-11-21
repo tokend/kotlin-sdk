@@ -1,13 +1,9 @@
 package org.tokend.sdk.api.accounts
 
-import org.tokend.sdk.api.accounts.model.AccountsDetailsResponse
-import org.tokend.sdk.api.trades.model.Offer
-import org.tokend.sdk.api.accounts.model.UnifiedOperationRecord
-import org.tokend.sdk.api.accounts.model.SimpleBalanceDetails
-import org.tokend.sdk.api.accounts.model.AccountsDetailsRequestBody
-import org.tokend.sdk.api.accounts.model.Account
-import org.tokend.sdk.api.accounts.model.AccountIdResponse
+import org.tokend.sdk.api.accounts.model.*
+import org.tokend.sdk.api.accounts.model.limits.LimitsResponse
 import org.tokend.sdk.api.base.model.Page
+import org.tokend.sdk.api.trades.model.Offer
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -44,4 +40,7 @@ interface AccountsService {
 
     @GET("user_id")
     fun getAccountIdByEmail(@Query("email") email: String): Call<AccountIdResponse>
+
+    @GET("accounts/{accountId}/limits")
+    fun getLimits(@Path("accountId") accountId: String): Call<LimitsResponse>
 }
