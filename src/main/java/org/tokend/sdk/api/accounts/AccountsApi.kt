@@ -1,6 +1,7 @@
 package org.tokend.sdk.api.accounts
 
 import org.tokend.sdk.api.accounts.model.*
+import org.tokend.sdk.api.accounts.model.limits.Limits
 import org.tokend.sdk.api.accounts.params.OffersParams
 import org.tokend.sdk.api.accounts.params.PaymentsParams
 import org.tokend.sdk.api.base.ApiRequest
@@ -139,6 +140,18 @@ open class AccountsApi(
         return MappedRetrofitApiRequest(
                 accountsService.getAccountIdByEmail(email),
                 { it.accountId }
+        )
+    }
+
+    /**
+     * Will return limits and statistics of given account.
+     *
+     * @see <a href="https://tokend.gitlab.io/docs/#get-account-limits">Docs</a>
+     */
+    open fun getLimits(accountId: String): ApiRequest<Limits> {
+        return MappedRetrofitApiRequest(
+                accountsService.getLimits(accountId),
+                { Limits(it.entries ?: emptyList()) }
         )
     }
 }

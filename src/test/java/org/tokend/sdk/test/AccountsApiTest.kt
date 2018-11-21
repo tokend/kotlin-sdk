@@ -2,6 +2,7 @@ package org.tokend.sdk.test
 
 import org.junit.Assert
 import org.junit.Test
+import org.tokend.wallet.Account
 
 class AccountsApiTest {
     @Test
@@ -108,5 +109,26 @@ class AccountsApiTest {
 
         Assert.assertTrue(operations.isNotEmpty())
         Util.checkNullabilityViolations(operations)
+    }
+
+    @Test
+    fun getLimits() {
+        val api = Util.getSignedApi(
+                account = Account.fromSecretSeed(
+                        "SBO3LOQOCQHM72Z33MIIFVBN27BFDIGQMY6YKKKYEUUIYNMRO562KFIS".toCharArray()
+                ),
+                url = "https://api.testnet.tokend.org/"
+        )
+
+        val accountId = "GAA5EAAH4G625EYJLLGWUGOY53QIDEJ7P3ENR72LDAKEI3SYNWN4MT2M"
+
+        val limits = api
+                .accounts
+                .getLimits(accountId)
+                .execute()
+                .get()
+
+        Assert.assertTrue(limits.entries.isNotEmpty())
+        Util.checkNullabilityViolations(limits.entries)
     }
 }
