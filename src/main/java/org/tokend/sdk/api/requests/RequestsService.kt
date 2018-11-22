@@ -3,6 +3,7 @@ package org.tokend.sdk.api.requests
 import org.tokend.sdk.api.base.model.Page
 import org.tokend.sdk.api.requests.model.SimpleReviewableRequest
 import org.tokend.sdk.api.requests.model.asset.SimpleAssetReviewableRequest
+import org.tokend.sdk.api.requests.model.issuance.IssuanceReviewableRequest
 import org.tokend.sdk.api.requests.model.preissuance.PreIssuanceReviewableRequest
 import org.tokend.sdk.api.requests.model.sale.SimpleSaleReviewableRequest
 import retrofit2.Call
@@ -25,4 +26,8 @@ interface RequestsService {
     @JvmSuppressWildcards
     @GET("request/preissuances")
     fun getPreIssuances(@QueryMap query: Map<String, Any>): Call<Page<PreIssuanceReviewableRequest>>
+
+    @JvmSuppressWildcards
+    @GET("request/issuances")
+    fun getIssuances(@QueryMap query: Map<String, Any>): Call<Page<IssuanceReviewableRequest>>
 }
