@@ -6,8 +6,10 @@ import org.tokend.sdk.api.base.model.DataPage
 import org.tokend.sdk.api.base.params.map
 import org.tokend.sdk.api.requests.model.SimpleReviewableRequest
 import org.tokend.sdk.api.requests.model.asset.SimpleAssetReviewableRequest
+import org.tokend.sdk.api.requests.model.preissuance.PreIssuanceReviewableRequest
 import org.tokend.sdk.api.requests.model.sale.SimpleSaleReviewableRequest
 import org.tokend.sdk.api.requests.params.AssetRequestsParams
+import org.tokend.sdk.api.requests.params.PreIssuanceRequestsParams
 import org.tokend.sdk.api.requests.params.RequestsParams
 import org.tokend.sdk.api.requests.params.SaleRequestsParams
 
@@ -43,6 +45,18 @@ open class RequestsApi(
     open fun getSales(params: SaleRequestsParams?): ApiRequest<DataPage<SimpleSaleReviewableRequest>> {
         return MappedRetrofitApiRequest(
                 requestsService.getSales(params.map()),
+                { DataPage.fromPage(it) }
+        )
+    }
+
+    /**
+     * Will return list of pre-issuance reviewable requests.
+     * @see <a href="https://tokend.gitlab.io/docs/#get-pre-issuance-requests">Docs</a>
+     */
+    open fun getPreIssuances(params: PreIssuanceRequestsParams?)
+            : ApiRequest<DataPage<PreIssuanceReviewableRequest>> {
+        return MappedRetrofitApiRequest(
+                requestsService.getPreIssuances(params.map()),
                 { DataPage.fromPage(it) }
         )
     }

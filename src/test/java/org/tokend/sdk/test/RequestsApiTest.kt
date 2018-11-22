@@ -5,6 +5,7 @@ import org.junit.Test
 import org.tokend.sdk.api.base.params.PagingOrder
 import org.tokend.sdk.api.base.params.PagingParams
 import org.tokend.sdk.api.requests.params.AssetRequestsParams
+import org.tokend.sdk.api.requests.params.PreIssuanceRequestsParams
 import org.tokend.sdk.api.requests.params.RequestsParams
 import org.tokend.sdk.api.requests.params.SaleRequestsParams
 
@@ -59,6 +60,29 @@ class RequestsApiTest {
                 .requests
                 .getSales(
                         SaleRequestsParams(
+                                pagingParams = PagingParams(
+                                        order = PagingOrder.DESC
+                                )
+                        )
+                )
+                .execute()
+                .get()
+                .items
+
+        Assert.assertTrue(requests.isNotEmpty())
+        Util.checkNullabilityViolations(requests)
+    }
+
+    @Test
+    fun getPreIssuances() {
+        val api = Util.getApi(
+                url = "https://api.testnet.tokend.org"
+        )
+
+        val requests = api
+                .requests
+                .getPreIssuances(
+                        PreIssuanceRequestsParams(
                                 pagingParams = PagingParams(
                                         order = PagingOrder.DESC
                                 )
