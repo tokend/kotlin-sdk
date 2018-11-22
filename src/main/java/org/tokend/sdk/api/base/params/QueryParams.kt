@@ -6,3 +6,7 @@ package org.tokend.sdk.api.base.params
 interface QueryParams {
     fun map(): Map<String, Any>
 }
+
+fun QueryParams?.map(): Map<String, Any> {
+    return this?.map() ?: emptyMap()
+}
