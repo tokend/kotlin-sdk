@@ -17,6 +17,8 @@ import org.tokend.sdk.api.general.GeneralApi
 import org.tokend.sdk.api.general.GeneralService
 import org.tokend.sdk.api.keyvaluestorage.KeyValueStorageApi
 import org.tokend.sdk.api.keyvaluestorage.KeyValueStorageService
+import org.tokend.sdk.api.requests.RequestsApi
+import org.tokend.sdk.api.requests.RequestsService
 import org.tokend.sdk.api.sales.SalesApi
 import org.tokend.sdk.api.sales.SalesService
 import org.tokend.sdk.api.tfa.TfaApi
@@ -114,6 +116,10 @@ constructor(
 
     open val documents: DocumentsApi by lazy {
         DocumentsApi(getService(DocumentsService::class.java))
+    }
+
+    open val requests: RequestsApi by lazy {
+        RequestsApi(getService(RequestsService::class.java))
     }
 
     /**
