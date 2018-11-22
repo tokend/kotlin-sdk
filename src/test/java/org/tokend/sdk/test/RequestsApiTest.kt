@@ -115,4 +115,27 @@ class RequestsApiTest {
         Assert.assertTrue(requests.isNotEmpty())
         Util.checkNullabilityViolations(requests)
     }
+
+    @Test
+    fun getWithdrawals() {
+        val api = Util.getApi(
+                url = "https://api.testnet.tokend.org"
+        )
+
+        val requests = api
+                .requests
+                .getWithdrawals(
+                        WithdrawalRequestsParams(
+                                pagingParams = PagingParams(
+                                        order = PagingOrder.DESC
+                                )
+                        )
+                )
+                .execute()
+                .get()
+                .items
+
+        Assert.assertTrue(requests.isNotEmpty())
+        Util.checkNullabilityViolations(requests)
+    }
 }

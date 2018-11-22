@@ -9,6 +9,7 @@ import org.tokend.sdk.api.requests.model.asset.SimpleAssetReviewableRequest
 import org.tokend.sdk.api.requests.model.issuance.IssuanceReviewableRequest
 import org.tokend.sdk.api.requests.model.preissuance.PreIssuanceReviewableRequest
 import org.tokend.sdk.api.requests.model.sale.SimpleSaleReviewableRequest
+import org.tokend.sdk.api.requests.model.withdrawal.WithdrawalReviewableRequest
 import org.tokend.sdk.api.requests.params.*
 
 open class RequestsApi(
@@ -67,6 +68,18 @@ open class RequestsApi(
             : ApiRequest<DataPage<IssuanceReviewableRequest>> {
         return MappedRetrofitApiRequest(
                 requestsService.getIssuances(params.map()),
+                { DataPage.fromPage(it) }
+        )
+    }
+
+    /**
+     * Will return list of issuance reviewable requests.
+     * @see <a href="https://tokend.gitlab.io/docs/#get-issuance-requests">Docs</a>
+     */
+    open fun getWithdrawals(params: WithdrawalRequestsParams?)
+            : ApiRequest<DataPage<WithdrawalReviewableRequest>> {
+        return MappedRetrofitApiRequest(
+                requestsService.getWithdrawals(params.map()),
                 { DataPage.fromPage(it) }
         )
     }
