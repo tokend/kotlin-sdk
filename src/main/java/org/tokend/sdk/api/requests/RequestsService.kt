@@ -10,6 +10,7 @@ import org.tokend.sdk.api.requests.model.limits.LimitsUpdateReviewableRequest
 import org.tokend.sdk.api.requests.model.preissuance.PreIssuanceReviewableRequest
 import org.tokend.sdk.api.requests.model.sale.SimpleSaleReviewableRequest
 import org.tokend.sdk.api.requests.model.sale.details.SaleDetailsUpdateReviewableRequest
+import org.tokend.sdk.api.requests.model.sale.endtime.SaleEndTimeUpdateReviewableRequest
 import org.tokend.sdk.api.requests.model.withdrawal.WithdrawalReviewableRequest
 import retrofit2.Call
 import retrofit2.http.GET
@@ -55,4 +56,8 @@ interface RequestsService {
     @JvmSuppressWildcards
     @GET("request/update_sale_details")
     fun getSaleDetailsUpdates(@QueryMap query: Map<String, Any>): Call<Page<SaleDetailsUpdateReviewableRequest>>
+
+    @JvmSuppressWildcards
+    @GET("request/update_sale_end_time")
+    fun getSaleEndTimeUpdates(@QueryMap query: Map<String, Any>): Call<Page<SaleEndTimeUpdateReviewableRequest>>
 }

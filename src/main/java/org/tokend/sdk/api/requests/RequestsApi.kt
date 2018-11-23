@@ -13,6 +13,7 @@ import org.tokend.sdk.api.requests.model.limits.LimitsUpdateReviewableRequest
 import org.tokend.sdk.api.requests.model.preissuance.PreIssuanceReviewableRequest
 import org.tokend.sdk.api.requests.model.sale.SimpleSaleReviewableRequest
 import org.tokend.sdk.api.requests.model.sale.details.SaleDetailsUpdateReviewableRequest
+import org.tokend.sdk.api.requests.model.sale.endtime.SaleEndTimeUpdateReviewableRequest
 import org.tokend.sdk.api.requests.model.withdrawal.WithdrawalReviewableRequest
 import org.tokend.sdk.api.requests.params.*
 
@@ -132,6 +133,18 @@ open class RequestsApi(
             : ApiRequest<DataPage<SaleDetailsUpdateReviewableRequest>> {
         return MappedRetrofitApiRequest(
                 requestsService.getSaleDetailsUpdates(params.map()),
+                { DataPage.fromPage(it) }
+        )
+    }
+
+    /**
+     * Will return list of sale end time update reviewable requests.
+     * @see <a href="https://tokend.gitlab.io/docs/#get-update-sale-details-requests">Docs</a>
+     */
+    open fun getSaleEndTimeUpdates(params: SaleEndTimeUpdateRequestsParams?)
+            : ApiRequest<DataPage<SaleEndTimeUpdateReviewableRequest>> {
+        return MappedRetrofitApiRequest(
+                requestsService.getSaleEndTimeUpdates(params.map()),
                 { DataPage.fromPage(it) }
         )
     }
