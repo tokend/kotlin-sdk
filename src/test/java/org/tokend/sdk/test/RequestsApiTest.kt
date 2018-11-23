@@ -184,4 +184,25 @@ class RequestsApiTest {
         Assert.assertTrue(requests.isNotEmpty())
         Util.checkNullabilityViolations(requests)
     }
+
+    @Test
+    fun getKycUpdates() {
+        val api = Util.getSignedApi()
+
+        val requests = api
+                .requests
+                .getKycUpdates(
+                        KycUpdateRequestsParams(
+                                pagingParams = PagingParams(
+                                        order = PagingOrder.DESC
+                                )
+                        )
+                )
+                .execute()
+                .get()
+                .items
+
+        Assert.assertTrue(requests.isNotEmpty())
+        Util.checkNullabilityViolations(requests)
+    }
 }
