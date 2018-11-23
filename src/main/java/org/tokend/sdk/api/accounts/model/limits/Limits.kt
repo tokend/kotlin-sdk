@@ -1,5 +1,7 @@
 package org.tokend.sdk.api.accounts.model.limits
 
+import org.tokend.wallet.xdr.StatsOpType
+
 /**
  * Holds account's limits and statistics data.
  *
@@ -11,28 +13,56 @@ class Limits(
     /**
      * Entries by asset.
      */
-    val entriesMap = entries
+    val entriesByAssetMap = entries
             .asSequence()
-            .associateBy { it.limit.asset }
+            .groupBy { it.limit.asset }
 
     /**
-     * @return [LimitEntry] for given asset or [null] if it is not exists
+     * @return [Collection] of [LimitEntry] for given asset or [null] if it is not exists
      */
-    fun getAssetEntry(asset: String): LimitEntry? {
-        return entriesMap[asset]
+    fun getAssetEntries(asset: String): Collection<LimitEntry>? {
+        return entriesByAssetMap[asset]
     }
 
     /**
-     * @return [Limit] for given asset or [null] if it is not exists
+     * @return [LimitEntry] for given asset and operation type or [null] if it is not exists
      */
-    fun getAssetLimit(asset: String): Limit? {
-        return getAssetEntry(asset)?.limit
+    fun getAssetEntry(asset: String, operationTypeI: Int): LimitEntry? {
+        return getAssetEntries(asset)?.find { it.limit.statsOpTypeI == operationTypeI }
     }
 
     /**
-     * @return [Statistics] for given asset or [null] if it is not exists
+     * @return [LimitEntry] for given asset and operation type or [null] if it is not exists
      */
-    fun getAssetStatistics(asset: String): Statistics? {
-        return getAssetEntry(asset)?.statistics
+    fun getAssetEntry(asset: String, operationType: StatsOpType): LimitEntry? {
+        return getAssetEntry(asset, operationType.value)
+    }
+
+    /**
+     * @return [Limit] for given asset and operation type or [null] if it is not exists
+     */
+    fun getAssetLimit(asset: String, operationTypeI: Int): Limit? {
+        return getAssetEntry(asset, operationTypeI)?.limit
+    }
+
+    /**
+     * @return [Limit] for given asset and operation type or [null] if it is not exists
+     */
+    fun getAssetLimit(asset: String, operationType: StatsOpType): Limit? {
+        return getAssetLimit(asset, operationType.value)
+    }
+
+    /**
+     * @return [Statistics] for given asset and operation type or [null] if it is not exists
+     */
+    fun getAssetStatistics(asset: String, operationTypeI: Int): Statistics? {
+        return getAssetEntry(asset, operationTypeI)?.statistics
+    }
+
+    /**
+     * @return [Statistics] for given asset and operation type or [null] if it is not exists
+     */
+    fun getAssetStatistics(asset: String, operationType: StatsOpType): Statistics? {
+        return getAssetStatistics(asset, operationType.value)
     }
 }
