@@ -22,7 +22,7 @@ class SaleDetailsUpdateData(
                 @SerializedName("key")
                 val key: String,
                 @SerializedName("type")
-                val type: String = "fund_logo"
+                val type: String? = "fund_logo"
         )
     }
 }

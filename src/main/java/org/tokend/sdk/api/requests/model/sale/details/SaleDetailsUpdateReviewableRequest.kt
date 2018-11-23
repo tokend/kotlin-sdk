@@ -2,7 +2,6 @@ package org.tokend.sdk.api.requests.model.sale.details
 
 import com.google.gson.annotations.SerializedName
 import org.tokend.sdk.api.requests.model.base.AbstractReviewableRequest
-import org.tokend.sdk.api.requests.model.sale.SaleReviewableRequestDetails
 import java.util.*
 
 class SaleDetailsUpdateReviewableRequest(
@@ -17,6 +16,6 @@ class SaleDetailsUpdateReviewableRequest(
         updatedAt: Date,
         stateI: Int,
         @SerializedName("details")
-        override val details: SaleReviewableRequestDetails<SaleDetailsUpdateReviewableRequestDetails>
+        override val details: SaleDetailsUpdateReviewableRequestDetails
 ) : AbstractReviewableRequest(id, pagingToken, requestor, reviewer, reference,
         rejectReason, hash, createdAt, updatedAt, stateI)
