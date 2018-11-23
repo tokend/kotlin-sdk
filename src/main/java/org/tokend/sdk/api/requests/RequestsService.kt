@@ -5,6 +5,7 @@ import org.tokend.sdk.api.requests.model.SimpleReviewableRequest
 import org.tokend.sdk.api.requests.model.aml.AmlAlertReviewableRequest
 import org.tokend.sdk.api.requests.model.asset.SimpleAssetReviewableRequest
 import org.tokend.sdk.api.requests.model.issuance.IssuanceReviewableRequest
+import org.tokend.sdk.api.requests.model.limits.LimitsUpdateReviewableRequest
 import org.tokend.sdk.api.requests.model.preissuance.PreIssuanceReviewableRequest
 import org.tokend.sdk.api.requests.model.sale.SimpleSaleReviewableRequest
 import org.tokend.sdk.api.requests.model.withdrawal.WithdrawalReviewableRequest
@@ -40,4 +41,8 @@ interface RequestsService {
     @JvmSuppressWildcards
     @GET("request/aml_alerts")
     fun getAmlAlerts(@QueryMap query: Map<String, Any>): Call<Page<AmlAlertReviewableRequest>>
+
+    @JvmSuppressWildcards
+    @GET("request/limits_updates")
+    fun getLimitsUpdates(@QueryMap query: Map<String, Any>): Call<Page<LimitsUpdateReviewableRequest>>
 }

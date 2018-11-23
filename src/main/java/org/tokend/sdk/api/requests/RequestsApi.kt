@@ -8,6 +8,7 @@ import org.tokend.sdk.api.requests.model.SimpleReviewableRequest
 import org.tokend.sdk.api.requests.model.aml.AmlAlertReviewableRequest
 import org.tokend.sdk.api.requests.model.asset.SimpleAssetReviewableRequest
 import org.tokend.sdk.api.requests.model.issuance.IssuanceReviewableRequest
+import org.tokend.sdk.api.requests.model.limits.LimitsUpdateReviewableRequest
 import org.tokend.sdk.api.requests.model.preissuance.PreIssuanceReviewableRequest
 import org.tokend.sdk.api.requests.model.sale.SimpleSaleReviewableRequest
 import org.tokend.sdk.api.requests.model.withdrawal.WithdrawalReviewableRequest
@@ -93,6 +94,18 @@ open class RequestsApi(
             : ApiRequest<DataPage<AmlAlertReviewableRequest>> {
         return MappedRetrofitApiRequest(
                 requestsService.getAmlAlerts(params.map()),
+                { DataPage.fromPage(it) }
+        )
+    }
+
+    /**
+     * Will return list of limits update alert reviewable requests.
+     * @see <a href="https://tokend.gitlab.io/docs/#get-limits-updates-requests">Docs</a>
+     */
+    open fun getLimitsUpdates(params: LimitsUpdateRequestsParams?)
+            : ApiRequest<DataPage<LimitsUpdateReviewableRequest>> {
+        return MappedRetrofitApiRequest(
+                requestsService.getLimitsUpdates(params.map()),
                 { DataPage.fromPage(it) }
         )
     }

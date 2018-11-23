@@ -4,7 +4,7 @@ import org.tokend.sdk.api.base.params.PagingParams
 import org.tokend.sdk.api.requests.model.base.RequestState
 
 /**
- * Query params for asset-related reviewable requests request.
+ * Query params for AML alert reviewable requests request.
  * @see <a href="https://tokend.gitlab.io/docs/#get-aml-alerts-requests">Docs</a>
  */
 class AmlAlertRequestsParams(

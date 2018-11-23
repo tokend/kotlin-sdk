@@ -161,4 +161,27 @@ class RequestsApiTest {
         Assert.assertTrue(requests.isNotEmpty())
         Util.checkNullabilityViolations(requests)
     }
+
+    @Test
+    fun getLimitsUpdates() {
+        val api = Util.getApi(
+                url = "https://api.testnet.tokend.org"
+        )
+
+        val requests = api
+                .requests
+                .getLimitsUpdates(
+                        LimitsUpdateRequestsParams(
+                                pagingParams = PagingParams(
+                                        order = PagingOrder.DESC
+                                )
+                        )
+                )
+                .execute()
+                .get()
+                .items
+
+        Assert.assertTrue(requests.isNotEmpty())
+        Util.checkNullabilityViolations(requests)
+    }
 }
