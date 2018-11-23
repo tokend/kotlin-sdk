@@ -22,7 +22,7 @@ open class RequestsParams(
     override fun map(): Map<String, Any> {
         return mutableMapOf<String, Any>().apply {
             pagingParams?.also { putAll(it.map()) }
-            state?.also { put("state", it) }
+            state?.also { put("state", it.i) }
             reviewer?.also { put("reviewer", it) }
             requestor?.also { put("requestor", it) }
             updatedAfterTimestamp?.also { put("updated_after", it) }
