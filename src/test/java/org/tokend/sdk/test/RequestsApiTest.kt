@@ -138,4 +138,27 @@ class RequestsApiTest {
         Assert.assertTrue(requests.isNotEmpty())
         Util.checkNullabilityViolations(requests)
     }
+
+    @Test
+    fun getAmlAlerts() {
+        val api = Util.getApi(
+                url = "https://api.alice.tokend.io"
+        )
+
+        val requests = api
+                .requests
+                .getAmlAlerts(
+                        AmlAlertRequestsParams(
+                                pagingParams = PagingParams(
+                                        order = PagingOrder.DESC
+                                )
+                        )
+                )
+                .execute()
+                .get()
+                .items
+
+        Assert.assertTrue(requests.isNotEmpty())
+        Util.checkNullabilityViolations(requests)
+    }
 }

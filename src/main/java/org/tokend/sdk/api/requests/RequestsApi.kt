@@ -5,6 +5,7 @@ import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.base.model.DataPage
 import org.tokend.sdk.api.base.params.map
 import org.tokend.sdk.api.requests.model.SimpleReviewableRequest
+import org.tokend.sdk.api.requests.model.aml.AmlAlertReviewableRequest
 import org.tokend.sdk.api.requests.model.asset.SimpleAssetReviewableRequest
 import org.tokend.sdk.api.requests.model.issuance.IssuanceReviewableRequest
 import org.tokend.sdk.api.requests.model.preissuance.PreIssuanceReviewableRequest
@@ -74,12 +75,24 @@ open class RequestsApi(
 
     /**
      * Will return list of issuance reviewable requests.
-     * @see <a href="https://tokend.gitlab.io/docs/#get-issuance-requests">Docs</a>
+     * @see <a href="https://tokend.gitlab.io/docs/#get-withdrawals-requests">Docs</a>
      */
     open fun getWithdrawals(params: WithdrawalRequestsParams?)
             : ApiRequest<DataPage<WithdrawalReviewableRequest>> {
         return MappedRetrofitApiRequest(
                 requestsService.getWithdrawals(params.map()),
+                { DataPage.fromPage(it) }
+        )
+    }
+
+    /**
+     * Will return list of AML alert reviewable requests.
+     * @see <a href="https://tokend.gitlab.io/docs/#get-aml-alerts-requests">Docs</a>
+     */
+    open fun getAmlAlerts(params: AmlAlertRequestsParams?)
+            : ApiRequest<DataPage<AmlAlertReviewableRequest>> {
+        return MappedRetrofitApiRequest(
+                requestsService.getAmlAlerts(params.map()),
                 { DataPage.fromPage(it) }
         )
     }

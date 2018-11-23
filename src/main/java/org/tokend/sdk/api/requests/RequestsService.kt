@@ -2,6 +2,7 @@ package org.tokend.sdk.api.requests
 
 import org.tokend.sdk.api.base.model.Page
 import org.tokend.sdk.api.requests.model.SimpleReviewableRequest
+import org.tokend.sdk.api.requests.model.aml.AmlAlertReviewableRequest
 import org.tokend.sdk.api.requests.model.asset.SimpleAssetReviewableRequest
 import org.tokend.sdk.api.requests.model.issuance.IssuanceReviewableRequest
 import org.tokend.sdk.api.requests.model.preissuance.PreIssuanceReviewableRequest
@@ -35,4 +36,8 @@ interface RequestsService {
     @JvmSuppressWildcards
     @GET("request/withdrawals")
     fun getWithdrawals(@QueryMap query: Map<String, Any>): Call<Page<WithdrawalReviewableRequest>>
+
+    @JvmSuppressWildcards
+    @GET("request/aml_alerts")
+    fun getAmlAlerts(@QueryMap query: Map<String, Any>): Call<Page<AmlAlertReviewableRequest>>
 }
