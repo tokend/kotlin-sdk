@@ -6,7 +6,7 @@ import org.tokend.sdk.signing.AccountRequestSigner
 import org.tokend.sdk.tfa.TfaCallback
 import org.tokend.wallet.Account
 import kotlin.reflect.KVisibility
-import kotlin.reflect.full.declaredMemberProperties
+import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.javaField
 
 object Util {
@@ -34,7 +34,7 @@ object Util {
      */
     fun checkNullabilityViolations(entity: Any) {
         val properties = try {
-            entity::class.declaredMemberProperties
+            entity::class.memberProperties
         } catch (e: Error) {
             return
         }
