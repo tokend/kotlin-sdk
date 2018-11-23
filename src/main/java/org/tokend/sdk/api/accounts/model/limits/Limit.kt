@@ -1,6 +1,7 @@
 package org.tokend.sdk.api.accounts.model.limits
 
 import com.google.gson.annotations.SerializedName
+import org.tokend.wallet.xdr.StatsOpType
 import java.math.BigDecimal
 
 class Limit(
@@ -10,6 +11,8 @@ class Limit(
         val accountType: Int,
         @SerializedName("account_id")
         val accountId: String?,
+        @SerializedName("stats_op_type")
+        val statsOpTypeI: Int,
         @SerializedName("asset_code")
         val asset: String,
         @SerializedName("is_convert_needed")
@@ -22,4 +25,7 @@ class Limit(
         val monthly: BigDecimal,
         @SerializedName("annual_out")
         val annual: BigDecimal
-)
+) {
+    val statsOpType: StatsOpType
+        get() = StatsOpType.values().find { it.value == statsOpTypeI }!!
+}

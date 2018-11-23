@@ -1,6 +1,7 @@
 package org.tokend.sdk.api.accounts.model.limits
 
 import com.google.gson.annotations.SerializedName
+import org.tokend.wallet.xdr.StatsOpType
 import java.math.BigDecimal
 import java.util.*
 
@@ -10,7 +11,7 @@ class Statistics(
         @SerializedName("account_id")
         val accountId: String,
         @SerializedName("stats_op_type")
-        val operationType: Int,
+        val statsOpTypeI: Int,
         @SerializedName("asset_code")
         val asset: String,
         @SerializedName("is_convert_needed")
@@ -28,4 +29,7 @@ class Statistics(
 ) {
     val updatedAt: Date
         get() = Date(updatedAtTimestamp * 1000)
+
+    val statsOpType: StatsOpType
+        get() = StatsOpType.values().find { it.value == statsOpTypeI }!!
 }
