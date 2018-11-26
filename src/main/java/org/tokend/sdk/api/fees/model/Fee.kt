@@ -6,11 +6,14 @@ import java.math.BigDecimal
 
 open class Fee(
         @SerializedName("fee_type") val feeType: Int,
+        @SerializedName("subtype") val subtype: Int,
         @SerializedName("asset") val requestAsset: String,
         @SerializedName("fee_asset") val asset: String,
         @SerializedName("fixed") val fixed: BigDecimal,
         @SerializedName("percent") val percent: BigDecimal,
-        @SerializedName("lower_bound") val lowerBound: BigDecimal) : Serializable {
+        @SerializedName("lower_bound") val lowerBound: BigDecimal,
+        @SerializedName("upper_bound") val upperBound: BigDecimal,
+        @SerializedName("exists") val exists: Boolean) : Serializable {
 
     val total: BigDecimal
         get() = fixed + percent
