@@ -4,6 +4,8 @@ import org.tokend.sdk.api.accounts.AccountsApi
 import org.tokend.sdk.api.accounts.AccountsService
 import org.tokend.sdk.api.assets.AssetsApi
 import org.tokend.sdk.api.assets.AssetsService
+import org.tokend.sdk.api.authenticator.AuthResultsApi
+import org.tokend.sdk.api.authenticator.AuthResultsService
 import org.tokend.sdk.api.base.BaseApi
 import org.tokend.sdk.api.blobs.BlobsApi
 import org.tokend.sdk.api.blobs.BlobsService
@@ -120,6 +122,10 @@ constructor(
 
     open val requests: RequestsApi by lazy {
         RequestsApi(getService(RequestsService::class.java))
+    }
+
+    open val authResults: AuthResultsApi by lazy {
+        AuthResultsApi(getService(AuthResultsService::class.java))
     }
 
     /**
