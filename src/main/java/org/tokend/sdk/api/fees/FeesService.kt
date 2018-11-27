@@ -15,4 +15,7 @@ interface FeesService {
 
     @GET("fees")
     fun getFees(): Call<FeesResponse>
+
+    @GET("fees_overview")
+    fun getExistingFees(): Call<FeesResponse>
 }
