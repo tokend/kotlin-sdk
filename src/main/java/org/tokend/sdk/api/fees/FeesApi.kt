@@ -23,6 +23,17 @@ open class FeesApi(
     }
 
     /**
+     *  Will return list of existing fees for all assets.
+     *  @see <a href="https://tokend.gitlab.io/docs/#get-existing-fees">Docs</a>
+     */
+    open fun getExistingFees(): ApiRequest<Fees> {
+        return MappedRetrofitApiRequest(
+                feesService.getExistingFees(),
+                { Fees(it.entries ?: emptyMap()) }
+        )
+    }
+
+    /**
      * Will return specific fee information.
      * @see <a href="https://tokend.gitlab.io/docs/?http#get-fee-by-type">Docs</a>
      */
