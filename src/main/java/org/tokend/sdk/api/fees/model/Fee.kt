@@ -13,7 +13,8 @@ open class Fee(
         @SerializedName("percent") val percent: BigDecimal,
         @SerializedName("lower_bound") val lowerBound: BigDecimal,
         @SerializedName("upper_bound") val upperBound: BigDecimal,
-        @SerializedName("exists") val exists: Boolean) : Serializable {
+        @SerializedName("exists") val exists: Boolean,
+        @SerializedName("account_id") val account_id: String) : Serializable {
 
     val total: BigDecimal
         get() = fixed + percent

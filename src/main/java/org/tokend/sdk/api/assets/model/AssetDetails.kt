@@ -7,8 +7,8 @@ import java.io.Serializable
 
 open class AssetDetails(
         @SerializedName("name") val name: String,
-        @SerializedName("logo") open val logo: RemoteFile,
-        @SerializedName("terms") open val terms: RemoteFile,
+        @SerializedName("logo") open val logo: RemoteFile?,
+        @SerializedName("terms") open val terms: RemoteFile?,
         @SerializedName("external_system_type") protected open val externalSystemTypeString: String?
 ) : Serializable {
     open val externalSystemType: Int?
