@@ -26,10 +26,23 @@ open class FeesApi(
      *  Will return list of existing fees for all assets.
      *  @see <a href="https://tokend.gitlab.io/docs/#get-existing-fees">Docs</a>
      */
-    open fun getExistingFees(): ApiRequest<Fees> {
+    open fun getExistingFees(accountId: String? = null): ApiRequest<Fees> {
         return MappedRetrofitApiRequest(
                 feesService.getExistingFees(),
-                { Fees(it.entries ?: emptyMap()) }
+                { response ->
+                    var entries = response.entries ?: emptyMap()
+                    accountId?.let {
+                        entries = entries.mapValues { entry ->
+                            entry.value.filter { fee ->
+                                fee.account_id == accountId ||
+                                        fee.account_id.isEmpty()
+                            }
+                        }.filter { entry ->
+                            entry.value.isNotEmpty()
+                        }
+                    }
+                    Fees(entries)
+                }
         )
     }
 
