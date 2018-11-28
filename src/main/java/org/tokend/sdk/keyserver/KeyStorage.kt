@@ -314,6 +314,7 @@ class KeyStorage constructor(
                     ?: throw IllegalArgumentException("Root account must have private key")
             val recoveryAccountSeed = recoveryAccount.secretSeed
                     ?: throw IllegalArgumentException("Recovery account must have private key")
+            val email = if (kdfVersion == 2L) email.toLowerCase() else email
 
             val kdfSalt = kdfAttributes.salt ?: generateKdfSalt()
             kdfAttributes.salt = kdfSalt
