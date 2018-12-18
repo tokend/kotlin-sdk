@@ -51,6 +51,7 @@ open class InvestmentOperation(
             ourParticipant ?: return emptyList()
 
             return ourParticipant.effects
+                    ?.asSequence()
                     ?.filter {
                         it.baseAsset != null
                                 && it.quoteAsset != null
@@ -100,7 +101,8 @@ open class InvestmentOperation(
                                 ),
                                 feeAsset = quoteAsset
                         )
-                    } ?: listOf()
+                    }
+                    ?.toList() ?: listOf()
         }
 
         fun fromOffer(offer: Offer): InvestmentOperation {
