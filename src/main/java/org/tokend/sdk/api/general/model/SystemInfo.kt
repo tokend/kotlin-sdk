@@ -16,7 +16,9 @@ open class SystemInfo(
         @SerializedName("master_account_id")
         val masterExchangeAccountId: String,
         @SerializedName("master_exchange_name")
-        val masterExchangeName: String
+        val masterExchangeName: String,
+        @SerializedName("precision")
+        val precisionMultiplier: Long
 ) {
     override fun equals(other: Any?): Boolean {
         return other is SystemInfo
@@ -30,6 +32,7 @@ open class SystemInfo(
     }
 
     fun toNetworkParams(): NetworkParams {
-        return NetworkParams(passphrase)
+        val precision = Math.log10(precisionMultiplier.toDouble()).toInt()
+        return NetworkParams(passphrase, precision)
     }
 }
