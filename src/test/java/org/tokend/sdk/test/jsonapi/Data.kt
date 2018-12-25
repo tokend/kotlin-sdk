@@ -381,4 +381,102 @@ object Data {
             "      }\n" +
             "   ]\n" +
             "}"
+
+    val assetPairResponse = "{  \n" +
+            "   \"data\":{  \n" +
+            "      \"type\":\"asset_pairs\",\n" +
+            "      \"id\":\"BTC-HHCT\",\n" +
+            "      \"attributes\":{  \n" +
+            "         \"price\":\"1.000000\",\n" +
+            "         \"policy_i\":1,\n" +
+            "         \"policies\":[  \n" +
+            "            {  \n" +
+            "               \"name\":\"AssetPairPolicyTradeableSecondaryMarket\",\n" +
+            "               \"value\":1\n" +
+            "            }\n" +
+            "         ]\n" +
+            "      },\n" +
+            "      \"relationships\":{  \n" +
+            "         \"base_asset\":{  \n" +
+            "            \"data\":{  \n" +
+            "               \"type\":\"assets\",\n" +
+            "               \"id\":\"HHCT\"\n" +
+            "            }\n" +
+            "         },\n" +
+            "         \"quote_asset\":{  \n" +
+            "            \"data\":{  \n" +
+            "               \"type\":\"assets\",\n" +
+            "               \"id\":\"BTC\"\n" +
+            "            }\n" +
+            "         }\n" +
+            "      }\n" +
+            "   }\n" +
+            "}"
+
+    val assetPairsListResponse = "{  \n" +
+            "   \"meta\":{  \n" +
+            "      \"current_page\":3,\n" +
+            "      \"total_pages\":10\n" +
+            "   },\n" +
+            "   \"links\":{  \n" +
+            "      \"self\":\"https://api.com/asset_pairs?page=3\",\n" +
+            "      \"first\":\"https://api.com/asset_pairs?page=1\",\n" +
+            "      \"prev\":\"https://api.com/asset_pairs?page=2\",\n" +
+            "      \"next\":\"https://api.com/asset_pairs?page=4\",\n" +
+            "      \"last\":\"https://api.com/asset_pairs?page=13\"\n" +
+            "   },\n" +
+            "   \"data\":[  \n" +
+            "      {  \n" +
+            "         \"type\":\"asset_pairs\",\n" +
+            "         \"id\":\"BTC-HHCT\",\n" +
+            "         \"attributes\":{  \n" +
+            "            \"price\":\"1.000000\",\n" +
+            "            \"policy_i\":0,\n" +
+            "            \"policies\":[  \n" +
+            "\n" +
+            "            ]\n" +
+            "         },\n" +
+            "         \"relationships\":{  \n" +
+            "            \"base_asset\":{  \n" +
+            "               \"data\":{  \n" +
+            "                  \"type\":\"assets\",\n" +
+            "                  \"id\":\"HHCT\"\n" +
+            "               }\n" +
+            "            },\n" +
+            "            \"quote_asset\":{  \n" +
+            "               \"data\":{  \n" +
+            "                  \"type\":\"assets\",\n" +
+            "                  \"id\":\"BTC\"\n" +
+            "               }\n" +
+            "            }\n" +
+            "         }\n" +
+            "      },\n" +
+            "      {  \n" +
+            "         \"type\":\"asset_pairs\",\n" +
+            "         \"id\":\"ETH-USD\",\n" +
+            "         \"attributes\":{  \n" +
+            "            \"current_price\":\"294.470000\",\n" +
+            "            \"price\":\"294.470000\",\n" +
+            "            \"policy_i\":0,\n" +
+            "            \"policies\":[  \n" +
+            "\n" +
+            "            ]\n" +
+            "         },\n" +
+            "         \"relationships\":{  \n" +
+            "            \"base_asset\":{  \n" +
+            "               \"data\":{  \n" +
+            "                  \"type\":\"assets\",\n" +
+            "                  \"id\":\"HHCT\"\n" +
+            "               }\n" +
+            "            },\n" +
+            "            \"quote_asset\":{  \n" +
+            "               \"data\":{  \n" +
+            "                  \"type\":\"assets\",\n" +
+            "                  \"id\":\"BTC\"\n" +
+            "               }\n" +
+            "            }\n" +
+            "         }\n" +
+            "      }\n" +
+            "   ]\n" +
+            "}"
 }
