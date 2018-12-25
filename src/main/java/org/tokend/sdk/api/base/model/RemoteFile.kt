@@ -1,19 +1,25 @@
 package org.tokend.sdk.api.base.model
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.google.gson.annotations.SerializedName
-import java.io.Serializable
 import org.tokend.sdk.api.assets.model.AssetDetails
 import org.tokend.sdk.api.sales.model.SaleDetails
+import java.io.Serializable
 
 /**
  * Represents reference to remote file.
  * @see AssetDetails
  * @see SaleDetails
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 open class RemoteFile(@SerializedName("key")
+                      @JsonProperty("key")
                       val key: String,
                       @SerializedName("name")
+                      @JsonProperty("name")
                       val name: String? = null,
+                      @JsonProperty("mime_type")
                       mimeType: String? = null
 ) : Serializable {
     // Legacy.
