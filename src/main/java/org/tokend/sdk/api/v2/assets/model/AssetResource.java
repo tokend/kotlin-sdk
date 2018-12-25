@@ -11,6 +11,7 @@ import org.tokend.sdk.api.assets.model.AssetDetails;
 import org.tokend.sdk.api.base.model.NameValue;
 import org.tokend.sdk.api.v2.base.BaseResource;
 import org.tokend.sdk.api.v2.base.UnknownResource;
+import org.tokend.wallet.xdr.AssetPolicy;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -105,6 +106,14 @@ public class AssetResource extends BaseResource {
 
     public UnknownResource getOwner() {
         return owner;
+    }
+
+    public boolean isBackedByExternalSystem() {
+        return details.getExternalSystemType() != null;
+    }
+
+    public boolean hasPolicy(AssetPolicy policy) {
+        return (policyI & policy.getValue()) == policy.getValue();
     }
 
     @Override
