@@ -6,6 +6,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.tokend.sdk.api.v2.assets.model.AssetResource
 import org.tokend.sdk.api.v2.base.UnknownResource
+import org.tokend.wallet.xdr.AssetPolicy
 
 class AssetsModelTest {
     @Test
@@ -26,6 +27,7 @@ class AssetsModelTest {
         assertNotNull(asset.logoLinks.related)
         assertNotNull(asset.termsLinks.related)
         assertNotNull(asset.details.name)
+        assertTrue(asset.hasPolicy(AssetPolicy.TRANSFERABLE))
     }
 
     @Test
@@ -53,5 +55,6 @@ class AssetsModelTest {
         assertNotNull(asset.logoLinks.related)
         assertNotNull(asset.termsLinks.related)
         assertNotNull(asset.details.name)
+        assertTrue(asset.hasPolicy(AssetPolicy.TRANSFERABLE))
     }
 }
