@@ -566,4 +566,16 @@ object Data {
             "      }\n" +
             "   ]\n" +
             "}"
+
+    val exactFeeResponse = "{  \n" +
+            "   \"data\":{  \n" +
+            "      \"type\":\"exact_fees\",\n" +
+            "      \"id\":\"vta1q41iOwbqn\",\n" +
+            "      \"attributes\":{  \n" +
+            "         \"fixed_fee\":\"1.023212\",\n" +
+            "         \"percent_fee\":\"2.943122\",\n" +
+            "         \"fee_asset\":\"USD\"\n" +
+            "      }\n" +
+            "   }\n" +
+            "}"
 }
