@@ -5,9 +5,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
 
+import org.tokend.sdk.api.v2.accounts.model.AccountResource;
 import org.tokend.sdk.api.v2.assets.model.AssetResource;
+import org.tokend.sdk.api.v2.balances.model.BalanceResource;
 import org.tokend.sdk.api.v2.base.BaseResource;
-import org.tokend.sdk.api.v2.base.UnknownResource;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -36,13 +37,11 @@ public class OfferResource extends BaseResource {
     @JsonProperty("created_at")
     private Date createdAt;
 
-    // TODO: set proper resource type
     @Relationship("base_balance")
-    private UnknownResource baseBalance;
+    private BalanceResource baseBalance;
 
-    // TODO: set proper resource type
     @Relationship("quote_balance")
-    private UnknownResource quoteBalance;
+    private BalanceResource quoteBalance;
 
     @Relationship("base_asset")
     private AssetResource baseAsset;
@@ -50,9 +49,8 @@ public class OfferResource extends BaseResource {
     @Relationship("quote_asset")
     private AssetResource quoteAsset;
 
-    // TODO: set proper resource type
     @Relationship("owner")
-    private UnknownResource owner;
+    private AccountResource owner;
 
     public long getOrderBookId() {
         return orderBookId;
@@ -82,11 +80,11 @@ public class OfferResource extends BaseResource {
         return createdAt;
     }
 
-    public UnknownResource getBaseBalance() {
+    public BalanceResource getBaseBalance() {
         return baseBalance;
     }
 
-    public UnknownResource getQuoteBalance() {
+    public BalanceResource getQuoteBalance() {
         return quoteBalance;
     }
 
@@ -98,7 +96,7 @@ public class OfferResource extends BaseResource {
         return quoteAsset;
     }
 
-    public UnknownResource getOwner() {
+    public AccountResource getOwner() {
         return owner;
     }
 

@@ -6,9 +6,9 @@ import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
 
 import org.jetbrains.annotations.Nullable;
+import org.tokend.sdk.api.v2.accounts.model.AccountResource;
 import org.tokend.sdk.api.v2.assets.model.AssetResource;
 import org.tokend.sdk.api.v2.base.BaseResource;
-import org.tokend.sdk.api.v2.base.UnknownResource;
 
 import java.math.BigDecimal;
 
@@ -26,7 +26,7 @@ public class FeeResource extends BaseResource {
 
     @Nullable
     @Relationship("account")
-    private UnknownResource account;
+    private AccountResource account;
 
     @Relationship("asset")
     private AssetResource asset;
@@ -47,7 +47,7 @@ public class FeeResource extends BaseResource {
     }
 
     @Nullable
-    public UnknownResource getAccount() {
+    public AccountResource getAccount() {
         return account;
     }
 
