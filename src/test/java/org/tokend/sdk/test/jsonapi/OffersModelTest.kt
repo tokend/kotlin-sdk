@@ -23,6 +23,8 @@ class OffersModelTest {
 
         val offer = document.get()
 
+        JsonApiUtil.checkResourceNullability(offer)
+
         Assert.assertTrue(offer.hasAttributes())
         Assert.assertNotNull(offer.baseAsset)
         Assert.assertNotNull(offer.quoteAsset)

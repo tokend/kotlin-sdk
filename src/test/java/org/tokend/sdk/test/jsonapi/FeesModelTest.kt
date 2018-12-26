@@ -29,6 +29,8 @@ class FeesModelTest {
 
         val fees = document.get()
 
+        JsonApiUtil.checkResourceNullability(fees)
+
         Assert.assertTrue(fees.isNotEmpty())
 
         fees.forEach { fee ->
@@ -52,6 +54,8 @@ class FeesModelTest {
         )
 
         val fee = document.get()
+
+        JsonApiUtil.checkResourceNullability(fee)
 
         Assert.assertTrue(fee.hasAttributes())
     }

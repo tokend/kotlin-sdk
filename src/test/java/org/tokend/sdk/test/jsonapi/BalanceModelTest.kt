@@ -23,6 +23,8 @@ class BalanceModelTest {
 
         val balance = document.get()
 
+        JsonApiUtil.checkResourceNullability(balance)
+
         assertTrue(balance.hasAttributes())
         assertFalse(balance.asset.hasAttributes())
         assertFalse(balance.account.hasAttributes())
@@ -42,6 +44,8 @@ class BalanceModelTest {
         )
 
         val balances = document.get()
+
+        JsonApiUtil.checkResourceNullability(balances)
 
         assertTrue(balances.isNotEmpty())
 

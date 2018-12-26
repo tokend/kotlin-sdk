@@ -21,6 +21,8 @@ class KeyValueEntriesModelTest {
 
         val entry = document.get()
 
+        JsonApiUtil.checkResourceNullability(entry)
+
         Assert.assertTrue(entry.hasAttributes())
         Assert.assertEquals(entry.valueTypeI, entry.valueType.value)
         Assert.assertNotNull(entry.value)
@@ -42,6 +44,8 @@ class KeyValueEntriesModelTest {
         Assert.assertNotNull(document.links)
 
         val entries = document.get()
+
+        JsonApiUtil.checkResourceNullability(entries)
 
         Assert.assertTrue(entries.isNotEmpty())
 

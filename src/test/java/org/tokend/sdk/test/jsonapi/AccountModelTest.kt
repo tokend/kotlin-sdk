@@ -27,6 +27,8 @@ class AccountModelTest {
 
         val account = document.get()
 
+        JsonApiUtil.checkResourceNullability(account)
+
         assertTrue(account.hasAttributes())
         assertTrue(account.balances.first().hasAttributes())
         assertTrue(account.signers.first().hasAttributes())
@@ -55,6 +57,8 @@ class AccountModelTest {
         assertNotNull(document.links)
 
         val accounts = document.get()
+
+        JsonApiUtil.checkResourceNullability(accounts)
 
         assertTrue(accounts.isNotEmpty())
 

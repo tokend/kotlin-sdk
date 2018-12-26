@@ -23,6 +23,8 @@ class AssetsModelTest {
 
         val asset = document.get()
 
+        JsonApiUtil.checkResourceNullability(asset)
+
         assertTrue(asset.hasAttributes())
         assertNotNull(asset.logoLinks.related)
         assertNotNull(asset.termsLinks.related)
@@ -46,6 +48,8 @@ class AssetsModelTest {
         assertNotNull(document.links)
 
         val assets = document.get()
+
+        JsonApiUtil.checkResourceNullability(assets)
 
         assertTrue(assets.isNotEmpty())
 

@@ -24,6 +24,8 @@ class AssetPairsModelTest {
 
         val pair = document.get()
 
+        JsonApiUtil.checkResourceNullability(pair)
+
         Assert.assertTrue(pair.hasAttributes())
         Assert.assertNotNull(pair.baseAsset)
         Assert.assertNotNull(pair.quoteAsset)
@@ -48,6 +50,8 @@ class AssetPairsModelTest {
         Assert.assertNotNull(document.links)
 
         val pairs = document.get()
+
+        JsonApiUtil.checkResourceNullability(pairs)
 
         Assert.assertTrue(pairs.isNotEmpty())
 
