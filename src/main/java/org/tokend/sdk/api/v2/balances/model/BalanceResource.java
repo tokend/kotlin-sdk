@@ -2,9 +2,7 @@ package org.tokend.sdk.api.v2.balances.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.jasminb.jsonapi.Links;
 import com.github.jasminb.jsonapi.annotations.Relationship;
-import com.github.jasminb.jsonapi.annotations.RelationshipLinks;
 import com.github.jasminb.jsonapi.annotations.Type;
 
 import org.tokend.sdk.api.v2.accounts.model.AccountResource;
@@ -29,14 +27,8 @@ public class BalanceResource extends BaseResource {
     @Relationship("asset")
     private AssetResource asset;
 
-    @RelationshipLinks("asset")
-    private Links assetLinks;
-
     @Relationship("account")
     private AccountResource account;
-
-    @RelationshipLinks("account")
-    private Links accountLinks;
 
     public BigDecimal getAvailable() {
         return available;
@@ -54,16 +46,8 @@ public class BalanceResource extends BaseResource {
         return asset;
     }
 
-    public Links getAssetLinks() {
-        return assetLinks;
-    }
-
     public AccountResource getAccount() {
         return account;
-    }
-
-    public Links getAccountLinks() {
-        return accountLinks;
     }
 
     @Override

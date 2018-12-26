@@ -52,6 +52,7 @@ public class AccountResource extends BaseResource {
 
     @Relationship("kyc")
     private KycResource kyc;
+
     @Relationship("referrer")
     private AccountResource referrer;
 
@@ -90,15 +91,15 @@ public class AccountResource extends BaseResource {
         return limits;
     }
 
-    public List<DepositAccount> getDepositAccounts() {
+    public List<? extends DepositAccount> getDepositAccounts() {
         return depositAccounts;
     }
 
-    public List<BalanceResource> getBalances() {
+    public List<? extends BalanceResource> getBalances() {
         return balances;
     }
 
-    public List<SignerResource> getSigners() {
+    public List<? extends SignerResource> getSigners() {
         return signers;
     }
 
@@ -111,7 +112,7 @@ public class AccountResource extends BaseResource {
         return referrer;
     }
 
-    public List<AccountResource> getReferrals() {
+    public List<? extends AccountResource> getReferrals() {
         return referrals;
     }
 

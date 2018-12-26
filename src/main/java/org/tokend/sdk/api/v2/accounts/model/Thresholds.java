@@ -23,7 +23,7 @@ public class Thresholds {
         return medThreshold;
     }
 
-    public BigDecimal getHighTreshold() {
+    public BigDecimal getHighThreshold() {
         return highTreshold;
     }
 }
