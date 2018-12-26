@@ -1,5 +1,6 @@
 package org.tokend.sdk.api.sales.model
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.google.gson.annotations.SerializedName
 import okhttp3.HttpUrl
 import org.tokend.sdk.api.base.model.RemoteFile
@@ -7,14 +8,19 @@ import org.tokend.sdk.utils.HashCodes
 import java.io.Serializable
 
 open class SaleDetails(@SerializedName("name")
+                       @JsonProperty("name")
                        val name: String,
                        @SerializedName("short_description")
+                       @JsonProperty("short_description")
                        val shortDescription: String,
                        @SerializedName("description")
+                       @JsonProperty("description")
                        val descriptionBlob: String,
                        @SerializedName("logo")
+                       @JsonProperty("logo")
                        open val logo: RemoteFile,
                        @SerializedName("youtube_video_id")
+                       @JsonProperty("youtube_video_id")
                        private val mYoutubeVideo: String? = null) : Serializable {
     open val youtubeVideo: String?
         get() = if (mYoutubeVideo.isNullOrEmpty()) null else mYoutubeVideo
