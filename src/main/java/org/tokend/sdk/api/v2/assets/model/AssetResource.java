@@ -9,6 +9,7 @@ import com.github.jasminb.jsonapi.annotations.Type;
 
 import org.tokend.sdk.api.assets.model.AssetDetails;
 import org.tokend.sdk.api.base.model.NameValue;
+import org.tokend.sdk.api.v2.accounts.model.AccountResource;
 import org.tokend.sdk.api.v2.base.BaseResource;
 import org.tokend.sdk.api.v2.base.UnknownResource;
 import org.tokend.wallet.xdr.AssetPolicy;
@@ -62,7 +63,7 @@ public class AssetResource extends BaseResource {
     private Links termsLinks;
 
     @Relationship("owner")
-    private UnknownResource owner;
+    private AccountResource owner;
 
     public BigDecimal getAvailableForIssuance() {
         return availableForIssuance;
@@ -104,7 +105,7 @@ public class AssetResource extends BaseResource {
         return termsLinks;
     }
 
-    public UnknownResource getOwner() {
+    public AccountResource getOwner() {
         return owner;
     }
 
