@@ -12,6 +12,7 @@ import org.tokend.sdk.api.v2.assets.model.AssetResource;
 import org.tokend.sdk.api.v2.base.BaseResource;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -20,10 +21,10 @@ import java.util.Map;
 public class SaleResource extends BaseResource {
 
     @JsonProperty("start_time")
-    private String startTime;
+    private Date startTime;
 
     @JsonProperty("end_time")
-    private String endTime;
+    private Date endTime;
 
     @JsonProperty("soft_cap")
     private BigDecimal softCap;
@@ -76,11 +77,11 @@ public class SaleResource extends BaseResource {
     @Relationship("quote_assets")
     private List<AssetResource> quoteAssets;
 
-    public String getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
 
-    public String getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
 
