@@ -25,6 +25,7 @@ class SaleModelTest {
 
         val sale = document.get()
 
+        JsonApiUtil.checkResourceNullability(sale)
         assertTrue(sale.hasAttributes())
         assertFalse(sale.baseAsset.hasAttributes())
         assertFalse(sale.owner.hasAttributes())
@@ -47,6 +48,8 @@ class SaleModelTest {
         )
 
         val sales = document.get()
+
+        JsonApiUtil.checkResourceNullability(sales)
 
         assertTrue(sales.isNotEmpty())
 
