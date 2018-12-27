@@ -21,10 +21,10 @@ import java.util.Map;
 public class SaleResource extends BaseResource {
 
     @JsonProperty("start_time")
-    private Date startTime;
+    private Date startDate;
 
     @JsonProperty("end_time")
-    private Date endTime;
+    private Date endDate;
 
     @JsonProperty("soft_cap")
     private BigDecimal softCap;
@@ -77,12 +77,12 @@ public class SaleResource extends BaseResource {
     @Relationship("quote_assets")
     private List<AssetResource> quoteAssets;
 
-    public Date getStartTime() {
-        return startTime;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public Date getEndTime() {
-        return endTime;
+    public Date getEndDate() {
+        return endDate;
     }
 
     public BigDecimal getSoftCap() {
@@ -153,8 +153,47 @@ public class SaleResource extends BaseResource {
         return quoteAssets;
     }
 
+    public boolean isAvailable() {
+        return !isUpcoming() && !isEnded();
+    }
+
+    public boolean isUpcoming() {
+        return startDate.after(new Date());
+    }
+
+    public boolean isEnded() {
+        return isClosed() || isCanceled();
+    }
+
+    public boolean isOpen() {
+        return stateI == STATE_OPEN;
+    }
+
+    public boolean isClosed() {
+        return stateI == STATE_CLOSED;
+    }
+
+    public boolean isCanceled() {
+        return stateI == STATE_CANCELED;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof SaleResource
+                && ((SaleResource) o).getId().equals(this.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
+    }
+
     @Override
     public boolean hasAttributes() {
-        return startTime != null;
+        return startDate != null;
     }
+
+    public static int STATE_OPEN = 1;
+    public static int STATE_CLOSED = 2;
+    public static int STATE_CANCELED = 4;
 }
