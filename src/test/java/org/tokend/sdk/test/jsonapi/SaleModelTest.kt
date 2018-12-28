@@ -43,7 +43,7 @@ class SaleModelTest {
         )
 
         val document = converter.readDocumentCollection(
-                Data.listSalesResponseUnincluded.toByteArray(),
+                Data.salesListResponseUnincluded.toByteArray(),
                 SaleResource::class.java
         )
 
