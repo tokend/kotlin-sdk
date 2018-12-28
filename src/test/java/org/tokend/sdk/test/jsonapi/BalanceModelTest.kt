@@ -17,7 +17,7 @@ class BalanceModelTest {
         )
 
         val document = converter.readDocument(
-                Data.balanceResponse.toByteArray(),
+                balanceResponse.toByteArray(),
                 BalanceResource::class.java
         )
 
@@ -39,7 +39,7 @@ class BalanceModelTest {
         )
 
         val document = converter.readDocumentCollection(
-                Data.balanceListResponseUnincluded.toByteArray(),
+                balanceListResponseUnincluded.toByteArray(),
                 BalanceResource::class.java
         )
 
@@ -54,4 +54,86 @@ class BalanceModelTest {
         assertTrue(balance.hasAttributes())
         assertFalse(balance.asset.hasAttributes())
     }
+
+    private val balanceResponse = "{  \n" +
+            "   \"data\":{  \n" +
+            "      \"id\":\"BD2U4FYCQ6TEVXJZAFP2VB22NKFBLJKKVM625DEM4BXMQN6AOZFTHQAB\",\n" +
+            "      \"type\":\"balances\",\n" +
+            "      \"attributes\":{  \n" +
+            "         \"available\":\"0.000000\",\n" +
+            "         \"locked\":\"0.000000\",\n" +
+            "         \"require_review\":false\n" +
+            "      },\n" +
+            "      \"relationships\":{  \n" +
+            "         \"asset\":{  \n" +
+            "            \"data\":{  \n" +
+            "               \"type\":\"assets\",\n" +
+            "               \"id\":\"USD\"\n" +
+            "            }\n" +
+            "         },\n" +
+            "         \"account\":{  \n" +
+            "            \"data\":{  \n" +
+            "               \"type\":\"accounts\",\n" +
+            "               \"id\":\"GAA5WRH3KOAXZPW6PR3BKQSOG3KN3VAW2BO72PC6SHLSUSBW77DQHUB3\"\n" +
+            "            }\n" +
+            "         }\n" +
+            "      }\n" +
+            "   }\n" +
+            "}"
+
+    private val balanceListResponseUnincluded = "{\n" +
+            "  \"data\": [\n" +
+            "    {\n" +
+            "      \"id\": \"BD2U4FYCQ6TEVXJZAFP2VB22NKFBLJKKVM625DEM4BXMQN6AOZFTHQAB\",\n" +
+            "      \"type\": \"balances\",\n" +
+            "      \"attributes\": {\n" +
+            "        \"available\": \"0.000000\",\n" +
+            "        \"locked\": \"0.000000\",\n" +
+            "        \"require_review\": false\n" +
+            "      },\n" +
+            "      \"relationships\": {\n" +
+            "        \"asset\": {\n" +
+            "          \"data\": {\n" +
+            "            \"type\": \"assets\",\n" +
+            "            \"id\": \"USD\"\n" +
+            "          }\n" +
+            "        }\n" +
+            "      }\n" +
+            "    },\n" +
+            "    {\n" +
+            "      \"id\": \"BDA5XOKOHG2IRYSDCU442GQKEPATIZP62QXFVCYR4J37O56WBJVV4OCH\",\n" +
+            "      \"type\": \"balances\",\n" +
+            "      \"attributes\": {\n" +
+            "        \"available\": \"0.000000\",\n" +
+            "        \"locked\": \"0.000000\",\n" +
+            "        \"require_review\": false\n" +
+            "      },\n" +
+            "      \"relationships\": {\n" +
+            "        \"asset\": {\n" +
+            "          \"data\": {\n" +
+            "            \"type\": \"assets\",\n" +
+            "            \"id\": \"BTC\"\n" +
+            "          }\n" +
+            "        }\n" +
+            "      }\n" +
+            "    },\n" +
+            "    {\n" +
+            "      \"id\": \"BDHTFOKCCWSJKQV3M7YPISAXOSEU34VPN64WJ3FUJJXZDMFYLDDVJKRZ\",\n" +
+            "      \"type\": \"balances\",\n" +
+            "      \"attributes\": {\n" +
+            "        \"available\": \"0.000000\",\n" +
+            "        \"locked\": \"0.000000\",\n" +
+            "        \"require_review\": false\n" +
+            "      },\n" +
+            "      \"relationships\": {\n" +
+            "        \"asset\": {\n" +
+            "          \"data\": {\n" +
+            "            \"type\": \"assets\",\n" +
+            "            \"id\": \"ETH\"\n" +
+            "          }\n" +
+            "        }\n" +
+            "      }\n" +
+            "    }\n" +
+            "  ]\n" +
+            "}"
 }
