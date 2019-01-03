@@ -6,12 +6,14 @@ import org.junit.Test
 import org.tokend.sdk.api.v2.assetpairs.model.AssetPairResource
 import org.tokend.sdk.api.v2.assets.model.AssetResource
 import org.tokend.sdk.api.v2.base.UnknownResource
+import org.tokend.sdk.factory.JsonApiFactory
 import org.tokend.wallet.xdr.AssetPairPolicy
 
 class AssetPairsModelTest {
     @Test
     fun singlePair() {
         val converter = ResourceConverter(
+                JsonApiFactory().getBaseObjectMapper(),
                 AssetPairResource::class.java,
                 AssetResource::class.java,
                 UnknownResource::class.java
@@ -36,6 +38,7 @@ class AssetPairsModelTest {
     @Test
     fun pairsList() {
         val converter = ResourceConverter(
+                JsonApiFactory().getBaseObjectMapper(),
                 AssetPairResource::class.java,
                 AssetResource::class.java,
                 UnknownResource::class.java

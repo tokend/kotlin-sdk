@@ -4,6 +4,7 @@ import com.github.jasminb.jsonapi.ResourceConverter
 import org.junit.Assert.*
 import org.junit.Test
 import org.tokend.sdk.api.v2.transactions.model.TransactionResource
+import org.tokend.sdk.factory.JsonApiFactory
 
 class TransactionsModelTest {
 
@@ -11,6 +12,7 @@ class TransactionsModelTest {
     fun singleTransaction() {
 
         val converter = ResourceConverter(
+                JsonApiFactory().getBaseObjectMapper(),
                 TransactionResource::class.java
         )
 

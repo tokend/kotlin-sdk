@@ -6,6 +6,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.tokend.sdk.api.v2.assets.model.AssetResource
 import org.tokend.sdk.api.v2.base.UnknownResource
+import org.tokend.sdk.factory.JsonApiFactory
 import org.tokend.wallet.xdr.AssetPolicy
 
 class AssetsModelTest {
@@ -35,6 +36,7 @@ class AssetsModelTest {
     @Test
     fun assetsList() {
         val converter = ResourceConverter(
+                JsonApiFactory().getBaseObjectMapper(),
                 AssetResource::class.java,
                 UnknownResource::class.java
         )

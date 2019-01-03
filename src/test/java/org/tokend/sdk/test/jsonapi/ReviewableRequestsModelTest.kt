@@ -7,11 +7,13 @@ import org.tokend.sdk.api.v2.accounts.model.AccountResource
 import org.tokend.sdk.api.v2.base.UnknownResource
 import org.tokend.sdk.api.v2.requests.model.ReviewableRequestResource
 import org.tokend.sdk.api.v2.requests.model.details.AssetCreateRequestDetailsResource
+import org.tokend.sdk.factory.JsonApiFactory
 
 class ReviewableRequestsModelTest {
     @Test
     fun singleRequest() {
         val converter = ResourceConverter(
+                JsonApiFactory().getBaseObjectMapper(),
                 ReviewableRequestResource::class.java,
                 AssetCreateRequestDetailsResource::class.java,
                 AccountResource::class.java,

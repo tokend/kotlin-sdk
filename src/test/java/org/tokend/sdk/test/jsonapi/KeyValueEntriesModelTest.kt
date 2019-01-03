@@ -5,11 +5,13 @@ import org.junit.Assert
 import org.junit.Test
 import org.tokend.sdk.api.v2.base.UnknownResource
 import org.tokend.sdk.api.v2.keyvalue.model.KeyValueEntryResource
+import org.tokend.sdk.factory.JsonApiFactory
 
 class KeyValueEntriesModelTest {
     @Test
     fun keyValueEntry() {
         val converter = ResourceConverter(
+                JsonApiFactory().getBaseObjectMapper(),
                 KeyValueEntryResource::class.java,
                 UnknownResource::class.java
         )
@@ -31,6 +33,7 @@ class KeyValueEntriesModelTest {
     @Test
     fun keyValueEntriesList() {
         val converter = ResourceConverter(
+                JsonApiFactory().getBaseObjectMapper(),
                 KeyValueEntryResource::class.java,
                 UnknownResource::class.java
         )

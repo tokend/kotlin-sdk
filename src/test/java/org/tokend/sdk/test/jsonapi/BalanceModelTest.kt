@@ -5,6 +5,7 @@ import org.junit.Assert.*
 import org.junit.Test
 import org.tokend.sdk.api.v2.assets.model.AssetResource
 import org.tokend.sdk.api.v2.balances.model.BalanceResource
+import org.tokend.sdk.factory.JsonApiFactory
 
 class BalanceModelTest {
 
@@ -12,6 +13,7 @@ class BalanceModelTest {
     fun singleBalance() {
 
         val converter = ResourceConverter(
+                JsonApiFactory().getBaseObjectMapper(),
                 BalanceResource::class.java,
                 AssetResource::class.java
         )
@@ -34,6 +36,7 @@ class BalanceModelTest {
     fun balanceList() {
 
         val converter = ResourceConverter(
+                JsonApiFactory().getBaseObjectMapper(),
                 BalanceResource::class.java,
                 AssetResource::class.java
         )

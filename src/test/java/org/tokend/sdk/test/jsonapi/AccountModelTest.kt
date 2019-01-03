@@ -7,6 +7,7 @@ import org.tokend.sdk.api.v2.accounts.model.AccountResource
 import org.tokend.sdk.api.v2.balances.model.BalanceResource
 import org.tokend.sdk.api.v2.kyc.model.KycResource
 import org.tokend.sdk.api.v2.signers.model.SignerResource
+import org.tokend.sdk.factory.JsonApiFactory
 
 class AccountModelTest {
 
@@ -14,6 +15,7 @@ class AccountModelTest {
     fun singleAccount() {
 
         val converter = ResourceConverter(
+                JsonApiFactory().getBaseObjectMapper(),
                 AccountResource::class.java,
                 BalanceResource::class.java,
                 SignerResource::class.java,
@@ -42,6 +44,7 @@ class AccountModelTest {
     fun accountsList() {
 
         val converter = ResourceConverter(
+                JsonApiFactory().getBaseObjectMapper(),
                 AccountResource::class.java,
                 BalanceResource::class.java,
                 SignerResource::class.java,

@@ -8,11 +8,13 @@ import org.tokend.sdk.api.v2.assets.model.AssetResource
 import org.tokend.sdk.api.v2.base.UnknownResource
 import org.tokend.sdk.api.v2.fees.model.ExactFeeResource
 import org.tokend.sdk.api.v2.fees.model.FeeResource
+import org.tokend.sdk.factory.JsonApiFactory
 
 class FeesModelTest {
     @Test
     fun feesList() {
         val converter = ResourceConverter(
+                JsonApiFactory().getBaseObjectMapper(),
                 FeeResource::class.java,
                 AssetResource::class.java,
                 AccountResource::class.java,
@@ -43,6 +45,7 @@ class FeesModelTest {
     @Test
     fun exactFee() {
         val converter = ResourceConverter(
+                JsonApiFactory().getBaseObjectMapper(),
                 ExactFeeResource::class.java,
                 AssetResource::class.java,
                 UnknownResource::class.java
