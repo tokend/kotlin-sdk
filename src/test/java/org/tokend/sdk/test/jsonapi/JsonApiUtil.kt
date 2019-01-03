@@ -12,7 +12,13 @@ object JsonApiUtil {
     /**
      * Prints suspicious null values.
      */
-    fun checkResourceNullability(entity: Any) {
+    fun checkResourceNullability(entity: Any, checked: MutableSet<Int> = mutableSetOf()) {
+        if (checked.contains(entity.hashCode())) {
+            return
+        } else {
+            checked.add(entity.hashCode())
+        }
+
         val properties = try {
             entity::class.memberProperties
         } catch (e: Error) {
@@ -40,10 +46,10 @@ object JsonApiUtil {
                             value
                                     .filterNotNull()
                                     .forEach {
-                                        checkResourceNullability(it)
+                                        checkResourceNullability(it, checked)
                                     }
                         } else {
-                            checkResourceNullability(value)
+                            checkResourceNullability(value, checked)
                         }
                     }
                 }
@@ -52,9 +58,9 @@ object JsonApiUtil {
     /**
      * @see checkResourceNullability
      */
-    fun checkResourceNullability(entities: Collection<Any>) {
+    fun checkResourceNullability(entities: Collection<Any>, checked: MutableSet<Int> = mutableSetOf()) {
         entities.forEach {
-            checkResourceNullability(it)
+            checkResourceNullability(it, checked)
         }
     }
 }
