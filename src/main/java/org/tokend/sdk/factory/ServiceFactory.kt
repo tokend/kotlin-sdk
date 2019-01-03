@@ -79,8 +79,8 @@ class ServiceFactory(private val url: String,
             : Retrofit.Builder {
         return Retrofit.Builder()
                 .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(JsonApiFactory().getJsonApiConverterFactory())
                 .addConverterFactory(GsonFactory().getBaseGsonConverterFactory())
-                .addConverterFactory(JsonApiFactory().getBaseJsonApiConverterFactory())
                 .baseUrl(url)
                 .client(httpClient)
     }

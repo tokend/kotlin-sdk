@@ -1,23 +1,16 @@
 package org.tokend.sdk.test.jsonapi
 
-import com.github.jasminb.jsonapi.ResourceConverter
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.tokend.sdk.api.v2.assets.model.AssetResource
-import org.tokend.sdk.api.v2.base.UnknownResource
 import org.tokend.sdk.factory.JsonApiFactory
 import org.tokend.wallet.xdr.AssetPolicy
 
 class AssetsModelTest {
     @Test
     fun singleAsset() {
-        val converter = ResourceConverter(
-                AssetResource::class.java,
-                UnknownResource::class.java
-        )
-
-        val document = converter.readDocument(
+        val document = JsonApiFactory().getResourceConverter().readDocument(
                 assetResponse.toByteArray(),
                 AssetResource::class.java
         )
@@ -35,13 +28,7 @@ class AssetsModelTest {
 
     @Test
     fun assetsList() {
-        val converter = ResourceConverter(
-                JsonApiFactory().getBaseObjectMapper(),
-                AssetResource::class.java,
-                UnknownResource::class.java
-        )
-
-        val document = converter.readDocumentCollection(
+        val document = JsonApiFactory().getResourceConverter().readDocumentCollection(
                 assetListResponse.toByteArray(),
                 AssetResource::class.java
         )

@@ -1,24 +1,15 @@
 package org.tokend.sdk.test.jsonapi
 
-import com.github.jasminb.jsonapi.ResourceConverter
-import org.junit.Assert.*
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
-import org.tokend.sdk.api.v2.assets.model.AssetResource
 import org.tokend.sdk.api.v2.balances.model.BalanceResource
 import org.tokend.sdk.factory.JsonApiFactory
 
 class BalanceModelTest {
-
     @Test
     fun singleBalance() {
-
-        val converter = ResourceConverter(
-                JsonApiFactory().getBaseObjectMapper(),
-                BalanceResource::class.java,
-                AssetResource::class.java
-        )
-
-        val document = converter.readDocument(
+        val document = JsonApiFactory().getResourceConverter().readDocument(
                 balanceResponse.toByteArray(),
                 BalanceResource::class.java
         )
@@ -34,14 +25,7 @@ class BalanceModelTest {
 
     @Test
     fun balanceList() {
-
-        val converter = ResourceConverter(
-                JsonApiFactory().getBaseObjectMapper(),
-                BalanceResource::class.java,
-                AssetResource::class.java
-        )
-
-        val document = converter.readDocumentCollection(
+        val document = JsonApiFactory().getResourceConverter().readDocumentCollection(
                 balanceListResponseUnincluded.toByteArray(),
                 BalanceResource::class.java
         )

@@ -1,22 +1,14 @@
 package org.tokend.sdk.test.jsonapi
 
-import com.github.jasminb.jsonapi.ResourceConverter
 import org.junit.Assert
 import org.junit.Test
-import org.tokend.sdk.api.v2.base.UnknownResource
 import org.tokend.sdk.api.v2.keyvalue.model.KeyValueEntryResource
 import org.tokend.sdk.factory.JsonApiFactory
 
 class KeyValueEntriesModelTest {
     @Test
     fun keyValueEntry() {
-        val converter = ResourceConverter(
-                JsonApiFactory().getBaseObjectMapper(),
-                KeyValueEntryResource::class.java,
-                UnknownResource::class.java
-        )
-
-        val document = converter.readDocument(
+        val document = JsonApiFactory().getResourceConverter().readDocument(
                 keyValueEntryResponse.toByteArray(),
                 KeyValueEntryResource::class.java
         )
@@ -32,13 +24,7 @@ class KeyValueEntriesModelTest {
 
     @Test
     fun keyValueEntriesList() {
-        val converter = ResourceConverter(
-                JsonApiFactory().getBaseObjectMapper(),
-                KeyValueEntryResource::class.java,
-                UnknownResource::class.java
-        )
-
-        val document = converter.readDocumentCollection(
+        val document = JsonApiFactory().getResourceConverter().readDocumentCollection(
                 keyValueEntriesListResponse.toByteArray(),
                 KeyValueEntryResource::class.java
         )

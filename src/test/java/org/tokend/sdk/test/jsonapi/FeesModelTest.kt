@@ -1,11 +1,7 @@
 package org.tokend.sdk.test.jsonapi
 
-import com.github.jasminb.jsonapi.ResourceConverter
 import org.junit.Assert
 import org.junit.Test
-import org.tokend.sdk.api.v2.accounts.model.AccountResource
-import org.tokend.sdk.api.v2.assets.model.AssetResource
-import org.tokend.sdk.api.v2.base.UnknownResource
 import org.tokend.sdk.api.v2.fees.model.ExactFeeResource
 import org.tokend.sdk.api.v2.fees.model.FeeResource
 import org.tokend.sdk.factory.JsonApiFactory
@@ -13,15 +9,7 @@ import org.tokend.sdk.factory.JsonApiFactory
 class FeesModelTest {
     @Test
     fun feesList() {
-        val converter = ResourceConverter(
-                JsonApiFactory().getBaseObjectMapper(),
-                FeeResource::class.java,
-                AssetResource::class.java,
-                AccountResource::class.java,
-                UnknownResource::class.java
-        )
-
-        val document = converter.readDocumentCollection(
+        val document = JsonApiFactory().getResourceConverter().readDocumentCollection(
                 feesListResponse.toByteArray(),
                 FeeResource::class.java
         )
@@ -44,14 +32,7 @@ class FeesModelTest {
 
     @Test
     fun exactFee() {
-        val converter = ResourceConverter(
-                JsonApiFactory().getBaseObjectMapper(),
-                ExactFeeResource::class.java,
-                AssetResource::class.java,
-                UnknownResource::class.java
-        )
-
-        val document = converter.readDocument(
+        val document = JsonApiFactory().getResourceConverter().readDocument(
                 exactFeeResponse.toByteArray(),
                 ExactFeeResource::class.java
         )

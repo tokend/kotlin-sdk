@@ -1,28 +1,15 @@
 package org.tokend.sdk.test.jsonapi
 
-import com.github.jasminb.jsonapi.ResourceConverter
 import org.junit.Assert.*
 import org.junit.Test
 import org.tokend.sdk.api.v2.accounts.model.AccountResource
-import org.tokend.sdk.api.v2.balances.model.BalanceResource
-import org.tokend.sdk.api.v2.kyc.model.KycResource
-import org.tokend.sdk.api.v2.signers.model.SignerResource
 import org.tokend.sdk.factory.JsonApiFactory
 
 class AccountModelTest {
 
     @Test
     fun singleAccount() {
-
-        val converter = ResourceConverter(
-                JsonApiFactory().getBaseObjectMapper(),
-                AccountResource::class.java,
-                BalanceResource::class.java,
-                SignerResource::class.java,
-                KycResource::class.java
-        )
-
-        val document = converter.readDocument(
+        val document = JsonApiFactory().getResourceConverter().readDocument(
                 accountResponse.toByteArray(),
                 AccountResource::class.java
         )
@@ -42,16 +29,7 @@ class AccountModelTest {
 
     @Test
     fun accountsList() {
-
-        val converter = ResourceConverter(
-                JsonApiFactory().getBaseObjectMapper(),
-                AccountResource::class.java,
-                BalanceResource::class.java,
-                SignerResource::class.java,
-                KycResource::class.java
-        )
-
-        val document = converter.readDocumentCollection(
+        val document = JsonApiFactory().getResourceConverter().readDocumentCollection(
                 accountsListResponse.toByteArray(),
                 AccountResource::class.java
         )

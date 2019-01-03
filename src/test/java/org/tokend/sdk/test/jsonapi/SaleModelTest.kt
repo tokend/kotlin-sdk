@@ -1,7 +1,8 @@
 package org.tokend.sdk.test.jsonapi
 
 import com.github.jasminb.jsonapi.ResourceConverter
-import org.junit.Assert.*
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.tokend.sdk.api.v2.accounts.model.AccountResource
 import org.tokend.sdk.api.v2.assets.model.AssetResource
@@ -12,15 +13,7 @@ class SaleModelTest {
 
     @Test
     fun singleSale() {
-
-        val converter = ResourceConverter(
-                JsonApiFactory().getBaseObjectMapper(),
-                SaleResource::class.java,
-                AccountResource::class.java,
-                AssetResource::class.java
-        )
-
-        val document = converter.readDocument(
+        val document = JsonApiFactory().getResourceConverter().readDocument(
                 saleResponseUnincluded.toByteArray(),
                 SaleResource::class.java
         )
@@ -39,7 +32,7 @@ class SaleModelTest {
     fun salesList() {
 
         val converter = ResourceConverter(
-                JsonApiFactory().getBaseObjectMapper(),
+                JsonApiFactory().getObjectMapper(),
                 SaleResource::class.java,
                 AccountResource::class.java,
                 AssetResource::class.java

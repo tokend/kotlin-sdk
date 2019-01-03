@@ -4,17 +4,20 @@ import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.*
 import com.fasterxml.jackson.databind.module.SimpleModule
+import com.github.jasminb.jsonapi.ResourceConverter
 import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory
 import org.tokend.sdk.api.v2.accounts.model.AccountResource
 import org.tokend.sdk.api.v2.assetpairs.model.AssetPairResource
 import org.tokend.sdk.api.v2.assets.model.AssetResource
 import org.tokend.sdk.api.v2.balances.model.BalanceResource
 import org.tokend.sdk.api.v2.base.UnknownResource
+import org.tokend.sdk.api.v2.fees.model.ExactFeeResource
 import org.tokend.sdk.api.v2.fees.model.FeeResource
 import org.tokend.sdk.api.v2.keyvalue.model.KeyValueEntryResource
 import org.tokend.sdk.api.v2.kyc.model.KycResource
 import org.tokend.sdk.api.v2.offers.model.OfferResource
 import org.tokend.sdk.api.v2.requests.model.ReviewableRequestResource
+import org.tokend.sdk.api.v2.requests.model.details.AssetCreateRequestDetailsResource
 import org.tokend.sdk.api.v2.requests.model.details.ReviewableRequestDetailsResource
 import org.tokend.sdk.api.v2.sales.model.SaleResource
 import org.tokend.sdk.api.v2.signers.model.SignerResource
@@ -29,31 +32,41 @@ import java.util.*
  * with type adapters for SDK models.
  */
 class JsonApiFactory {
-    fun getBaseJsonApiConverterFactory(): JSONAPIConverterFactory {
-        return baseJsonApiConverterFactory
-                ?: JSONAPIConverterFactory(getBaseObjectMapper(),
+    fun getResourceConverter(): ResourceConverter {
+        return resourceConverter
+                ?: ResourceConverter(getObjectMapper(),
                         AccountResource::class.java,
                         AssetPairResource::class.java,
                         AssetResource::class.java,
                         BalanceResource::class.java,
                         FeeResource::class.java,
+                        ExactFeeResource::class.java,
                         KeyValueEntryResource::class.java,
                         KycResource::class.java,
                         OfferResource::class.java,
+
                         ReviewableRequestResource::class.java,
                         ReviewableRequestDetailsResource::class.java,
+                        AssetCreateRequestDetailsResource::class.java,
+
                         SaleResource::class.java,
                         SignerResource::class.java,
                         TransactionResource::class.java,
                         UnknownResource::class.java
                 )
-                        .also { baseJsonApiConverterFactory = it }
+                        .also { resourceConverter = it }
     }
 
-    fun getBaseObjectMapper(): ObjectMapper {
-        return baseObjectMapper
+    fun getJsonApiConverterFactory(): JSONAPIConverterFactory {
+        return jsonApiConverterFactory
+                ?: JSONAPIConverterFactory(getResourceConverter())
+                        .also { jsonApiConverterFactory = it }
+    }
+
+    fun getObjectMapper(): ObjectMapper {
+        return objectMapper
                 ?: createBaseObjectMapper()
-                        .also { baseObjectMapper = it }
+                        .also { objectMapper = it }
     }
 
     private fun createBaseObjectMapper(): ObjectMapper {
@@ -124,7 +137,8 @@ class JsonApiFactory {
     }
 
     private companion object {
-        private var baseObjectMapper: ObjectMapper? = null
-        private var baseJsonApiConverterFactory: JSONAPIConverterFactory? = null
+        private var resourceConverter: ResourceConverter? = null
+        private var objectMapper: ObjectMapper? = null
+        private var jsonApiConverterFactory: JSONAPIConverterFactory? = null
     }
 }

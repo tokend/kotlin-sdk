@@ -1,25 +1,15 @@
 package org.tokend.sdk.test.jsonapi
 
-import com.github.jasminb.jsonapi.ResourceConverter
 import org.junit.Assert
 import org.junit.Test
 import org.tokend.sdk.api.v2.assetpairs.model.AssetPairResource
-import org.tokend.sdk.api.v2.assets.model.AssetResource
-import org.tokend.sdk.api.v2.base.UnknownResource
 import org.tokend.sdk.factory.JsonApiFactory
 import org.tokend.wallet.xdr.AssetPairPolicy
 
 class AssetPairsModelTest {
     @Test
     fun singlePair() {
-        val converter = ResourceConverter(
-                JsonApiFactory().getBaseObjectMapper(),
-                AssetPairResource::class.java,
-                AssetResource::class.java,
-                UnknownResource::class.java
-        )
-
-        val document = converter.readDocument(
+        val document = JsonApiFactory().getResourceConverter().readDocument(
                 assetPairResponse.toByteArray(),
                 AssetPairResource::class.java
         )
@@ -37,14 +27,7 @@ class AssetPairsModelTest {
 
     @Test
     fun pairsList() {
-        val converter = ResourceConverter(
-                JsonApiFactory().getBaseObjectMapper(),
-                AssetPairResource::class.java,
-                AssetResource::class.java,
-                UnknownResource::class.java
-        )
-
-        val document = converter.readDocumentCollection(
+        val document = JsonApiFactory().getResourceConverter().readDocumentCollection(
                 assetPairsListResponse.toByteArray(),
                 AssetPairResource::class.java
         )
