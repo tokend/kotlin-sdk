@@ -1,5 +1,7 @@
 package org.tokend.sdk.api.base.model
 
+import com.github.jasminb.jsonapi.JSONAPIDocument
+import org.tokend.sdk.api.v2.base.PaginationMeta
 import java.util.regex.Pattern
 
 /**
@@ -34,6 +36,19 @@ class DataPage<T>(val nextCursor: String?,
 
         fun <T> fromPage(page: Page<T>): DataPage<T> {
             return DataPage(getNextCursor(page), page.records, isLast(page))
+        }
+
+        /**
+         * Creates [DataPage] from collection [JSONAPIDocument] with specific meta info.
+         */
+        fun <T> fromPageDocument(pageDocument: JSONAPIDocument<List<T>>): DataPage<T> {
+            val paginationMeta = PaginationMeta.fromMap(pageDocument.meta)
+
+            return DataPage(
+                    items = pageDocument.get(),
+                    nextCursor = paginationMeta.currentPage.inc().toString(),
+                    isLast = paginationMeta.isLast
+            )
         }
     }
 }
