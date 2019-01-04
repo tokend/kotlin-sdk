@@ -11,6 +11,8 @@ import org.tokend.sdk.api.v2.balances.BalancesApi
 import org.tokend.sdk.api.v2.balances.BalancesService
 import org.tokend.sdk.api.v2.fees.FeesApiV2
 import org.tokend.sdk.api.v2.fees.FeesServiceV2
+import org.tokend.sdk.api.v2.keyvalue.KeyValueStorageApiV2
+import org.tokend.sdk.api.v2.keyvalue.KeyValueStorageServiceV2
 import org.tokend.sdk.signing.RequestSigner
 import org.tokend.sdk.tfa.TfaCallback
 import org.tokend.sdk.utils.CookieJarProvider
@@ -43,5 +45,9 @@ open class TokenDApiV2(rootUrl: String,
 
     open val fees: FeesApiV2 by lazy {
         FeesApiV2(getService(FeesServiceV2::class.java))
+    }
+
+    open val keyValue: KeyValueStorageApiV2 by lazy {
+        KeyValueStorageApiV2(getService(KeyValueStorageServiceV2::class.java))
     }
 }
