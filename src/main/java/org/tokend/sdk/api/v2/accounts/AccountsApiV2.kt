@@ -12,8 +12,8 @@ import org.tokend.sdk.api.v2.balances.model.BalanceResource
 import org.tokend.sdk.api.v2.kyc.model.KycResource
 import org.tokend.sdk.api.v2.signers.model.SignerResource
 
-class AccountsApiV2(
-        protected val accountsService: AccountsServiceV2
+open class AccountsApiV2(
+        protected open val accountsService: AccountsServiceV2
 ) {
     /**
      * @return accounts list page

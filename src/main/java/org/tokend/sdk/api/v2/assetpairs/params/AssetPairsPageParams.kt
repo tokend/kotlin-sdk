@@ -1,15 +1,15 @@
-package org.tokend.sdk.api.v2.accounts.params
+package org.tokend.sdk.api.v2.assetpairs.params
 
 import org.tokend.sdk.api.base.params.PagingParamsHolder
 import org.tokend.sdk.api.base.params.PagingParamsV2
 
 /**
- * @see AccountParamsV2.Includes
+ * @see AssetPairParams.Includes
  */
-open class AccountsPageParamsV2(
+open class AssetPairsPageParams(
         include: Collection<String>? = null,
         val pagingParams: PagingParamsV2? = null
-) : AccountParamsV2(include), PagingParamsHolder {
+) : AssetPairParams(include), PagingParamsHolder {
     override val order = pagingParams?.order
     override val cursor = pagingParams?.cursor
     override val limit = pagingParams?.limit
