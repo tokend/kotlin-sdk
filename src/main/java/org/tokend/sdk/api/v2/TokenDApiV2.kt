@@ -9,6 +9,8 @@ import org.tokend.sdk.api.v2.assets.AssetsApiV2
 import org.tokend.sdk.api.v2.assets.AssetsServiceV2
 import org.tokend.sdk.api.v2.balances.BalancesApi
 import org.tokend.sdk.api.v2.balances.BalancesService
+import org.tokend.sdk.api.v2.fees.FeesApiV2
+import org.tokend.sdk.api.v2.fees.FeesServiceV2
 import org.tokend.sdk.signing.RequestSigner
 import org.tokend.sdk.tfa.TfaCallback
 import org.tokend.sdk.utils.CookieJarProvider
@@ -37,5 +39,9 @@ open class TokenDApiV2(rootUrl: String,
 
     open val balances: BalancesApi by lazy {
         BalancesApi(getService(BalancesService::class.java))
+    }
+
+    open val fees: FeesApiV2 by lazy {
+        FeesApiV2(getService(FeesServiceV2::class.java))
     }
 }
