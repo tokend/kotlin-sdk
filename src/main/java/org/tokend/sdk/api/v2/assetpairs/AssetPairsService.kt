@@ -14,6 +14,6 @@ interface AssetPairsService {
 
     @GET("asset_pairs/{id}")
     @JvmSuppressWildcards
-    fun getAssetPairById(@Path("id") accountId: String,
+    fun getAssetPairById(@Path("id") id: String,
                          @QueryMap query: Map<String, Any>?): Call<JSONAPIDocument<AssetPairResource>>
 }

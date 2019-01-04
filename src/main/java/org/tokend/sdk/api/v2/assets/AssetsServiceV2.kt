@@ -14,6 +14,6 @@ interface AssetsServiceV2 {
 
     @GET("assets/{id}")
     @JvmSuppressWildcards
-    fun getAssetById(@Path("id") accountId: String,
+    fun getAssetById(@Path("id") id: String,
                      @QueryMap query: Map<String, Any>?): Call<JSONAPIDocument<AssetResource>>
 }

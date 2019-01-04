@@ -14,6 +14,6 @@ interface AccountsServiceV2 {
 
     @GET("accounts/{id}")
     @JvmSuppressWildcards
-    fun getAccountById(@Path("id") accountId: String,
+    fun getAccountById(@Path("id") id: String,
                        @QueryMap query: Map<String, Any>?): Call<JSONAPIDocument<AccountResource>>
 }
