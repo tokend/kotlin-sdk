@@ -15,10 +15,12 @@ import org.tokend.sdk.api.v2.keyvalue.KeyValueStorageApiV2
 import org.tokend.sdk.api.v2.keyvalue.KeyValueStorageServiceV2
 import org.tokend.sdk.api.v2.offers.OffersApiV2
 import org.tokend.sdk.api.v2.offers.OffersServiceV2
-import org.tokend.sdk.api.v2.transactions.TransactionsApiV2
-import org.tokend.sdk.api.v2.transactions.TransactionsServiceV2
 import org.tokend.sdk.api.v2.requests.RequestsApiV2
 import org.tokend.sdk.api.v2.requests.RequestsServiceV2
+import org.tokend.sdk.api.v2.sales.SalesApiV2
+import org.tokend.sdk.api.v2.sales.SalesServiceV2
+import org.tokend.sdk.api.v2.transactions.TransactionsApiV2
+import org.tokend.sdk.api.v2.transactions.TransactionsServiceV2
 import org.tokend.sdk.signing.RequestSigner
 import org.tokend.sdk.tfa.TfaCallback
 import org.tokend.sdk.utils.CookieJarProvider
@@ -67,5 +69,9 @@ open class TokenDApiV2(rootUrl: String,
 
     open val requests: RequestsApiV2 by lazy {
         RequestsApiV2(getService(RequestsServiceV2::class.java))
+    }
+
+    open val sales: SalesApiV2 by lazy {
+        SalesApiV2(getService(SalesServiceV2::class.java))
     }
 }
