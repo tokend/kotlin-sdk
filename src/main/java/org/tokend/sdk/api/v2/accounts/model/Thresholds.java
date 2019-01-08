@@ -13,7 +13,7 @@ public class Thresholds {
     private BigDecimal medThreshold;
 
     @JsonProperty("high_threshold")
-    private BigDecimal highTreshold;
+    private BigDecimal highThreshold;
 
     public BigDecimal getLowThreshold() {
         return lowThreshold;
@@ -24,6 +24,6 @@ public class Thresholds {
     }
 
     public BigDecimal getHighThreshold() {
-        return highTreshold;
+        return highThreshold;
     }
 }

@@ -51,10 +51,10 @@ class KeyStorage constructor(
         val email = walletData.attributes?.email
                 ?: throw IllegalStateException("Wallet data has no email")
 
-        if (isRecovery) {
-            return WalletInfo(accountId, email, hexWalletId, CharArray(0), loginParams)
+        return if (isRecovery) {
+            WalletInfo(accountId, email, hexWalletId, CharArray(0), loginParams)
         } else {
-            return WalletInfo(accountId, email, hexWalletId,
+            WalletInfo(accountId, email, hexWalletId,
                     decryptSecretSeed(iv, cipherText, walletKey), loginParams)
         }
     }

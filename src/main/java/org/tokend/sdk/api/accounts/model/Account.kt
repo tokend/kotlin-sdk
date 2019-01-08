@@ -83,12 +83,12 @@ open class Account(
         constructor(accountId: String) : this(accountId, 255, Int.MAX_VALUE, 1)
 
         @SerializedName("public_key")
-        val accountId: String = checkNotNull(accountId, { "accountId cannot be null" })
+        val accountId: String = checkNotNull(accountId) { "accountId cannot be null" }
         @SerializedName("weight")
-        val weight: Int = checkNotNull(weight, { "weight cannot be null" })
+        val weight: Int = checkNotNull(weight) { "weight cannot be null" }
         @SerializedName("signer_type_i")
-        val type: Int = checkNotNull(type, { "type cannot be null" })
+        val type: Int = checkNotNull(type) { "type cannot be null" }
         @SerializedName("signer_identity")
-        val identity: Int = checkNotNull(identity, { "weight cannot be null" })
+        val identity: Int = checkNotNull(identity) { "weight cannot be null" }
     }
 }

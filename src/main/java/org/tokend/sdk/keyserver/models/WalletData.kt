@@ -62,7 +62,7 @@ open class WalletData(
     }
 
     fun addRelation(relation: WalletRelation) {
-        relationships.put(relation.name, DataEntity(relation.walletData))
+        relationships[relation.name] = DataEntity(relation.walletData)
     }
 
     fun addTransactionRelation(transaction: Transaction) {

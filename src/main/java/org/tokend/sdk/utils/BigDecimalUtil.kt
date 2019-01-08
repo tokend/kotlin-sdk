@@ -2,9 +2,6 @@ package org.tokend.sdk.utils
 
 import java.math.BigDecimal
 
-/**
- * Created by Oleg Koretsky on 2/7/18.
- */
 object BigDecimalUtil {
     /**
      * Allows to safely parse BigDecimal from String with default value (0 by default)
