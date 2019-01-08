@@ -15,6 +15,8 @@ import org.tokend.sdk.api.v2.keyvalue.KeyValueStorageApiV2
 import org.tokend.sdk.api.v2.keyvalue.KeyValueStorageServiceV2
 import org.tokend.sdk.api.v2.offers.OffersApiV2
 import org.tokend.sdk.api.v2.offers.OffersServiceV2
+import org.tokend.sdk.api.v2.transactions.TransactionsApiV2
+import org.tokend.sdk.api.v2.transactions.TransactionsServiceV2
 import org.tokend.sdk.signing.RequestSigner
 import org.tokend.sdk.tfa.TfaCallback
 import org.tokend.sdk.utils.CookieJarProvider
@@ -55,5 +57,9 @@ open class TokenDApiV2(rootUrl: String,
 
     open val offers: OffersApiV2 by lazy {
         OffersApiV2(getService(OffersServiceV2::class.java))
+    }
+
+    open val transactions: TransactionsApiV2 by lazy {
+        TransactionsApiV2(getService(TransactionsServiceV2::class.java))
     }
 }
