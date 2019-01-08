@@ -25,4 +25,12 @@ interface ApiRequest<T> {
      * @return true if the request has been canceled, false otherwise.
      */
     fun isCanceled(): Boolean
+
+    /**
+     * Adds request result transformation.
+     * Transformations are stackable.
+     *
+     * @param mapper transformation function, will be invoked on execution
+     */
+    fun <R> map(mapper: (T) -> R): ApiRequest<R>
 }

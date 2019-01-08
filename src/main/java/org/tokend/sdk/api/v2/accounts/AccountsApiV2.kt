@@ -48,15 +48,8 @@ open class AccountsApiV2(
      * @return signers of an account with given ID
      */
     open fun getSigners(accountId: String): ApiRequest<List<SignerResource>> {
-        return MappedRetrofitApiRequest(
-                accountsService.getAccountById(
-                        accountId,
-                        AccountParamsV2(listOf(AccountParamsV2.Includes.SIGNERS)).map()
-                ),
-                { accountDocument ->
-                    accountDocument.get().signers
-                }
-        )
+        return getById(accountId, AccountParamsV2(listOf(AccountParamsV2.Includes.SIGNERS)))
+                .map { it.signers }
     }
 
     /**
@@ -66,15 +59,8 @@ open class AccountsApiV2(
      * otherwise will be populated only with id and asset
      */
     open fun getBalances(accountId: String): ApiRequest<List<BalanceResource>> {
-        return MappedRetrofitApiRequest(
-                accountsService.getAccountById(
-                        accountId,
-                        AccountParamsV2(listOf(AccountParamsV2.Includes.BALANCES)).map()
-                ),
-                { accountDocument ->
-                    accountDocument.get().balances
-                }
-        )
+        return getById(accountId, AccountParamsV2(listOf(AccountParamsV2.Includes.BALANCES)))
+                .map { it.balances }
     }
 
     /**
@@ -84,14 +70,7 @@ open class AccountsApiV2(
      * requested account or signer of master account
      */
     open fun getKyc(accountId: String): ApiRequest<KycResource> {
-        return MappedRetrofitApiRequest(
-                accountsService.getAccountById(
-                        accountId,
-                        AccountParamsV2(listOf(AccountParamsV2.Includes.KYC)).map()
-                ),
-                { accountDocument ->
-                    accountDocument.get().kyc
-                }
-        )
+        return getById(accountId, AccountParamsV2(listOf(AccountParamsV2.Includes.KYC)))
+                .map { it.kyc }
     }
 }
