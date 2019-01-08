@@ -397,8 +397,6 @@ class KeyStorage constructor(
          * @param loginParams system KDF params.
          * For password change or recovery use existing.
          * If kdf salt is null it will be generated.
-         * @param kdfVersion system KDF version.
-         * For password change or recovery use existing
          */
         @JvmStatic
         @JvmOverloads
