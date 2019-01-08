@@ -17,6 +17,8 @@ import org.tokend.sdk.api.v2.offers.OffersApiV2
 import org.tokend.sdk.api.v2.offers.OffersServiceV2
 import org.tokend.sdk.api.v2.transactions.TransactionsApiV2
 import org.tokend.sdk.api.v2.transactions.TransactionsServiceV2
+import org.tokend.sdk.api.v2.requests.RequestsApiV2
+import org.tokend.sdk.api.v2.requests.RequestsServiceV2
 import org.tokend.sdk.signing.RequestSigner
 import org.tokend.sdk.tfa.TfaCallback
 import org.tokend.sdk.utils.CookieJarProvider
@@ -61,5 +63,9 @@ open class TokenDApiV2(rootUrl: String,
 
     open val transactions: TransactionsApiV2 by lazy {
         TransactionsApiV2(getService(TransactionsServiceV2::class.java))
+    }
+
+    open val requests: RequestsApiV2 by lazy {
+        RequestsApiV2(getService(RequestsServiceV2::class.java))
     }
 }
