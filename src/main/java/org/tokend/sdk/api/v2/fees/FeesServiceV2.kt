@@ -10,8 +10,8 @@ import retrofit2.http.QueryMap
 interface FeesServiceV2 {
     @GET("fees")
     @JvmSuppressWildcards
-    fun getFees(@QueryMap query: Map<String, Any>?): Call<JSONAPIDocument<List<FeeResource>>>
+    fun getFees(@QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<FeeResource>>>
 
     @GET("fees/calculate")
-    fun calculateFee(@QueryMap query: Map<String, Any>?): Call<JSONAPIDocument<ExactFeeResource>>
+    fun calculateFee(@QueryMap query: Map<String, Any>): Call<JSONAPIDocument<ExactFeeResource>>
 }

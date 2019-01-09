@@ -10,10 +10,10 @@ import retrofit2.http.QueryMap
 interface AssetPairsService {
     @GET("asset_pairs")
     @JvmSuppressWildcards
-    fun getAssetPairs(@QueryMap query: Map<String, Any>?): Call<JSONAPIDocument<List<AssetPairResource>>>
+    fun getAssetPairs(@QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<AssetPairResource>>>
 
     @GET("asset_pairs/{id}")
     @JvmSuppressWildcards
     fun getAssetPairById(@Path("id") id: String,
-                         @QueryMap query: Map<String, Any>?): Call<JSONAPIDocument<AssetPairResource>>
+                         @QueryMap query: Map<String, Any>): Call<JSONAPIDocument<AssetPairResource>>
 }

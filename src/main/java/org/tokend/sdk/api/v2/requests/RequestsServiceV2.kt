@@ -10,10 +10,10 @@ import retrofit2.http.QueryMap
 interface RequestsServiceV2 {
     @GET("requests")
     @JvmSuppressWildcards
-    fun getRequests(@QueryMap query: Map<String, Any>?): Call<JSONAPIDocument<List<ReviewableRequestResource>>>
+    fun getRequests(@QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<ReviewableRequestResource>>>
 
     @GET("requests/{id}")
     @JvmSuppressWildcards
     fun getRequestById(@Path("id") id: String,
-                       @QueryMap query: Map<String, Any>?): Call<JSONAPIDocument<ReviewableRequestResource>>
+                       @QueryMap query: Map<String, Any>): Call<JSONAPIDocument<ReviewableRequestResource>>
 }

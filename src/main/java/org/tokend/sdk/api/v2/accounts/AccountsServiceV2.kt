@@ -10,10 +10,10 @@ import retrofit2.http.QueryMap
 interface AccountsServiceV2 {
     @GET("accounts")
     @JvmSuppressWildcards
-    fun getAccounts(@QueryMap query: Map<String, Any>?): Call<JSONAPIDocument<List<AccountResource>>>
+    fun getAccounts(@QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<AccountResource>>>
 
     @GET("accounts/{id}")
     @JvmSuppressWildcards
     fun getAccountById(@Path("id") id: String,
-                       @QueryMap query: Map<String, Any>?): Call<JSONAPIDocument<AccountResource>>
+                       @QueryMap query: Map<String, Any>): Call<JSONAPIDocument<AccountResource>>
 }

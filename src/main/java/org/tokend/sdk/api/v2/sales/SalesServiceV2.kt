@@ -10,10 +10,10 @@ import retrofit2.http.QueryMap
 interface SalesServiceV2 {
     @GET("sales")
     @JvmSuppressWildcards
-    fun getSales(@QueryMap query: Map<String, Any>?): Call<JSONAPIDocument<List<SaleResource>>>
+    fun getSales(@QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<SaleResource>>>
 
     @GET("sales/{id}")
     @JvmSuppressWildcards
     fun getSaleById(@Path("id") id: String,
-                    @QueryMap query: Map<String, Any>?): Call<JSONAPIDocument<SaleResource>>
+                    @QueryMap query: Map<String, Any>): Call<JSONAPIDocument<SaleResource>>
 }

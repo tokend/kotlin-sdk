@@ -10,11 +10,11 @@ import retrofit2.http.*
 
 interface WalletsService {
     @POST("wallets/{walletId}/verification")
-    fun requestVerification(@Path("walletId") walletId: String?): Call<Void>
+    fun requestVerification(@Path("walletId") walletId: String): Call<Void>
 
     @PUT("wallets/{walletId}/verification")
     @JvmSuppressWildcards
-    fun verify(@Path("walletId") walletId: String?,
+    fun verify(@Path("walletId") walletId: String,
                @Body data: DataEntity<AttributesEntity<VerifyWalletRequestBody>>):
             Call<Void>
 
@@ -28,7 +28,7 @@ interface WalletsService {
 
     @PUT("wallets/{walletId}")
     @JvmSuppressWildcards
-    fun update(@Path("walletId") walletId: String?,
+    fun update(@Path("walletId") walletId: String,
                @Body data: DataEntity<WalletData>): Call<Void>
 
     @POST("wallets")

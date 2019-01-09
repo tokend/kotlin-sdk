@@ -10,10 +10,10 @@ import retrofit2.http.QueryMap
 interface BalancesService {
     @GET("balances")
     @JvmSuppressWildcards
-    fun getBalances(@QueryMap query: Map<String, Any>?): Call<JSONAPIDocument<List<BalanceResource>>>
+    fun getBalances(@QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<BalanceResource>>>
 
     @GET("balances/{id}")
     @JvmSuppressWildcards
     fun getBalanceById(@Path("id") id: String,
-                       @QueryMap query: Map<String, Any>?): Call<JSONAPIDocument<BalanceResource>>
+                       @QueryMap query: Map<String, Any>): Call<JSONAPIDocument<BalanceResource>>
 }

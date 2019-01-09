@@ -28,7 +28,7 @@ open class TransactionsApiV2(
         return MappedRetrofitApiRequest(
                 transactionsService.getTransactionById(
                         id,
-                        null
+                        emptyMap()
                 ),
                 JSONAPIDocument<TransactionResource>::get
         )
