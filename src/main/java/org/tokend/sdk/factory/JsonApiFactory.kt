@@ -16,6 +16,9 @@ import org.tokend.sdk.api.v2.fees.model.FeeResource
 import org.tokend.sdk.api.v2.keyvalue.model.KeyValueEntryResource
 import org.tokend.sdk.api.v2.kyc.model.KycResource
 import org.tokend.sdk.api.v2.offers.model.OfferResource
+import org.tokend.sdk.api.v2.operations.model.OperationResource
+import org.tokend.sdk.api.v2.operations.model.details.CreateAccountOperationDetailsResource
+import org.tokend.sdk.api.v2.operations.model.details.OperationDetailsResource
 import org.tokend.sdk.api.v2.requests.model.ReviewableRequestResource
 import org.tokend.sdk.api.v2.requests.model.details.AssetCreateRequestDetailsResource
 import org.tokend.sdk.api.v2.requests.model.details.ReviewableRequestDetailsResource
@@ -48,6 +51,10 @@ class JsonApiFactory {
                         ReviewableRequestResource::class.java,
                         ReviewableRequestDetailsResource::class.java,
                         AssetCreateRequestDetailsResource::class.java,
+
+                        OperationResource::class.java,
+                        OperationDetailsResource::class.java,
+                        CreateAccountOperationDetailsResource::class.java,
 
                         SaleResource::class.java,
                         SignerResource::class.java,

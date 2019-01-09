@@ -15,6 +15,8 @@ import org.tokend.sdk.api.v2.keyvalue.KeyValueStorageApiV2
 import org.tokend.sdk.api.v2.keyvalue.KeyValueStorageServiceV2
 import org.tokend.sdk.api.v2.offers.OffersApiV2
 import org.tokend.sdk.api.v2.offers.OffersServiceV2
+import org.tokend.sdk.api.v2.operations.OperationsApiV2
+import org.tokend.sdk.api.v2.operations.OperationsServiceV2
 import org.tokend.sdk.api.v2.requests.RequestsApiV2
 import org.tokend.sdk.api.v2.requests.RequestsServiceV2
 import org.tokend.sdk.api.v2.sales.SalesApiV2
@@ -73,5 +75,9 @@ open class TokenDApiV2(rootUrl: String,
 
     open val sales: SalesApiV2 by lazy {
         SalesApiV2(getService(SalesServiceV2::class.java))
+    }
+
+    open val operations: OperationsApiV2 by lazy {
+        OperationsApiV2(getService(OperationsServiceV2::class.java))
     }
 }

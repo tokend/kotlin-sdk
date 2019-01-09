@@ -2,6 +2,8 @@ package org.tokend.sdk.test.jsonapi
 
 import org.junit.Assert
 import org.junit.Test
+import org.tokend.sdk.api.base.params.PagingOrder
+import org.tokend.sdk.api.base.params.PagingParamsV2
 import org.tokend.sdk.api.requests.model.base.RequestState
 import org.tokend.sdk.api.v2.accounts.params.AccountParamsV2
 import org.tokend.sdk.api.v2.accounts.params.AccountsPageParamsV2
@@ -15,6 +17,8 @@ import org.tokend.sdk.api.v2.fees.params.FeeParamsV2
 import org.tokend.sdk.api.v2.fees.params.FeesPageParamsV2
 import org.tokend.sdk.api.v2.offers.params.OfferParamsV2
 import org.tokend.sdk.api.v2.offers.params.OffersPageParamsV2
+import org.tokend.sdk.api.v2.operations.params.OperationParamsV2
+import org.tokend.sdk.api.v2.operations.params.OperationsPageParamsV2
 import org.tokend.sdk.api.v2.requests.params.RequestParamsV2
 import org.tokend.sdk.api.v2.requests.params.RequestsPageParamsV2
 import org.tokend.sdk.api.v2.transactions.params.TransactionsPageParams
@@ -137,6 +141,31 @@ class QueryParamsTest {
         val expected = "{account_id=$accountId}"
 
         val params = TransactionsPageParams(account = accountId)
+
+        Assert.assertEquals(expected, params.map().toString())
+    }
+
+    @Test
+    fun operationsParams() {
+        val expected = "{include=operation_details,source, tx_id=txid, account_id=$accountId, reference=reference, account_type=6, states=7, subset=payments, order=desc, limit=42, cursor=10, page=10}"
+
+        val params = OperationsPageParamsV2(
+                transaction = "txid",
+                account = accountId,
+                reference = "reference",
+                accountType = AccountType.SYNDICATE,
+                subset = OperationsPageParamsV2.Subsets.PAYMENTS,
+                states = listOf(1, 2, 4),
+                include = listOf(
+                        OperationParamsV2.Includes.OPERATION_DETAILS,
+                        OperationParamsV2.Includes.SOURCE
+                ),
+                pagingParams = PagingParamsV2(
+                        order = PagingOrder.DESC,
+                        limit = 42,
+                        page = "10"
+                )
+        )
 
         Assert.assertEquals(expected, params.map().toString())
     }
