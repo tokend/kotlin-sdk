@@ -10,6 +10,7 @@ import org.tokend.sdk.api.v2.balances.model.BalanceResource;
 import org.tokend.sdk.api.v2.base.BaseResource;
 import org.tokend.sdk.api.v2.kyc.model.KycResource;
 import org.tokend.sdk.api.v2.signers.model.SignerResource;
+import org.tokend.wallet.xdr.AccountType;
 
 import java.util.List;
 
@@ -71,7 +72,17 @@ public class AccountResource extends BaseResource {
         return blockReasons;
     }
 
-    public String getAccountType() {
+    public AccountType getAccountType() {
+        for (AccountType type : AccountType.values()) {
+            if (type.getValue() == accountTypeI) {
+                return type;
+            }
+        }
+
+        throw new IllegalArgumentException("No corresponding AccountType for " + accountTypeI);
+    }
+
+    public String getAccountTypeString() {
         return accountType;
     }
 
@@ -102,7 +113,6 @@ public class AccountResource extends BaseResource {
     public List<? extends SignerResource> getSigners() {
         return signers;
     }
-
 
     public KycResource getKyc() {
         return kyc;
