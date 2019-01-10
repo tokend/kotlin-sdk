@@ -6,6 +6,8 @@ import org.tokend.sdk.api.base.model.ErrorBody
 import org.tokend.sdk.api.transactions.model.SubmitTransactionResponse
 import org.tokend.sdk.api.transactions.model.TransactionFailedException
 import org.tokend.sdk.factory.GsonFactory
+import org.tokend.wallet.Transaction
+import org.tokend.wallet.xdr.TransactionEnvelope
 import retrofit2.HttpException
 import java.net.HttpURLConnection
 import java.nio.charset.Charset
@@ -15,6 +17,18 @@ open class TransactionsApi(
 ) {
     /**
      * Submits given transaction.
+     * @see <a href="https://tokend.gitlab.io/docs/?http#submit-a-transaction">Docs</a>
+     */
+    open fun submit(transaction: Transaction) = submit(transaction.getEnvelope())
+
+    /**
+     * Submits given transaction envelope.
+     * @see <a href="https://tokend.gitlab.io/docs/?http#submit-a-transaction">Docs</a>
+     */
+    open fun submit(transactionEnvelope: TransactionEnvelope) = submit(transactionEnvelope.toBase64())
+
+    /**
+     * Submits given transaction envelope.
      * @see <a href="https://tokend.gitlab.io/docs/?http#submit-a-transaction">Docs</a>
      */
     open fun submit(envelopeBase64: String): ApiRequest<SubmitTransactionResponse> {
