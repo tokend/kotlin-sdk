@@ -19,7 +19,7 @@ class HttpClientFactory {
     fun getBaseHttpClientBuilder(cookieJarProvider: CookieJarProvider? = null,
                                  requestTimeoutMs: Long = REQUEST_TIMEOUT,
                                  headers: Map<String, String?>? = null,
-                                 withLogs: Boolean)
+                                 withLogs: Boolean = false)
             : OkHttpClient.Builder {
         val sslContext = SSLContext.getInstance("TLSv1.2")
         sslContext.init(null, null, null)
@@ -43,7 +43,7 @@ class HttpClientFactory {
                 addInterceptor(CustomHeadersInterceptor(headers))
             }
 
-            if(withLogs) {
+            if (withLogs) {
                 addInterceptor(getLoggingInterceptor())
             }
         }
