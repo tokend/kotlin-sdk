@@ -10,4 +10,16 @@ open class JsonApiQueryParams(
             include?.also { put("include", it.joinToString(",")) }
         }
     }
+
+    open class Builder {
+        protected var include: Collection<String>? = null
+
+        fun withInclude(include: Collection<String>?) = also { this.include = include }
+
+        fun withInclude(vararg include: String) = also { this.include = include.toList() }
+
+        open fun build(): JsonApiQueryParams {
+            return JsonApiQueryParams(include)
+        }
+    }
 }

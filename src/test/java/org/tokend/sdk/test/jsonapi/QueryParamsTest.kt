@@ -45,6 +45,20 @@ class QueryParamsTest {
     }
 
     @Test
+    fun accountsParamsBuilder() {
+        val expected = "{include=external_accounts, account_type=5, signer_type=2048, is_blocked=false}"
+
+        val params = AccountsPageParamsV2.Builder()
+                .withAccountTypes(AccountType.NOT_VERIFIED)
+                .withSignerTypes(SignerType.ACCOUNT_MANAGER)
+                .withIsBlocked(false)
+                .withInclude(AccountParamsV2.Includes.EXTERNAL_ACCOUNTS)
+                .build()
+
+        Assert.assertEquals(expected, params.map().toString())
+    }
+
+    @Test
     fun assetPairsParams() {
         val expected = "{include=base_asset, policy=4, base_asset=BTC, quote_asset=ETH}"
 
