@@ -36,4 +36,27 @@ open class KYCRequestPageParams(
             maskNotSet?.also { put("mask_not_set", it) }
         }
     }
+
+    class Builder : RequestsPageParamsV2.Builder() {
+        private var accountToUpdateKYC: String? = null
+        private var accountTypeToSet: AccountType? = null
+        private var maskSet: Int? = null
+        private var maskSetPartEq: Int? = null
+        private var maskNotSet: Int? = null
+
+        fun withAccountToUpdateKYC(account: String) = also { this.accountToUpdateKYC = account }
+
+        fun withAccountTypeToSet(accountType: AccountType) = also { this.accountTypeToSet = accountType }
+
+        fun withMaskSet(mask: Int) = also { this.maskSet = mask }
+
+        fun withMaskSetPartEq(mask: Int) = also { this.maskSetPartEq = mask }
+
+        fun withMaskNotSet(mask: Int) = also { this.maskNotSet = mask }
+
+        override fun build(): KYCRequestPageParams {
+            return KYCRequestPageParams(reviewer, requestor, state, type, updatedAfter, include,
+                    pagingParams, accountToUpdateKYC, accountTypeToSet, maskSet, maskSetPartEq, maskNotSet)
+        }
+    }
 }

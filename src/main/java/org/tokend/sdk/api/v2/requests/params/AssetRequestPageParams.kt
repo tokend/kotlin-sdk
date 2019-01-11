@@ -27,4 +27,14 @@ open class AssetRequestPageParams(
             asset?.also { put("asset", it) }
         }
     }
+
+    class Builder : RequestsPageParamsV2.Builder() {
+        private var asset: String? = null
+
+        fun withAsset(asset: String) = also { this.asset = asset }
+
+        override fun build(): AssetRequestPageParams {
+            return AssetRequestPageParams(reviewer, requestor, state, type, updatedAfter, include, pagingParams, asset)
+        }
+    }
 }

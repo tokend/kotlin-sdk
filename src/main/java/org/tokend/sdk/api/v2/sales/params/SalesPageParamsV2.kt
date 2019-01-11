@@ -1,7 +1,7 @@
 package org.tokend.sdk.api.v2.sales.params
 
-import org.tokend.sdk.api.base.params.PagingParamsHolder
 import org.tokend.sdk.api.base.params.PagingParamsV2
+import org.tokend.sdk.api.v2.base.PageQueryParams
 
 /**
  * @see SaleParamsV2.Includes
@@ -16,12 +16,9 @@ class SalesPageParamsV2(
         val voting: Boolean? = null,
         val promotions: Boolean? = null,
         val sortBy: Int? = null,
-        include: Collection<String>? = null,
-        val pagingParams: PagingParamsV2? = null
-) : SaleParamsV2(include), PagingParamsHolder {
-    override val order = pagingParams?.order
-    override val cursor = pagingParams?.cursor
-    override val limit = pagingParams?.limit
+        includes: Collection<String>? = null,
+        pagingParams: PagingParamsV2? = null
+) : PageQueryParams(pagingParams, includes) {
 
     override fun map(): Map<String, Any> {
         return super.map().toMutableMap().apply {
@@ -33,7 +30,6 @@ class SalesPageParamsV2(
             voting?.also { put("voting", it) }
             promotions?.also { put("promotions", it) }
             sortBy?.also { put("sort_by", it) }
-            pagingParams?.also { putAll(it.map()) }
         }
     }
 
@@ -44,6 +40,37 @@ class SalesPageParamsV2(
             const val END_TIME = 3
             const val POPULARITY = 4
             const val START_TIME = 5
+        }
+    }
+
+    class Builder : PageQueryParams.Builder() {
+        private var name: String? = null
+        private var baseAsset: String? = null
+        private var ownerAccount: String? = null
+        private var openOnly: Boolean? = null
+        private var upcoming: Boolean? = null
+        private var voting: Boolean? = null
+        private var promotions: Boolean? = null
+        private var sortBy: Int? = null
+
+        fun withName(name: String) = also { this.name = name }
+
+        fun withBaseAsset(asset: String) = also { this.baseAsset = asset }
+
+        fun withOwnerAccount(account: String) = also { this.ownerAccount = account }
+
+        fun withOpenOnly(openOnly: Boolean) = also { this.openOnly = openOnly }
+
+        fun withUpcoming(upcoming: Boolean) = also { this.upcoming = upcoming }
+
+        fun withVoting(voting: Boolean) = also { this.voting = voting }
+
+        fun withPromotions(promotions: Boolean) = also { this.promotions = promotions }
+
+        fun withSortBy(sortBy: Int) = also { this.sortBy = sortBy }
+
+        override fun build(): SalesPageParamsV2 {
+            return SalesPageParamsV2(name, baseAsset, ownerAccount, openOnly, upcoming, voting, promotions, sortBy, include, pagingParams)
         }
     }
 }

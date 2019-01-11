@@ -6,7 +6,7 @@ import org.tokend.sdk.api.v2.base.JsonApiQueryParams
  * @see BalanceParams.Includes
  */
 open class BalanceParams(
-        include: Collection<String>?
+        include: Collection<String>? = null
 ) : JsonApiQueryParams(include) {
     class Includes {
         companion object {

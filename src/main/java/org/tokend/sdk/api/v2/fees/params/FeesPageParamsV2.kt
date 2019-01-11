@@ -1,7 +1,7 @@
 package org.tokend.sdk.api.v2.fees.params
 
-import org.tokend.sdk.api.base.params.PagingParamsHolder
 import org.tokend.sdk.api.base.params.PagingParamsV2
+import org.tokend.sdk.api.v2.base.PageQueryParams
 import org.tokend.sdk.utils.BigDecimalUtil
 import org.tokend.wallet.xdr.AccountType
 import org.tokend.wallet.xdr.FeeType
@@ -19,11 +19,8 @@ open class FeesPageParamsV2(
         val lowerBound: BigDecimal? = null,
         val upperBound: BigDecimal? = null,
         include: Collection<String>? = null,
-        val pagingParams: PagingParamsV2? = null
-) : FeeParamsV2(include), PagingParamsHolder {
-    override val order = pagingParams?.order
-    override val cursor = pagingParams?.cursor
-    override val limit = pagingParams?.limit
+        pagingParams: PagingParamsV2? = null
+) : PageQueryParams(pagingParams, include) {
 
     override fun map(): Map<String, Any> {
         return super.map().toMutableMap().apply {
@@ -34,7 +31,34 @@ open class FeesPageParamsV2(
             accountType?.also { put("account_type", it.value) }
             lowerBound?.also { put("lower_bound", BigDecimalUtil.toPlainString(it)) }
             upperBound?.also { put("upper_bound", BigDecimalUtil.toPlainString(it)) }
-            pagingParams?.also { putAll(it.map()) }
+        }
+    }
+
+    class Builder : PageQueryParams.Builder() {
+        private var asset: String? = null
+        private var type: FeeType? = null
+        private var subtype: Int? = null
+        private var account: String? = null
+        private var accountType: AccountType? = null
+        private var lowerBound: BigDecimal? = null
+        private var upperBound: BigDecimal? = null
+
+        fun withAsset(asset: String) = also { this.asset = asset }
+
+        fun withType(type: FeeType) = also { this.type = type }
+
+        fun withSubtype(subtype: Int) = also { this.subtype = subtype }
+
+        fun withAccount(account: String) = also { this.account = account }
+
+        fun withAccountType(accountType: AccountType) = also { this.accountType = accountType }
+
+        fun withLowerBound(lowerBound: BigDecimal) = also { this.lowerBound = lowerBound }
+
+        fun withUpperBound(upperBound: BigDecimal) = also { this.upperBound = upperBound }
+
+        override fun build(): FeesPageParamsV2 {
+            return FeesPageParamsV2(asset, type, subtype, account, accountType, lowerBound, upperBound, include, pagingParams)
         }
     }
 }
