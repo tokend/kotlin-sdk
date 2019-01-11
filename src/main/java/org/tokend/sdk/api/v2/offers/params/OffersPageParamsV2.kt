@@ -2,6 +2,7 @@ package org.tokend.sdk.api.v2.offers.params
 
 import org.tokend.sdk.api.base.params.PagingParamsHolder
 import org.tokend.sdk.api.base.params.PagingParamsV2
+import org.tokend.sdk.api.v2.base.JsonApiQueryParams
 
 /**
  * @see OfferParamsV2.Includes
@@ -29,6 +30,32 @@ open class OffersPageParamsV2(
             ownerAccount?.also { put("owner", it) }
             orderBookId?.also { put("order_book_id", it) }
             pagingParams?.also { putAll(it.map()) }
+        }
+    }
+
+    class Builder : JsonApiQueryParams.Builder() {
+        private var baseBalance: String? = null
+        private var quoteBalance: String? = null
+        private var baseAsset: String? = null
+        private var quoteAsset: String? = null
+        private var ownerAccount: String? = null
+        private var orderBookId: Long? = null
+        private val pagingParams: PagingParamsV2? = null
+
+        fun withBaseBalance(balance: String) = also { this.baseBalance = balance }
+
+        fun withQuoteBalance(balance: String) = also { this.quoteBalance = balance }
+
+        fun withBaseAsset(asset: String) = also { this.baseAsset = asset }
+
+        fun withQuoteAsset(asset: String) = also { this.quoteAsset = asset }
+
+        fun withOwnerAccount(account: String) = also { this.ownerAccount = account }
+
+        fun withOrderBoolId(orderBookId: Long) = also { this.orderBookId = orderBookId }
+
+        override fun build(): JsonApiQueryParams {
+            return OffersPageParamsV2(baseBalance, quoteBalance, baseAsset, quoteAsset, ownerAccount, orderBookId, include, pagingParams)
         }
     }
 }

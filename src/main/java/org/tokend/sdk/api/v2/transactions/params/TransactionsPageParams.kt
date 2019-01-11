@@ -19,4 +19,17 @@ class TransactionsPageParams(
             pagingParams?.also { putAll(it.map()) }
         }
     }
+
+    class Builder : JsonApiQueryParams.Builder() {
+        private var account: String? = null
+        private var pagingParams: PagingParamsV2? = null
+
+        fun withAccount(account: String) = also { this.account = account }
+
+        fun withPagingParams(pagingParams: PagingParamsV2) = also { this.pagingParams = pagingParams }
+
+        override fun build(): JsonApiQueryParams {
+            return TransactionsPageParams(account, include, pagingParams)
+        }
+    }
 }

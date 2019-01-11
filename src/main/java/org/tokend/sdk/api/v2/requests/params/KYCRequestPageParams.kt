@@ -2,6 +2,7 @@ package org.tokend.sdk.api.v2.requests.params
 
 import org.tokend.sdk.api.base.params.PagingParamsV2
 import org.tokend.sdk.api.requests.model.base.RequestState
+import org.tokend.sdk.api.v2.base.JsonApiQueryParams
 import org.tokend.wallet.xdr.AccountType
 import org.tokend.wallet.xdr.ReviewableRequestType
 
@@ -34,6 +35,29 @@ open class KYCRequestPageParams(
             maskSet?.also { put("mask_set", it) }
             maskSetPartEq?.also { put("mask_set_part_eq", it) }
             maskNotSet?.also { put("mask_not_set", it) }
+        }
+    }
+
+    class Builder : RequestsPageParamsV2.Builder() {
+        private var accountToUpdateKYC: String? = null
+        private var accountTypeToSet: AccountType? = null
+        private var maskSet: Int? = null
+        private var maskSetPartEq: Int? = null
+        private var maskNotSet: Int? = null
+
+        fun withAccountToUpdateKYC(account: String) = also { this.accountToUpdateKYC = account }
+
+        fun withAccountTypeToSet(accountType: AccountType) = also { this.accountTypeToSet = accountType }
+
+        fun withMaskSet(mask: Int) = also { this.maskSet = mask }
+
+        fun withMaskSetPartEg(mask: Int) = also { this.maskSetPartEq = mask }
+
+        fun withMaskNotSet(mask: Int) = also { this.maskNotSet = mask }
+
+        override fun build(): JsonApiQueryParams {
+            return KYCRequestPageParams(reviewer, requestor, state, type, updatedAfter, include,
+                    pagingParams, accountToUpdateKYC, accountTypeToSet, maskSet, maskSetPartEq, maskNotSet)
         }
     }
 }

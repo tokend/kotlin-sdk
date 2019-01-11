@@ -2,6 +2,7 @@ package org.tokend.sdk.api.v2.operations.params
 
 import org.tokend.sdk.api.base.params.PagingParamsHolder
 import org.tokend.sdk.api.base.params.PagingParamsV2
+import org.tokend.sdk.api.v2.base.JsonApiQueryParams
 import org.tokend.sdk.utils.extentions.bitmask
 import org.tokend.wallet.xdr.AccountType
 
@@ -39,6 +40,36 @@ open class OperationsPageParamsV2(
         companion object {
             const val ALL = "all"
             const val PAYMENTS = "payments"
+        }
+    }
+
+    class Builder : JsonApiQueryParams.Builder() {
+        private var transaction: String? = null
+        private var account: String? = null
+        private var accountType: AccountType? = null
+        private var reference: String? = null
+        private var states: Collection<Int>? = null
+        private var subset: String? = null
+        private var pagingParams: PagingParamsV2? = null
+
+        fun withTransaction(transaction: String) = also { this.transaction = transaction }
+
+        fun withAccount(account: String) = also { this.account = account }
+
+        fun withAccountType(accountType: AccountType) = also { this.accountType = accountType }
+
+        fun withReference(reference: String) = also { this.reference = reference }
+
+        fun withStates(states: Collection<Int>) = also { this.states = states }
+
+        fun withStates(vararg states: Int) = also { this.states = states.toList() }
+
+        fun withSubset(subset: String) = also { this.subset = subset }
+
+        fun withPagingParams(pagingParams: PagingParamsV2) = also { this.pagingParams = pagingParams }
+
+        override fun build(): JsonApiQueryParams {
+            return OperationsPageParamsV2(transaction, account, accountType, reference, states, subset, include, pagingParams)
         }
     }
 }

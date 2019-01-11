@@ -2,6 +2,7 @@ package org.tokend.sdk.api.v2.assets.params
 
 import org.tokend.sdk.api.base.params.PagingParamsHolder
 import org.tokend.sdk.api.base.params.PagingParamsV2
+import org.tokend.sdk.api.v2.base.JsonApiQueryParams
 import org.tokend.sdk.utils.extentions.bitmask
 import org.tokend.wallet.xdr.AssetPolicy
 
@@ -23,6 +24,21 @@ open class AssetsPageParams(
                 put("policy", policies.map { it.value.toLong() }.bitmask())
             }
             pagingParams?.also { putAll(it.map()) }
+        }
+    }
+
+    class Builder : JsonApiQueryParams.Builder() {
+        private var policies: Collection<AssetPolicy>? = null
+        private var pagingParams: PagingParamsV2? = null
+
+        fun withPolicies(policies: Collection<AssetPolicy>) = also { this.policies = policies }
+
+        fun withPolicies(vararg policies: AssetPolicy) = also { this.policies = policies.toList() }
+
+        fun withPagingParams(pagingParams: PagingParamsV2) = also { this.pagingParams = pagingParams }
+
+        override fun build(): JsonApiQueryParams {
+            return AssetsPageParams(policies, include, pagingParams)
         }
     }
 }
