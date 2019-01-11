@@ -2,7 +2,6 @@ package org.tokend.sdk.api.v2.requests.params
 
 import org.tokend.sdk.api.base.params.PagingParamsV2
 import org.tokend.sdk.api.requests.model.base.RequestState
-import org.tokend.sdk.api.v2.base.JsonApiQueryParams
 import org.tokend.wallet.xdr.AccountType
 import org.tokend.wallet.xdr.ReviewableRequestType
 
@@ -51,11 +50,11 @@ open class KYCRequestPageParams(
 
         fun withMaskSet(mask: Int) = also { this.maskSet = mask }
 
-        fun withMaskSetPartEg(mask: Int) = also { this.maskSetPartEq = mask }
+        fun withMaskSetPartEq(mask: Int) = also { this.maskSetPartEq = mask }
 
         fun withMaskNotSet(mask: Int) = also { this.maskNotSet = mask }
 
-        override fun build(): JsonApiQueryParams {
+        override fun build(): KYCRequestPageParams {
             return KYCRequestPageParams(reviewer, requestor, state, type, updatedAfter, include,
                     pagingParams, accountToUpdateKYC, accountTypeToSet, maskSet, maskSetPartEq, maskNotSet)
         }

@@ -202,7 +202,7 @@ class QueryParamsTest {
                 .withBaseAsset("ETH")
                 .withQuoteAsset("BTC")
                 .withOwnerAccount(accountId)
-                .withOrderBoolId(Long.MAX_VALUE)
+                .withOrderBookId(Long.MAX_VALUE)
                 .withInclude(OfferParamsV2.Includes.BASE_ASSET)
                 .build()
 
@@ -305,7 +305,7 @@ class QueryParamsTest {
 
     @Test
     fun operationsParams() {
-        val expected = "{include=operation_details,source, tx_id=txid, account_id=$accountId, reference=reference, account_type=6, states=7, subset=payments, order=desc, limit=42, cursor=10, page=10}"
+        val expected = "{include=operation_details,source, order=desc, limit=42, cursor=10, page=10, tx_id=txid, account_id=$accountId, reference=reference, account_type=6, states=7, subset=payments}"
 
         val params = OperationsPageParamsV2(
                 transaction = "txid",
@@ -330,7 +330,7 @@ class QueryParamsTest {
 
     @Test
     fun operationsParamsBuilder() {
-        val expected = "{include=operation_details,source, tx_id=txid, account_id=$accountId, reference=reference, account_type=6, states=7, subset=payments, order=desc, limit=42, cursor=10, page=10}"
+        val expected = "{include=operation_details,source, order=desc, limit=42, cursor=10, page=10, tx_id=txid, account_id=$accountId, reference=reference, account_type=6, states=7, subset=payments}"
 
         val params = OperationsPageParamsV2.Builder()
                 .withTransaction("txid")

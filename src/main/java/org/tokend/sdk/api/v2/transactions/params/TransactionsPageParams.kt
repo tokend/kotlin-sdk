@@ -1,17 +1,13 @@
 package org.tokend.sdk.api.v2.transactions.params
 
-import org.tokend.sdk.api.base.params.PagingParamsHolder
 import org.tokend.sdk.api.base.params.PagingParamsV2
-import org.tokend.sdk.api.v2.base.JsonApiQueryParams
+import org.tokend.sdk.api.v2.base.PageQueryParams
 
 class TransactionsPageParams(
         val account: String? = null,
         include: Collection<String>? = null,
-        val pagingParams: PagingParamsV2? = null
-) : JsonApiQueryParams(include), PagingParamsHolder {
-    override val order = pagingParams?.order
-    override val cursor = pagingParams?.cursor
-    override val limit = pagingParams?.limit
+        pagingParams: PagingParamsV2? = null
+) : PageQueryParams(pagingParams, include) {
 
     override fun map(): Map<String, Any> {
         return super.map().toMutableMap().apply {
@@ -20,15 +16,12 @@ class TransactionsPageParams(
         }
     }
 
-    class Builder : JsonApiQueryParams.Builder() {
+    class Builder : PageQueryParams.Builder() {
         private var account: String? = null
-        private var pagingParams: PagingParamsV2? = null
 
         fun withAccount(account: String) = also { this.account = account }
 
-        fun withPagingParams(pagingParams: PagingParamsV2) = also { this.pagingParams = pagingParams }
-
-        override fun build(): JsonApiQueryParams {
+        override fun build(): TransactionsPageParams {
             return TransactionsPageParams(account, include, pagingParams)
         }
     }

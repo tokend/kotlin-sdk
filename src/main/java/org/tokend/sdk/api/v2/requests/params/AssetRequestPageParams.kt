@@ -2,7 +2,6 @@ package org.tokend.sdk.api.v2.requests.params
 
 import org.tokend.sdk.api.base.params.PagingParamsV2
 import org.tokend.sdk.api.requests.model.base.RequestState
-import org.tokend.sdk.api.v2.base.JsonApiQueryParams
 import org.tokend.wallet.xdr.ReviewableRequestType
 
 open class AssetRequestPageParams(
@@ -34,7 +33,7 @@ open class AssetRequestPageParams(
 
         fun withAsset(asset: String) = also { this.asset = asset }
 
-        override fun build(): JsonApiQueryParams {
+        override fun build(): AssetRequestPageParams {
             return AssetRequestPageParams(reviewer, requestor, state, type, updatedAfter, include, pagingParams, asset)
         }
     }
