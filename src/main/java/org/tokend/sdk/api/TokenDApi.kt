@@ -31,6 +31,7 @@ import org.tokend.sdk.api.transactions.TransactionsApi
 import org.tokend.sdk.api.transactions.TransactionsService
 import org.tokend.sdk.api.users.UsersApi
 import org.tokend.sdk.api.users.UsersService
+import org.tokend.sdk.api.v2.TokenDApiV2
 import org.tokend.sdk.api.wallets.WalletsApi
 import org.tokend.sdk.api.wallets.WalletsService
 import org.tokend.sdk.signing.AccountRequestSigner
@@ -63,6 +64,10 @@ constructor(
         forceContentType: Boolean = false,
         withLogs: Boolean = true
 ) : BaseApi(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent, forceContentType, withLogs) {
+    // TODO: Uncomment when API v2 will be ready
+//    open val v2: TokenDApiV2 by lazy {
+//        TokenDApiV2(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent, withLogs)
+//    }
 
     open val accounts: AccountsApi by lazy {
         AccountsApi(getService(AccountsService::class.java))

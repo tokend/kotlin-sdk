@@ -51,10 +51,10 @@ class KeyStorage constructor(
         val email = walletData.attributes?.email
                 ?: throw IllegalStateException("Wallet data has no email")
 
-        if (isRecovery) {
-            return WalletInfo(accountId, email, hexWalletId, CharArray(0), loginParams)
+        return if (isRecovery) {
+            WalletInfo(accountId, email, hexWalletId, CharArray(0), loginParams)
         } else {
-            return WalletInfo(accountId, email, hexWalletId,
+            WalletInfo(accountId, email, hexWalletId,
                     decryptSecretSeed(iv, cipherText, walletKey), loginParams)
         }
     }
@@ -397,8 +397,6 @@ class KeyStorage constructor(
          * @param loginParams system KDF params.
          * For password change or recovery use existing.
          * If kdf salt is null it will be generated.
-         * @param kdfVersion system KDF version.
-         * For password change or recovery use existing
          */
         @JvmStatic
         @JvmOverloads

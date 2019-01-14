@@ -28,6 +28,8 @@ dependencies {
     compile "com.squareup.retrofit2:converter-scalars:${retrofitVersion}"
     compile 'com.squareup.okhttp3:logging-interceptor:3.5.0'
 
+    compile 'com.github.jasminb:jsonapi-converter:0.9'
+
     compile 'org.tokend:crypto-cipher:1.0.1'
     compile 'org.tokend:crypto-kdf:1.0.3'
     compile 'org.tokend:wallet:1.0.12'
@@ -47,6 +49,6 @@ compileTestKotlin {
 apply from: 'deploy.gradle'
 
 group 'org.tokend'
-version '1.2.15'
+version '1.2.16'
 uploadArchives.repositories.mavenDeployer.pom.artifactId = 'sdk'
 uploadArchives.repositories.mavenDeployer.pom.name = 'TokenD SDK'

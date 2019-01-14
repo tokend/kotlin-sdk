@@ -82,4 +82,13 @@ open class MappedRetrofitApiRequest<CallType, ResponseType>(
         else
             responseMapper(response)
     }
+
+    override fun <MappedResponseType> map(mapper: (ResponseType) -> MappedResponseType)
+            : MappedRetrofitApiRequest<CallType, MappedResponseType> {
+        val newMapper: (CallType) -> MappedResponseType = {
+            responseMapper.invoke(it).let(mapper)
+        }
+
+        return MappedRetrofitApiRequest(call, newMapper, errorMapper)
+    }
 }

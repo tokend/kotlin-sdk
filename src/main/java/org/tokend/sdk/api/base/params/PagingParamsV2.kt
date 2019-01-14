@@ -18,4 +18,22 @@ constructor(
                     cursor?.also { put("page", it) }
                 }
     }
+
+    class Builder {
+        private var order: PagingOrder? = null
+        private var limit: Int? = null
+        private var page: String? = null
+
+        fun withOrder(order: PagingOrder?) = also { this.order = order }
+
+        fun withLimit(limit: Int?) = also { this.limit = limit }
+
+        fun withPage(page: String?) = also { this.page = page }
+
+        fun withPage(page: Int?) = also { this.page = page?.toString() }
+
+        fun build(): PagingParamsV2 {
+            return PagingParamsV2(order, limit, page)
+        }
+    }
 }

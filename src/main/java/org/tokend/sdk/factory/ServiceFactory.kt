@@ -79,20 +79,21 @@ class ServiceFactory(private val url: String,
             : Retrofit.Builder {
         return Retrofit.Builder()
                 .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(JsonApiFactory().getJsonApiConverterFactory())
                 .addConverterFactory(GsonFactory().getBaseGsonConverterFactory())
                 .baseUrl(url)
                 .client(httpClient)
     }
 
     private fun getDefaultHeaders(userAgent: String?): Map<String, String?> {
-        if (forceContentType) {
-            return mapOf(
+        return if (forceContentType) {
+            mapOf(
                     HEADER_USER_AGENT_NAME to userAgent,
                     HEADER_CONTENT_TYPE_NAME to CONTENT_TYPE,
                     HEADER_ACCEPT_NAME to CONTENT_TYPE
             )
         } else {
-            return mapOf(
+            mapOf(
                     HEADER_USER_AGENT_NAME to userAgent
             )
         }

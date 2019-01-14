@@ -1,5 +1,6 @@
 package org.tokend.sdk.api.tfa
 
+import com.google.gson.reflect.TypeToken
 import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.base.SimpleRetrofitApiRequest
@@ -7,6 +8,8 @@ import org.tokend.sdk.api.base.model.AttributesEntity
 import org.tokend.sdk.api.base.model.DataEntity
 import org.tokend.sdk.api.tfa.model.CreateTfaRequestBody
 import org.tokend.sdk.api.tfa.model.TfaFactor
+import org.tokend.sdk.api.tfa.model.TfaFactorCreationResult
+import org.tokend.sdk.factory.GsonFactory
 
 open class TfaApi(
         protected val tfaService: TfaService
@@ -27,7 +30,9 @@ open class TfaApi(
      * @see <a href="https://tokend.gitlab.io/docs/#create-factor">Docs</a>
      */
     open fun createFactor(walletId: String,
-                          type: TfaFactor.Type): ApiRequest<TfaFactor> {
+                          type: TfaFactor.Type): ApiRequest<TfaFactorCreationResult> {
+        val gson = GsonFactory().getBaseGson()
+
         return MappedRetrofitApiRequest(
                 tfaService.createFactor(
                         walletId,
@@ -35,7 +40,24 @@ open class TfaApi(
                                 CreateTfaRequestBody(type.literal)
                         )
                 ),
-                { it.data }
+                {
+                    val json = it.data
+
+                    val id = json.get("id").asLong
+                    val factor = TfaFactor(id, type, TfaFactor.Attributes(0))
+
+                    val attributesElement = json.get("attributes")
+
+                    val attributes =
+                            if (attributesElement != null)
+                                gson.fromJson<Map<String, Any>>(
+                                        attributesElement,
+                                        object : TypeToken<Map<String, Any>>() {}.type
+                                )
+                            else emptyMap()
+
+                    TfaFactorCreationResult(factor, attributes)
+                }
         )
     }
 
