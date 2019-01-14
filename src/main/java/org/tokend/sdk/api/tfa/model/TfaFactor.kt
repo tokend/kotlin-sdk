@@ -27,18 +27,10 @@ open class TfaFactor(
         }
     }
 
-    open class Attributes(@SerializedName("priority")
-                          var priority: Int,
-                          @SerializedName("secret")
-                          val secret: String? = null,
-                          @SerializedName("seed")
-                          val seed: String? = null,
-                          @SerializedName("account_id")
-                          val accountId: String? = null,
-                          @SerializedName("keychain_data")
-                          val keychainData: String? = null,
-                          @SerializedName("salt")
-                          val salt: String? = null)
+    open class Attributes(
+            @SerializedName("priority")
+            val priority: Int
+    )
 
     override fun equals(other: Any?): Boolean {
         return other is TfaFactor

@@ -1,5 +1,6 @@
 package org.tokend.sdk.api.tfa
 
+import com.google.gson.JsonObject
 import org.tokend.sdk.api.base.model.AttributesEntity
 import org.tokend.sdk.api.base.model.DataEntity
 import org.tokend.sdk.api.tfa.model.CreateTfaRequestBody
@@ -14,7 +15,7 @@ interface TfaService {
     @POST("wallets/{walletId}/factors")
     @JvmSuppressWildcards
     fun createFactor(@Path("walletId") walletId: String?,
-                     @Body data: DataEntity<CreateTfaRequestBody>): Call<DataEntity<TfaFactor>>
+                     @Body data: DataEntity<CreateTfaRequestBody>): Call<DataEntity<JsonObject>>
 
     @DELETE("wallets/{walletId}/factors/{id}")
     fun deleteFactor(@Path("walletId") walletId: String?,
