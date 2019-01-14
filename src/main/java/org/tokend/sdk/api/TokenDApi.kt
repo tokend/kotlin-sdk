@@ -64,9 +64,10 @@ constructor(
         forceContentType: Boolean = false,
         withLogs: Boolean = true
 ) : BaseApi(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent, forceContentType, withLogs) {
-    open val v2: TokenDApiV2 by lazy {
-        TokenDApiV2(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent, withLogs)
-    }
+    // TODO: Uncomment when API v2 will be ready
+//    open val v2: TokenDApiV2 by lazy {
+//        TokenDApiV2(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent, withLogs)
+//    }
 
     open val accounts: AccountsApi by lazy {
         AccountsApi(getService(AccountsService::class.java))
