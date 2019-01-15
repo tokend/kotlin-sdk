@@ -9,8 +9,9 @@ import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.base.SimpleRetrofitApiRequest
 import org.tokend.sdk.api.base.model.DataPage
 import org.tokend.sdk.api.base.model.operations.TransferOperation
+import org.tokend.sdk.api.base.model.operations.converter.DefaultUnifiedOperationRecordConverter
+import org.tokend.sdk.api.base.model.operations.converter.UnifiedOperationRecordConverter
 import org.tokend.sdk.api.trades.model.Offer
-import org.tokend.sdk.utils.UnifiedOperationRecordsConverter
 
 open class AccountsApi(
         protected open val accountsService: AccountsService
@@ -76,7 +77,8 @@ open class AccountsApi(
     }
 
     /**
-     * Will return list of account payments represented by [TransferOperation]s.
+     * Will return list of account payments represented by [TransferOperation]s
+     * using [DefaultUnifiedOperationRecordConverter].
      * @see getRawPayments()
      * @see TransferOperation
      */
@@ -89,20 +91,36 @@ open class AccountsApi(
                                 "'asset' param is required"
                 )
 
+        val converter = DefaultUnifiedOperationRecordConverter(accountId, contextAsset)
+
+        return getPayments(accountId, paymentsParams, converter)
+    }
+
+    /**
+     * Will return list of account payments represented by [TransferOperation]s
+     * using [DefaultUnifiedOperationRecordConverter].
+     *
+     * @param recordConverter custom [UnifiedOperationRecordConverter] implementation
+     *
+     * @see getRawPayments()
+     * @see TransferOperation
+     * @see UnifiedOperationRecordConverter
+     */
+    open fun getPayments(accountId: String,
+                         paymentsParams: PaymentsParams,
+                         recordConverter: UnifiedOperationRecordConverter
+    ): ApiRequest<DataPage<TransferOperation>> {
         return MappedRetrofitApiRequest(
                 accountsService.getPayments(
                         accountId,
                         paymentsParams.map()
                 ),
                 { page ->
-                    val items = page.records
-                    val isLast = DataPage.isLast(page)
-                    val nextCursor = DataPage.getNextCursor(page)
-
-                    val transactions = UnifiedOperationRecordsConverter
-                            .toTransferOperations(items, accountId, contextAsset)
-
-                    DataPage(nextCursor, transactions, isLast)
+                    DataPage(
+                            DataPage.getNextCursor(page),
+                            recordConverter.toTransferOperations(page.records),
+                            DataPage.isLast(page)
+                    )
                 }
         )
     }
