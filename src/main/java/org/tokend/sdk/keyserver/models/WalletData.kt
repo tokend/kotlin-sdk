@@ -43,15 +43,15 @@ open class WalletData(
     }
 
     constructor(walletIdHex: String,
-                encryptedKey: EncryptedKey,
+                encryptedAccount: EncryptedWalletAccount,
                 relations: List<WalletRelation>) : this(
             type = "wallet",
             id = walletIdHex,
             attributes = WalletAttributes(
-                    accountId = encryptedKey.accountId,
-                    email = encryptedKey.email,
-                    salt = encryptedKey.salt,
-                    keychainDataString = encryptedKey.encodedKeychainData,
+                    accountId = encryptedAccount.accountId,
+                    email = encryptedAccount.email,
+                    salt = encryptedAccount.encodedSalt,
+                    keychainDataString = encryptedAccount.encodedKeychainData,
                     isVerified = false
             ),
             relationships = HashMap()

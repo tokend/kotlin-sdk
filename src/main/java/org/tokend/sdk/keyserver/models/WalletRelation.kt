@@ -4,7 +4,7 @@ open class WalletRelation(val name: String,
                           private val type: String,
                           private val id: String?,
                           private val accountId: String? = null,
-                          private val encryptedKey: EncryptedKey? = null) {
+                          private val encryptedWalletAccount: EncryptedWalletAccount? = null) {
 
     val walletData: WalletData
         get() {
@@ -15,11 +15,11 @@ open class WalletRelation(val name: String,
                     relationships = hashMapOf()
             )
 
-            if (accountId != null && encryptedKey != null) {
+            if (accountId != null && encryptedWalletAccount != null) {
                 val attributes = WalletData.WalletAttributes(
                         accountId = accountId,
-                        keychainDataString = encryptedKey.encodedKeychainData,
-                        salt = encryptedKey.salt,
+                        keychainDataString = encryptedWalletAccount.encodedKeychainData,
+                        salt = encryptedWalletAccount.encodedSalt,
                         email = "",
                         isVerified = true
                 )
