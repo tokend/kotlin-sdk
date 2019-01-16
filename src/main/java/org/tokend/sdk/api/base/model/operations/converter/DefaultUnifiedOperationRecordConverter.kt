@@ -1,16 +1,15 @@
-package org.tokend.sdk.utils
+package org.tokend.sdk.api.base.model.operations.converter
 
 import org.tokend.sdk.api.accounts.model.UnifiedOperationRecord
 import org.tokend.sdk.api.base.model.operations.*
 
-object UnifiedOperationRecordsConverter {
+open class DefaultUnifiedOperationRecordConverter(
+        protected val contextAccountId: String,
+        protected val contextAsset: String
+) : UnifiedOperationRecordConverter {
 
-    /**
-     * Transforms list of [UnifiedOperationRecord] to list of specific operations.
-     */
-    fun toTransferOperations(items: List<UnifiedOperationRecord>,
-                             contextAccountId: String, contextAsset: String): List<TransferOperation> {
-        return items.map {
+    override fun toTransferOperations(records: Collection<UnifiedOperationRecord>): List<TransferOperation> {
+        return records.map {
             when (OperationType.fromLiteral(it.type)) {
                 OperationType.PAYMENT ->
                     listOf(PaymentOperation.fromUnifiedOperationRecord(it, contextAccountId))

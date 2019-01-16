@@ -6,7 +6,7 @@ import org.tokend.sdk.api.tfa.model.TfaFactor
 
 open class InvalidOtpException : Exception()
 
-open class NeedTfaException(val backendId: Long,
+open class NeedTfaException(val factorId: Long,
                             val factorType: TfaFactor.Type,
                             val token: String,
                             val keychainData: String,
@@ -16,8 +16,8 @@ open class NeedTfaException(val backendId: Long,
 
     companion object {
         private const val TOKEN = "token"
-        private const val BACKEND_ID = "factor_id"
-        private const val BACKEND_TYPE = "factor_type"
+        private const val FACTOR_ID = "factor_id"
+        private const val FACTOR_TYPE = "factor_type"
         private const val KEYCHAIN_DATA = "keychain_data"
         private const val SALT = "salt"
         private const val WALLET_ID = "wallet_id"
@@ -28,8 +28,8 @@ open class NeedTfaException(val backendId: Long,
                 val meta = error.meta?.asJsonObject
 
                 return NeedTfaException(
-                        meta?.get(BACKEND_ID)?.asLong ?: 0L,
-                        (meta?.get(BACKEND_TYPE)?.asString).toString()
+                        meta?.get(FACTOR_ID)?.asLong ?: 0L,
+                        (meta?.get(FACTOR_TYPE)?.asString).toString()
                                 .let { TfaFactor.Type.fromLiteral(it) },
                         (meta?.get(TOKEN)?.asString).toString(),
                         (meta?.get(KEYCHAIN_DATA)?.asString).toString(),

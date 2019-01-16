@@ -13,7 +13,7 @@ import retrofit2.Response
 open class TfaVerifier(
         private val verificationService: TfaVerificationService,
         private val walletId: String,
-        private val backendId: Long,
+        private val factorId: Long,
         private val token: String
 ) {
     /**
@@ -46,7 +46,7 @@ open class TfaVerifier(
 
     constructor(verificationService: TfaVerificationService,
                 tfaException: NeedTfaException) : this(verificationService,
-            tfaException.walletId, tfaException.backendId, tfaException.token)
+            tfaException.walletId, tfaException.factorId, tfaException.token)
 
     val verifierInterface = Interface()
 
@@ -67,7 +67,7 @@ open class TfaVerifier(
                               onError: OptionalThrowableCallback? = null) {
         val attributes = VerifyTfaRequestBody(token, otp)
 
-        verificationService.verifyTfaBackend(walletId, backendId,
+        verificationService.verifyTfaFactor(walletId, factorId,
                 DataEntity(AttributesEntity(attributes)))
                 .enqueue(object : Callback<Void> {
                     override fun onFailure(call: Call<Void>?, t: Throwable?) {

@@ -34,6 +34,13 @@ constructor(@SerializedName("IV")
     val cipherText: ByteArray
         get() = encodedCipherText.decodeBase64()
 
+    /**
+     * Serializes data to JSON and encodes it with Base64
+     */
+    fun encode(): String {
+        return GsonFactory().getBaseGson().toJson(this).toByteArray().encodeBase64String()
+    }
+
     companion object {
         @JvmStatic
         fun fromRaw(iv: ByteArray, cipherText: ByteArray): KeychainData {
@@ -46,7 +53,7 @@ constructor(@SerializedName("IV")
         }
 
         @JvmStatic
-        fun fromJsonString(rawString: String): KeychainData {
+        fun fromEncoded(rawString: String): KeychainData {
             return fromJson(String(rawString.decodeBase64()))
         }
     }
