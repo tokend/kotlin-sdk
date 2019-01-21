@@ -1,8 +1,7 @@
 package org.tokend.sdk.api.base.params
 
 /**
- * Paging params for requests with pagination
- * based on 'page' param instead of 'cursor'.
+ * Backward-compatible pagination params for API V2.
  */
 class PagingParamsV2
 @JvmOverloads
