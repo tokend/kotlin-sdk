@@ -54,6 +54,18 @@ open class KYCRequestPageParams(
 
         fun withMaskNotSet(mask: Int) = also { this.maskNotSet = mask }
 
+        override fun withPagingParams(pagingParams: PagingParamsV2) = also {
+            super.withPagingParams(pagingParams)
+        }
+
+        override fun withInclude(include: Collection<String>?) = also {
+            super.withInclude(include)
+        }
+
+        override fun withInclude(vararg include: String) = also {
+            super.withInclude(*include)
+        }
+
         override fun build(): KYCRequestPageParams {
             return KYCRequestPageParams(reviewer, requestor, state, type, updatedAfter, include,
                     pagingParams, accountToUpdateKYC, accountTypeToSet, maskSet, maskSetPartEq, maskNotSet)

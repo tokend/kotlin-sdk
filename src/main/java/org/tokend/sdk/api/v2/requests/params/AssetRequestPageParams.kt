@@ -33,6 +33,18 @@ open class AssetRequestPageParams(
 
         fun withAsset(asset: String) = also { this.asset = asset }
 
+        override fun withPagingParams(pagingParams: PagingParamsV2) = also {
+            super.withPagingParams(pagingParams)
+        }
+
+        override fun withInclude(include: Collection<String>?) = also {
+            super.withInclude(include)
+        }
+
+        override fun withInclude(vararg include: String) = also {
+            super.withInclude(*include)
+        }
+
         override fun build(): AssetRequestPageParams {
             return AssetRequestPageParams(reviewer, requestor, state, type, updatedAfter, include, pagingParams, asset)
         }

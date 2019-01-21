@@ -57,6 +57,18 @@ open class FeesPageParamsV2(
 
         fun withUpperBound(upperBound: BigDecimal) = also { this.upperBound = upperBound }
 
+        override fun withPagingParams(pagingParams: PagingParamsV2) = also {
+            super.withPagingParams(pagingParams)
+        }
+
+        override fun withInclude(include: Collection<String>?) = also {
+            super.withInclude(include)
+        }
+
+        override fun withInclude(vararg include: String) = also {
+            super.withInclude(*include)
+        }
+
         override fun build(): FeesPageParamsV2 {
             return FeesPageParamsV2(asset, type, subtype, account, accountType, lowerBound, upperBound, include, pagingParams)
         }

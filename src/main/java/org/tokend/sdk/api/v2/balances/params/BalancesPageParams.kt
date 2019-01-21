@@ -28,6 +28,18 @@ open class BalancesPageParams(
 
         fun withAccount(account: String) = also { this.account = account }
 
+        override fun withPagingParams(pagingParams: PagingParamsV2) = also {
+            super.withPagingParams(pagingParams)
+        }
+
+        override fun withInclude(include: Collection<String>?) = also {
+            super.withInclude(include)
+        }
+
+        override fun withInclude(vararg include: String) = also {
+            super.withInclude(*include)
+        }
+
         override fun build(): BalancesPageParams {
             return BalancesPageParams(asset, account, include, pagingParams)
         }
