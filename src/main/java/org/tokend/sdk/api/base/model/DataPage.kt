@@ -1,7 +1,6 @@
 package org.tokend.sdk.api.base.model
 
 import com.github.jasminb.jsonapi.JSONAPIDocument
-import okhttp3.HttpUrl
 import org.tokend.sdk.api.base.params.PagingParamsV2
 import java.util.regex.Pattern
 
@@ -19,13 +18,12 @@ class DataPage<T>(val nextCursor: String?,
         }
 
         private fun getNumberParamFromLink(link: String, param: String): String? {
-            val pattern = Pattern.compile("$param=(\\d+)")
-            val matcher = pattern.matcher(link)
-            return if (matcher.find()) {
-                matcher.group(matcher.groupCount())
-            } else {
-                null
-            }
+            return "${Pattern.quote(param)}=(\\d+)"
+                    .toRegex()
+                    .find(link)
+                    ?.groups
+                    ?.lastOrNull()
+                    ?.value
         }
 
         fun <T> isLast(page: Page<T>): Boolean {
@@ -43,11 +41,11 @@ class DataPage<T>(val nextCursor: String?,
          * Creates [DataPage] from collection [JSONAPIDocument] with specific meta info.
          */
         fun <T> fromPageDocument(pageDocument: JSONAPIDocument<List<T>>): DataPage<T> {
-            val nextLink = HttpUrl.parse("http://relative/" + pageDocument.links.next.href)
+            val nextLink = pageDocument.links.next.href
 
-            val nextCursor = nextLink.queryParameter(PagingParamsV2.QUERY_PARAM_PAGE_NUMBER)
-            val limit = nextLink.queryParameter(PagingParamsV2.QUERY_PARAM_LIMIT)
-                    .toIntOrNull()
+            val nextCursor = getNumberParamFromLink(nextLink, PagingParamsV2.QUERY_PARAM_PAGE_NUMBER)
+            val limit = getNumberParamFromLink(nextLink, PagingParamsV2.QUERY_PARAM_LIMIT)
+                    ?.toIntOrNull()
                     ?: 0
             val items = pageDocument.get()
             val isLast = items.size < limit
