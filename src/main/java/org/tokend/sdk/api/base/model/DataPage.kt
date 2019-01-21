@@ -1,7 +1,8 @@
 package org.tokend.sdk.api.base.model
 
 import com.github.jasminb.jsonapi.JSONAPIDocument
-import org.tokend.sdk.api.v2.base.PaginationMeta
+import okhttp3.HttpUrl
+import org.tokend.sdk.api.base.params.PagingParamsV2
 import java.util.regex.Pattern
 
 /**
@@ -42,13 +43,16 @@ class DataPage<T>(val nextCursor: String?,
          * Creates [DataPage] from collection [JSONAPIDocument] with specific meta info.
          */
         fun <T> fromPageDocument(pageDocument: JSONAPIDocument<List<T>>): DataPage<T> {
-            val paginationMeta = PaginationMeta.fromMap(pageDocument.meta)
+            val nextLink = HttpUrl.parse("http://relative/" + pageDocument.links.next.href)
 
-            return DataPage(
-                    items = pageDocument.get(),
-                    nextCursor = paginationMeta.currentPage.inc().toString(),
-                    isLast = paginationMeta.isLast
-            )
+            val nextCursor = nextLink.queryParameter(PagingParamsV2.QUERY_PARAM_PAGE_NUMBER)
+            val limit = nextLink.queryParameter(PagingParamsV2.QUERY_PARAM_LIMIT)
+                    .toIntOrNull()
+                    ?: 0
+            val items = pageDocument.get()
+            val isLast = items.size < limit
+
+            return DataPage(nextCursor, items, isLast)
         }
     }
 }

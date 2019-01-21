@@ -15,8 +15,13 @@ constructor(
         return super.map()
                 .toMutableMap()
                 .apply {
-                    cursor?.also { put("page", it) }
+                    cursor?.also {
+                        put("page", it)
+                        put(QUERY_PARAM_PAGE_NUMBER, it)
+                    }
+                    limit?.also { put(QUERY_PARAM_LIMIT, it) }
                 }
+
     }
 
     class Builder {
@@ -35,5 +40,10 @@ constructor(
         fun build(): PagingParamsV2 {
             return PagingParamsV2(order, limit, page)
         }
+    }
+
+    companion object {
+        const val QUERY_PARAM_PAGE_NUMBER = "page[number]"
+        const val QUERY_PARAM_LIMIT = "page[limit]"
     }
 }
