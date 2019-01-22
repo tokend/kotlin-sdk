@@ -25,7 +25,7 @@ dependencies {
 const val TOKEND_URL = "https://api.testnet.tokend.org"
 
 val api = TokendApi(TOKEND_URL)
-val keyStorage = KeyStorage(api.wallets)
+val keyServer = KeyServer(api.wallets)
 ```
 
 ### RxJava integration
