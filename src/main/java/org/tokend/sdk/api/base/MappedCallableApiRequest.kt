@@ -4,6 +4,13 @@ import org.tokend.sdk.api.base.model.ApiResponse
 import java.io.InterruptedIOException
 import java.util.concurrent.Executors
 
+/**
+ * API request based on function execution
+ *
+ * @param callable function to execute
+ * @param responseMapper transformation function for the response
+ * @param errorMapper transformation function for errors
+ */
 open class MappedCallableApiRequest<CallType, ResultType>(
         protected val callable: () -> CallType?,
         protected val responseMapper: (CallType) -> ResultType,
