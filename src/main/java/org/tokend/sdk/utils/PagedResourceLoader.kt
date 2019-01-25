@@ -6,8 +6,16 @@ import org.tokend.sdk.api.base.model.DataPage
 
 /***
  * Allow to get all specific paged data at once.
+ *
+ * @param distinct enables filter by distinct
+ * based on [Object.equals] and [Object.hashCode] to avoid
+ * duplicates on page-number-based pagination
  */
-abstract class PagedResourceLoader<T> {
+abstract class PagedResourceLoader<T>
+@JvmOverloads
+constructor(
+        protected val distinct: Boolean = true
+) {
 
     protected var nextCursor: String? = null
     protected var noMoreItems: Boolean = false
@@ -25,14 +33,20 @@ abstract class PagedResourceLoader<T> {
 
         return MappedCallableApiRequest(
                 {
-                    val result = arrayListOf<T>()
+                    val result: MutableCollection<T> =
+                            if (distinct)
+                                LinkedHashSet()
+                            else
+                                arrayListOf()
+
                     while (!noMoreItems) {
                         val page = getPageRequest(nextCursor).execute().get()
                         result.addAll(page.items)
                         nextCursor = page.nextCursor
                         noMoreItems = page.isLast
                     }
-                    result
+
+                    result.toList()
                 },
                 { it }
         )
