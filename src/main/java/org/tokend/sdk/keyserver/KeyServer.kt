@@ -1,5 +1,7 @@
 package org.tokend.sdk.keyserver
 
+import org.tokend.sdk.api.base.ApiRequest
+import org.tokend.sdk.api.base.MappedCallableApiRequest
 import org.tokend.sdk.api.wallets.WalletsApi
 import org.tokend.sdk.api.wallets.model.EmailAlreadyTakenException
 import org.tokend.sdk.api.wallets.model.EmailNotVerifiedException
@@ -17,16 +19,30 @@ class KeyServer constructor(
     // region Obtain
     /**
      * Loads user's wallet and decrypts secret seed.
+     * @see buildWalletInfo
+     */
+    @JvmOverloads
+    fun getWalletInfo(login: String,
+                      password: CharArray,
+                      isRecovery: Boolean = false): ApiRequest<WalletInfo> {
+        return MappedCallableApiRequest(
+                { buildWalletInfo(login, password, isRecovery) },
+                { it }
+        )
+    }
+
+    /**
+     * @see getLoginParams
+     * @see getWalletData
      */
     @Throws(InvalidCredentialsException::class,
             EmailNotVerifiedException::class,
             HttpException::class
     )
-    @JvmOverloads
-    fun getWalletInfo(login: String,
-                      password: CharArray,
-                      isRecovery: Boolean = false): WalletInfo {
-        val loginParams = getLoginParams(login, isRecovery)
+    private fun buildWalletInfo(login: String,
+                                password: CharArray,
+                                isRecovery: Boolean = false): WalletInfo {
+        val loginParams = getLoginParams(login, isRecovery).execute().get()
 
         val tempLogin = if (loginParams.id == 2L) login.toLowerCase() else login
 
@@ -35,7 +51,7 @@ class KeyServer constructor(
         val walletKey = WalletKeyDerivation
                 .deriveWalletEncryptionKey(tempLogin, password, loginParams.kdfAttributes)
 
-        val walletData = getWalletData(hexWalletId)
+        val walletData = getWalletData(hexWalletId).execute().get()
 
         val keychainData = walletData.attributes?.keychainData
                 ?: throw IllegalStateException("Wallet data has no keychain data")
@@ -69,9 +85,8 @@ class KeyServer constructor(
      */
     @Throws(InvalidCredentialsException::class, HttpException::class)
     @JvmOverloads
-    fun getLoginParams(login: String? = null, isRecovery: Boolean = false): LoginParams {
-        val response = walletsApi.getLoginParams(login, isRecovery).execute()
-        return response.get()
+    fun getLoginParams(login: String? = null, isRecovery: Boolean = false): ApiRequest<LoginParams> {
+        return walletsApi.getLoginParams(login, isRecovery)
     }
 
     /**
@@ -80,9 +95,8 @@ class KeyServer constructor(
     @Throws(InvalidCredentialsException::class,
             EmailNotVerifiedException::class,
             HttpException::class)
-    fun getWalletData(walletId: String): WalletData {
-        val response = walletsApi.getById(walletId).execute()
-        return response.get()
+    fun getWalletData(walletId: String): ApiRequest<WalletData> {
+        return walletsApi.getById(walletId)
     }
     // endregion
 
@@ -94,33 +108,46 @@ class KeyServer constructor(
             EmailAlreadyTakenException::class,
             HttpException::class
     )
-    fun saveWallet(walletData: WalletData) {
-        walletsApi.create(walletData).execute()
+    fun saveWallet(walletData: WalletData): ApiRequest<Void> {
+        return walletsApi.create(walletData)
     }
 
     /**
      * Updates wallet by given wallet ID with given data.
      */
-    fun updateWallet(walletId: String, walletData: WalletData) {
-        walletsApi.update(walletId, walletData).execute()
+    fun updateWallet(walletId: String, walletData: WalletData): ApiRequest<Void> {
+        return walletsApi.update(walletId, walletData)
     }
     // endregion
 
     /**
      * Loads default login params, creates a wallet and submits it to the system.
-     *
-     * @see createWallet
-     * @see saveWallet
-     * @see getLoginParams
+     * @see getCreateAndSaveWalletResult
      */
     @JvmOverloads
-    @Throws(EmailAlreadyTakenException::class)
     fun createAndSaveWallet(email: String,
                             password: CharArray,
                             rootAccount: Account = Account.random(),
                             recoveryAccount: Account = Account.random()
+    ): ApiRequest<WalletCreateResult> {
+        return MappedCallableApiRequest(
+                { getCreateAndSaveWalletResult(email, password, rootAccount, recoveryAccount) },
+                { it }
+        )
+    }
+
+    /**
+     * @see createWallet
+     * @see saveWallet
+     * @see getLoginParams
+     */
+    @Throws(EmailAlreadyTakenException::class)
+    private fun getCreateAndSaveWalletResult(email: String,
+                                             password: CharArray,
+                                             rootAccount: Account = Account.random(),
+                                             recoveryAccount: Account = Account.random()
     ): WalletCreateResult {
-        val loginParams = getLoginParams()
+        val loginParams = getLoginParams().execute().get()
 
         val kdf = loginParams.kdfAttributes
         val kdfVersion = loginParams.id
@@ -134,7 +161,7 @@ class KeyServer constructor(
                 recoveryAccount
         )
 
-        saveWallet(result.walletData)
+        saveWallet(result.walletData).execute()
 
         return result
     }
