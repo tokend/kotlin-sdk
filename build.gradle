@@ -30,9 +30,9 @@ dependencies {
 
     compile 'com.github.jasminb:jsonapi-converter:0.9'
 
-    compile 'org.tokend:crypto-cipher:1.0.1'
-    compile 'org.tokend:crypto-kdf:1.0.3'
-    compile 'org.tokend:wallet:1.0.12'
+    compile 'org.tokend:crypto-cipher:1.0.2'
+    compile 'org.tokend:crypto-kdf:1.0.4'
+    compile 'org.tokend:wallet:1.0.13'
 }
 repositories {
     mavenCentral()
