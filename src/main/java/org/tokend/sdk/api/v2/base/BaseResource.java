@@ -31,4 +31,15 @@ public abstract class BaseResource {
      * @see <a href="https://jsonapi.org/format/#document-resource-object-relationships">JSONAPI Relationships</a>
      */
     public abstract boolean hasAttributes();
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof BaseResource
+                && ((BaseResource) o).id.equals(id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 }
