@@ -69,6 +69,18 @@ class SalesPageParamsV2(
 
         fun withSortBy(sortBy: Int) = also { this.sortBy = sortBy }
 
+        override fun withPagingParams(pagingParams: PagingParamsV2) = also {
+            super.withPagingParams(pagingParams)
+        }
+
+        override fun withInclude(include: Collection<String>?) = also {
+            super.withInclude(include)
+        }
+
+        override fun withInclude(vararg include: String) = also {
+            super.withInclude(*include)
+        }
+
         override fun build(): SalesPageParamsV2 {
             return SalesPageParamsV2(name, baseAsset, ownerAccount, openOnly, upcoming, voting, promotions, sortBy, include, pagingParams)
         }

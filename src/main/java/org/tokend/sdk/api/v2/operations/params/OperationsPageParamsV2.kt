@@ -64,6 +64,18 @@ open class OperationsPageParamsV2(
 
         fun withSubset(subset: String) = also { this.subset = subset }
 
+        override fun withPagingParams(pagingParams: PagingParamsV2) = also {
+            super.withPagingParams(pagingParams)
+        }
+
+        override fun withInclude(include: Collection<String>?) = also {
+            super.withInclude(include)
+        }
+
+        override fun withInclude(vararg include: String) = also {
+            super.withInclude(*include)
+        }
+
         override fun build(): OperationsPageParamsV2 {
             return OperationsPageParamsV2(transaction, account, accountType, reference, states, subset, include, pagingParams)
         }

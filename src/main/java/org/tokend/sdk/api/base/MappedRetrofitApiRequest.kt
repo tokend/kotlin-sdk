@@ -5,6 +5,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.HttpException
 import retrofit2.Response
+import java.io.InterruptedIOException
 
 /**
  * API request based on Retrofit [Call] with response and error mapping.
@@ -17,6 +18,8 @@ open class MappedRetrofitApiRequest<CallType, ResponseType>(
         protected val responseMapper: (CallType) -> ResponseType,
         protected val errorMapper: ((Throwable) -> Throwable)? = null
 ) : ApiRequest<ResponseType> {
+    protected var asyncCallback: ApiCallback<ResponseType>? = null
+
     override fun execute(): ApiResponse<ResponseType> {
         return try {
             val response = call.execute()
@@ -33,43 +36,55 @@ open class MappedRetrofitApiRequest<CallType, ResponseType>(
     }
 
     override fun executeAsync(callback: ApiCallback<ResponseType>) {
-        call.enqueue(object : Callback<CallType> {
-            override fun onFailure(call: Call<CallType>, t: Throwable) {
-                if (!call.isCanceled) {
-                    callback.onError(mapError(t))
-                }
+        synchronized(this) {
+            if (asyncCallback != null) {
+                return
             }
 
-            override fun onResponse(call: Call<CallType>, response: Response<CallType>) {
-                if (!call.isCanceled) {
-                    if (response.isSuccessful) {
-                        try {
-                            callback.onSuccess(
-                                    ApiResponse(
-                                            mapResponse(response.body())
-                                    )
-                            )
-                        } catch (error: Throwable) {
-                            callback.onError(
-                                    mapError(error)
-                            )
-                        }
-                    } else {
-                        callback.onError(
-                                mapError(HttpException(response))
-                        )
+            asyncCallback = callback
+
+            call.enqueue(object : Callback<CallType> {
+                override fun onFailure(call: Call<CallType>, t: Throwable) {
+                    if (!isCanceled()) {
+                        asyncCallback?.onError(mapError(t))
                     }
                 }
-            }
-        })
+
+                override fun onResponse(call: Call<CallType>, response: Response<CallType>) {
+                    if (!isCanceled()) {
+                        if (response.isSuccessful) {
+                            try {
+                                asyncCallback?.onSuccess(
+                                        ApiResponse(
+                                                mapResponse(response.body())
+                                        )
+                                )
+                            } catch (error: Throwable) {
+                                asyncCallback?.onError(
+                                        mapError(error)
+                                )
+                            }
+                        } else {
+                            asyncCallback?.onError(
+                                    mapError(HttpException(response))
+                            )
+                        }
+                    }
+                }
+            })
+        }
     }
 
     override fun cancel() {
-        call.cancel()
+        synchronized(this) {
+            call.cancel()
+            asyncCallback?.onError(mapError(InterruptedIOException("Canceled by user")))
+            asyncCallback = null
+        }
     }
 
     override fun isCanceled(): Boolean {
-        return call.isCanceled
+        return synchronized(this) { call.isCanceled }
     }
 
     protected open fun mapError(error: Throwable): Throwable {

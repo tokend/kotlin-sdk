@@ -91,7 +91,7 @@ class QueryParamsTest {
 
     @Test
     fun assetsParams() {
-        val expected = "{include=owner, policy=2}"
+        val expected = "{include=owner, filter[policy]=2}"
 
         val params = AssetsPageParams(
                 policies = listOf(AssetPolicy.BASE_ASSET),
@@ -103,7 +103,7 @@ class QueryParamsTest {
 
     @Test
     fun assetParamsBuilder() {
-        val expected = "{include=owner, policy=2}"
+        val expected = "{include=owner, filter[policy]=2}"
 
         val params = AssetsPageParams.Builder()
                 .withPolicies(AssetPolicy.BASE_ASSET)
@@ -305,7 +305,7 @@ class QueryParamsTest {
 
     @Test
     fun operationsParams() {
-        val expected = "{include=operation_details,source, order=desc, limit=42, cursor=10, page=10, tx_id=txid, account_id=$accountId, reference=reference, account_type=6, states=7, subset=payments}"
+        val expected = "{include=operation_details,source, order=desc, limit=42, cursor=10, page=10, page[number]=10, page[limit]=42, tx_id=txid, account_id=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, reference=reference, account_type=6, states=7, subset=payments}"
 
         val params = OperationsPageParamsV2(
                 transaction = "txid",
@@ -330,7 +330,7 @@ class QueryParamsTest {
 
     @Test
     fun operationsParamsBuilder() {
-        val expected = "{include=operation_details,source, order=desc, limit=42, cursor=10, page=10, tx_id=txid, account_id=$accountId, reference=reference, account_type=6, states=7, subset=payments}"
+        val expected = "{include=operation_details,source, order=desc, limit=42, cursor=10, page=10, page[number]=10, page[limit]=42, tx_id=txid, account_id=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, reference=reference, account_type=6, states=7, subset=payments}"
 
         val params = OperationsPageParamsV2.Builder()
                 .withTransaction("txid")

@@ -2,20 +2,16 @@ package org.tokend.sdk.api.v2.assets.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.jasminb.jsonapi.Links;
 import com.github.jasminb.jsonapi.annotations.Relationship;
-import com.github.jasminb.jsonapi.annotations.RelationshipLinks;
 import com.github.jasminb.jsonapi.annotations.Type;
 
 import org.tokend.sdk.api.assets.model.AssetDetails;
-import org.tokend.sdk.api.base.model.NameValue;
+import org.tokend.sdk.api.base.model.Policies;
 import org.tokend.sdk.api.v2.accounts.model.AccountResource;
 import org.tokend.sdk.api.v2.base.BaseResource;
-import org.tokend.sdk.api.v2.base.UnknownResource;
 import org.tokend.wallet.xdr.AssetPolicy;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Type("assets")
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -23,8 +19,8 @@ public class AssetResource extends BaseResource {
     @JsonProperty("available_for_issuance")
     private BigDecimal availableForIssuance;
 
-    @JsonProperty("preissued_asset_signer")
-    private String preissuedAssetSigner;
+    @JsonProperty("pre_issuance_asset_signer")
+    private String preIssuanceAssetSigner;
 
     @JsonProperty("max_issuance_amount")
     private BigDecimal maxIssuanceAmount;
@@ -35,32 +31,14 @@ public class AssetResource extends BaseResource {
     @JsonProperty("pending_issuance")
     private BigDecimal pendingIssuance;
 
-    @JsonProperty("policy_i")
-    private int policyI;
-
     @JsonProperty("policies")
-    private List<? extends NameValue<Integer>> policies;
+    private Policies policies;
 
     @JsonProperty("details")
     private AssetDetails details;
 
-    /**
-     * Required for links parsing.
-     */
-    @Relationship("logo")
-    private UnknownResource logo;
-
-    @RelationshipLinks("logo")
-    private Links logoLinks;
-
-    /**
-     * Required for links parsing.
-     */
-    @Relationship("terms")
-    private UnknownResource terms;
-
-    @RelationshipLinks("terms")
-    private Links termsLinks;
+    @JsonProperty("trailing_digits")
+    private int trailingDigits;
 
     @Relationship("owner")
     private AccountResource owner;
@@ -69,8 +47,8 @@ public class AssetResource extends BaseResource {
         return availableForIssuance;
     }
 
-    public String getPreissuedAssetSigner() {
-        return preissuedAssetSigner;
+    public String getPreIssuanceAssetSigner() {
+        return preIssuanceAssetSigner;
     }
 
     public BigDecimal getMaxIssuanceAmount() {
@@ -85,11 +63,7 @@ public class AssetResource extends BaseResource {
         return pendingIssuance;
     }
 
-    public int getPolicyI() {
-        return policyI;
-    }
-
-    public List<? extends NameValue<Integer>> getPolicies() {
+    public Policies getPolicies() {
         return policies;
     }
 
@@ -97,16 +71,12 @@ public class AssetResource extends BaseResource {
         return details;
     }
 
-    public Links getLogoLinks() {
-        return logoLinks;
-    }
-
-    public Links getTermsLinks() {
-        return termsLinks;
-    }
-
     public AccountResource getOwner() {
         return owner;
+    }
+
+    public int getTrailingDigits() {
+        return trailingDigits;
     }
 
     public boolean isBackedByExternalSystem() {
@@ -114,7 +84,7 @@ public class AssetResource extends BaseResource {
     }
 
     public boolean hasPolicy(AssetPolicy policy) {
-        return (policyI & policy.getValue()) == policy.getValue();
+        return policies.have(policy.getValue());
     }
 
     @Override

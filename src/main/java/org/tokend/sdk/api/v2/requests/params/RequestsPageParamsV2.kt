@@ -42,6 +42,18 @@ open class RequestsPageParamsV2(
 
         fun withUpdateAfter(updateAfter: Long) = also { this.updatedAfter = updateAfter }
 
+        override fun withPagingParams(pagingParams: PagingParamsV2) = also {
+            super.withPagingParams(pagingParams)
+        }
+
+        override fun withInclude(include: Collection<String>?) = also {
+            super.withInclude(include)
+        }
+
+        override fun withInclude(vararg include: String) = also {
+            super.withInclude(*include)
+        }
+
         override fun build(): RequestsPageParamsV2 {
             return RequestsPageParamsV2(reviewer, requestor, state, type, updatedAfter, include, pagingParams)
         }

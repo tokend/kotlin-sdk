@@ -20,10 +20,8 @@ class AssetsModelTest {
         JsonApiUtil.checkResourceNullability(asset)
 
         assertTrue(asset.hasAttributes())
-        assertNotNull(asset.logoLinks.related)
-        assertNotNull(asset.termsLinks.related)
         assertNotNull(asset.details.name)
-        assertTrue(asset.hasPolicy(AssetPolicy.TRANSFERABLE))
+        assertTrue(asset.hasPolicy(AssetPolicy.STATS_QUOTE_ASSET))
     }
 
     @Test
@@ -33,7 +31,6 @@ class AssetsModelTest {
                 AssetResource::class.java
         )
 
-        assertNotNull(document.meta)
         assertNotNull(document.links)
 
         val assets = document.get()
@@ -45,62 +42,49 @@ class AssetsModelTest {
         val asset = assets.first()
 
         assertTrue(asset.hasAttributes())
-        assertNotNull(asset.logoLinks.related)
-        assertNotNull(asset.termsLinks.related)
         assertNotNull(asset.details.name)
-        assertTrue(asset.hasPolicy(AssetPolicy.TRANSFERABLE))
+        assertTrue(assets.all { it.hasPolicy(AssetPolicy.STATS_QUOTE_ASSET) })
     }
 
     private val assetResponse = "{  \n" +
             "   \"data\":{  \n" +
             "      \"type\":\"assets\",\n" +
-            "      \"id\":\"ETH\",\n" +
+            "      \"id\":\"BTC\",\n" +
             "      \"attributes\":{  \n" +
-            "         \"available_for_issuance\":\"0.000000\",\n" +
-            "         \"preissued_asset_signer\":\"GAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHV4\",\n" +
-            "         \"max_issuance_amount\":\"1000000000.000000\",\n" +
-            "         \"issued\":\"1000000000.000000\",\n" +
-            "         \"pending_issuance\":\"0.000000\",\n" +
-            "         \"policy_i\":1,\n" +
-            "         \"policies\":[  \n" +
-            "            {  \n" +
-            "               \"name\":\"AssetPolicyTransferable\",\n" +
-            "               \"value\":1\n" +
-            "            },\n" +
-            "            {  \n" +
-            "               \"name\":\"AssetPolicyWithdrawable\",\n" +
-            "               \"value\":8\n" +
-            "            }\n" +
-            "         ],\n" +
+            "         \"available_for_issuance\":\"1000000000.000000\",\n" +
             "         \"details\":{  \n" +
             "            \"logo\":{  \n" +
             "               \"key\":\"dpurgh4infnubjhcost7fvjkdwnvkcedflpqdxlxsc5nlsib4diraweq\",\n" +
-            "               \"name\":\"ethereum_logo.png\",\n" +
+            "               \"name\":\"bitcoin_logo.png\",\n" +
             "               \"type\":\"image/png\"\n" +
             "            },\n" +
-            "            \"name\":\"Ethereum\",\n" +
+            "            \"name\":\"Bitcoin\",\n" +
             "            \"terms\":{  \n" +
             "               \"key\":\"\",\n" +
             "               \"name\":\"\",\n" +
             "               \"type\":\"\"\n" +
             "            }\n" +
-            "         }\n" +
+            "         },\n" +
+            "         \"issued\":\"0.000000\",\n" +
+            "         \"max_issuance_amount\":\"1000000000.000000\",\n" +
+            "         \"pending_issuance\":\"0.000000\",\n" +
+            "         \"policies\":{  \n" +
+            "            \"flags\":[  \n" +
+            "               {  \n" +
+            "                  \"name\":\"stats_quote_asset\",\n" +
+            "                  \"value\":4\n" +
+            "               }\n" +
+            "            ],\n" +
+            "            \"mask\":4\n" +
+            "         },\n" +
+            "         \"pre_issuance_asset_signer\":\"GBGC5DS6FGZOCDUKV43PTMTNG4H6LMLBTW3XWLXOUVSP7VWI4QO3E6C3\",\n" +
+            "         \"trailing_digits\":6\n" +
             "      },\n" +
             "      \"relationships\":{  \n" +
             "         \"owner\":{  \n" +
             "            \"data\":{  \n" +
             "               \"type\":\"accounts\",\n" +
-            "               \"id\":\"GDGQI3SSB7N7YDBGWCZB3DT7SA23KJWDTYQB5HCYR5VP3EBD6CXQXXG4\"\n" +
-            "            }\n" +
-            "         },\n" +
-            "         \"logo\":{  \n" +
-            "            \"links\":{  \n" +
-            "               \"related\":\"https://storage.com/key\"\n" +
-            "            }\n" +
-            "         },\n" +
-            "         \"terms\":{  \n" +
-            "            \"links\":{  \n" +
-            "               \"related\":\"https://storage.com/key\"\n" +
+            "               \"id\":\"GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB\"\n" +
             "            }\n" +
             "         }\n" +
             "      }\n" +
@@ -108,80 +92,105 @@ class AssetsModelTest {
             "}"
 
     private val assetListResponse = "{  \n" +
-            "   \"meta\":{  \n" +
-            "      \"current_page\":3,\n" +
-            "      \"total_pages\":10\n" +
-            "   },\n" +
-            "   \"links\":{  \n" +
-            "      \"self\":\"https://api.com/assets?page=3\",\n" +
-            "      \"first\":\"https://api.com/assets?page=1\",\n" +
-            "      \"prev\":\"https://api.com/assets?page=2\",\n" +
-            "      \"next\":\"https://api.com/assets?page=4\",\n" +
-            "      \"last\":\"https://api.com/assets?page=13\"\n" +
-            "   },\n" +
             "   \"data\":[  \n" +
             "      {  \n" +
             "         \"type\":\"assets\",\n" +
-            "         \"id\":\"ETH\",\n" +
+            "         \"id\":\"BTC\",\n" +
             "         \"attributes\":{  \n" +
-            "            \"available_for_issuance\":\"0.000000\",\n" +
-            "            \"preissued_asset_signer\":\"GAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHV4\",\n" +
-            "            \"max_issuance_amount\":\"1000000000.000000\",\n" +
-            "            \"issued\":\"1000000000.000000\",\n" +
-            "            \"pending_issuance\":\"0.000000\",\n" +
-            "            \"policy_i\":1,\n" +
-            "            \"policies\":[  \n" +
-            "               {  \n" +
-            "                  \"name\":\"AssetPolicyTransferable\",\n" +
-            "                  \"value\":1\n" +
-            "               },\n" +
-            "               {  \n" +
-            "                  \"name\":\"AssetPolicyBaseAsset\",\n" +
-            "                  \"value\":2\n" +
-            "               },\n" +
-            "               {  \n" +
-            "                  \"name\":\"AssetPolicyWithdrawable\",\n" +
-            "                  \"value\":8\n" +
-            "               },\n" +
-            "               {  \n" +
-            "                  \"name\":\"AssetPolicyTwoStepWithdrawal\",\n" +
-            "                  \"value\":16\n" +
-            "               }\n" +
-            "            ],\n" +
+            "            \"available_for_issuance\":\"1000000000.000000\",\n" +
             "            \"details\":{  \n" +
-            "               \"external_system_type\":5,\n" +
             "               \"logo\":{  \n" +
             "                  \"key\":\"dpurgh4infnubjhcost7fvjkdwnvkcedflpqdxlxsc5nlsib4diraweq\",\n" +
-            "                  \"name\":\"ethereum_logo.png\",\n" +
+            "                  \"name\":\"bitcoin_logo.png\",\n" +
             "                  \"type\":\"image/png\"\n" +
             "               },\n" +
-            "               \"name\":\"Ethereum\",\n" +
+            "               \"name\":\"Bitcoin\",\n" +
             "               \"terms\":{  \n" +
             "                  \"key\":\"\",\n" +
             "                  \"name\":\"\",\n" +
             "                  \"type\":\"\"\n" +
             "               }\n" +
-            "            }\n" +
+            "            },\n" +
+            "            \"issued\":\"0.000000\",\n" +
+            "            \"max_issuance_amount\":\"1000000000.000000\",\n" +
+            "            \"pending_issuance\":\"0.000000\",\n" +
+            "            \"policies\":{  \n" +
+            "               \"flags\":[  \n" +
+            "                  {  \n" +
+            "                     \"name\":\"stats_quote_asset\",\n" +
+            "                     \"value\":4\n" +
+            "                  }\n" +
+            "               ],\n" +
+            "               \"mask\":4\n" +
+            "            },\n" +
+            "            \"pre_issuance_asset_signer\":\"GBGC5DS6FGZOCDUKV43PTMTNG4H6LMLBTW3XWLXOUVSP7VWI4QO3E6C3\",\n" +
+            "            \"trailing_digits\":6\n" +
             "         },\n" +
             "         \"relationships\":{  \n" +
             "            \"owner\":{  \n" +
             "               \"data\":{  \n" +
             "                  \"type\":\"accounts\",\n" +
-            "                  \"id\":\"GDGQI3SSB7N7YDBGWCZB3DT7SA23KJWDTYQB5HCYR5VP3EBD6CXQXXG4\"\n" +
+            "                  \"id\":\"GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB\"\n" +
+            "               }\n" +
+            "            }\n" +
+            "         }\n" +
+            "      },\n" +
+            "      {  \n" +
+            "         \"type\":\"assets\",\n" +
+            "         \"id\":\"BTC20317\",\n" +
+            "         \"attributes\":{  \n" +
+            "            \"available_for_issuance\":\"1000000000.000000\",\n" +
+            "            \"details\":{  \n" +
+            "               \"logo\":{  \n" +
+            "                  \"key\":\"dpurgh4infnubjhcost7fvjkdwnvkcedflpqdxlxsc5nlsib4diraweq\",\n" +
+            "                  \"name\":\"ethereum_logo.png\",\n" +
+            "                  \"type\":\"image/png\"\n" +
+            "               },\n" +
+            "               \"name\":\"\",\n" +
+            "               \"terms\":{  \n" +
+            "                  \"key\":\"\",\n" +
+            "                  \"name\":\"\",\n" +
+            "                  \"type\":\"\"\n" +
             "               }\n" +
             "            },\n" +
-            "            \"logo\":{  \n" +
-            "               \"links\":{  \n" +
-            "                  \"related\":\"https://storage.com/key\"\n" +
-            "               }\n" +
+            "            \"issued\":\"0.000000\",\n" +
+            "            \"max_issuance_amount\":\"1000000000.000000\",\n" +
+            "            \"pending_issuance\":\"0.000000\",\n" +
+            "            \"policies\":{  \n" +
+            "               \"flags\":[  \n" +
+            "                  {  \n" +
+            "                     \"name\":\"stats_quote_asset\",\n" +
+            "                     \"value\":4\n" +
+            "                  }\n" +
+            "               ],\n" +
+            "               \"mask\":4\n" +
             "            },\n" +
-            "            \"terms\":{  \n" +
-            "               \"links\":{  \n" +
-            "                  \"related\":\"https://storage.com/key\"\n" +
+            "            \"pre_issuance_asset_signer\":\"GBBTS5IVCOBNZ7D6LSTIB7BBWOAYGZFWHGLAP3WBU3N4A4ALHCGFNRTM\",\n" +
+            "            \"trailing_digits\":6\n" +
+            "         },\n" +
+            "         \"relationships\":{  \n" +
+            "            \"owner\":{  \n" +
+            "               \"data\":{  \n" +
+            "                  \"type\":\"accounts\",\n" +
+            "                  \"id\":\"GBFSW4ZSDLNXUKS77LGMQVDNJUCU77ZUZX7AOIWLDF7OPX5F7OPFR67O\"\n" +
             "               }\n" +
             "            }\n" +
             "         }\n" +
             "      }\n" +
-            "   ]\n" +
+            "   ],\n" +
+            "   \"included\":[  \n" +
+            "      {  \n" +
+            "         \"type\":\"accounts\",\n" +
+            "         \"id\":\"GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB\"\n" +
+            "      },\n" +
+            "      {  \n" +
+            "         \"type\":\"accounts\",\n" +
+            "         \"id\":\"GBFSW4ZSDLNXUKS77LGMQVDNJUCU77ZUZX7AOIWLDF7OPX5F7OPFR67O\"\n" +
+            "      }\n" +
+            "   ],\n" +
+            "   \"links\":{  \n" +
+            "      \"next\":\"/v2/assets?include=owner&page[number]=1&page[limit]=15\",\n" +
+            "      \"self\":\"/v2/assets?include=owner&page[number]=0&page[limit]=15\"\n" +
+            "   }\n" +
             "}"
 }

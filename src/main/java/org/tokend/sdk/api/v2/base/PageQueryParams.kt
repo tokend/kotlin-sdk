@@ -20,7 +20,15 @@ open class PageQueryParams(
     open class Builder : JsonApiQueryParams.Builder() {
         protected var pagingParams: PagingParamsV2? = null
 
-        fun withPagingParams(pagingParams: PagingParamsV2) = also { this.pagingParams = pagingParams }
+        open fun withPagingParams(pagingParams: PagingParamsV2) = also { this.pagingParams = pagingParams }
+
+        override fun withInclude(include: Collection<String>?) = also {
+            super.withInclude(include)
+        }
+
+        override fun withInclude(vararg include: String) = also {
+            super.withInclude(*include)
+        }
 
         override fun build(): PageQueryParams {
             return PageQueryParams(pagingParams, include)

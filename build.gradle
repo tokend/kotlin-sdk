@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.2.31'
+    ext.kotlin_version = '1.3.10'
     ext.retrofitVersion = '2.2.0'
 
     repositories {
@@ -20,7 +20,7 @@ compileJava {
 
 dependencies {
     testCompile 'junit:junit:4.12'
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     testCompile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
     compile "com.squareup.retrofit2:retrofit:${retrofitVersion}"
@@ -30,9 +30,9 @@ dependencies {
 
     compile 'com.github.jasminb:jsonapi-converter:0.9'
 
-    compile 'org.tokend:crypto-cipher:1.0.1'
-    compile 'org.tokend:crypto-kdf:1.0.3'
-    compile 'org.tokend:wallet:1.0.12'
+    compile 'org.tokend:crypto-cipher:1.0.2'
+    compile 'org.tokend:crypto-kdf:1.0.4'
+    compile 'org.tokend:wallet:1.0.13'
 }
 repositories {
     mavenCentral()
@@ -49,6 +49,6 @@ compileTestKotlin {
 apply from: 'deploy.gradle'
 
 group 'org.tokend'
-version '1.2.17'
+version '1.2.18'
 uploadArchives.repositories.mavenDeployer.pom.artifactId = 'sdk'
 uploadArchives.repositories.mavenDeployer.pom.name = 'TokenD SDK'

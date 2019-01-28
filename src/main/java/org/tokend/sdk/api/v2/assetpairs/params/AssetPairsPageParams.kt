@@ -39,6 +39,18 @@ open class AssetPairsPageParams(
 
         fun withQuoteAsset(asset: String) = also { this.quoteAsset = asset }
 
+        override fun withPagingParams(pagingParams: PagingParamsV2) = also {
+            super.withPagingParams(pagingParams)
+        }
+
+        override fun withInclude(include: Collection<String>?) = also {
+            super.withInclude(include)
+        }
+
+        override fun withInclude(vararg include: String) = also {
+            super.withInclude(*include)
+        }
+
         override fun build(): AssetPairsPageParams {
             return AssetPairsPageParams(policies, baseAsset, quoteAsset, include, pagingParams)
         }
