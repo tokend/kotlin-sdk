@@ -49,6 +49,6 @@ compileTestKotlin {
 apply from: 'deploy.gradle'
 
 group 'org.tokend'
-version '1.2.17'
+version '1.2.18'
 uploadArchives.repositories.mavenDeployer.pom.artifactId = 'sdk'
 uploadArchives.repositories.mavenDeployer.pom.name = 'TokenD SDK'
