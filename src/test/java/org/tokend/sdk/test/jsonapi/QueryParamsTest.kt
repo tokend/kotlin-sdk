@@ -15,11 +15,12 @@ import org.tokend.sdk.api.v2.balances.params.BalanceParams
 import org.tokend.sdk.api.v2.balances.params.BalancesPageParams
 import org.tokend.sdk.api.v2.fees.params.FeeParamsV2
 import org.tokend.sdk.api.v2.fees.params.FeesPageParamsV2
+import org.tokend.sdk.api.v2.history.params.ParticipantEffectsPageParams
+import org.tokend.sdk.api.v2.history.params.ParticipantEffectsParams
 import org.tokend.sdk.api.v2.offers.params.OfferParamsV2
 import org.tokend.sdk.api.v2.offers.params.OffersPageParamsV2
 import org.tokend.sdk.api.v2.operations.params.OperationParamsV2
 import org.tokend.sdk.api.v2.operations.params.OperationsPageParamsV2
-import org.tokend.sdk.api.v2.requests.params.AssetRequestPageParams
 import org.tokend.sdk.api.v2.requests.params.RequestParamsV2
 import org.tokend.sdk.api.v2.requests.params.RequestsPageParamsV2
 import org.tokend.sdk.api.v2.sales.params.SaleParamsV2
@@ -349,6 +350,53 @@ class QueryParamsTest {
                 .withInclude(
                         OperationParamsV2.Includes.OPERATION_DETAILS,
                         OperationParamsV2.Includes.SOURCE
+                )
+                .build()
+
+        Assert.assertEquals(expected, params.map().toString())
+    }
+
+    @Test
+    fun participantEffectsParams() {
+        val expected = "{include=operations,operation_details,effects, order=desc, limit=18, cursor=6, page=6, page[number]=6, page[limit]=18, account=$accountId, balance=superbalance}"
+
+        val params = ParticipantEffectsPageParams(
+                account = accountId,
+                balance = "superbalance",
+                include = listOf(
+                        ParticipantEffectsParams.Includes.OPERATION,
+                        ParticipantEffectsParams.Includes.OPERATION_DETAILS,
+                        ParticipantEffectsParams.Includes.EFFECT
+                ),
+                pagingParams = PagingParamsV2(
+                        order = PagingOrder.DESC,
+                        limit = 18,
+                        page = "6"
+                )
+
+        )
+
+        Assert.assertEquals(expected, params.map().toString())
+    }
+
+    @Test
+    fun participantEffectsParamsBuilder() {
+        val expected = "{include=operations,operation_details,effects, order=desc, limit=18, cursor=6, page=6, page[number]=6, page[limit]=18, account=$accountId, balance=superbalance}"
+
+        val params = ParticipantEffectsPageParams.Builder()
+                .withAccount(accountId)
+                .withBalance("superbalance")
+                .withInclude(
+                        ParticipantEffectsParams.Includes.OPERATION,
+                        ParticipantEffectsParams.Includes.OPERATION_DETAILS,
+                        ParticipantEffectsParams.Includes.EFFECT
+                )
+                .withPagingParams(
+                        PagingParamsV2(
+                                order = PagingOrder.DESC,
+                                limit = 18,
+                                page = "6"
+                        )
                 )
                 .build()
 

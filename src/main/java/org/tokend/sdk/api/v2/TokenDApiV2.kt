@@ -11,6 +11,8 @@ import org.tokend.sdk.api.v2.balances.BalancesApi
 import org.tokend.sdk.api.v2.balances.BalancesService
 import org.tokend.sdk.api.v2.fees.FeesApiV2
 import org.tokend.sdk.api.v2.fees.FeesServiceV2
+import org.tokend.sdk.api.v2.history.HistoryApi
+import org.tokend.sdk.api.v2.history.HistoryService
 import org.tokend.sdk.api.v2.keyvalue.KeyValueStorageApiV2
 import org.tokend.sdk.api.v2.keyvalue.KeyValueStorageServiceV2
 import org.tokend.sdk.api.v2.offers.OffersApiV2
@@ -79,5 +81,9 @@ open class TokenDApiV2(rootUrl: String,
 
     open val operations: OperationsApiV2 by lazy {
         OperationsApiV2(getService(OperationsServiceV2::class.java))
+    }
+
+    open val history: HistoryApi by lazy {
+        HistoryApi(getService(HistoryService::class.java))
     }
 }

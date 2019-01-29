@@ -13,6 +13,11 @@ import org.tokend.sdk.api.v2.balances.model.BalanceResource
 import org.tokend.sdk.api.v2.base.UnknownResource
 import org.tokend.sdk.api.v2.fees.model.ExactFeeResource
 import org.tokend.sdk.api.v2.fees.model.FeeResource
+import org.tokend.sdk.api.v2.history.model.ParticipantEffectsResource
+import org.tokend.sdk.api.v2.history.model.effect.EffectResource
+import org.tokend.sdk.api.v2.history.model.effect.IssuedEffectResource
+import org.tokend.sdk.api.v2.history.model.effect.LockedEffectResource
+import org.tokend.sdk.api.v2.history.model.effect.MatchedEffectsResource
 import org.tokend.sdk.api.v2.keyvalue.model.KeyValueEntryResource
 import org.tokend.sdk.api.v2.kyc.model.KycResource
 import org.tokend.sdk.api.v2.offers.model.OfferResource
@@ -55,6 +60,12 @@ class JsonApiFactory {
                         OperationResource::class.java,
                         OperationDetailsResource::class.java,
                         CreateAccountOperationDetailsResource::class.java,
+
+                        ParticipantEffectsResource::class.java,
+                        EffectResource::class.java,
+                        IssuedEffectResource::class.java,
+                        LockedEffectResource::class.java,
+                        MatchedEffectsResource::class.java,
 
                         SaleResource::class.java,
                         SignerResource::class.java,
