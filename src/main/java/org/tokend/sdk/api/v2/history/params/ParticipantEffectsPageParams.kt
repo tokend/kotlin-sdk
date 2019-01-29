@@ -3,6 +3,9 @@ package org.tokend.sdk.api.v2.history.params
 import org.tokend.sdk.api.base.params.PagingParamsV2
 import org.tokend.sdk.api.v2.base.PageQueryParams
 
+/**
+ * @see ParticipantEffectsParams.Includes
+ */
 class ParticipantEffectsPageParams(
         val account: String? = null,
         val balance: String? = null,

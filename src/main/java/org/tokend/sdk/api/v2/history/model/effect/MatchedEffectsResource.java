@@ -25,6 +25,26 @@ public class MatchedEffectsResource extends EffectResource {
     @JsonProperty("funded")
     private RenameMeEntity funded;
 
+    public Long getOfferId() {
+        return offerId;
+    }
+
+    public Long getOrderBookId() {
+        return orderBookId;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public RenameMeEntity getCharged() {
+        return charged;
+    }
+
+    public RenameMeEntity getFunded() {
+        return funded;
+    }
+
     @Override
     public boolean hasAttributes() {
         return offerId != null;

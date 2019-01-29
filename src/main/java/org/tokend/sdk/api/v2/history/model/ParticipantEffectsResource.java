@@ -16,16 +16,16 @@ import org.tokend.sdk.api.v2.operations.model.details.OperationDetailsResource;
 @Type("participant-effects")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ParticipantEffectsResource extends BaseResource {
-    @Relationship("accounts")
+    @Relationship("account")
     private AccountResource account;
 
-    @Relationship("balances")
+    @Relationship("balance")
     private BalanceResource balance;
 
-    @Relationship("assets")
+    @Relationship("asset")
     private AssetResource asset;
 
-    @Relationship("operations")
+    @Relationship("operation")
     private OperationResource operation;
 
     @Relationship("operation_details")

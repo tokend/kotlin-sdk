@@ -10,9 +10,9 @@ open class ParticipantEffectsParams(
 ) : JsonApiQueryParams(include) {
     class Includes {
         companion object {
-            const val OPERATION = "operations"
-            const val OPERATION_DETAILS = "operation_details"
-            const val EFFECT = "effects"
+            const val OPERATION = "operation"
+            const val OPERATION_DETAILS = "operation.details"
+            const val EFFECT = "effect"
         }
     }
 }
