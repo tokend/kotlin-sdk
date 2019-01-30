@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.jasminb.jsonapi.annotations.Type;
 
+import org.tokend.sdk.api.v2.fees.model.EffectFee;
+
 import java.math.BigDecimal;
 
 @Type("effects-issued")

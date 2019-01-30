@@ -1,12 +1,15 @@
-package org.tokend.sdk.api.v2.history.model.effect;
+package org.tokend.sdk.api.v2.fees.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
 
-//TODO: find out what it should be after api refactoring
+/**
+ * Describes fee happened on balance. Direction of fee depends on the operation
+ * (depending on effect might be charged, locked, unlocked, for all incoming effects
+ * but unlocked it's always charged)
+ */
 public class EffectFee {
-
     @JsonProperty("fixed")
     private BigDecimal fixed;
 
@@ -19,5 +22,9 @@ public class EffectFee {
 
     public BigDecimal getCalculatedPercent() {
         return calculatedPercent;
+    }
+
+    public BigDecimal getTotal() {
+        return fixed.add(calculatedPercent);
     }
 }

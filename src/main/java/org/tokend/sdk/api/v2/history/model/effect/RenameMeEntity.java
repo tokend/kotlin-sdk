@@ -2,6 +2,8 @@ package org.tokend.sdk.api.v2.history.model.effect;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import org.tokend.sdk.api.v2.fees.model.EffectFee;
+
 import java.math.BigDecimal;
 
 //TODO: determine what is it and rename
