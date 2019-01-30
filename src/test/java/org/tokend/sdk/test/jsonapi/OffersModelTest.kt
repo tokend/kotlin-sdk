@@ -28,7 +28,10 @@ class OffersModelTest {
             "      \"id\":\"10\",\n" +
             "      \"attributes\":{  \n" +
             "         \"order_book_id\":0,\n" +
-            "         \"fee\":\"0.000000\",\n" +
+            "         \"fee\":{\n" +
+                "        \"fixed\": \"0.000000\",\n" +
+                "        \"calculated_percent\": \"0.000000\"\n" +
+                "      },\n" +
             "         \"base_asset_code\":\"RTOKEN\",\n" +
             "         \"quote_asset_code\":\"BTC\",\n" +
             "         \"is_buy\":true,\n" +

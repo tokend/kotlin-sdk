@@ -9,6 +9,7 @@ import org.tokend.sdk.api.v2.accounts.model.AccountResource;
 import org.tokend.sdk.api.v2.assets.model.AssetResource;
 import org.tokend.sdk.api.v2.balances.model.BalanceResource;
 import org.tokend.sdk.api.v2.base.BaseResource;
+import org.tokend.sdk.api.v2.fees.model.EffectFee;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -20,7 +21,7 @@ public class OfferResource extends BaseResource {
     private long orderBookId;
 
     @JsonProperty("fee")
-    private BigDecimal fee;
+    private EffectFee fee;
 
     @JsonProperty("is_buy")
     private boolean isBuy;
@@ -56,7 +57,7 @@ public class OfferResource extends BaseResource {
         return orderBookId;
     }
 
-    public BigDecimal getFee() {
+    public EffectFee getFee() {
         return fee;
     }
 
