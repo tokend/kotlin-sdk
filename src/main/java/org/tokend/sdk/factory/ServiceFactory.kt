@@ -79,7 +79,7 @@ class ServiceFactory(private val url: String,
             : Retrofit.Builder {
         return Retrofit.Builder()
                 .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(JsonApiFactory().getJsonApiConverterFactory())
+                .addConverterFactory(JsonApiToolsProvider.getJsonApiConverterFactory())
                 .addConverterFactory(GsonFactory().getBaseGsonConverterFactory())
                 .baseUrl(url)
                 .client(httpClient)

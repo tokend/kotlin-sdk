@@ -3,13 +3,13 @@ package org.tokend.sdk.test.jsonapi
 import org.junit.Assert
 import org.junit.Test
 import org.tokend.sdk.api.v2.assetpairs.model.AssetPairResource
-import org.tokend.sdk.factory.JsonApiFactory
+import org.tokend.sdk.factory.JsonApiToolsProvider
 import org.tokend.wallet.xdr.AssetPairPolicy
 
 class AssetPairsModelTest {
     @Test
     fun singlePair() {
-        val document = JsonApiFactory().getResourceConverter().readDocument(
+        val document = JsonApiToolsProvider().getResourceConverter().readDocument(
                 assetPairResponse.toByteArray(),
                 AssetPairResource::class.java
         )
@@ -27,7 +27,7 @@ class AssetPairsModelTest {
 
     @Test
     fun pairsList() {
-        val document = JsonApiFactory().getResourceConverter().readDocumentCollection(
+        val document = JsonApiToolsProvider().getResourceConverter().readDocumentCollection(
                 assetPairsListResponse.toByteArray(),
                 AssetPairResource::class.java
         )

@@ -4,13 +4,13 @@ import com.github.jasminb.jsonapi.ResourceConverter
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.tokend.sdk.api.v2.transactions.model.TransactionResource
-import org.tokend.sdk.factory.JsonApiFactory
+import org.tokend.sdk.factory.JsonApiToolsProvider
 
 class TransactionsModelTest {
 
     @Test
     fun singleTransaction() {
-        val document = JsonApiFactory().getResourceConverter().readDocument(
+        val document = JsonApiToolsProvider().getResourceConverter().readDocument(
                 transactionResponse.toByteArray(),
                 TransactionResource::class.java
         )

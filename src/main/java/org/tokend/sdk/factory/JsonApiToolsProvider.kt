@@ -31,6 +31,7 @@ import org.tokend.sdk.api.v2.signers.model.SignerResource
 import org.tokend.sdk.api.v2.transactions.model.TransactionResource
 import org.tokend.sdk.utils.ApiDateUtil
 import org.tokend.sdk.utils.BigDecimalUtil
+import retrofit2.Converter
 import java.math.BigDecimal
 import java.util.*
 
@@ -38,8 +39,14 @@ import java.util.*
  * Constructs and provides base [ObjectMapper] and base [JSONAPIConverterFactory]
  * with type adapters for SDK models.
  */
-class JsonApiFactory {
-    fun getResourceConverter(): ResourceConverter {
+object JsonApiToolsProvider {
+    /**
+     * @return [ResourceConverter] set up for TokenD JSON API.
+     *
+     * Notice that the first call may cause a delay
+     */
+    @JvmStatic
+    fun getResourceConverter(): ResourceConverter = synchronized(this) {
         return resourceConverter
                 ?: ResourceConverter(getObjectMapper(),
                         AccountResource::class.java,
@@ -87,13 +94,23 @@ class JsonApiFactory {
                         .also { resourceConverter = it }
     }
 
-    fun getJsonApiConverterFactory(): JSONAPIConverterFactory {
+    /**
+     * @return [Converter.Factory] set up for TokenD JSON API
+     *
+     * Notice that the first call may cause a delay
+     *
+     * @see getResourceConverter
+     */
+    @JvmStatic
+    fun getJsonApiConverterFactory(): JSONAPIConverterFactory = synchronized(this) {
         return jsonApiConverterFactory
+
                 ?: JSONAPIConverterFactory(getResourceConverter())
                         .also { jsonApiConverterFactory = it }
     }
 
-    fun getObjectMapper(): ObjectMapper {
+    @JvmStatic
+    fun getObjectMapper(): ObjectMapper = synchronized(this) {
         return objectMapper
                 ?: createBaseObjectMapper()
                         .also { objectMapper = it }
@@ -166,9 +183,7 @@ class JsonApiFactory {
         }
     }
 
-    private companion object {
-        private var resourceConverter: ResourceConverter? = null
-        private var objectMapper: ObjectMapper? = null
-        private var jsonApiConverterFactory: JSONAPIConverterFactory? = null
-    }
+    private var resourceConverter: ResourceConverter? = null
+    private var objectMapper: ObjectMapper? = null
+    private var jsonApiConverterFactory: JSONAPIConverterFactory? = null
 }

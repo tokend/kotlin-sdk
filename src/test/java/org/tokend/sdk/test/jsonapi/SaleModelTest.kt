@@ -7,13 +7,13 @@ import org.junit.Test
 import org.tokend.sdk.api.v2.accounts.model.AccountResource
 import org.tokend.sdk.api.v2.assets.model.AssetResource
 import org.tokend.sdk.api.v2.sales.model.SaleResource
-import org.tokend.sdk.factory.JsonApiFactory
+import org.tokend.sdk.factory.JsonApiToolsProvider
 
 class SaleModelTest {
 
     @Test
     fun singleSale() {
-        val document = JsonApiFactory().getResourceConverter().readDocument(
+        val document = JsonApiToolsProvider().getResourceConverter().readDocument(
                 saleResponseUnincluded.toByteArray(),
                 SaleResource::class.java
         )
@@ -32,7 +32,7 @@ class SaleModelTest {
     fun salesList() {
 
         val converter = ResourceConverter(
-                JsonApiFactory().getObjectMapper(),
+                JsonApiToolsProvider().getObjectMapper(),
                 SaleResource::class.java,
                 AccountResource::class.java,
                 AssetResource::class.java

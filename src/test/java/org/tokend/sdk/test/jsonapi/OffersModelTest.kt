@@ -3,12 +3,12 @@ package org.tokend.sdk.test.jsonapi
 import org.junit.Assert
 import org.junit.Test
 import org.tokend.sdk.api.v2.offers.model.OfferResource
-import org.tokend.sdk.factory.JsonApiFactory
+import org.tokend.sdk.factory.JsonApiToolsProvider
 
 class OffersModelTest {
     @Test
     fun singleOffer() {
-        val document = JsonApiFactory().getResourceConverter().readDocument(
+        val document = JsonApiToolsProvider().getResourceConverter().readDocument(
                 offerResponseUnincluded.toByteArray(),
                 OfferResource::class.java
         )

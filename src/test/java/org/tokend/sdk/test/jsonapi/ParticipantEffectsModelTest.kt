@@ -3,13 +3,13 @@ package org.tokend.sdk.test.jsonapi
 import org.junit.Assert.*
 import org.junit.Test
 import org.tokend.sdk.api.v2.history.model.ParticipantEffectsResource
-import org.tokend.sdk.factory.JsonApiFactory
+import org.tokend.sdk.factory.JsonApiToolsProvider
 
 class ParticipantEffectsModelTest {
 
     @Test
     fun participantEffectsList() {
-        val document = JsonApiFactory().getResourceConverter().readDocumentCollection(
+        val document = JsonApiToolsProvider().getResourceConverter().readDocumentCollection(
                 participantEffectsResponse.toByteArray(),
                 ParticipantEffectsResource::class.java
         )

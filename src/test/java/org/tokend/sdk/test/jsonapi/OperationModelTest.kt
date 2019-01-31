@@ -4,12 +4,12 @@ import org.junit.Assert
 import org.junit.Test
 import org.tokend.sdk.api.v2.operations.model.OperationResource
 import org.tokend.sdk.api.v2.operations.model.details.CreateAccountOpDetailsResource
-import org.tokend.sdk.factory.JsonApiFactory
+import org.tokend.sdk.factory.JsonApiToolsProvider
 
 class OperationModelTest {
     @Test
     fun singleOperation() {
-        val document = JsonApiFactory().getResourceConverter().readDocument(
+        val document = JsonApiToolsProvider().getResourceConverter().readDocument(
                 operationResponse.toByteArray(),
                 OperationResource::class.java
         )

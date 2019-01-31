@@ -3,12 +3,12 @@ package org.tokend.sdk.test.jsonapi
 import org.junit.Assert
 import org.junit.Test
 import org.tokend.sdk.api.v2.keyvalue.model.KeyValueEntryResource
-import org.tokend.sdk.factory.JsonApiFactory
+import org.tokend.sdk.factory.JsonApiToolsProvider
 
 class KeyValueEntriesModelTest {
     @Test
     fun keyValueEntry() {
-        val document = JsonApiFactory().getResourceConverter().readDocument(
+        val document = JsonApiToolsProvider().getResourceConverter().readDocument(
                 keyValueEntryResponse.toByteArray(),
                 KeyValueEntryResource::class.java
         )
@@ -24,7 +24,7 @@ class KeyValueEntriesModelTest {
 
     @Test
     fun keyValueEntriesList() {
-        val document = JsonApiFactory().getResourceConverter().readDocumentCollection(
+        val document = JsonApiToolsProvider().getResourceConverter().readDocumentCollection(
                 keyValueEntriesListResponse.toByteArray(),
                 KeyValueEntryResource::class.java
         )

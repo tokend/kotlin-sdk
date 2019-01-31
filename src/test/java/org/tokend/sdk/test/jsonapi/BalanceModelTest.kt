@@ -4,12 +4,12 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.tokend.sdk.api.v2.balances.model.BalanceResource
-import org.tokend.sdk.factory.JsonApiFactory
+import org.tokend.sdk.factory.JsonApiToolsProvider
 
 class BalanceModelTest {
     @Test
     fun singleBalance() {
-        val document = JsonApiFactory().getResourceConverter().readDocument(
+        val document = JsonApiToolsProvider().getResourceConverter().readDocument(
                 balanceResponse.toByteArray(),
                 BalanceResource::class.java
         )
@@ -25,7 +25,7 @@ class BalanceModelTest {
 
     @Test
     fun balanceList() {
-        val document = JsonApiFactory().getResourceConverter().readDocumentCollection(
+        val document = JsonApiToolsProvider().getResourceConverter().readDocumentCollection(
                 balanceListResponseUnincluded.toByteArray(),
                 BalanceResource::class.java
         )

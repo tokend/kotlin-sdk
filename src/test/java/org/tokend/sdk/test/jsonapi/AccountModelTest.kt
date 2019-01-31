@@ -3,13 +3,13 @@ package org.tokend.sdk.test.jsonapi
 import org.junit.Assert.*
 import org.junit.Test
 import org.tokend.sdk.api.v2.accounts.model.AccountResource
-import org.tokend.sdk.factory.JsonApiFactory
+import org.tokend.sdk.factory.JsonApiToolsProvider
 
 class AccountModelTest {
 
     @Test
     fun singleAccount() {
-        val document = JsonApiFactory().getResourceConverter().readDocument(
+        val document = JsonApiToolsProvider().getResourceConverter().readDocument(
                 accountResponse.toByteArray(),
                 AccountResource::class.java
         )
@@ -29,7 +29,7 @@ class AccountModelTest {
 
     @Test
     fun accountsList() {
-        val document = JsonApiFactory().getResourceConverter().readDocumentCollection(
+        val document = JsonApiToolsProvider().getResourceConverter().readDocumentCollection(
                 accountsListResponse.toByteArray(),
                 AccountResource::class.java
         )

@@ -4,13 +4,13 @@ import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.tokend.sdk.api.v2.assets.model.AssetResource
-import org.tokend.sdk.factory.JsonApiFactory
+import org.tokend.sdk.factory.JsonApiToolsProvider
 import org.tokend.wallet.xdr.AssetPolicy
 
 class AssetsModelTest {
     @Test
     fun singleAsset() {
-        val document = JsonApiFactory().getResourceConverter().readDocument(
+        val document = JsonApiToolsProvider().getResourceConverter().readDocument(
                 assetResponse.toByteArray(),
                 AssetResource::class.java
         )
@@ -26,7 +26,7 @@ class AssetsModelTest {
 
     @Test
     fun assetsList() {
-        val document = JsonApiFactory().getResourceConverter().readDocumentCollection(
+        val document = JsonApiToolsProvider().getResourceConverter().readDocumentCollection(
                 assetListResponse.toByteArray(),
                 AssetResource::class.java
         )

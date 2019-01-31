@@ -4,12 +4,12 @@ import org.junit.Assert
 import org.junit.Test
 import org.tokend.sdk.api.v2.fees.model.ExactFeeResource
 import org.tokend.sdk.api.v2.fees.model.FeeResource
-import org.tokend.sdk.factory.JsonApiFactory
+import org.tokend.sdk.factory.JsonApiToolsProvider
 
 class FeesModelTest {
     @Test
     fun feesList() {
-        val document = JsonApiFactory().getResourceConverter().readDocumentCollection(
+        val document = JsonApiToolsProvider().getResourceConverter().readDocumentCollection(
                 feesListResponse.toByteArray(),
                 FeeResource::class.java
         )
@@ -32,7 +32,7 @@ class FeesModelTest {
 
     @Test
     fun exactFee() {
-        val document = JsonApiFactory().getResourceConverter().readDocument(
+        val document = JsonApiToolsProvider().getResourceConverter().readDocument(
                 exactFeeResponse.toByteArray(),
                 ExactFeeResource::class.java
         )

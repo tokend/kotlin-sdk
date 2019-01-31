@@ -4,12 +4,12 @@ import org.junit.Assert
 import org.junit.Test
 import org.tokend.sdk.api.v2.requests.model.ReviewableRequestResource
 import org.tokend.sdk.api.v2.requests.model.details.AssetCreateRequestDetailsResource
-import org.tokend.sdk.factory.JsonApiFactory
+import org.tokend.sdk.factory.JsonApiToolsProvider
 
 class ReviewableRequestsModelTest {
     @Test
     fun singleRequest() {
-        val document = JsonApiFactory().getResourceConverter().readDocument(
+        val document = JsonApiToolsProvider().getResourceConverter().readDocument(
                 requestAssetCreateResponse.toByteArray(),
                 ReviewableRequestResource::class.java
         )
