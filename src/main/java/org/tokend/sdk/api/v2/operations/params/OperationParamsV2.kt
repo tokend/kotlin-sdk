@@ -10,8 +10,9 @@ open class OperationParamsV2(
 ) : JsonApiQueryParams(include) {
     class Includes {
         companion object {
-            const val OPERATION_DETAILS = "operation_details"
+            const val TX = "tx"
             const val SOURCE = "source"
+            const val OPERATION_DETAILS = "details"
         }
     }
 }
