@@ -22,8 +22,7 @@ import org.tokend.sdk.api.v2.keyvalue.model.KeyValueEntryResource
 import org.tokend.sdk.api.v2.kyc.model.KycResource
 import org.tokend.sdk.api.v2.offers.model.OfferResource
 import org.tokend.sdk.api.v2.operations.model.OperationResource
-import org.tokend.sdk.api.v2.operations.model.details.CreateAccountOperationDetailsResource
-import org.tokend.sdk.api.v2.operations.model.details.OperationDetailsResource
+import org.tokend.sdk.api.v2.operations.model.details.*
 import org.tokend.sdk.api.v2.requests.model.ReviewableRequestResource
 import org.tokend.sdk.api.v2.requests.model.details.AssetCreateRequestDetailsResource
 import org.tokend.sdk.api.v2.requests.model.details.ReviewableRequestDetailsResource
@@ -59,7 +58,20 @@ class JsonApiFactory {
 
                         OperationResource::class.java,
                         OperationDetailsResource::class.java,
-                        CreateAccountOperationDetailsResource::class.java,
+                        CreateAccountOpDetailsResource::class.java,
+                        CreateAmlAlertOpDetailsResource::class.java,
+                        CreateIssuanceRequestOpDetailsResource::class.java,
+                        CreateWithdrawalRequestOpDetailsResource::class.java,
+                        ManageOfferOpDetailsResource::class.java,
+                        CancelAtomicSwapBidOpDetailsResource::class.java,
+                        CheckSaleStateOpDetailsResource::class.java,
+                        CreateAtomicSwapBidRequestOpDetailsResource::class.java,
+                        CreateAtomicSwapRequestOpDetailsResource::class.java,
+                        CreateKycRequestOpDetailsResource::class.java,
+                        CreateManageLimitsRequestOpDetailsResource::class.java,
+                        CreatePreIssuanceRequestOpDetailsResource::class.java,
+                        CreateSaleRequestOpDetailsResource::class.java,
+                        ManageAccountOpDetailsResource::class.java,
 
                         ParticipantEffectsResource::class.java,
                         EffectResource::class.java,

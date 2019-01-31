@@ -3,7 +3,7 @@ package org.tokend.sdk.test.jsonapi
 import org.junit.Assert
 import org.junit.Test
 import org.tokend.sdk.api.v2.operations.model.OperationResource
-import org.tokend.sdk.api.v2.operations.model.details.CreateAccountOperationDetailsResource
+import org.tokend.sdk.api.v2.operations.model.details.CreateAccountOpDetailsResource
 import org.tokend.sdk.factory.JsonApiFactory
 
 class OperationModelTest {
@@ -20,8 +20,8 @@ class OperationModelTest {
 
         Assert.assertTrue(operation.hasAttributes())
         Assert.assertTrue(operation.transaction.hasAttributes())
-        Assert.assertTrue(operation.getDetails<CreateAccountOperationDetailsResource>().hasAttributes())
         Assert.assertFalse(operation.sourceAccount.hasAttributes())
+        Assert.assertTrue(operation.getDetails<CreateAccountOpDetailsResource>().hasAttributes())
     }
 
     private val operationResponse = "{\n" +

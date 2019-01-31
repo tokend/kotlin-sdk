@@ -13,7 +13,9 @@ import java.util.List;
 
 @Type("operations-create-account")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CreateAccountOperationDetailsResource extends OperationDetailsResource {
+public class CreateAccountOpDetailsResource extends OperationDetailsResource {
+    @JsonProperty("funder")
+    private String funder;
 
     @JsonProperty("account_address")
     private String accountAddress;
@@ -24,7 +26,6 @@ public class CreateAccountOperationDetailsResource extends OperationDetailsResou
     public String getAccountAddress() {
         return accountAddress;
     }
-
 
     public NameValue<Integer> getAccountType() {
         return accountType;
