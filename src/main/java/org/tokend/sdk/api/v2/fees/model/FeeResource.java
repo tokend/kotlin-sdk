@@ -8,7 +8,7 @@ import com.github.jasminb.jsonapi.annotations.Type;
 import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.v2.accounts.model.AccountResource;
 import org.tokend.sdk.api.v2.assets.model.AssetResource;
-import org.tokend.sdk.api.v2.base.BaseResource;
+import org.tokend.sdk.api.base.model.BaseResource;
 
 import java.math.BigDecimal;
 

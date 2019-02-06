@@ -1,4 +1,4 @@
-package org.tokend.sdk.api.v2.base;
+package org.tokend.sdk.api.base.model;
 
 import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Links;

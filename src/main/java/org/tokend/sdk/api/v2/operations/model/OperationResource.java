@@ -2,16 +2,13 @@ package org.tokend.sdk.api.v2.operations.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.TreeNode;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
 
 import org.tokend.sdk.api.v2.accounts.model.AccountResource;
-import org.tokend.sdk.api.v2.base.BaseResource;
+import org.tokend.sdk.api.base.model.BaseResource;
 import org.tokend.sdk.api.v2.operations.model.details.OperationDetailsResource;
 import org.tokend.sdk.api.v2.transactions.model.TransactionResource;
-import org.tokend.wallet.xdr.OperationType;
 
 import java.util.Date;
 

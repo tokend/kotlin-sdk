@@ -3,7 +3,7 @@ package org.tokend.sdk.test.jsonapi
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.github.jasminb.jsonapi.annotations.Relationship
 import com.github.jasminb.jsonapi.annotations.RelationshipLinks
-import org.tokend.sdk.api.v2.base.BaseResource
+import org.tokend.sdk.api.base.model.BaseResource
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
 import kotlin.reflect.jvm.javaField

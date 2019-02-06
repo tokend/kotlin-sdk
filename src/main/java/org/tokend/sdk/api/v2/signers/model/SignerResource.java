@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.jasminb.jsonapi.annotations.Type;
 
 import org.tokend.sdk.api.base.model.NameValue;
-import org.tokend.sdk.api.v2.base.BaseResource;
+import org.tokend.sdk.api.base.model.BaseResource;
 
 import java.util.List;
 

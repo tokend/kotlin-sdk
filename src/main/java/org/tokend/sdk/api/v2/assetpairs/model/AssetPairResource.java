@@ -7,7 +7,7 @@ import com.github.jasminb.jsonapi.annotations.Type;
 
 import org.tokend.sdk.api.base.model.NameValue;
 import org.tokend.sdk.api.v2.assets.model.AssetResource;
-import org.tokend.sdk.api.v2.base.BaseResource;
+import org.tokend.sdk.api.base.model.BaseResource;
 import org.tokend.wallet.xdr.AssetPairPolicy;
 
 import java.math.BigDecimal;

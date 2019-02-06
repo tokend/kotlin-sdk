@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.*
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.github.jasminb.jsonapi.ResourceConverter
 import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory
+import org.tokend.sdk.api.generated.resources.AllResources
 import org.tokend.sdk.api.v2.accounts.model.AccountResource
 import org.tokend.sdk.api.v2.assetpairs.model.AssetPairResource
 import org.tokend.sdk.api.v2.assets.model.AssetResource
