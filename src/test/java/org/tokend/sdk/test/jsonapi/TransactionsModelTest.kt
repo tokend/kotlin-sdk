@@ -10,7 +10,7 @@ class TransactionsModelTest {
 
     @Test
     fun singleTransaction() {
-        val document = JsonApiToolsProvider().getResourceConverter().readDocument(
+        val document = JsonApiToolsProvider.getResourceConverter().readDocument(
                 transactionResponse.toByteArray(),
                 TransactionResource::class.java
         )

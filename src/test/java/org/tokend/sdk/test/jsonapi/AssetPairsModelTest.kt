@@ -9,7 +9,7 @@ import org.tokend.wallet.xdr.AssetPairPolicy
 class AssetPairsModelTest {
     @Test
     fun singlePair() {
-        val document = JsonApiToolsProvider().getResourceConverter().readDocument(
+        val document = JsonApiToolsProvider.getResourceConverter().readDocument(
                 assetPairResponse.toByteArray(),
                 AssetPairResource::class.java
         )
@@ -27,7 +27,7 @@ class AssetPairsModelTest {
 
     @Test
     fun pairsList() {
-        val document = JsonApiToolsProvider().getResourceConverter().readDocumentCollection(
+        val document = JsonApiToolsProvider.getResourceConverter().readDocumentCollection(
                 assetPairsListResponse.toByteArray(),
                 AssetPairResource::class.java
         )

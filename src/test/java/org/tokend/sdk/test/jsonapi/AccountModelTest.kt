@@ -9,7 +9,7 @@ class AccountModelTest {
 
     @Test
     fun singleAccount() {
-        val document = JsonApiToolsProvider().getResourceConverter().readDocument(
+        val document = JsonApiToolsProvider.getResourceConverter().readDocument(
                 accountResponse.toByteArray(),
                 AccountResource::class.java
         )
@@ -29,7 +29,7 @@ class AccountModelTest {
 
     @Test
     fun accountsList() {
-        val document = JsonApiToolsProvider().getResourceConverter().readDocumentCollection(
+        val document = JsonApiToolsProvider.getResourceConverter().readDocumentCollection(
                 accountsListResponse.toByteArray(),
                 AccountResource::class.java
         )

@@ -29,7 +29,7 @@ class PaginationTest {
                 "   }\n" +
                 "}"
 
-        val document = JsonApiToolsProvider().getResourceConverter().readDocumentCollection(
+        val document = JsonApiToolsProvider.getResourceConverter().readDocumentCollection(
                 response.toByteArray(),
                 AccountResource::class.java
         )

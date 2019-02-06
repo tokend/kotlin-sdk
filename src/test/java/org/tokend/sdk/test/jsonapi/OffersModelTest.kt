@@ -8,7 +8,7 @@ import org.tokend.sdk.factory.JsonApiToolsProvider
 class OffersModelTest {
     @Test
     fun singleOffer() {
-        val document = JsonApiToolsProvider().getResourceConverter().readDocument(
+        val document = JsonApiToolsProvider.getResourceConverter().readDocument(
                 offerResponseUnincluded.toByteArray(),
                 OfferResource::class.java
         )

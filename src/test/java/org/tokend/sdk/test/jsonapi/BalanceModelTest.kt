@@ -9,7 +9,7 @@ import org.tokend.sdk.factory.JsonApiToolsProvider
 class BalanceModelTest {
     @Test
     fun singleBalance() {
-        val document = JsonApiToolsProvider().getResourceConverter().readDocument(
+        val document = JsonApiToolsProvider.getResourceConverter().readDocument(
                 balanceResponse.toByteArray(),
                 BalanceResource::class.java
         )
@@ -25,7 +25,7 @@ class BalanceModelTest {
 
     @Test
     fun balanceList() {
-        val document = JsonApiToolsProvider().getResourceConverter().readDocumentCollection(
+        val document = JsonApiToolsProvider.getResourceConverter().readDocumentCollection(
                 balanceListResponseUnincluded.toByteArray(),
                 BalanceResource::class.java
         )

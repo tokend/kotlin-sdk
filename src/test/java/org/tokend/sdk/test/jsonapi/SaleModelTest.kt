@@ -13,7 +13,7 @@ class SaleModelTest {
 
     @Test
     fun singleSale() {
-        val document = JsonApiToolsProvider().getResourceConverter().readDocument(
+        val document = JsonApiToolsProvider.getResourceConverter().readDocument(
                 saleResponseUnincluded.toByteArray(),
                 SaleResource::class.java
         )
@@ -32,7 +32,7 @@ class SaleModelTest {
     fun salesList() {
 
         val converter = ResourceConverter(
-                JsonApiToolsProvider().getObjectMapper(),
+                JsonApiToolsProvider.getObjectMapper(),
                 SaleResource::class.java,
                 AccountResource::class.java,
                 AssetResource::class.java

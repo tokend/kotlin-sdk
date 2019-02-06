@@ -9,7 +9,7 @@ import org.tokend.sdk.factory.JsonApiToolsProvider
 class OperationModelTest {
     @Test
     fun singleOperation() {
-        val document = JsonApiToolsProvider().getResourceConverter().readDocument(
+        val document = JsonApiToolsProvider.getResourceConverter().readDocument(
                 operationResponse.toByteArray(),
                 OperationResource::class.java
         )

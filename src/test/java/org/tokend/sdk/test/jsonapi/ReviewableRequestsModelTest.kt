@@ -9,7 +9,7 @@ import org.tokend.sdk.factory.JsonApiToolsProvider
 class ReviewableRequestsModelTest {
     @Test
     fun singleRequest() {
-        val document = JsonApiToolsProvider().getResourceConverter().readDocument(
+        val document = JsonApiToolsProvider.getResourceConverter().readDocument(
                 requestAssetCreateResponse.toByteArray(),
                 ReviewableRequestResource::class.java
         )

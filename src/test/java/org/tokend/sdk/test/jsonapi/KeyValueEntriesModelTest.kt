@@ -8,7 +8,7 @@ import org.tokend.sdk.factory.JsonApiToolsProvider
 class KeyValueEntriesModelTest {
     @Test
     fun keyValueEntry() {
-        val document = JsonApiToolsProvider().getResourceConverter().readDocument(
+        val document = JsonApiToolsProvider.getResourceConverter().readDocument(
                 keyValueEntryResponse.toByteArray(),
                 KeyValueEntryResource::class.java
         )
@@ -24,7 +24,7 @@ class KeyValueEntriesModelTest {
 
     @Test
     fun keyValueEntriesList() {
-        val document = JsonApiToolsProvider().getResourceConverter().readDocumentCollection(
+        val document = JsonApiToolsProvider.getResourceConverter().readDocumentCollection(
                 keyValueEntriesListResponse.toByteArray(),
                 KeyValueEntryResource::class.java
         )

@@ -9,7 +9,7 @@ class ParticipantEffectsModelTest {
 
     @Test
     fun participantEffectsList() {
-        val document = JsonApiToolsProvider().getResourceConverter().readDocumentCollection(
+        val document = JsonApiToolsProvider.getResourceConverter().readDocumentCollection(
                 participantEffectsResponse.toByteArray(),
                 ParticipantEffectsResource::class.java
         )

@@ -9,7 +9,7 @@ import org.tokend.sdk.factory.JsonApiToolsProvider
 class FeesModelTest {
     @Test
     fun feesList() {
-        val document = JsonApiToolsProvider().getResourceConverter().readDocumentCollection(
+        val document = JsonApiToolsProvider.getResourceConverter().readDocumentCollection(
                 feesListResponse.toByteArray(),
                 FeeResource::class.java
         )
@@ -32,7 +32,7 @@ class FeesModelTest {
 
     @Test
     fun exactFee() {
-        val document = JsonApiToolsProvider().getResourceConverter().readDocument(
+        val document = JsonApiToolsProvider.getResourceConverter().readDocument(
                 exactFeeResponse.toByteArray(),
                 ExactFeeResource::class.java
         )

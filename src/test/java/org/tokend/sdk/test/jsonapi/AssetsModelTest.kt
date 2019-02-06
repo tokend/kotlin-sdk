@@ -10,7 +10,7 @@ import org.tokend.wallet.xdr.AssetPolicy
 class AssetsModelTest {
     @Test
     fun singleAsset() {
-        val document = JsonApiToolsProvider().getResourceConverter().readDocument(
+        val document = JsonApiToolsProvider.getResourceConverter().readDocument(
                 assetResponse.toByteArray(),
                 AssetResource::class.java
         )
@@ -26,7 +26,7 @@ class AssetsModelTest {
 
     @Test
     fun assetsList() {
-        val document = JsonApiToolsProvider().getResourceConverter().readDocumentCollection(
+        val document = JsonApiToolsProvider.getResourceConverter().readDocumentCollection(
                 assetListResponse.toByteArray(),
                 AssetResource::class.java
         )
