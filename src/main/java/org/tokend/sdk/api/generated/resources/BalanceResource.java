@@ -19,4 +19,18 @@ import org.tokend.sdk.api.base.model.*;
 public class BalanceResource extends BaseResource {
     @Override
     public boolean hasAttributes() { return false; }
+    
+    @Relationship("asset")
+    private AssetResource asset;
+    
+    public AssetResource getAsset() {
+        return asset;
+    }
+    
+    @Relationship("state")
+    private BalanceStateResource state;
+    
+    public BalanceStateResource getState() {
+        return state;
+    }
 }

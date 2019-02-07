@@ -19,4 +19,11 @@ import org.tokend.sdk.api.base.model.*;
 public class OpCancelAtomicSwapBidDetailsResource extends OperationDetailsResource {
     @Override
     public boolean hasAttributes() { return false; }
+    
+    @Relationship("bid")
+    private ASwapBidRequestDetailsResource bid;
+    
+    public ASwapBidRequestDetailsResource getBid() {
+        return bid;
+    }
 }
