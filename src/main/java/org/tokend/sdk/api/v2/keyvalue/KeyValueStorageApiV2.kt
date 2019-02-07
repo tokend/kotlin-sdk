@@ -4,7 +4,7 @@ import com.github.jasminb.jsonapi.JSONAPIDocument
 import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.base.model.DataPage
-import org.tokend.sdk.api.v2.keyvalue.model.KeyValueEntryResource
+import org.tokend.sdk.api.generated.resources.KeyValueEntryResource
 
 open class KeyValueStorageApiV2(
         protected open val keyValueStorageService: KeyValueStorageServiceV2

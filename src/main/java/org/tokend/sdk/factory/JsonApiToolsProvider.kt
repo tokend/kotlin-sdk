@@ -7,29 +7,6 @@ import com.fasterxml.jackson.databind.module.SimpleModule
 import com.github.jasminb.jsonapi.ResourceConverter
 import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory
 import org.tokend.sdk.api.generated.resources.AllResources
-import org.tokend.sdk.api.v2.accounts.model.AccountResource
-import org.tokend.sdk.api.v2.assetpairs.model.AssetPairResource
-import org.tokend.sdk.api.v2.assets.model.AssetResource
-import org.tokend.sdk.api.v2.balances.model.BalanceResource
-import org.tokend.sdk.api.v2.base.UnknownResource
-import org.tokend.sdk.api.v2.fees.model.ExactFeeResource
-import org.tokend.sdk.api.v2.fees.model.FeeResource
-import org.tokend.sdk.api.v2.history.model.ParticipantEffectsResource
-import org.tokend.sdk.api.v2.history.model.effect.EffectResource
-import org.tokend.sdk.api.v2.history.model.effect.IssuedEffectResource
-import org.tokend.sdk.api.v2.history.model.effect.LockedEffectResource
-import org.tokend.sdk.api.v2.history.model.effect.MatchedEffectsResource
-import org.tokend.sdk.api.v2.keyvalue.model.KeyValueEntryResource
-import org.tokend.sdk.api.v2.kyc.model.KycResource
-import org.tokend.sdk.api.v2.offers.model.OfferResource
-import org.tokend.sdk.api.v2.operations.model.OperationResource
-import org.tokend.sdk.api.v2.operations.model.details.*
-import org.tokend.sdk.api.v2.requests.model.ReviewableRequestResource
-import org.tokend.sdk.api.v2.requests.model.details.AssetCreateRequestDetailsResource
-import org.tokend.sdk.api.v2.requests.model.details.ReviewableRequestDetailsResource
-import org.tokend.sdk.api.v2.sales.model.SaleResource
-import org.tokend.sdk.api.v2.signers.model.SignerResource
-import org.tokend.sdk.api.v2.transactions.model.TransactionResource
 import org.tokend.sdk.utils.ApiDateUtil
 import org.tokend.sdk.utils.BigDecimalUtil
 import retrofit2.Converter
@@ -50,47 +27,7 @@ object JsonApiToolsProvider {
     fun getResourceConverter(): ResourceConverter = synchronized(this) {
         return resourceConverter
                 ?: ResourceConverter(getObjectMapper(),
-                        AccountResource::class.java,
-                        AssetPairResource::class.java,
-                        AssetResource::class.java,
-                        BalanceResource::class.java,
-                        FeeResource::class.java,
-                        ExactFeeResource::class.java,
-                        KeyValueEntryResource::class.java,
-                        KycResource::class.java,
-                        OfferResource::class.java,
-
-                        ReviewableRequestResource::class.java,
-                        ReviewableRequestDetailsResource::class.java,
-                        AssetCreateRequestDetailsResource::class.java,
-
-                        OperationResource::class.java,
-                        OperationDetailsResource::class.java,
-                        CreateAccountOpDetailsResource::class.java,
-                        CreateAmlAlertOpDetailsResource::class.java,
-                        CreateIssuanceRequestOpDetailsResource::class.java,
-                        CreateWithdrawalRequestOpDetailsResource::class.java,
-                        ManageOfferOpDetailsResource::class.java,
-                        CancelAtomicSwapBidOpDetailsResource::class.java,
-                        CheckSaleStateOpDetailsResource::class.java,
-                        CreateAtomicSwapBidRequestOpDetailsResource::class.java,
-                        CreateAtomicSwapRequestOpDetailsResource::class.java,
-                        CreateKycRequestOpDetailsResource::class.java,
-                        CreateManageLimitsRequestOpDetailsResource::class.java,
-                        CreatePreIssuanceRequestOpDetailsResource::class.java,
-                        CreateSaleRequestOpDetailsResource::class.java,
-                        ManageAccountOpDetailsResource::class.java,
-
-                        ParticipantEffectsResource::class.java,
-                        EffectResource::class.java,
-                        IssuedEffectResource::class.java,
-                        LockedEffectResource::class.java,
-                        MatchedEffectsResource::class.java,
-
-                        SaleResource::class.java,
-                        SignerResource::class.java,
-                        TransactionResource::class.java,
-                        UnknownResource::class.java
+                        *AllResources.ARRAY
                 )
                         .also { resourceConverter = it }
     }

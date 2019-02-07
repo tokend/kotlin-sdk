@@ -1,7 +1,7 @@
 package org.tokend.sdk.api.v2.offers
 
 import com.github.jasminb.jsonapi.JSONAPIDocument
-import org.tokend.sdk.api.v2.offers.model.OfferResource
+import org.tokend.sdk.api.generated.resources.OfferResource
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

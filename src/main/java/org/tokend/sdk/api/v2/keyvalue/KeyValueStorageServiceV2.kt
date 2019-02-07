@@ -1,7 +1,7 @@
 package org.tokend.sdk.api.v2.keyvalue
 
 import com.github.jasminb.jsonapi.JSONAPIDocument
-import org.tokend.sdk.api.v2.keyvalue.model.KeyValueEntryResource
+import org.tokend.sdk.api.generated.resources.KeyValueEntryResource
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

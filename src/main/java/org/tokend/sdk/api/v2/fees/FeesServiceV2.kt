@@ -7,6 +7,7 @@ import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.QueryMap
 
+//TODO: use generated FeeResource after docs refactoring
 interface FeesServiceV2 {
     @GET("fees")
     @JvmSuppressWildcards
