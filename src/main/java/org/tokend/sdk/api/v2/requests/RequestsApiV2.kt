@@ -5,7 +5,7 @@ import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.base.model.DataPage
 import org.tokend.sdk.api.base.params.map
-import org.tokend.sdk.api.v2.requests.model.ReviewableRequestResource
+import org.tokend.sdk.api.generated.resources.ReviewableRequestResource
 import org.tokend.sdk.api.v2.requests.params.RequestParamsV2
 import org.tokend.sdk.api.v2.requests.params.RequestsPageParamsV2
 

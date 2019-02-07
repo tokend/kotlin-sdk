@@ -1,7 +1,7 @@
 package org.tokend.sdk.api.v2.assetpairs
 
 import com.github.jasminb.jsonapi.JSONAPIDocument
-import org.tokend.sdk.api.v2.assetpairs.model.AssetPairResource
+import org.tokend.sdk.api.generated.resources.AssetPairResource
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

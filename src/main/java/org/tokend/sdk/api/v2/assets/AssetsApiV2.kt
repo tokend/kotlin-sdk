@@ -5,7 +5,7 @@ import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.base.model.DataPage
 import org.tokend.sdk.api.base.params.map
-import org.tokend.sdk.api.v2.assets.model.AssetResource
+import org.tokend.sdk.api.generated.resources.AssetResource
 import org.tokend.sdk.api.v2.assets.params.AssetParams
 import org.tokend.sdk.api.v2.assets.params.AssetsPageParams
 
