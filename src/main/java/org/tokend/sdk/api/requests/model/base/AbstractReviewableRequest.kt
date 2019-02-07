@@ -23,7 +23,11 @@ abstract class AbstractReviewableRequest(
         @SerializedName("updated_at")
         val updatedAt: Date,
         @SerializedName("request_state_i")
-        val stateI: Int
+        val stateI: Int,
+        @SerializedName("all_tasks")
+        val allTasks: Int = 0,
+        @SerializedName("pending_tasks")
+        val pendingTasks: Int = 0
 ) {
     abstract val details: ReviewableRequestDetails
 
