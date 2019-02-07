@@ -56,10 +56,10 @@ open class Sale<DetailsType, StatisticsType, QuoteAssetType>(@SerializedName("id
         get() = isClosed || isCanceled
 
     open val isClosed: Boolean
-        get() = state.value == STATE_CLOSED
+        get() = state.value == SaleStates.STATE_CLOSED
 
     open val isCanceled: Boolean
-        get() = state.value == STATE_CANCELED
+        get() = state.value == SaleStates.STATE_CANCELED
 
     open val quoteAssets: List<QuoteAssetType>
         get() = mQuoteAssets.items

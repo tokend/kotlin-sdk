@@ -8,7 +8,7 @@ import org.tokend.sdk.api.generated.inner.XdrEnumBitmask
  * false otherwise
  */
 fun XdrEnumBitmask.have(value: Int): Boolean {
-    return (mask and value) == value
+    return (this.value and value) == value
 }
 
 /**
