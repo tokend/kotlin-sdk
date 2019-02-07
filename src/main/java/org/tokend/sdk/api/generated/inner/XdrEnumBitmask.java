@@ -13,11 +13,11 @@ import org.jetbrains.annotations.Nullable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class XdrEnumBitmask {
     
-    @JsonProperty("mask")
-    private Integer mask;
+    @JsonProperty("value")
+    private Integer value;
     
-    public Integer getMask() {
-        return mask;
+    public Integer getValue() {
+        return value;
     }
     
     @JsonProperty("flags")
