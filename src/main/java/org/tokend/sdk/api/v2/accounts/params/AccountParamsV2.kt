@@ -10,10 +10,9 @@ open class AccountParamsV2(
 ) : JsonApiQueryParams(include) {
     class Includes {
         companion object {
-            const val KYC = "kyc"
-            const val SIGNERS = "signers"
+            const val ROLE = "role"
             const val BALANCES = "balances"
-            const val EXTERNAL_ACCOUNTS = "external_accounts"
+            const val REFERRER = "referrer"
         }
     }
 }
