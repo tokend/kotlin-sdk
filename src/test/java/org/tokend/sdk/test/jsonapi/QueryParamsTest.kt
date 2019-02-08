@@ -5,6 +5,7 @@ import org.junit.Test
 import org.tokend.sdk.api.base.params.PagingOrder
 import org.tokend.sdk.api.base.params.PagingParamsV2
 import org.tokend.sdk.api.requests.model.base.RequestState
+import org.tokend.sdk.api.sales.model.SaleStates
 import org.tokend.sdk.api.v2.accounts.params.AccountParamsV2
 import org.tokend.sdk.api.v2.accounts.params.AccountsPageParamsV2
 import org.tokend.sdk.api.v2.assetpairs.params.AssetPairParams
@@ -29,6 +30,7 @@ import org.tokend.sdk.api.v2.transactions.params.TransactionsPageParams
 import org.tokend.sdk.test.Config
 import org.tokend.wallet.xdr.*
 import java.math.BigDecimal
+import java.util.*
 
 class QueryParamsTest {
 
@@ -36,7 +38,7 @@ class QueryParamsTest {
 
     @Test
     fun accountsParams() {
-        val expected = "{include=external_accounts, account_type=5, signer_type=2048, is_blocked=false}"
+        val expected = "{include=balances.state, account_type=5, signer_type=2048, is_blocked=false}"
 
         val params = AccountsPageParamsV2(
                 accountTypes = listOf(AccountType.NOT_VERIFIED),
@@ -50,7 +52,7 @@ class QueryParamsTest {
 
     @Test
     fun accountsParamsBuilder() {
-        val expected = "{include=external_accounts, account_type=5, signer_type=2048, is_blocked=false}"
+        val expected = "{include=balances.state, account_type=5, signer_type=2048, is_blocked=false}"
 
         val params = AccountsPageParamsV2.Builder()
                 .withAccountTypes(AccountType.NOT_VERIFIED)
@@ -212,9 +214,9 @@ class QueryParamsTest {
 
     @Test
     fun requestsParams() {
-        val updated = System.currentTimeMillis()
+        val updated = 1549618720L
 
-        val expected = "{include=request_details, reviewer=$accountId, requestor=$accountId, state_i=3, type=0, updated_after=$updated}"
+        val expected = "{include=request_details, reviewer=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, requestor=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, state_i=3, type=10, updated_after=1549618720}"
 
         val params = RequestsPageParamsV2(
                 reviewer = accountId,
@@ -230,9 +232,9 @@ class QueryParamsTest {
 
     @Test
     fun requestsParamsBuilder() {
-        val updated = System.currentTimeMillis()
+        val updated = 1549618720L
 
-        val expected = "{include=request_details, reviewer=$accountId, requestor=$accountId, state_i=3, type=0, updated_after=$updated}"
+        val expected = "{include=request_details, reviewer=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, requestor=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, state_i=3, type=10, updated_after=1549618720}"
 
         val params = RequestsPageParamsV2.Builder()
                 .withReviewer(accountId)
@@ -248,17 +250,17 @@ class QueryParamsTest {
 
     @Test
     fun salesParams() {
-        val expected = "{include=base_asset, name=BestNameEver, base_asset=BTC, owner=$accountId, open_only=true, upcoming=true, voting=true, promotions=true, sort_by=2}"
+        val expected = "{include=base_asset, owner=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, max_start_time=2019-02-08T09:38:40Z, max_end_time=2019-02-08T09:38:40Z, state=1, max_hard_cap=1, min_soft_cap=10, base_asset=BTC, sale_type=2}"
 
         val params = SalesPageParamsV2(
-                name = "BestNameEver",
                 baseAsset = "BTC",
-                ownerAccount = accountId,
-                openOnly = true,
-                upcoming = true,
-                voting = true,
-                promotions = true,
-                sortBy = SalesPageParamsV2.SortCriteria.MOST_FUNDED,
+                owner = accountId,
+                state = SaleStates.STATE_OPEN,
+                maxEndTime = Date(1549618720 * 1000L),
+                maxStartTime = Date(1549618720 * 1000L),
+                maxHardCap = BigDecimal.ONE,
+                minSoftCap = BigDecimal.TEN,
+                saleType = SaleType.CROWD_FUNDING,
                 includes = listOf(SaleParamsV2.Includes.BASE_ASSET)
         )
 
@@ -267,17 +269,16 @@ class QueryParamsTest {
 
     @Test
     fun saleParamsBuilder() {
-        val expected = "{include=base_asset, name=BestNameEver, base_asset=BTC, owner=$accountId, open_only=true, upcoming=true, voting=true, promotions=true, sort_by=2}"
+        val expected = "{owner=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, max_end_time=2019-02-08T09:38:40Z, state=1, max_soft_cap=1, max_hard_cap=10, base_asset=BTC, sale_type=2}"
 
         val params = SalesPageParamsV2.Builder()
-                .withName("BestNameEver")
                 .withBaseAsset("BTC")
-                .withOwnerAccount(accountId)
-                .withOpenOnly(true)
-                .withUpcoming(true)
-                .withVoting(true)
-                .withPromotions(true)
-                .withSortBy(SalesPageParamsV2.SortCriteria.MOST_FUNDED)
+                .withMaxEndTime(Date(1549618720 * 1000L))
+                .withMaxHardCap(BigDecimal.TEN)
+                .withMaxSoftCap(BigDecimal.ONE)
+                .withOwner(accountId)
+                .withState(SaleStates.STATE_OPEN)
+                .withSaleType(SaleType.CROWD_FUNDING)
                 .withInclude(SaleParamsV2.Includes.BASE_ASSET)
                 .build()
 
@@ -306,7 +307,7 @@ class QueryParamsTest {
 
     @Test
     fun operationsParams() {
-        val expected = "{include=operation_details,source, order=desc, limit=42, cursor=10, page=10, page[number]=10, page[limit]=42, tx_id=txid, account_id=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, reference=reference, account_type=6, states=7, subset=payments}"
+        val expected = "{include=details,source, order=desc, limit=42, cursor=10, page=10, page[number]=10, page[limit]=42, tx_id=txid, account_id=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, reference=reference, account_type=6, states=7, subset=payments}"
 
         val params = OperationsPageParamsV2(
                 transaction = "txid",
@@ -331,7 +332,7 @@ class QueryParamsTest {
 
     @Test
     fun operationsParamsBuilder() {
-        val expected = "{include=operation_details,source, order=desc, limit=42, cursor=10, page=10, page[number]=10, page[limit]=42, tx_id=txid, account_id=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, reference=reference, account_type=6, states=7, subset=payments}"
+        val expected = "{include=details,source, order=desc, limit=42, cursor=10, page=10, page[number]=10, page[limit]=42, tx_id=txid, account_id=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, reference=reference, account_type=6, states=7, subset=payments}"
 
         val params = OperationsPageParamsV2.Builder()
                 .withTransaction("txid")
@@ -358,7 +359,7 @@ class QueryParamsTest {
 
     @Test
     fun participantEffectsParams() {
-        val expected = "{include=operations,operation_details,effects, order=desc, limit=18, cursor=6, page=6, page[number]=6, page[limit]=18, account=$accountId, balance=superbalance}"
+        val expected = "{include=operation,operation.details,effect, order=desc, limit=18, cursor=6, page=6, page[number]=6, page[limit]=18, account=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, balance=superbalance}"
 
         val params = ParticipantEffectsPageParams(
                 account = accountId,
@@ -381,7 +382,7 @@ class QueryParamsTest {
 
     @Test
     fun participantEffectsParamsBuilder() {
-        val expected = "{include=operations,operation_details,effects, order=desc, limit=18, cursor=6, page=6, page[number]=6, page[limit]=18, account=$accountId, balance=superbalance}"
+        val expected = "{include=operation,operation.details,effect, order=desc, limit=18, cursor=6, page=6, page[number]=6, page[limit]=18, account=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, balance=superbalance}"
 
         val params = ParticipantEffectsPageParams.Builder()
                 .withAccount(accountId)

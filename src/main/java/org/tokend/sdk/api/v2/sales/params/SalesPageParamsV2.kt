@@ -1,73 +1,91 @@
 package org.tokend.sdk.api.v2.sales.params
 
 import org.tokend.sdk.api.base.params.PagingParamsV2
+import org.tokend.sdk.api.sales.model.SaleStates
 import org.tokend.sdk.api.v2.base.PageQueryParams
+import org.tokend.sdk.utils.ApiDateUtil
+import org.tokend.sdk.utils.BigDecimalUtil
+import org.tokend.wallet.xdr.SaleType
+import java.math.BigDecimal
+import java.util.*
 
 /**
  * @see SaleParamsV2.Includes
- * @see SalesPageParamsV2.SortCriteria
+ * @see SaleStates
  */
+
 class SalesPageParamsV2(
-        val name: String? = null,
+        val owner: String? = null,
+        val minStartTime: Date? = null,
+        val minEndTime: Date? = null,
+        val maxStartTime: Date? = null,
+        val maxEndTime: Date? = null,
+        val state: Int? = null,
+        val maxSoftCap: BigDecimal? = null,
+        val maxHardCap: BigDecimal? = null,
+        val minSoftCap: BigDecimal? = null,
+        val minHardCap: BigDecimal? = null,
         val baseAsset: String? = null,
-        val ownerAccount: String? = null,
-        val openOnly: Boolean? = null,
-        val upcoming: Boolean? = null,
-        val voting: Boolean? = null,
-        val promotions: Boolean? = null,
-        val sortBy: Int? = null,
+        val saleType: SaleType? = null,
         includes: Collection<String>? = null,
         pagingParams: PagingParamsV2? = null
 ) : PageQueryParams(pagingParams, includes) {
 
     override fun map(): Map<String, Any> {
         return super.map().toMutableMap().apply {
-            name?.also { put("name", it) }
+            owner?.also { put("owner", it) }
+            minStartTime?.also { put("min_start_time", ApiDateUtil.formatDateForRequest(it)) }
+            minEndTime?.also { put("min_end_time", ApiDateUtil.formatDateForRequest(it)) }
+            maxStartTime?.also { put("max_start_time", ApiDateUtil.formatDateForRequest(it)) }
+            maxEndTime?.also { put("max_end_time", ApiDateUtil.formatDateForRequest(it)) }
+            state?.also { put("state", it) }
+            maxSoftCap?.also { put("max_soft_cap", BigDecimalUtil.toPlainString(it)) }
+            maxHardCap?.also { put("max_hard_cap", BigDecimalUtil.toPlainString(it)) }
+            minSoftCap?.also { put("min_soft_cap", BigDecimalUtil.toPlainString(it)) }
+            minHardCap?.also { put("min_hard_cap", BigDecimalUtil.toPlainString(it)) }
+            maxSoftCap?.also { put("max_soft_cap", BigDecimalUtil.toPlainString(it)) }
             baseAsset?.also { put("base_asset", it) }
-            ownerAccount?.also { put("owner", it) }
-            openOnly?.also { put("open_only", it) }
-            upcoming?.also { put("upcoming", it) }
-            voting?.also { put("voting", it) }
-            promotions?.also { put("promotions", it) }
-            sortBy?.also { put("sort_by", it) }
-        }
-    }
-
-    class SortCriteria {
-        companion object {
-            const val CREATED_AT = 1
-            const val MOST_FUNDED = 2
-            const val END_TIME = 3
-            const val POPULARITY = 4
-            const val START_TIME = 5
+            saleType?.also { put("sale_type", it.value) }
         }
     }
 
     class Builder : PageQueryParams.Builder() {
-        private var name: String? = null
+        private var owner: String? = null
+        private var minStartTime: Date? = null
+        private var minEndTime: Date? = null
+        private var maxStartTime: Date? = null
+        private var maxEndTime: Date? = null
+        private var state: Int? = null
+        private var maxSoftCap: BigDecimal? = null
+        private var maxHardCap: BigDecimal? = null
+        private var minSoftCap: BigDecimal? = null
+        private var minHardCap: BigDecimal? = null
         private var baseAsset: String? = null
-        private var ownerAccount: String? = null
-        private var openOnly: Boolean? = null
-        private var upcoming: Boolean? = null
-        private var voting: Boolean? = null
-        private var promotions: Boolean? = null
-        private var sortBy: Int? = null
+        private var saleType: SaleType? = null
 
-        fun withName(name: String) = also { this.name = name }
+        fun withOwner(owner: String) = also { this.owner = owner }
 
-        fun withBaseAsset(asset: String) = also { this.baseAsset = asset }
+        fun withMinStartTime(minStartTime: Date) = also { this.minStartTime = minStartTime }
 
-        fun withOwnerAccount(account: String) = also { this.ownerAccount = account }
+        fun withMinEndTime(minEndTime: Date) = also { this.minEndTime = minEndTime }
 
-        fun withOpenOnly(openOnly: Boolean) = also { this.openOnly = openOnly }
+        fun withMaxStartTime(maxStartTime: Date) = also { this.maxStartTime = maxStartTime }
 
-        fun withUpcoming(upcoming: Boolean) = also { this.upcoming = upcoming }
+        fun withMaxEndTime(maxEndTime: Date) = also { this.maxEndTime = maxEndTime }
 
-        fun withVoting(voting: Boolean) = also { this.voting = voting }
+        fun withState(state: Int) = also { this.state = state }
 
-        fun withPromotions(promotions: Boolean) = also { this.promotions = promotions }
+        fun withMaxSoftCap(maxSoftCap: BigDecimal) = also { this.maxSoftCap = maxSoftCap }
 
-        fun withSortBy(sortBy: Int) = also { this.sortBy = sortBy }
+        fun withMaxHardCap(maxHardCap: BigDecimal) = also { this.maxHardCap = maxHardCap }
+
+        fun withMinSoftCap(minSoftCap: BigDecimal) = also { this.minSoftCap = minSoftCap }
+
+        fun withMinHardCap(minHardCap: BigDecimal) = also { this.minHardCap = minHardCap }
+
+        fun withBaseAsset(baseAsset: String) = also { this.baseAsset = baseAsset }
+
+        fun withSaleType(saleType: SaleType) = also { this.saleType = saleType }
 
         override fun withPagingParams(pagingParams: PagingParamsV2) = also {
             super.withPagingParams(pagingParams)
@@ -82,7 +100,8 @@ class SalesPageParamsV2(
         }
 
         override fun build(): SalesPageParamsV2 {
-            return SalesPageParamsV2(name, baseAsset, ownerAccount, openOnly, upcoming, voting, promotions, sortBy, include, pagingParams)
+            return SalesPageParamsV2(owner, minStartTime, minEndTime, maxStartTime, maxEndTime,
+                    state, maxSoftCap, maxHardCap, minSoftCap, minHardCap, baseAsset, saleType)
         }
     }
 }
