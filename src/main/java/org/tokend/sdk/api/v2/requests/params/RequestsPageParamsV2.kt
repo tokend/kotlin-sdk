@@ -17,11 +17,11 @@ open class RequestsPageParamsV2(
 
     override fun map(): Map<String, Any> {
         return super.map().toMutableMap().apply {
-            reviewer?.also { put("reviewer", it) }
-            requestor?.also { put("requestor", it) }
-            state?.also { put("state_i", it.i) }
-            type?.also { put("type", it.value) }
-            updatedAfter?.also { put("updated_after", it) }
+            reviewer?.also { putFilter("reviewer", it) }
+            requestor?.also { putFilter("requestor", it) }
+            state?.also { putFilter("state_i", it.i) }
+            type?.also { putFilter("type", it.value) }
+            updatedAfter?.also { putFilter("updated_after", it) }
         }
     }
 

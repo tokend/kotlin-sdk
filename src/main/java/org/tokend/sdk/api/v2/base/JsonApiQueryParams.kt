@@ -22,4 +22,16 @@ open class JsonApiQueryParams(
             return JsonApiQueryParams(include)
         }
     }
+
+    /**
+     * Will put given [value] with key "`filter[key]`", i.e. "`filter[price]`"
+     */
+    protected fun MutableMap<String, Any>.putFilter(key: String, value: Any) =
+            this.putQueryParam("filter", key, value)
+
+    /**
+     * Will put given [value] with key "`type[key]`", i.e. "`filter[price]`"
+     */
+    protected fun MutableMap<String, Any>.putQueryParam(type: String, key: String, value: Any) =
+            this.put("$type[$key]", value)
 }

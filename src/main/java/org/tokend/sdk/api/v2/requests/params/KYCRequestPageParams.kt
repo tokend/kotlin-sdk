@@ -29,11 +29,11 @@ open class KYCRequestPageParams(
 
     override fun map(): Map<String, Any> {
         return super.map().toMutableMap().apply {
-            accountToUpdateKYC?.also { put("account_to_update_kyc", it) }
-            accountTypeToSet?.also { put("account_type_to_set", it) }
-            maskSet?.also { put("mask_set", it) }
-            maskSetPartEq?.also { put("mask_set_part_eq", it) }
-            maskNotSet?.also { put("mask_not_set", it) }
+            accountToUpdateKYC?.also { putFilter("account_to_update_kyc", it) }
+            accountTypeToSet?.also { putFilter("account_type_to_set", it) }
+            maskSet?.also { putFilter("mask_set", it) }
+            maskSetPartEq?.also { putFilter("mask_set_part_eq", it) }
+            maskNotSet?.also { putFilter("mask_not_set", it) }
         }
     }
 

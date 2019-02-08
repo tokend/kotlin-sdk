@@ -11,7 +11,7 @@ class TransactionsPageParams(
 
     override fun map(): Map<String, Any> {
         return super.map().toMutableMap().apply {
-            account?.also { put("account_id", it) }
+            account?.also { putFilter("account_id", it) }
             pagingParams?.also { putAll(it.map()) }
         }
     }

@@ -33,19 +33,19 @@ class SalesPageParamsV2(
 
     override fun map(): Map<String, Any> {
         return super.map().toMutableMap().apply {
-            owner?.also { put("owner", it) }
-            minStartTime?.also { put("min_start_time", ApiDateUtil.formatDateForRequest(it)) }
-            minEndTime?.also { put("min_end_time", ApiDateUtil.formatDateForRequest(it)) }
-            maxStartTime?.also { put("max_start_time", ApiDateUtil.formatDateForRequest(it)) }
-            maxEndTime?.also { put("max_end_time", ApiDateUtil.formatDateForRequest(it)) }
-            state?.also { put("state", it) }
-            maxSoftCap?.also { put("max_soft_cap", BigDecimalUtil.toPlainString(it)) }
-            maxHardCap?.also { put("max_hard_cap", BigDecimalUtil.toPlainString(it)) }
-            minSoftCap?.also { put("min_soft_cap", BigDecimalUtil.toPlainString(it)) }
-            minHardCap?.also { put("min_hard_cap", BigDecimalUtil.toPlainString(it)) }
-            maxSoftCap?.also { put("max_soft_cap", BigDecimalUtil.toPlainString(it)) }
-            baseAsset?.also { put("base_asset", it) }
-            saleType?.also { put("sale_type", it.value) }
+            owner?.also { putFilter("owner", it) }
+            minStartTime?.also { putFilter("min_start_time", ApiDateUtil.formatDateForRequest(it)) }
+            minEndTime?.also { putFilter("min_end_time", ApiDateUtil.formatDateForRequest(it)) }
+            maxStartTime?.also { putFilter("max_start_time", ApiDateUtil.formatDateForRequest(it)) }
+            maxEndTime?.also { putFilter("max_end_time", ApiDateUtil.formatDateForRequest(it)) }
+            state?.also { putFilter("state", it) }
+            maxSoftCap?.also { putFilter("max_soft_cap", BigDecimalUtil.toPlainString(it)) }
+            maxHardCap?.also { putFilter("max_hard_cap", BigDecimalUtil.toPlainString(it)) }
+            minSoftCap?.also { putFilter("min_soft_cap", BigDecimalUtil.toPlainString(it)) }
+            minHardCap?.also { putFilter("min_hard_cap", BigDecimalUtil.toPlainString(it)) }
+            maxSoftCap?.also { putFilter("max_soft_cap", BigDecimalUtil.toPlainString(it)) }
+            baseAsset?.also { putFilter("base_asset", it) }
+            saleType?.also { putFilter("sale_type", it.value) }
         }
     }
 

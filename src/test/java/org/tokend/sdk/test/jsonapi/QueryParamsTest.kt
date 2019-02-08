@@ -38,7 +38,7 @@ class QueryParamsTest {
 
     @Test
     fun accountsParams() {
-        val expected = "{include=balances.state, account_type=5, signer_type=2048, is_blocked=false}"
+        val expected = "{include=balances.state, filter[account_type]=5, filter[signer_type]=2048, filter[is_blocked]=false}"
 
         val params = AccountsPageParamsV2(
                 accountTypes = listOf(AccountType.NOT_VERIFIED),
@@ -52,7 +52,7 @@ class QueryParamsTest {
 
     @Test
     fun accountsParamsBuilder() {
-        val expected = "{include=balances.state, account_type=5, signer_type=2048, is_blocked=false}"
+        val expected = "{include=balances.state, filter[account_type]=5, filter[signer_type]=2048, filter[is_blocked]=false}"
 
         val params = AccountsPageParamsV2.Builder()
                 .withAccountTypes(AccountType.NOT_VERIFIED)
@@ -66,7 +66,7 @@ class QueryParamsTest {
 
     @Test
     fun assetPairsParams() {
-        val expected = "{include=base_asset, policy=4, base_asset=BTC, quote_asset=ETH}"
+        val expected = "{include=base_asset, filter[policy]=4, filter[base_asset]=BTC, filter[quote_asset]=ETH}"
 
         val params = AssetPairsPageParams(
                 policies = listOf(AssetPairPolicy.CURRENT_PRICE_RESTRICTION),
@@ -80,7 +80,7 @@ class QueryParamsTest {
 
     @Test
     fun assetPairsParamsBuilder() {
-        val expected = "{include=base_asset, policy=4, base_asset=BTC, quote_asset=ETH}"
+        val expected = "{include=base_asset, filter[policy]=4, filter[base_asset]=BTC, filter[quote_asset]=ETH}"
 
         val params = AssetPairsPageParams.Builder()
                 .withPolicies(AssetPairPolicy.CURRENT_PRICE_RESTRICTION)
@@ -118,7 +118,7 @@ class QueryParamsTest {
 
     @Test
     fun balancesParams() {
-        val expected = "{include=account, asset=ETH, account=$accountId}"
+        val expected = "{include=account, filter[asset]=ETH, filter[account]=$accountId}"
 
         val params = BalancesPageParams(
                 asset = "ETH",
@@ -131,7 +131,7 @@ class QueryParamsTest {
 
     @Test
     fun balanceParamsBuilder() {
-        val expected = "{include=account, asset=ETH, account=$accountId}"
+        val expected = "{include=account, filter[asset]=ETH, filter[account]=$accountId}"
 
         val params = BalancesPageParams.Builder()
                 .withAsset("ETH")
@@ -144,7 +144,7 @@ class QueryParamsTest {
 
     @Test
     fun feesParams() {
-        val expected = "{include=account, asset=ETH, fee_type=0, subtype=1, account_id=$accountId, account_type=10, lower_bound=1, upper_bound=10}"
+        val expected = "{include=account, filter[asset]=ETH, filter[fee_type]=0, filter[subtype]=1, filter[account_id]=$accountId, filter[account_type]=10, filter[lower_bound]=1, filter[upper_bound]=10}"
 
         val params = FeesPageParamsV2(
                 asset = "ETH",
@@ -162,7 +162,7 @@ class QueryParamsTest {
 
     @Test
     fun feesParamsBuilder() {
-        val expected = "{include=account, asset=ETH, fee_type=0, subtype=1, account_id=$accountId, account_type=10, lower_bound=1, upper_bound=10}"
+        val expected = "{include=account, filter[asset]=ETH, filter[fee_type]=0, filter[subtype]=1, filter[account_id]=$accountId, filter[account_type]=10, filter[lower_bound]=1, filter[upper_bound]=10}"
 
         val params = FeesPageParamsV2.Builder()
                 .withAsset("ETH")
@@ -180,7 +180,7 @@ class QueryParamsTest {
 
     @Test
     fun offersParams() {
-        val expected = "{include=base_asset, base_balance=10, quote_balance=15, base_asset=ETH, quote_asset=BTC, owner=$accountId, order_book_id=${Long.MAX_VALUE}}"
+        val expected = "{include=base_asset, filter[base_balance]=10, filter[quote_balance]=15, filter[base_asset]=ETH, filter[quote_asset]=BTC, filter[owner]=$accountId, filter[order_book_id]=9223372036854775807}"
 
         val params = OffersPageParamsV2(
                 baseBalance = "10",
@@ -197,7 +197,7 @@ class QueryParamsTest {
 
     @Test
     fun offersParamsBuilder() {
-        val expected = "{include=base_asset, base_balance=10, quote_balance=15, base_asset=ETH, quote_asset=BTC, owner=$accountId, order_book_id=${Long.MAX_VALUE}}"
+        val expected = "{include=base_asset, filter[base_balance]=10, filter[quote_balance]=15, filter[base_asset]=ETH, filter[quote_asset]=BTC, filter[owner]=$accountId, filter[order_book_id]=9223372036854775807}"
 
         val params = OffersPageParamsV2.Builder()
                 .withBaseBalance("10")
@@ -216,7 +216,7 @@ class QueryParamsTest {
     fun requestsParams() {
         val updated = 1549618720L
 
-        val expected = "{include=request_details, reviewer=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, requestor=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, state_i=3, type=10, updated_after=1549618720}"
+        val expected = "{include=request_details, filter[reviewer]=$accountId, filter[requestor]=$accountId, filter[state_i]=3, filter[type]=10, filter[updated_after]=1549618720}"
 
         val params = RequestsPageParamsV2(
                 reviewer = accountId,
@@ -234,7 +234,7 @@ class QueryParamsTest {
     fun requestsParamsBuilder() {
         val updated = 1549618720L
 
-        val expected = "{include=request_details, reviewer=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, requestor=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, state_i=3, type=10, updated_after=1549618720}"
+        val expected = "{include=request_details, filter[reviewer]=$accountId, filter[requestor]=$accountId, filter[state_i]=3, filter[type]=10, filter[updated_after]=1549618720}"
 
         val params = RequestsPageParamsV2.Builder()
                 .withReviewer(accountId)
@@ -250,7 +250,7 @@ class QueryParamsTest {
 
     @Test
     fun salesParams() {
-        val expected = "{include=base_asset, owner=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, max_start_time=2019-02-08T09:38:40Z, max_end_time=2019-02-08T09:38:40Z, state=1, max_hard_cap=1, min_soft_cap=10, base_asset=BTC, sale_type=2}"
+        val expected = "{include=base_asset, filter[owner]=$accountId, filter[max_start_time]=2019-02-08T09:38:40Z, filter[max_end_time]=2019-02-08T09:38:40Z, filter[state]=1, filter[max_hard_cap]=1, filter[min_soft_cap]=10, filter[base_asset]=BTC, filter[sale_type]=2}"
 
         val params = SalesPageParamsV2(
                 baseAsset = "BTC",
@@ -269,7 +269,7 @@ class QueryParamsTest {
 
     @Test
     fun saleParamsBuilder() {
-        val expected = "{owner=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, max_end_time=2019-02-08T09:38:40Z, state=1, max_soft_cap=1, max_hard_cap=10, base_asset=BTC, sale_type=2}"
+        val expected = "{filter[owner]=$accountId, filter[max_end_time]=2019-02-08T09:38:40Z, filter[state]=1, filter[max_soft_cap]=1, filter[max_hard_cap]=10, filter[base_asset]=BTC, filter[sale_type]=2}"
 
         val params = SalesPageParamsV2.Builder()
                 .withBaseAsset("BTC")
@@ -287,7 +287,7 @@ class QueryParamsTest {
 
     @Test
     fun transactionsParams() {
-        val expected = "{account_id=$accountId}"
+        val expected = "{filter[account_id]=$accountId}"
 
         val params = TransactionsPageParams(account = accountId)
 
@@ -296,7 +296,7 @@ class QueryParamsTest {
 
     @Test
     fun transactionsParamsBuilder() {
-        val expected = "{account_id=$accountId}"
+        val expected = "{filter[account_id]=$accountId}"
 
         val params = TransactionsPageParams.Builder()
                 .withAccount(accountId)
@@ -307,7 +307,7 @@ class QueryParamsTest {
 
     @Test
     fun operationsParams() {
-        val expected = "{include=details,source, order=desc, limit=42, cursor=10, page=10, page[number]=10, page[limit]=42, tx_id=txid, account_id=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, reference=reference, account_type=6, states=7, subset=payments}"
+        val expected = "{include=details,source, order=desc, limit=42, cursor=10, page=10, page[number]=10, page[limit]=42, filter[tx_id]=txid, filter[account_id]=$accountId, filter[reference]=reference, filter[account_type]=6, filter[states]=7, filter[subset]=payments}"
 
         val params = OperationsPageParamsV2(
                 transaction = "txid",
@@ -332,7 +332,7 @@ class QueryParamsTest {
 
     @Test
     fun operationsParamsBuilder() {
-        val expected = "{include=details,source, order=desc, limit=42, cursor=10, page=10, page[number]=10, page[limit]=42, tx_id=txid, account_id=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, reference=reference, account_type=6, states=7, subset=payments}"
+        val expected = "{include=details,source, order=desc, limit=42, cursor=10, page=10, page[number]=10, page[limit]=42, filter[tx_id]=txid, filter[account_id]=$accountId, filter[reference]=reference, filter[account_type]=6, filter[states]=7, filter[subset]=payments}"
 
         val params = OperationsPageParamsV2.Builder()
                 .withTransaction("txid")
@@ -359,7 +359,7 @@ class QueryParamsTest {
 
     @Test
     fun participantEffectsParams() {
-        val expected = "{include=operation,operation.details,effect, order=desc, limit=18, cursor=6, page=6, page[number]=6, page[limit]=18, account=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, balance=superbalance}"
+        val expected = "{include=operation,operation.details,effect, order=desc, limit=18, cursor=6, page=6, page[number]=6, page[limit]=18, filter[account]=$accountId, filter[balance]=superbalance}"
 
         val params = ParticipantEffectsPageParams(
                 account = accountId,
@@ -382,7 +382,7 @@ class QueryParamsTest {
 
     @Test
     fun participantEffectsParamsBuilder() {
-        val expected = "{include=operation,operation.details,effect, order=desc, limit=18, cursor=6, page=6, page[number]=6, page[limit]=18, account=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, balance=superbalance}"
+        val expected = "{include=operation,operation.details,effect, order=desc, limit=18, cursor=6, page=6, page[number]=6, page[limit]=18, filter[account]=$accountId, filter[balance]=superbalance}"
 
         val params = ParticipantEffectsPageParams.Builder()
                 .withAccount(accountId)

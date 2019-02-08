@@ -18,9 +18,9 @@ open class AssetsPageParams(
     override fun map(): Map<String, Any> {
         return super.map().toMutableMap().apply {
             policies?.also {
-                put("filter[policy]", policies.map { it.value.toLong() }.bitmask())
+                putFilter("policy", policies.map { it.value.toLong() }.bitmask())
             }
-            owner?.also { put("filter[owner]", it) }
+            owner?.also { putFilter("owner", it) }
         }
     }
 

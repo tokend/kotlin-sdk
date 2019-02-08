@@ -15,8 +15,8 @@ open class BalancesPageParams(
 
     override fun map(): Map<String, Any> {
         return super.map().toMutableMap().apply {
-            asset?.also { put("asset", it) }
-            account?.also { put("account", it) }
+            asset?.also { putFilter("asset", it) }
+            account?.also { putFilter("account", it) }
         }
     }
 

@@ -19,10 +19,10 @@ open class AssetPairsPageParams(
     override fun map(): Map<String, Any> {
         return super.map().toMutableMap().apply {
             policies?.also {
-                put("policy", policies.map { it.value.toLong() }.bitmask())
+                putFilter("policy", policies.map { it.value.toLong() }.bitmask())
             }
-            baseAsset?.also { put("base_asset", it) }
-            quoteAsset?.also { put("quote_asset", it) }
+            baseAsset?.also { putFilter("base_asset", it) }
+            quoteAsset?.also { putFilter("quote_asset", it) }
         }
     }
 

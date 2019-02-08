@@ -15,8 +15,8 @@ class ParticipantEffectsPageParams(
 
     override fun map(): Map<String, Any> {
         return super.map().toMutableMap().apply {
-            account?.also { put("account", it) }
-            balance?.also { put("balance", it) }
+            account?.also { putFilter("account", it) }
+            balance?.also { putFilter("balance", it) }
         }
     }
 

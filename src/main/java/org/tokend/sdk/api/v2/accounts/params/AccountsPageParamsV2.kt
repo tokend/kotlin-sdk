@@ -20,12 +20,12 @@ open class AccountsPageParamsV2(
     override fun map(): Map<String, Any> {
         return super.map().toMutableMap().apply {
             accountTypes?.also {
-                put("account_type", accountTypes.map { it.value.toLong() }.bitmask())
+                putFilter("account_type", accountTypes.map { it.value.toLong() }.bitmask())
             }
             signerTypes?.also {
-                put("signer_type", signerTypes.map { it.value.toLong() }.bitmask())
+                putFilter("signer_type", signerTypes.map { it.value.toLong() }.bitmask())
             }
-            isBlocked?.also { put("is_blocked", isBlocked) }
+            isBlocked?.also { putFilter("is_blocked", isBlocked) }
         }
     }
 

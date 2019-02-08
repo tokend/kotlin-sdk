@@ -24,13 +24,13 @@ open class FeesPageParamsV2(
 
     override fun map(): Map<String, Any> {
         return super.map().toMutableMap().apply {
-            asset?.also { put("asset", it) }
-            type?.also { put("fee_type", it.value) }
-            subtype?.also { put("subtype", it) }
-            account?.also { put("account_id", it) }
-            accountType?.also { put("account_type", it.value) }
-            lowerBound?.also { put("lower_bound", BigDecimalUtil.toPlainString(it)) }
-            upperBound?.also { put("upper_bound", BigDecimalUtil.toPlainString(it)) }
+            asset?.also { putFilter("asset", it) }
+            type?.also { putFilter("fee_type", it.value) }
+            subtype?.also { putFilter("subtype", it) }
+            account?.also { putFilter("account_id", it) }
+            accountType?.also { putFilter("account_type", it.value) }
+            lowerBound?.also { putFilter("lower_bound", BigDecimalUtil.toPlainString(it)) }
+            upperBound?.also { putFilter("upper_bound", BigDecimalUtil.toPlainString(it)) }
         }
     }
 

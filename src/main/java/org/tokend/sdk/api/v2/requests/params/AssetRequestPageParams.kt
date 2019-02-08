@@ -24,7 +24,7 @@ open class AssetRequestPageParams(
 
     override fun map(): Map<String, Any> {
         return super.map().toMutableMap().apply {
-            asset?.also { put("asset", it) }
+            asset?.also { putFilter("asset", it) }
         }
     }
 

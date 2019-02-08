@@ -19,12 +19,12 @@ open class OffersPageParamsV2(
 
     override fun map(): Map<String, Any> {
         return super.map().toMutableMap().apply {
-            baseBalance?.also { put("base_balance", it) }
-            quoteBalance?.also { put("quote_balance", it) }
-            baseAsset?.also { put("base_asset", it) }
-            quoteAsset?.also { put("quote_asset", it) }
-            ownerAccount?.also { put("owner", it) }
-            orderBookId?.also { put("order_book_id", it) }
+            baseBalance?.also { putFilter("base_balance", it) }
+            quoteBalance?.also { putFilter("quote_balance", it) }
+            baseAsset?.also { putFilter("base_asset", it) }
+            quoteAsset?.also { putFilter("quote_asset", it) }
+            ownerAccount?.also { putFilter("owner", it) }
+            orderBookId?.also { putFilter("order_book_id", it) }
         }
     }
 

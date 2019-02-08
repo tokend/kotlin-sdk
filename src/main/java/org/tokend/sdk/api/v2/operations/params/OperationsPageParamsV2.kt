@@ -26,12 +26,12 @@ open class OperationsPageParamsV2(
 
     override fun map(): Map<String, Any> {
         return super.map().toMutableMap().apply {
-            transaction?.also { put("tx_id", it) }
-            account?.also { put("account_id", it) }
-            reference?.also { put("reference", it) }
-            accountType?.also { put("account_type", it.value) }
-            states?.also { put("states", states.map { it.toLong() }.bitmask()) }
-            subset?.also { put("subset", it) }
+            transaction?.also { putFilter("tx_id", it) }
+            account?.also { putFilter("account_id", it) }
+            reference?.also { putFilter("reference", it) }
+            accountType?.also { putFilter("account_type", it.value) }
+            states?.also { putFilter("states", states.map { it.toLong() }.bitmask()) }
+            subset?.also { putFilter("subset", it) }
         }
     }
 
