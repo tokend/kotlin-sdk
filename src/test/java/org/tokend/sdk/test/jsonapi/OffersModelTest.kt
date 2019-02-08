@@ -2,7 +2,7 @@ package org.tokend.sdk.test.jsonapi
 
 import org.junit.Assert
 import org.junit.Test
-import org.tokend.sdk.api.v2.offers.model.OfferResource
+import org.tokend.sdk.api.generated.resources.OfferResource
 import org.tokend.sdk.factory.JsonApiToolsProvider
 
 class OffersModelTest {

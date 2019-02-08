@@ -3,8 +3,9 @@ package org.tokend.sdk.test.jsonapi
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import org.tokend.sdk.api.v2.assets.model.AssetResource
+import org.tokend.sdk.api.generated.resources.AssetResource
 import org.tokend.sdk.factory.JsonApiToolsProvider
+import org.tokend.sdk.utils.extentions.has
 import org.tokend.wallet.xdr.AssetPolicy
 
 class AssetsModelTest {
@@ -20,8 +21,8 @@ class AssetsModelTest {
         JsonApiUtil.checkResourceNullability(asset)
 
         assertTrue(asset.hasAttributes())
-        assertNotNull(asset.details.name)
-        assertTrue(asset.hasPolicy(AssetPolicy.STATS_QUOTE_ASSET))
+        assertNotNull(asset.details.get("name").asText())
+        assertTrue(asset.policies.has(AssetPolicy.STATS_QUOTE_ASSET.value))
     }
 
     @Test
@@ -42,8 +43,8 @@ class AssetsModelTest {
         val asset = assets.first()
 
         assertTrue(asset.hasAttributes())
-        assertNotNull(asset.details.name)
-        assertTrue(assets.all { it.hasPolicy(AssetPolicy.STATS_QUOTE_ASSET) })
+        assertNotNull(asset.details.get("name").asText())
+        assertTrue(assets.all { it.policies.has(AssetPolicy.STATS_QUOTE_ASSET.value) })
     }
 
     private val assetResponse = "{  \n" +

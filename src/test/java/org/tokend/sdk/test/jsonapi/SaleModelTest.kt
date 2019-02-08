@@ -4,9 +4,9 @@ import com.github.jasminb.jsonapi.ResourceConverter
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import org.tokend.sdk.api.v2.accounts.model.AccountResource
-import org.tokend.sdk.api.v2.assets.model.AssetResource
-import org.tokend.sdk.api.v2.sales.model.SaleResource
+import org.tokend.sdk.api.generated.resources.AccountResource
+import org.tokend.sdk.api.generated.resources.AssetResource
+import org.tokend.sdk.api.generated.resources.SaleResource
 import org.tokend.sdk.factory.JsonApiToolsProvider
 
 class SaleModelTest {
@@ -25,7 +25,6 @@ class SaleModelTest {
         assertFalse(sale.baseAsset.hasAttributes())
         assertFalse(sale.owner.hasAttributes())
         assertFalse(sale.quoteAssets.first().hasAttributes())
-        assertTrue(sale.balances.isNotEmpty())
     }
 
     @Test
@@ -55,7 +54,6 @@ class SaleModelTest {
         assertFalse(sale.baseAsset.hasAttributes())
         assertFalse(sale.owner.hasAttributes())
         assertFalse(sale.quoteAssets.first().hasAttributes())
-        assertTrue(sale.balances.isNotEmpty())
     }
 
     private val saleResponseUnincluded = "{\n" +

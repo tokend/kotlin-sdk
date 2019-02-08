@@ -7,6 +7,7 @@ import org.tokend.sdk.api.v2.assets.params.AssetParams
 import org.tokend.sdk.api.v2.assets.params.AssetsPageParams
 import org.tokend.sdk.test.Util
 import org.tokend.sdk.test.jsonapi.JsonApiUtil
+import org.tokend.sdk.utils.extentions.has
 import org.tokend.wallet.xdr.AssetPolicy
 
 class AssetsIntegrationTest {
@@ -69,7 +70,7 @@ class AssetsIntegrationTest {
 
         Assert.assertTrue("No assets found", assets.items.isNotEmpty())
         Assert.assertTrue("Not all assets have the requested policy $policy",
-                assets.items.all { it.hasPolicy(policy) })
+                assets.items.all { it.policies.has(policy.value) })
         JsonApiUtil.checkResourceNullability(assets.items)
     }
 

@@ -2,7 +2,7 @@ package org.tokend.sdk.test.jsonapi
 
 import org.junit.Assert
 import org.junit.Test
-import org.tokend.sdk.api.v2.keyvalue.model.KeyValueEntryResource
+import org.tokend.sdk.api.generated.resources.KeyValueEntryResource
 import org.tokend.sdk.factory.JsonApiToolsProvider
 
 class KeyValueEntriesModelTest {
@@ -18,7 +18,6 @@ class KeyValueEntriesModelTest {
         JsonApiUtil.checkResourceNullability(entry)
 
         Assert.assertTrue(entry.hasAttributes())
-        Assert.assertEquals(entry.valueTypeI, entry.valueType.value)
         Assert.assertNotNull(entry.value)
     }
 
@@ -41,7 +40,6 @@ class KeyValueEntriesModelTest {
         val entry = entries.first()
 
         Assert.assertTrue(entry.hasAttributes())
-        Assert.assertEquals(entry.valueTypeI, entry.valueType.value)
         Assert.assertNotNull(entry.value)
     }
 

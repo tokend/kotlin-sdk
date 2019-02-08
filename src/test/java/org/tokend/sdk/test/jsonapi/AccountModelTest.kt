@@ -1,8 +1,9 @@
 package org.tokend.sdk.test.jsonapi
 
-import org.junit.Assert.*
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
-import org.tokend.sdk.api.v2.accounts.model.AccountResource
+import org.tokend.sdk.api.generated.resources.AccountResource
 import org.tokend.sdk.factory.JsonApiToolsProvider
 
 class AccountModelTest {
@@ -20,11 +21,6 @@ class AccountModelTest {
 
         assertTrue(account.hasAttributes())
         assertTrue(account.balances.first().hasAttributes())
-        assertTrue(account.signers.first().hasAttributes())
-        assertTrue(account.kyc.hasAttributes())
-        assertFalse(account.referrer.hasAttributes())
-        assertFalse(account.referrals.first().hasAttributes())
-        assertNotNull(account.limits.annualOut)
     }
 
     @Test
@@ -47,11 +43,6 @@ class AccountModelTest {
 
         assertTrue(account.hasAttributes())
         assertTrue(account.balances.first().hasAttributes())
-        assertTrue(account.signers.first().hasAttributes())
-        assertTrue(account.kyc.hasAttributes())
-        assertFalse(account.referrer.hasAttributes())
-        assertFalse(account.referrals.first().hasAttributes())
-        assertNotNull(account.limits.annualOut)
     }
 
     private val accountResponse = "{  \n" +

@@ -2,8 +2,9 @@ package org.tokend.sdk.test.jsonapi
 
 import org.junit.Assert
 import org.junit.Test
-import org.tokend.sdk.api.v2.assetpairs.model.AssetPairResource
+import org.tokend.sdk.api.generated.resources.AssetPairResource
 import org.tokend.sdk.factory.JsonApiToolsProvider
+import org.tokend.sdk.utils.extentions.has
 import org.tokend.wallet.xdr.AssetPairPolicy
 
 class AssetPairsModelTest {
@@ -22,7 +23,7 @@ class AssetPairsModelTest {
         Assert.assertNotNull(pair.baseAsset)
         Assert.assertNotNull(pair.quoteAsset)
         Assert.assertNotEquals(pair.baseAsset.id, pair.quoteAsset.id)
-        Assert.assertTrue(pair.hasPolicy(AssetPairPolicy.TRADEABLE_SECONDARY_MARKET))
+        Assert.assertTrue(pair.policies.has(AssetPairPolicy.TRADEABLE_SECONDARY_MARKET.value))
     }
 
     @Test

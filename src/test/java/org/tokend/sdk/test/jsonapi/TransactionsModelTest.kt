@@ -3,7 +3,7 @@ package org.tokend.sdk.test.jsonapi
 import com.github.jasminb.jsonapi.ResourceConverter
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import org.tokend.sdk.api.v2.transactions.model.TransactionResource
+import org.tokend.sdk.api.generated.resources.TransactionResource
 import org.tokend.sdk.factory.JsonApiToolsProvider
 
 class TransactionsModelTest {
@@ -18,9 +18,6 @@ class TransactionsModelTest {
         val transaction = document.get()
 
         JsonApiUtil.checkResourceNullability(transaction)
-
-        assertTrue(transaction.hasAttributes())
-        assertTrue(transaction.signatures.isNotEmpty())
     }
 
     @Test
@@ -40,11 +37,6 @@ class TransactionsModelTest {
         JsonApiUtil.checkResourceNullability(transactions)
 
         assertTrue(transactions.isNotEmpty())
-
-        val transaction = transactions.first()
-
-        assertTrue(transaction.hasAttributes())
-        assertTrue(transaction.signatures.isNotEmpty())
     }
 
     private val transactionResponse = "{\n" +

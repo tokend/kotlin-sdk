@@ -42,7 +42,7 @@ class QueryParamsTest {
                 accountTypes = listOf(AccountType.NOT_VERIFIED),
                 signerTypes = listOf(SignerType.ACCOUNT_MANAGER),
                 isBlocked = false,
-                include = listOf(AccountParamsV2.Includes.EXTERNAL_ACCOUNTS)
+                include = listOf(AccountParamsV2.Includes.BALANCES_STATE)
         )
 
         Assert.assertEquals(expected, params.map().toString())
@@ -56,7 +56,7 @@ class QueryParamsTest {
                 .withAccountTypes(AccountType.NOT_VERIFIED)
                 .withSignerTypes(SignerType.ACCOUNT_MANAGER)
                 .withIsBlocked(false)
-                .withInclude(AccountParamsV2.Includes.EXTERNAL_ACCOUNTS)
+                .withInclude(AccountParamsV2.Includes.BALANCES_STATE)
                 .build()
 
         Assert.assertEquals(expected, params.map().toString())

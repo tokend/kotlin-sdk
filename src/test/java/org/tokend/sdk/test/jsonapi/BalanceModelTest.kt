@@ -3,7 +3,7 @@ package org.tokend.sdk.test.jsonapi
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import org.tokend.sdk.api.v2.balances.model.BalanceResource
+import org.tokend.sdk.api.generated.resources.BalanceResource
 import org.tokend.sdk.factory.JsonApiToolsProvider
 
 class BalanceModelTest {
@@ -20,7 +20,6 @@ class BalanceModelTest {
 
         assertTrue(balance.hasAttributes())
         assertFalse(balance.asset.hasAttributes())
-        assertFalse(balance.account.hasAttributes())
     }
 
     @Test

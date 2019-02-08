@@ -2,8 +2,8 @@ package org.tokend.sdk.test.jsonapi
 
 import org.junit.Assert
 import org.junit.Test
-import org.tokend.sdk.api.v2.operations.model.OperationResource
-import org.tokend.sdk.api.v2.operations.model.details.CreateAccountOpDetailsResource
+import org.tokend.sdk.api.generated.resources.OpCreateAccountDetailsResource
+import org.tokend.sdk.api.generated.resources.OperationResource
 import org.tokend.sdk.factory.JsonApiToolsProvider
 
 class OperationModelTest {
@@ -19,9 +19,9 @@ class OperationModelTest {
         JsonApiUtil.checkResourceNullability(operation)
 
         Assert.assertTrue(operation.hasAttributes())
-        Assert.assertTrue(operation.transaction.hasAttributes())
-        Assert.assertFalse(operation.sourceAccount.hasAttributes())
-        Assert.assertTrue(operation.getDetails<CreateAccountOpDetailsResource>().hasAttributes())
+        Assert.assertTrue(operation.tx.hasAttributes())
+        Assert.assertFalse(operation.source.hasAttributes())
+        Assert.assertTrue((operation.details as OpCreateAccountDetailsResource).hasAttributes())
     }
 
     private val operationResponse = "{\n" +
