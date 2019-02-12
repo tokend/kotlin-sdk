@@ -13,6 +13,7 @@ open class OffersPageParamsV2(
         val quoteAsset: String? = null,
         val ownerAccount: String? = null,
         val orderBookId: Long? = null,
+        val isBuy: Boolean? = null,
         include: Collection<String>? = null,
         pagingParams: PagingParamsV2? = null
 ) : PageQueryParams(pagingParams, include) {
@@ -25,6 +26,7 @@ open class OffersPageParamsV2(
             quoteAsset?.also { putFilter("quote_asset", it) }
             ownerAccount?.also { putFilter("owner", it) }
             orderBookId?.also { putFilter("order_book_id", it) }
+            isBuy?.also { putFilter("is_buy", it) }
         }
     }
 
@@ -35,6 +37,7 @@ open class OffersPageParamsV2(
         private var quoteAsset: String? = null
         private var ownerAccount: String? = null
         private var orderBookId: Long? = null
+        private var isBuy: Boolean? = null
 
         fun withBaseBalance(balance: String) = also { this.baseBalance = balance }
 
@@ -47,6 +50,8 @@ open class OffersPageParamsV2(
         fun withOwnerAccount(account: String) = also { this.ownerAccount = account }
 
         fun withOrderBookId(orderBookId: Long) = also { this.orderBookId = orderBookId }
+
+        fun withIsBuy(isBuy: Boolean) = also { this.isBuy = isBuy }
 
         override fun withPagingParams(pagingParams: PagingParamsV2) = also {
             super.withPagingParams(pagingParams)
@@ -61,7 +66,7 @@ open class OffersPageParamsV2(
         }
 
         override fun build(): OffersPageParamsV2 {
-            return OffersPageParamsV2(baseBalance, quoteBalance, baseAsset, quoteAsset, ownerAccount, orderBookId, include, pagingParams)
+            return OffersPageParamsV2(baseBalance, quoteBalance, baseAsset, quoteAsset, ownerAccount, orderBookId, isBuy, include, pagingParams)
         }
     }
 }

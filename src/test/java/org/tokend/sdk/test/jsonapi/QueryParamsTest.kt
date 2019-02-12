@@ -180,7 +180,7 @@ class QueryParamsTest {
 
     @Test
     fun offersParams() {
-        val expected = "{include=base_asset, filter[base_balance]=10, filter[quote_balance]=15, filter[base_asset]=ETH, filter[quote_asset]=BTC, filter[owner]=$accountId, filter[order_book_id]=9223372036854775807}"
+        val expected = "{include=base_asset, filter[base_balance]=10, filter[quote_balance]=15, filter[base_asset]=ETH, filter[quote_asset]=BTC, filter[owner]=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, filter[order_book_id]=9223372036854775807, filter[is_buy]=false}"
 
         val params = OffersPageParamsV2(
                 baseBalance = "10",
@@ -189,6 +189,7 @@ class QueryParamsTest {
                 quoteAsset = "BTC",
                 ownerAccount = accountId,
                 orderBookId = Long.MAX_VALUE,
+                isBuy = false,
                 include = listOf(OfferParamsV2.Includes.BASE_ASSET)
         )
 
@@ -197,7 +198,7 @@ class QueryParamsTest {
 
     @Test
     fun offersParamsBuilder() {
-        val expected = "{include=base_asset, filter[base_balance]=10, filter[quote_balance]=15, filter[base_asset]=ETH, filter[quote_asset]=BTC, filter[owner]=$accountId, filter[order_book_id]=9223372036854775807}"
+        val expected = "{include=base_asset, filter[base_balance]=10, filter[quote_balance]=15, filter[base_asset]=ETH, filter[quote_asset]=BTC, filter[owner]=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, filter[order_book_id]=9223372036854775807, filter[is_buy]=false}"
 
         val params = OffersPageParamsV2.Builder()
                 .withBaseBalance("10")
@@ -206,6 +207,7 @@ class QueryParamsTest {
                 .withQuoteAsset("BTC")
                 .withOwnerAccount(accountId)
                 .withOrderBookId(Long.MAX_VALUE)
+                .withIsBuy(false)
                 .withInclude(OfferParamsV2.Includes.BASE_ASSET)
                 .build()
 
