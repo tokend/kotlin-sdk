@@ -19,7 +19,10 @@ open class AccountsApi(
     /**
      * Will return specific account by ID.
      * @see <a href="https://tokend.gitlab.io/docs/?kotlin#get-account-by-id">Docs</a>
+     *
+     * @see org.tokend.sdk.api.v2.accounts.AccountsApiV2.getById
      * */
+    @Deprecated("We are going to replace with AccountsApiV2.getById")
     open fun getById(accountId: String): ApiRequest<Account> {
         return SimpleRetrofitApiRequest(
                 accountsService.getAccount(accountId)
@@ -31,6 +34,7 @@ open class AccountsApi(
      * @see <a href="https://tokend.gitlab.io/docs/?http#get-account-signers">Docs</a>
      */
     open fun getSigners(accountId: String): ApiRequest<List<Account.Signer>> {
+
         return MappedRetrofitApiRequest(
                 accountsService.getSigners(accountId),
                 { accountResponse ->
@@ -42,7 +46,10 @@ open class AccountsApi(
     /**
      * Will return account balances.
      * @see <a href="https://tokend.gitlab.io/docs/?http#get-account-balances">Docs</a>
+     *
+     * @see org.tokend.sdk.api.v2.accounts.AccountsApiV2.getBalances
      */
+    @Deprecated("We are going to replace with AccountsApiV2.getBalances")
     open fun getBalances(accountId: String): ApiRequest<List<Account.Balance>> {
         return SimpleRetrofitApiRequest(
                 accountsService.getBalances(accountId)
@@ -128,7 +135,10 @@ open class AccountsApi(
     /**
      * Will return list of pending offers for specified [Account].
      * @see <a href="https://tokend.gitlab.io/docs/?http#get-account-pending-offers">Docs</a>
+     *
+     * @see org.tokend.sdk.api.v2.offers.OffersApiV2.get
      */
+    @Deprecated("We are going to replace with OffersApiV2.get")
     open fun getPendingOffers(accountId: String,
                               offersParams: OffersParams? = null): ApiRequest<DataPage<Offer>> {
         return MappedRetrofitApiRequest(

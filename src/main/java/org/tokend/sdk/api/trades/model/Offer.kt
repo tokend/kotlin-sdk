@@ -19,7 +19,10 @@ import java.util.*
  * @param orderBookId id of the order book, 0 for the secondary market, id of the sale in case
  * of investing. If not set will be 0
  * @param fee percent fee for the offer, paid in quote asset
+ *
+ * @see org.tokend.sdk.api.generated.resources.OfferResource
  */
+@Deprecated("We are going to replace with OfferResource")
 open class Offer
 @JvmOverloads
 constructor(

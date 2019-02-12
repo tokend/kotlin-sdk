@@ -2,9 +2,14 @@ package org.tokend.sdk.api.sales.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.google.gson.annotations.SerializedName
+import org.tokend.sdk.api.generated.resources.SaleQuoteAssetResource
 import org.tokend.sdk.utils.BigDecimalUtil
 import java.math.BigDecimal
 
+/**
+ * @see org.tokend.sdk.api.generated.resources.SaleQuoteAssetResource
+ */
+@Deprecated("We are going to replace with SaleQuoteAssetResource")
 open class SaleQuoteAsset(@SerializedName("asset")
                           @JsonProperty("asset")
                           val code: String,

@@ -4,6 +4,10 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 import java.math.BigDecimal
 
+/**
+ * @see org.tokend.sdk.api.generated.resources.AssetResource
+ */
+@Deprecated("We are going to replace with AssetResource")
 open class Asset<DetailsType : AssetDetails>(
         @SerializedName("code") val code: String,
         @SerializedName("owner") val ownerAccount: String?,

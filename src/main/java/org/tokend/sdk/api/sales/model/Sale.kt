@@ -7,6 +7,10 @@ import java.io.Serializable
 import java.math.BigDecimal
 import java.util.*
 
+/**
+ * @see org.tokend.sdk.api.generated.resources.SaleResource
+ */
+@Deprecated("We are going to replace with SaleResource")
 open class Sale<DetailsType, StatisticsType, QuoteAssetType>(@SerializedName("id")
                                                              val id: Long,
                                                              @SerializedName("paging_token")

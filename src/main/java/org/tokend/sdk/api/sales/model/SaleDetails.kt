@@ -7,6 +7,7 @@ import org.tokend.sdk.api.base.model.RemoteFile
 import org.tokend.sdk.utils.HashCodes
 import java.io.Serializable
 
+@Deprecated("Sale details are system-specific and will be removed from SDK")
 open class SaleDetails(@SerializedName("name")
                        @JsonProperty("name")
                        val name: String,
