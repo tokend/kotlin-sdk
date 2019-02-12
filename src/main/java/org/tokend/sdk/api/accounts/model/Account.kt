@@ -5,7 +5,10 @@ import org.tokend.sdk.api.base.model.NameValue
 import java.math.BigDecimal
 import java.util.*
 
-
+/**
+ * @see org.tokend.sdk.api.generated.resources.AccountResource
+ */
+@Deprecated("We are going to replace with AccountResource")
 open class Account(
         @SerializedName("account_id")
         val accountId: String,
@@ -62,7 +65,10 @@ open class Account(
 
     /**
      * Represents account balance.
+     *
+     * @see org.tokend.sdk.api.generated.resources.BalanceResource
      */
+    @Deprecated("We are going to replace with BalanceResource")
     open class Balance internal constructor(@SerializedName("balance_id")
                                             val balanceId: String,
                                             @SerializedName("balance")

@@ -4,6 +4,10 @@ import com.google.gson.annotations.SerializedName
 import org.tokend.sdk.utils.HashCodes
 import java.math.BigDecimal
 
+/**
+ * @see org.tokend.sdk.api.generated.resources.AssetPairResource
+ */
+@Deprecated("We are going to replace with AssetPairResource")
 open class AssetPair(
         @SerializedName("base") val base: String,
         @SerializedName("quote") val quote: String,

@@ -5,6 +5,10 @@ import org.tokend.sdk.api.base.model.NameValue
 import java.math.BigDecimal
 import java.util.*
 
+/**
+ * @see org.tokend.sdk.api.generated.resources.SaleResource
+ */
+@Deprecated("Sale details are system-specific and will be removed from SDK")
 open class SimpleSale(id: Long,
                       pagingToken: String,
                       ownerAccount: String,

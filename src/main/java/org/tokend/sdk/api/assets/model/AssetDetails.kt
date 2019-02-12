@@ -6,6 +6,7 @@ import org.tokend.sdk.api.base.model.RemoteFile
 import org.tokend.sdk.utils.HashCodes
 import java.io.Serializable
 
+@Deprecated("Asset details are system-specific and will be removed from SDK")
 open class AssetDetails(
         @SerializedName("name")
         @JsonProperty("name")
