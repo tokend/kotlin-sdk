@@ -60,7 +60,10 @@ open class AccountsApi(
      * Will return extended account balances details.
      * Includes asset details for every balance and sales created for this asset, if present.
      * @see <a href="https://tokend.gitlab.io/docs/?http#get-account-balances-details">Docs</a>
+     *
+     * @see org.tokend.sdk.api.v2.accounts.AccountsApiV2.getBalances
      */
+    @Deprecated("We are going to replace with AccountsApiV2.getBalances")
     open fun getBalancesDetails(accountId: String): ApiRequest<List<SimpleBalanceDetails>> {
         return SimpleRetrofitApiRequest(
                 accountsService.getBalancesDetails(accountId)
@@ -70,7 +73,10 @@ open class AccountsApi(
     /**
      * Will return list of account payments represented by [UnifiedOperationRecord].
      * @see <a href="https://tokend.gitlab.io/docs/?http#get-account-payments">Docs</a>
+     *
+     * @see org.tokend.sdk.api.v2.history.HistoryApi.get
      */
+    @Deprecated("We are going to replace with HistoryApi.get")
     open fun getRawPayments(accountId: String,
                             paymentsParams: PaymentsParams? = null
     ): ApiRequest<DataPage<UnifiedOperationRecord>> {
@@ -88,7 +94,10 @@ open class AccountsApi(
      * using [DefaultUnifiedOperationRecordConverter].
      * @see getRawPayments()
      * @see TransferOperation
+     *
+     * @see org.tokend.sdk.api.v2.history.HistoryApi.get
      */
+    @Deprecated("We are going to replace with HistoryApi.get")
     open fun getPayments(accountId: String,
                          paymentsParams: PaymentsParams
     ): ApiRequest<DataPage<TransferOperation>> {
@@ -112,7 +121,10 @@ open class AccountsApi(
      * @see getRawPayments()
      * @see TransferOperation
      * @see UnifiedOperationRecordConverter
+     *
+     * @see org.tokend.sdk.api.v2.history.HistoryApi.get
      */
+    @Deprecated("We are going to replace with HistoryApi.get")
     open fun getPayments(accountId: String,
                          paymentsParams: PaymentsParams,
                          recordConverter: UnifiedOperationRecordConverter
