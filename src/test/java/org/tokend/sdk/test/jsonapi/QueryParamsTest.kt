@@ -180,7 +180,7 @@ class QueryParamsTest {
 
     @Test
     fun offersParams() {
-        val expected = "{include=base_asset, filter[base_balance]=10, filter[quote_balance]=15, filter[base_asset]=ETH, filter[quote_asset]=BTC, filter[owner]=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, filter[order_book]=9223372036854775807, filter[is_buy]=false}"
+        val expected = "{include=base_asset, filter[base_balance]=10, filter[quote_balance]=15, filter[base_asset]=ETH, filter[quote_asset]=BTC, filter[owner]=$accountId, filter[order_book]=9223372036854775807, filter[is_buy]=false}"
 
         val params = OffersPageParamsV2(
                 baseBalance = "10",
@@ -198,7 +198,7 @@ class QueryParamsTest {
 
     @Test
     fun offersParamsBuilder() {
-        val expected = "{include=base_asset, filter[base_balance]=10, filter[quote_balance]=15, filter[base_asset]=ETH, filter[quote_asset]=BTC, filter[owner]=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, filter[order_book]=9223372036854775807, filter[is_buy]=false}"
+        val expected = "{include=base_asset, filter[base_balance]=10, filter[quote_balance]=15, filter[base_asset]=ETH, filter[quote_asset]=BTC, filter[owner]=$accountId, filter[order_book]=9223372036854775807, filter[is_buy]=false}"
 
         val params = OffersPageParamsV2.Builder()
                 .withBaseBalance("10")
@@ -309,7 +309,7 @@ class QueryParamsTest {
 
     @Test
     fun operationsParams() {
-        val expected = "{include=details,source, order=desc, limit=42, cursor=10, page=10, page[number]=10, page[limit]=42, filter[tx_id]=txid, filter[account_id]=$accountId, filter[reference]=reference, filter[account_type]=6, filter[states]=7, filter[subset]=payments}"
+        val expected = "{include=details,source, order=desc, limit=42, cursor=10, page=10, page[number]=10, page[limit]=42, page[order]=desc, filter[tx_id]=txid, filter[account_id]=$accountId, filter[reference]=reference, filter[account_type]=6, filter[states]=7, filter[subset]=payments}"
 
         val params = OperationsPageParamsV2(
                 transaction = "txid",
@@ -334,7 +334,7 @@ class QueryParamsTest {
 
     @Test
     fun operationsParamsBuilder() {
-        val expected = "{include=details,source, order=desc, limit=42, cursor=10, page=10, page[number]=10, page[limit]=42, filter[tx_id]=txid, filter[account_id]=$accountId, filter[reference]=reference, filter[account_type]=6, filter[states]=7, filter[subset]=payments}"
+        val expected = "{include=details,source, order=desc, limit=42, cursor=10, page=10, page[number]=10, page[limit]=42, page[order]=desc, filter[tx_id]=txid, filter[account_id]=$accountId, filter[reference]=reference, filter[account_type]=6, filter[states]=7, filter[subset]=payments}"
 
         val params = OperationsPageParamsV2.Builder()
                 .withTransaction("txid")
@@ -361,7 +361,7 @@ class QueryParamsTest {
 
     @Test
     fun participantEffectsParams() {
-        val expected = "{include=operation,operation.details,effect, order=desc, limit=18, cursor=6, page=6, page[number]=6, page[limit]=18, filter[account]=$accountId, filter[balance]=superbalance}"
+        val expected = "{include=operation,operation.details,effect, order=desc, limit=18, cursor=6, page=6, page[number]=6, page[limit]=18, page[order]=desc, filter[account]=$accountId, filter[balance]=superbalance}"
 
         val params = ParticipantEffectsPageParams(
                 account = accountId,
@@ -384,7 +384,7 @@ class QueryParamsTest {
 
     @Test
     fun participantEffectsParamsBuilder() {
-        val expected = "{include=operation,operation.details,effect, order=desc, limit=18, cursor=6, page=6, page[number]=6, page[limit]=18, filter[account]=$accountId, filter[balance]=superbalance}"
+        val expected = "{include=operation,operation.details,effect, order=desc, limit=18, cursor=6, page=6, page[number]=6, page[limit]=18, page[order]=desc, filter[account]=$accountId, filter[balance]=superbalance}"
 
         val params = ParticipantEffectsPageParams.Builder()
                 .withAccount(accountId)
