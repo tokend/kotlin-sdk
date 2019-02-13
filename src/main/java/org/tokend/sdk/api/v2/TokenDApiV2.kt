@@ -19,6 +19,8 @@ import org.tokend.sdk.api.v2.offers.OffersApiV2
 import org.tokend.sdk.api.v2.offers.OffersServiceV2
 import org.tokend.sdk.api.v2.operations.OperationsApiV2
 import org.tokend.sdk.api.v2.operations.OperationsServiceV2
+import org.tokend.sdk.api.v2.orderbook.OrderBooksApi
+import org.tokend.sdk.api.v2.orderbook.OrderBooksService
 import org.tokend.sdk.api.v2.requests.RequestsApiV2
 import org.tokend.sdk.api.v2.requests.RequestsServiceV2
 import org.tokend.sdk.api.v2.sales.SalesApiV2
@@ -85,5 +87,9 @@ open class TokenDApiV2(rootUrl: String,
 
     open val history: HistoryApi by lazy {
         HistoryApi(getService(HistoryService::class.java))
+    }
+
+    open val orderBooks: OrderBooksApi by lazy {
+        OrderBooksApi(getService(OrderBooksService::class.java))
     }
 }

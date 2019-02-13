@@ -22,6 +22,7 @@ import org.tokend.sdk.api.v2.offers.params.OfferParamsV2
 import org.tokend.sdk.api.v2.offers.params.OffersPageParamsV2
 import org.tokend.sdk.api.v2.operations.params.OperationParamsV2
 import org.tokend.sdk.api.v2.operations.params.OperationsPageParamsV2
+import org.tokend.sdk.api.v2.orderbook.params.OrderBookPageParams
 import org.tokend.sdk.api.v2.requests.params.RequestParamsV2
 import org.tokend.sdk.api.v2.requests.params.RequestsPageParamsV2
 import org.tokend.sdk.api.v2.sales.params.SaleParamsV2
@@ -399,6 +400,52 @@ class QueryParamsTest {
                                 order = PagingOrder.DESC,
                                 limit = 18,
                                 page = "6"
+                        )
+                )
+                .build()
+
+        Assert.assertEquals(expected, params.map().toString())
+    }
+
+    @Test
+    fun orderBookParams() {
+        val expected = "{include=base_asset,quote_asset, order=desc, limit=10, cursor=8, page=8, page[number]=8, page[limit]=10, page[order]=desc, filter[base_asset]=BTC, filter[quote_asset]=ETH, filter[is_buy]=false}"
+
+        val params = OrderBookPageParams(
+                baseAsset = "BTC",
+                quoteAsset = "ETH",
+                isBuy = false,
+                include = listOf(
+                        OrderBookPageParams.Includes.BASE_ASSET,
+                        OrderBookPageParams.Includes.QUOTE_ASSET
+                ),
+                pagingParams = PagingParamsV2(
+                        order = PagingOrder.DESC,
+                        limit = 10,
+                        page = "8"
+                )
+        )
+
+        Assert.assertEquals(expected, params.map().toString())
+    }
+
+    @Test
+    fun oderBookParamsBuilder() {
+        val expected = "{include=base_asset,quote_asset, order=desc, limit=10, cursor=8, page=8, page[number]=8, page[limit]=10, page[order]=desc, filter[base_asset]=BTC, filter[quote_asset]=ETH, filter[is_buy]=false}"
+
+        val params = OrderBookPageParams.Builder()
+                .withBaseAsset("BTC")
+                .withQuoteAsset("ETH")
+                .withIsBuy(false)
+                .withInclude(
+                        OrderBookPageParams.Includes.BASE_ASSET,
+                        OrderBookPageParams.Includes.QUOTE_ASSET
+                )
+                .withPagingParams(
+                        PagingParamsV2(
+                                order = PagingOrder.DESC,
+                                limit = 10,
+                                page = "8"
                         )
                 )
                 .build()
