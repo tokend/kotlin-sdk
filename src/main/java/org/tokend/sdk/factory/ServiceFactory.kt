@@ -50,7 +50,8 @@ class ServiceFactory(private val url: String,
                         )
                         .apply {
                             if (requestSigner != null) {
-                                addInterceptor(
+                                interceptors().add(
+                                        0,
                                         SignInterceptor(
                                                 url,
                                                 requestSigner
