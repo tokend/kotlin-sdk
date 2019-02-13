@@ -8,11 +8,11 @@ import retrofit2.http.Path
 import retrofit2.http.QueryMap
 
 interface AccountsServiceV3 {
-    @GET("accounts")
+    @GET("v3/accounts")
     @JvmSuppressWildcards
     fun getAccounts(@QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<AccountResource>>>
 
-    @GET("accounts/{id}")
+    @GET("v3/accounts/{id}")
     @JvmSuppressWildcards
     fun getAccountById(@Path("id") id: String,
                        @QueryMap query: Map<String, Any>): Call<JSONAPIDocument<AccountResource>>

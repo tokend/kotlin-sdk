@@ -7,7 +7,7 @@ import retrofit2.http.GET
 import retrofit2.http.QueryMap
 
 interface HistoryService {
-    @GET("history")
+    @GET("v3/history")
     @JvmSuppressWildcards
     fun getHistory(@QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<ParticipantEffectResource>>>
 }

@@ -8,7 +8,7 @@ import retrofit2.http.Path
 import retrofit2.http.QueryMap
 
 interface OrderBooksService {
-    @GET("order_books/{id}")
+    @GET("v3/order_book/{id}")
     @JvmSuppressWildcards
     fun getById(@Path("id") id: String,
                 @QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<OrderBookEntryResource>>>

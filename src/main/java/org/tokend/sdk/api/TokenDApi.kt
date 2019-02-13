@@ -65,7 +65,7 @@ constructor(
         withLogs: Boolean = true
 ) : BaseApi(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent, forceContentType, withLogs) {
     open val v3: TokenDApiV3 by lazy {
-        TokenDApiV3(rootUrl + "v3/", requestSigner, tfaCallback, cookieJarProvider, userAgent, withLogs)
+        TokenDApiV3(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent, withLogs)
     }
 
     open val accounts: AccountsApi by lazy {

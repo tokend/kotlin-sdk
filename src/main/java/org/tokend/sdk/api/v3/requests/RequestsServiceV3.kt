@@ -8,11 +8,11 @@ import retrofit2.http.Path
 import retrofit2.http.QueryMap
 
 interface RequestsServiceV3 {
-    @GET("requests")
+    @GET("v3/requests")
     @JvmSuppressWildcards
     fun getRequests(@QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<ReviewableRequestResource>>>
 
-    @GET("requests/{id}")
+    @GET("v3/requests/{id}")
     @JvmSuppressWildcards
     fun getRequestById(@Path("id") id: String,
                        @QueryMap query: Map<String, Any>): Call<JSONAPIDocument<ReviewableRequestResource>>

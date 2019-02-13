@@ -8,11 +8,11 @@ import retrofit2.http.Path
 import retrofit2.http.QueryMap
 
 interface TransactionsServiceV3 {
-    @GET("transactions")
+    @GET("v3/transactions")
     @JvmSuppressWildcards
     fun getTransactions(@QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<TransactionResource>>>
 
-    @GET("offers/{id}")
+    @GET("v3/transactions/{id}")
     @JvmSuppressWildcards
     fun getTransactionById(@Path("id") id: String,
                            @QueryMap query: Map<String, Any>): Call<JSONAPIDocument<TransactionResource>>
