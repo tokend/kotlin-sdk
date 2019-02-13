@@ -15,5 +15,6 @@ class BitmaskCollection {
         )
 
         Assert.assertEquals(0b10111, collection.map { it.toLong() }.bitmask())
+        Assert.assertEquals(0b10111, collection.bitmask())
     }
 }
