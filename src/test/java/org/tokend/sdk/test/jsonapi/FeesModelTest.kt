@@ -2,8 +2,8 @@ package org.tokend.sdk.test.jsonapi
 
 import org.junit.Assert
 import org.junit.Test
-import org.tokend.sdk.api.v2.fees.model.ExactFeeResource
-import org.tokend.sdk.api.v2.fees.model.FeeResource
+import org.tokend.sdk.api.v3.fees.model.ExactFeeResource
+import org.tokend.sdk.api.v3.fees.model.FeeResource
 import org.tokend.sdk.factory.JsonApiToolsProvider
 
 class FeesModelTest {

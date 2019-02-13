@@ -3,8 +3,8 @@ package org.tokend.sdk.test.jsonapi.integration
 import org.junit.Assert
 import org.junit.Test
 import org.tokend.sdk.api.base.params.PagingParamsV2
-import org.tokend.sdk.api.v2.assets.params.AssetParams
-import org.tokend.sdk.api.v2.assets.params.AssetsPageParams
+import org.tokend.sdk.api.v3.assets.params.AssetParams
+import org.tokend.sdk.api.v3.assets.params.AssetsPageParams
 import org.tokend.sdk.test.Util
 import org.tokend.sdk.test.jsonapi.JsonApiUtil
 import org.tokend.sdk.utils.extentions.has
@@ -15,7 +15,7 @@ class AssetsIntegrationTest {
     fun assetsList() {
         val api = Util.getApi()
 
-        val assets = api.v2
+        val assets = api.v3
                 .assets
                 .get(
                         AssetsPageParams(
@@ -35,7 +35,7 @@ class AssetsIntegrationTest {
     fun assetsListWithIncludes() {
         val api = Util.getApi()
 
-        val assets = api.v2
+        val assets = api.v3
                 .assets
                 .get(
                         AssetsPageParams(
@@ -57,7 +57,7 @@ class AssetsIntegrationTest {
         val api = Util.getApi()
         val policy = AssetPolicy.STATS_QUOTE_ASSET
 
-        val assets = api.v2
+        val assets = api.v3
                 .assets
                 .get(
                         AssetsPageParams.Builder()
@@ -78,7 +78,7 @@ class AssetsIntegrationTest {
     fun singleAsset() {
         val api = Util.getApi()
 
-        val assets = api.v2
+        val assets = api.v3
                 .assets
                 .get(
                         AssetsPageParams.Builder()
@@ -90,7 +90,7 @@ class AssetsIntegrationTest {
 
         val id = assets.items.first().id
 
-        val asset = api.v2
+        val asset = api.v3
                 .assets
                 .getById(id, AssetParams(
                         include = listOf(AssetParams.Includes.OWNER))

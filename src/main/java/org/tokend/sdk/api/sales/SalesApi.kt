@@ -16,9 +16,9 @@ open class SalesApi(
      * Will return detailed information about the sale with specified ID.
      * @see <a href="https://tokend.gitlab.io/docs/?http#get-sale-by-id">Docs</a>
      *
-     * @see org.tokend.sdk.api.v2.sales.SalesApiV2.getById
+     * @see org.tokend.sdk.api.v3.sales.SalesApiV3.getById
      */
-    @Deprecated("We are going to replace with SalesApiV2.getById")
+    @Deprecated("We are going to replace with SalesApiV3.getById")
     open fun getById(id: Long): ApiRequest<SimpleSale> {
         return SimpleRetrofitApiRequest(
                 salesService.getSale(id)
@@ -29,9 +29,9 @@ open class SalesApi(
      * Will return sales that match specified filters.
      * @see <a href="https://tokend.gitlab.io/docs/?http#get-sales">Docs</a>
      *
-     * @see org.tokend.sdk.api.v2.sales.SalesApiV2.get
+     * @see org.tokend.sdk.api.v3.sales.SalesApiV3.get
      */
-    @Deprecated("We are going to replace with SalesApiV2.get")
+    @Deprecated("We are going to replace with SalesApiV3.get")
     open fun getAll(params: SalesParams? = null): ApiRequest<DataPage<SimpleSale>> {
         return MappedRetrofitApiRequest(
                 salesService.getSales(params?.map()),

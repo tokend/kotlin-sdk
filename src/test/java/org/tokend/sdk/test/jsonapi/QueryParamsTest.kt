@@ -6,28 +6,26 @@ import org.tokend.sdk.api.base.params.PagingOrder
 import org.tokend.sdk.api.base.params.PagingParamsV2
 import org.tokend.sdk.api.requests.model.base.RequestState
 import org.tokend.sdk.api.sales.model.SaleStates
-import org.tokend.sdk.api.v2.accounts.params.AccountParamsV2
-import org.tokend.sdk.api.v2.accounts.params.AccountsPageParamsV2
-import org.tokend.sdk.api.v2.assetpairs.params.AssetPairParams
-import org.tokend.sdk.api.v2.assetpairs.params.AssetPairsPageParams
-import org.tokend.sdk.api.v2.assets.params.AssetParams
-import org.tokend.sdk.api.v2.assets.params.AssetsPageParams
-import org.tokend.sdk.api.v2.balances.params.BalanceParams
-import org.tokend.sdk.api.v2.balances.params.BalancesPageParams
-import org.tokend.sdk.api.v2.fees.params.FeeParamsV2
-import org.tokend.sdk.api.v2.fees.params.FeesPageParamsV2
-import org.tokend.sdk.api.v2.history.params.ParticipantEffectsPageParams
-import org.tokend.sdk.api.v2.history.params.ParticipantEffectsParams
-import org.tokend.sdk.api.v2.offers.params.OfferParamsV2
-import org.tokend.sdk.api.v2.offers.params.OffersPageParamsV2
-import org.tokend.sdk.api.v2.operations.params.OperationParamsV2
-import org.tokend.sdk.api.v2.operations.params.OperationsPageParamsV2
-import org.tokend.sdk.api.v2.orderbook.params.OrderBookPageParams
-import org.tokend.sdk.api.v2.requests.params.RequestParamsV2
-import org.tokend.sdk.api.v2.requests.params.RequestsPageParamsV2
-import org.tokend.sdk.api.v2.sales.params.SaleParamsV2
-import org.tokend.sdk.api.v2.sales.params.SalesPageParamsV2
-import org.tokend.sdk.api.v2.transactions.params.TransactionsPageParams
+import org.tokend.sdk.api.v3.accounts.params.AccountParamsV3
+import org.tokend.sdk.api.v3.accounts.params.AccountsPageParamsV3
+import org.tokend.sdk.api.v3.assetpairs.params.AssetPairParams
+import org.tokend.sdk.api.v3.assetpairs.params.AssetPairsPageParams
+import org.tokend.sdk.api.v3.assets.params.AssetParams
+import org.tokend.sdk.api.v3.assets.params.AssetsPageParams
+import org.tokend.sdk.api.v3.balances.params.BalanceParams
+import org.tokend.sdk.api.v3.balances.params.BalancesPageParams
+import org.tokend.sdk.api.v3.fees.params.FeeParamsV3
+import org.tokend.sdk.api.v3.fees.params.FeesPageParamsV3
+import org.tokend.sdk.api.v3.history.params.ParticipantEffectsPageParams
+import org.tokend.sdk.api.v3.history.params.ParticipantEffectsParams
+import org.tokend.sdk.api.v3.offers.params.OfferParamsV3
+import org.tokend.sdk.api.v3.offers.params.OffersPageParamsV3
+import org.tokend.sdk.api.v3.orderbook.params.OrderBookPageParams
+import org.tokend.sdk.api.v3.requests.params.RequestParamsV3
+import org.tokend.sdk.api.v3.requests.params.RequestsPageParamsV3
+import org.tokend.sdk.api.v3.sales.params.SaleParamsV3
+import org.tokend.sdk.api.v3.sales.params.SalesPageParamsV3
+import org.tokend.sdk.api.v3.transactions.params.TransactionsPageParams
 import org.tokend.sdk.test.Config
 import org.tokend.wallet.xdr.*
 import java.math.BigDecimal
@@ -41,11 +39,11 @@ class QueryParamsTest {
     fun accountsParams() {
         val expected = "{include=balances.state, filter[account_type]=5, filter[signer_type]=2048, filter[is_blocked]=false}"
 
-        val params = AccountsPageParamsV2(
+        val params = AccountsPageParamsV3(
                 accountTypes = listOf(AccountType.NOT_VERIFIED),
                 signerTypes = listOf(SignerType.ACCOUNT_MANAGER),
                 isBlocked = false,
-                include = listOf(AccountParamsV2.Includes.BALANCES_STATE)
+                include = listOf(AccountParamsV3.Includes.BALANCES_STATE)
         )
 
         Assert.assertEquals(expected, params.map().toString())
@@ -55,11 +53,11 @@ class QueryParamsTest {
     fun accountsParamsBuilder() {
         val expected = "{include=balances.state, filter[account_type]=5, filter[signer_type]=2048, filter[is_blocked]=false}"
 
-        val params = AccountsPageParamsV2.Builder()
+        val params = AccountsPageParamsV3.Builder()
                 .withAccountTypes(AccountType.NOT_VERIFIED)
                 .withSignerTypes(SignerType.ACCOUNT_MANAGER)
                 .withIsBlocked(false)
-                .withInclude(AccountParamsV2.Includes.BALANCES_STATE)
+                .withInclude(AccountParamsV3.Includes.BALANCES_STATE)
                 .build()
 
         Assert.assertEquals(expected, params.map().toString())
@@ -147,7 +145,7 @@ class QueryParamsTest {
     fun feesParams() {
         val expected = "{include=account, filter[asset]=ETH, filter[fee_type]=0, filter[subtype]=1, filter[account_id]=$accountId, filter[account_type]=10, filter[lower_bound]=1, filter[upper_bound]=10}"
 
-        val params = FeesPageParamsV2(
+        val params = FeesPageParamsV3(
                 asset = "ETH",
                 type = FeeType.PAYMENT_FEE,
                 subtype = 1,
@@ -155,7 +153,7 @@ class QueryParamsTest {
                 accountType = AccountType.VERIFIED,
                 lowerBound = BigDecimal.ONE,
                 upperBound = BigDecimal.TEN,
-                include = listOf(FeeParamsV2.Includes.ACCOUNT)
+                include = listOf(FeeParamsV3.Includes.ACCOUNT)
         )
 
         Assert.assertEquals(expected, params.map().toString())
@@ -165,7 +163,7 @@ class QueryParamsTest {
     fun feesParamsBuilder() {
         val expected = "{include=account, filter[asset]=ETH, filter[fee_type]=0, filter[subtype]=1, filter[account_id]=$accountId, filter[account_type]=10, filter[lower_bound]=1, filter[upper_bound]=10}"
 
-        val params = FeesPageParamsV2.Builder()
+        val params = FeesPageParamsV3.Builder()
                 .withAsset("ETH")
                 .withType(FeeType.PAYMENT_FEE)
                 .withSubtype(1)
@@ -173,7 +171,7 @@ class QueryParamsTest {
                 .withAccountType(AccountType.VERIFIED)
                 .withLowerBound(BigDecimal.ONE)
                 .withUpperBound(BigDecimal.TEN)
-                .withInclude(FeeParamsV2.Includes.ACCOUNT)
+                .withInclude(FeeParamsV3.Includes.ACCOUNT)
                 .build()
 
         Assert.assertEquals(expected, params.map().toString())
@@ -183,7 +181,7 @@ class QueryParamsTest {
     fun offersParams() {
         val expected = "{include=base_asset, filter[base_balance]=10, filter[quote_balance]=15, filter[base_asset]=ETH, filter[quote_asset]=BTC, filter[owner]=$accountId, filter[order_book]=9223372036854775807, filter[is_buy]=false}"
 
-        val params = OffersPageParamsV2(
+        val params = OffersPageParamsV3(
                 baseBalance = "10",
                 quoteBalance = "15",
                 baseAsset = "ETH",
@@ -191,7 +189,7 @@ class QueryParamsTest {
                 ownerAccount = accountId,
                 orderBook = Long.MAX_VALUE,
                 isBuy = false,
-                include = listOf(OfferParamsV2.Includes.BASE_ASSET)
+                include = listOf(OfferParamsV3.Includes.BASE_ASSET)
         )
 
         Assert.assertEquals(expected, params.map().toString())
@@ -201,7 +199,7 @@ class QueryParamsTest {
     fun offersParamsBuilder() {
         val expected = "{include=base_asset, filter[base_balance]=10, filter[quote_balance]=15, filter[base_asset]=ETH, filter[quote_asset]=BTC, filter[owner]=$accountId, filter[order_book]=9223372036854775807, filter[is_buy]=false}"
 
-        val params = OffersPageParamsV2.Builder()
+        val params = OffersPageParamsV3.Builder()
                 .withBaseBalance("10")
                 .withQuoteBalance("15")
                 .withBaseAsset("ETH")
@@ -209,7 +207,7 @@ class QueryParamsTest {
                 .withOwnerAccount(accountId)
                 .withOrderBook(Long.MAX_VALUE)
                 .withIsBuy(false)
-                .withInclude(OfferParamsV2.Includes.BASE_ASSET)
+                .withInclude(OfferParamsV3.Includes.BASE_ASSET)
                 .build()
 
         Assert.assertEquals(expected, params.map().toString())
@@ -221,13 +219,13 @@ class QueryParamsTest {
 
         val expected = "{include=request_details, filter[reviewer]=$accountId, filter[requestor]=$accountId, filter[state_i]=3, filter[type]=10, filter[updated_after]=1549618720}"
 
-        val params = RequestsPageParamsV2(
+        val params = RequestsPageParamsV3(
                 reviewer = accountId,
                 requestor = accountId,
                 state = RequestState.APPROVED,
                 type = ReviewableRequestType.ASSET_CREATE,
                 updatedAfter = updated,
-                includes = listOf(RequestParamsV2.Includes.REQUEST_DETAILS)
+                includes = listOf(RequestParamsV3.Includes.REQUEST_DETAILS)
         )
 
         Assert.assertEquals(expected, params.map().toString())
@@ -239,13 +237,13 @@ class QueryParamsTest {
 
         val expected = "{include=request_details, filter[reviewer]=$accountId, filter[requestor]=$accountId, filter[state_i]=3, filter[type]=10, filter[updated_after]=1549618720}"
 
-        val params = RequestsPageParamsV2.Builder()
+        val params = RequestsPageParamsV3.Builder()
                 .withReviewer(accountId)
                 .withRequestor(accountId)
                 .withState(RequestState.APPROVED)
                 .withType(ReviewableRequestType.ASSET_CREATE)
                 .withUpdateAfter(updated)
-                .withInclude(RequestParamsV2.Includes.REQUEST_DETAILS)
+                .withInclude(RequestParamsV3.Includes.REQUEST_DETAILS)
                 .build()
 
         Assert.assertEquals(expected, params.map().toString())
@@ -255,7 +253,7 @@ class QueryParamsTest {
     fun salesParams() {
         val expected = "{include=base_asset, filter[owner]=$accountId, filter[max_start_time]=2019-02-08T09:38:40Z, filter[max_end_time]=2019-02-08T09:38:40Z, filter[state]=1, filter[max_hard_cap]=1, filter[min_soft_cap]=10, filter[base_asset]=BTC, filter[sale_type]=2}"
 
-        val params = SalesPageParamsV2(
+        val params = SalesPageParamsV3(
                 baseAsset = "BTC",
                 owner = accountId,
                 state = SaleStates.STATE_OPEN,
@@ -264,7 +262,7 @@ class QueryParamsTest {
                 maxHardCap = BigDecimal.ONE,
                 minSoftCap = BigDecimal.TEN,
                 saleType = SaleType.CROWD_FUNDING,
-                includes = listOf(SaleParamsV2.Includes.BASE_ASSET)
+                includes = listOf(SaleParamsV3.Includes.BASE_ASSET)
         )
 
         Assert.assertEquals(expected, params.map().toString())
@@ -274,7 +272,7 @@ class QueryParamsTest {
     fun saleParamsBuilder() {
         val expected = "{filter[owner]=$accountId, filter[max_end_time]=2019-02-08T09:38:40Z, filter[state]=1, filter[max_soft_cap]=1, filter[max_hard_cap]=10, filter[base_asset]=BTC, filter[sale_type]=2}"
 
-        val params = SalesPageParamsV2.Builder()
+        val params = SalesPageParamsV3.Builder()
                 .withBaseAsset("BTC")
                 .withMaxEndTime(Date(1549618720 * 1000L))
                 .withMaxHardCap(BigDecimal.TEN)
@@ -282,7 +280,7 @@ class QueryParamsTest {
                 .withOwner(accountId)
                 .withState(SaleStates.STATE_OPEN)
                 .withSaleType(SaleType.CROWD_FUNDING)
-                .withInclude(SaleParamsV2.Includes.BASE_ASSET)
+                .withInclude(SaleParamsV3.Includes.BASE_ASSET)
                 .build()
 
         Assert.assertEquals(expected, params.map().toString())
@@ -303,58 +301,6 @@ class QueryParamsTest {
 
         val params = TransactionsPageParams.Builder()
                 .withAccount(accountId)
-                .build()
-
-        Assert.assertEquals(expected, params.map().toString())
-    }
-
-    @Test
-    fun operationsParams() {
-        val expected = "{include=details,source, order=desc, limit=42, cursor=10, page=10, page[number]=10, page[limit]=42, page[order]=desc, filter[tx_id]=txid, filter[account_id]=$accountId, filter[reference]=reference, filter[account_type]=6, filter[states]=7, filter[subset]=payments}"
-
-        val params = OperationsPageParamsV2(
-                transaction = "txid",
-                account = accountId,
-                reference = "reference",
-                accountType = AccountType.SYNDICATE,
-                subset = OperationsPageParamsV2.Subsets.PAYMENTS,
-                states = listOf(1, 2, 4),
-                include = listOf(
-                        OperationParamsV2.Includes.OPERATION_DETAILS,
-                        OperationParamsV2.Includes.SOURCE
-                ),
-                pagingParams = PagingParamsV2(
-                        order = PagingOrder.DESC,
-                        limit = 42,
-                        page = "10"
-                )
-        )
-
-        Assert.assertEquals(expected, params.map().toString())
-    }
-
-    @Test
-    fun operationsParamsBuilder() {
-        val expected = "{include=details,source, order=desc, limit=42, cursor=10, page=10, page[number]=10, page[limit]=42, page[order]=desc, filter[tx_id]=txid, filter[account_id]=$accountId, filter[reference]=reference, filter[account_type]=6, filter[states]=7, filter[subset]=payments}"
-
-        val params = OperationsPageParamsV2.Builder()
-                .withTransaction("txid")
-                .withAccount(accountId)
-                .withReference("reference")
-                .withAccountType(AccountType.SYNDICATE)
-                .withSubset(OperationsPageParamsV2.Subsets.PAYMENTS)
-                .withStates(1, 2, 4)
-                .withPagingParams(
-                        PagingParamsV2(
-                                order = PagingOrder.DESC,
-                                limit = 42,
-                                page = "10"
-                        )
-                )
-                .withInclude(
-                        OperationParamsV2.Includes.OPERATION_DETAILS,
-                        OperationParamsV2.Includes.SOURCE
-                )
                 .build()
 
         Assert.assertEquals(expected, params.map().toString())

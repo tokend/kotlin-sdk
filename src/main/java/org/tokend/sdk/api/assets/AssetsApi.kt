@@ -19,9 +19,9 @@ open class AssetsApi(
      * Will return all existing assets in the system.
      * @see <a href="https://tokend.gitlab.io/docs/?http#assets">Docs</a>
      *
-     * @see org.tokend.sdk.api.v2.assets.AssetsApiV2.get
+     * @see org.tokend.sdk.api.v3.assets.AssetsApiV3.get
      */
-    @Deprecated("We are going to replace with AssetsApiV2.get")
+    @Deprecated("We are going to replace with AssetsApiV3.get")
     open fun get(): ApiRequest<List<SimpleAsset>> {
         return SimpleRetrofitApiRequest(
                 assetsService.getAssets()
@@ -32,9 +32,9 @@ open class AssetsApi(
      * Will return specific asset by it's code.
      * @see <a href="https://tokend.gitlab.io/docs/?http#get-asset-by-code">Docs</a>
      *
-     * @see org.tokend.sdk.api.v2.assets.AssetsApiV2.getById
+     * @see org.tokend.sdk.api.v3.assets.AssetsApiV3.getById
      */
-    @Deprecated("We are going to replace with AssetsApiV2.getById")
+    @Deprecated("We are going to replace with AssetsApiV3.getById")
     open fun getByCode(assetCode: String): ApiRequest<SimpleAsset> {
         return SimpleRetrofitApiRequest(
                 assetsService.getAsset(assetCode)
@@ -45,7 +45,7 @@ open class AssetsApi(
      * Will return all existing asset pairs in the system.
      * @see <a href="https://tokend.gitlab.io/docs/?http#get-asset-pairs-list">Docs</a>
      *
-     * @see org.tokend.sdk.api.v2.assetpairs.AssetPairsApi.get
+     * @see org.tokend.sdk.api.v3.assetpairs.AssetPairsApi.get
      */
     @Deprecated("We are going to replace with AssetPairsApi.get")
     open fun getPairs(): ApiRequest<List<AssetPair>> {
