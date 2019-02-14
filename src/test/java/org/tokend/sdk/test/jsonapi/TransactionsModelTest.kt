@@ -1,7 +1,5 @@
 package org.tokend.sdk.test.jsonapi
 
-import com.github.jasminb.jsonapi.ResourceConverter
-import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.tokend.sdk.api.generated.resources.TransactionResource
 import org.tokend.sdk.factory.JsonApiToolsProvider
@@ -18,25 +16,6 @@ class TransactionsModelTest {
         val transaction = document.get()
 
         JsonApiUtil.checkResourceNullability(transaction)
-    }
-
-    @Test
-    fun transactionsList() {
-
-        val converter = ResourceConverter(
-                TransactionResource::class.java
-        )
-
-        val document = converter.readDocumentCollection(
-                transactionsListResponse.toByteArray(),
-                TransactionResource::class.java
-        )
-
-        val transactions = document.get()
-
-        JsonApiUtil.checkResourceNullability(transactions)
-
-        assertTrue(transactions.isNotEmpty())
     }
 
     private val transactionResponse = "{\n" +
@@ -63,47 +42,5 @@ class TransactionsModelTest {
             "      \"valid_before\": \"2018-04-14T16:40:12Z\"\n" +
             "    }\n" +
             "  }\n" +
-            "}"
-
-    private val transactionsListResponse = "{\n" +
-            "  \"meta\": {\n" +
-            "    \"total_pages\": 10,\n" +
-            "    \"latest_ledger\": {\n" +
-            "      \"sequence\": 19,\n" +
-            "      \"closed_at\": \"2018-04-07T17:40:26Z\"\n" +
-            "    }\n" +
-            "  },\n" +
-            "  \"links\": {\n" +
-            "    \"self\": \"https://api.com/transactions?page=3\",\n" +
-            "    \"first\": \"https://api.com/transactions?page=1\",\n" +
-            "    \"prev\": \"https://api.com/transactions?page=2\",\n" +
-            "    \"next\": \"https://api.com/transactions?page=4\",\n" +
-            "    \"last\": \"https://api.com/transactions?page=13\"\n" +
-            "  },\n" +
-            "  \"data\": [\n" +
-            "    {\n" +
-            "      \"type\": \"transactions\",\n" +
-            "      \"id\": \"d3275938107d7dd585ef44b717e67597e0c736591b2901708c90162ea94e4e0c\",\n" +
-            "      \"attributes\": {\n" +
-            "        \"paging_token\": \"73014452224\",\n" +
-            "        \"hash\": \"d3275938107d7dd585ef44b717e67597e0c736591b2901708c90162ea94e4e0c\",\n" +
-            "        \"ledger\": 16,\n" +
-            "        \"created_at\": \"2018-04-07T17:40:11Z\",\n" +
-            "        \"source_account\": \"GD7AHJHCDSQI6LVMEJEE2FTNCA2LJQZ4R64GUI3PWANSVEO4GEOWB636\",\n" +
-            "        \"fee_paid\": 0,\n" +
-            "        \"operation_count\": 1,\n" +
-            "        \"envelope_xdr\": \"AAAAAP4DpOIcoI8urCJITRZtEDS0wzyPuGojb7Ab....\",\n" +
-            "        \"result_xdr\": \"AAAAAAAAAAAAAAAAAAAAAQAAAAAAAAALAAAAAAAAAAAA...\",\n" +
-            "        \"result_meta_xdr\": \"AAAAAAAAAAEAAAAGAAAAAAAAABAAAAAPAAAAAAAA...\",\n" +
-            "        \"fee_meta_xdr\": \"AAAAAA==\",\n" +
-            "        \"memo_type\": \"none\",\n" +
-            "        \"signatures\": [\n" +
-            "          \"Pk2+1r5puXM5OVGkRoYke6S+78xTFVT0YWVlknHWFpK1IqpYBvaHzJQWiLftJWgH/J5hLfyHoYFjaNKrl6dyCA==\"\n" +
-            "        ],\n" +
-            "        \"valid_after\": \"1970-01-01T00:00:00Z\",\n" +
-            "        \"valid_before\": \"2018-04-14T16:40:07Z\"\n" +
-            "      }\n" +
-            "    }\n" +
-            "  ]\n" +
             "}"
 }
