@@ -37,113 +37,97 @@ class QueryParamsTest {
 
     @Test
     fun accountsParams() {
-        val expected = "{filter[account_type]=5, filter[is_blocked]=false, filter[signer_type]=2048, include=balances.state}"
+        val expected = "{filter[account_type]=5, filter[is_blocked]=false, filter[signer_type]=2048, include=balances.state, order=desc, page[order]=desc}"
 
         val params = AccountsPageParamsV3(
                 accountTypes = listOf(AccountType.NOT_VERIFIED),
                 signerTypes = listOf(SignerType.ACCOUNT_MANAGER),
                 isBlocked = false,
-                include = listOf(AccountParamsV3.Includes.BALANCES_STATE)
+                include = listOf(AccountParamsV3.Includes.BALANCES_STATE),
+                pagingParams = PagingParamsV2(PagingOrder.DESC)
         )
 
-        Assert.assertEquals(expected, params.map().toSortedMap().toString())
-    }
-
-    @Test
-    fun accountsParamsBuilder() {
-        val expected = "{filter[account_type]=5, filter[is_blocked]=false, filter[signer_type]=2048, include=balances.state}"
-
-        val params = AccountsPageParamsV3.Builder()
+        val builtParams = AccountsPageParamsV3.Builder()
                 .withAccountTypes(AccountType.NOT_VERIFIED)
                 .withSignerTypes(SignerType.ACCOUNT_MANAGER)
                 .withIsBlocked(false)
                 .withInclude(AccountParamsV3.Includes.BALANCES_STATE)
+                .withPagingParams(PagingParamsV2(PagingOrder.DESC))
                 .build()
 
         Assert.assertEquals(expected, params.map().toSortedMap().toString())
+        Assert.assertEquals(expected, builtParams.map().toSortedMap().toString())
     }
 
     @Test
     fun assetPairsParams() {
-        val expected = "{filter[base_asset]=BTC, filter[policy]=4, filter[quote_asset]=ETH, include=base_asset}"
+        val expected = "{filter[base_asset]=BTC, filter[policy]=4, filter[quote_asset]=ETH, include=base_asset, order=desc, page[order]=desc}"
 
         val params = AssetPairsPageParams(
                 policies = listOf(AssetPairPolicy.CURRENT_PRICE_RESTRICTION),
                 baseAsset = "BTC",
                 quoteAsset = "ETH",
-                include = listOf(AssetPairParams.Includes.BASE_ASSET)
+                include = listOf(AssetPairParams.Includes.BASE_ASSET),
+                pagingParams = PagingParamsV2(PagingOrder.DESC)
         )
 
-        Assert.assertEquals(expected, params.map().toSortedMap().toString())
-    }
-
-    @Test
-    fun assetPairsParamsBuilder() {
-        val expected = "{filter[base_asset]=BTC, filter[policy]=4, filter[quote_asset]=ETH, include=base_asset}"
-
-        val params = AssetPairsPageParams.Builder()
+        val buildParams = AssetPairsPageParams.Builder()
                 .withPolicies(AssetPairPolicy.CURRENT_PRICE_RESTRICTION)
                 .withBaseAsset("BTC")
                 .withQuoteAsset("ETH")
                 .withInclude(AssetPairParams.Includes.BASE_ASSET)
+                .withPagingParams(PagingParamsV2(PagingOrder.DESC))
                 .build()
 
         Assert.assertEquals(expected, params.map().toSortedMap().toString())
+        Assert.assertEquals(expected, buildParams.map().toSortedMap().toString())
     }
 
     @Test
     fun assetsParams() {
-        val expected = "{filter[policy]=2, include=owner}"
+        val expected = "{filter[policy]=2, include=owner, order=desc, page[order]=desc}"
 
         val params = AssetsPageParams(
                 policies = listOf(AssetPolicy.BASE_ASSET),
-                include = listOf(AssetParams.Includes.OWNER)
+                include = listOf(AssetParams.Includes.OWNER),
+                pagingParams = PagingParamsV2(PagingOrder.DESC)
         )
 
-        Assert.assertEquals(expected, params.map().toSortedMap().toString())
-    }
-
-    @Test
-    fun assetParamsBuilder() {
-        val expected = "{filter[policy]=2, include=owner}"
-
-        val params = AssetsPageParams.Builder()
+        val builtParams = AssetsPageParams.Builder()
                 .withPolicies(AssetPolicy.BASE_ASSET)
                 .withInclude(AssetParams.Includes.OWNER)
+                .withPagingParams(PagingParamsV2(PagingOrder.DESC))
                 .build()
 
         Assert.assertEquals(expected, params.map().toSortedMap().toString())
+        Assert.assertEquals(expected, builtParams.map().toSortedMap().toString())
     }
 
     @Test
     fun balancesParams() {
-        val expected = "{filter[account]=$accountId, filter[asset]=ETH, include=account}"
+        val expected = "{filter[account]=$accountId, filter[asset]=ETH, include=account, order=desc, page[order]=desc}"
 
         val params = BalancesPageParams(
                 asset = "ETH",
                 account = accountId,
-                include = listOf(BalanceParams.Includes.ACCOUNT)
+                include = listOf(BalanceParams.Includes.ACCOUNT),
+                pagingParams = PagingParamsV2(PagingOrder.DESC)
         )
 
-        Assert.assertEquals(expected, params.map().toSortedMap().toString())
-    }
-
-    @Test
-    fun balanceParamsBuilder() {
-        val expected = "{filter[account]=$accountId, filter[asset]=ETH, include=account}"
-
-        val params = BalancesPageParams.Builder()
+        val builtParams = BalancesPageParams.Builder()
                 .withAsset("ETH")
                 .withAccount(accountId)
                 .withInclude(BalanceParams.Includes.ACCOUNT)
+                .withPagingParams(PagingParamsV2(PagingOrder.DESC))
                 .build()
 
         Assert.assertEquals(expected, params.map().toSortedMap().toString())
+        Assert.assertEquals(expected, builtParams.map().toSortedMap().toString())
     }
 
     @Test
     fun feesParams() {
-        val expected = "{filter[account_id]=$accountId, filter[account_type]=10, filter[asset]=ETH, filter[fee_type]=0, filter[lower_bound]=1, filter[subtype]=1, filter[upper_bound]=10, include=account}"
+        val expected = "{filter[account_id]=$accountId, filter[account_type]=10, filter[asset]=ETH, filter[fee_type]=0, filter[lower_bound]=1, filter[subtype]=1, filter[upper_bound]=10, include=account, order=desc, page[order]=desc}"
 
         val params = FeesPageParamsV3(
                 asset = "ETH",
@@ -153,17 +137,11 @@ class QueryParamsTest {
                 accountType = AccountType.VERIFIED,
                 lowerBound = BigDecimal.ONE,
                 upperBound = BigDecimal.TEN,
-                include = listOf(FeeParamsV3.Includes.ACCOUNT)
+                include = listOf(FeeParamsV3.Includes.ACCOUNT),
+                pagingParams = PagingParamsV2(PagingOrder.DESC)
         )
 
-        Assert.assertEquals(expected, params.map().toSortedMap().toString())
-    }
-
-    @Test
-    fun feesParamsBuilder() {
-        val expected = "{filter[account_id]=$accountId, filter[account_type]=10, filter[asset]=ETH, filter[fee_type]=0, filter[lower_bound]=1, filter[subtype]=1, filter[upper_bound]=10, include=account}"
-
-        val params = FeesPageParamsV3.Builder()
+        val builtParams = FeesPageParamsV3.Builder()
                 .withAsset("ETH")
                 .withType(FeeType.PAYMENT_FEE)
                 .withSubtype(1)
@@ -172,14 +150,16 @@ class QueryParamsTest {
                 .withLowerBound(BigDecimal.ONE)
                 .withUpperBound(BigDecimal.TEN)
                 .withInclude(FeeParamsV3.Includes.ACCOUNT)
+                .withPagingParams(PagingParamsV2(PagingOrder.DESC))
                 .build()
 
         Assert.assertEquals(expected, params.map().toSortedMap().toString())
+        Assert.assertEquals(expected, builtParams.map().toSortedMap().toString())
     }
 
     @Test
     fun offersParams() {
-        val expected = "{filter[base_asset]=ETH, filter[base_balance]=10, filter[is_buy]=false, filter[order_book]=9223372036854775807, filter[owner]=$accountId, filter[quote_asset]=BTC, filter[quote_balance]=15, include=base_asset}"
+        val expected = "{filter[base_asset]=ETH, filter[base_balance]=10, filter[is_buy]=false, filter[order_book]=9223372036854775807, filter[owner]=$accountId, filter[quote_asset]=BTC, filter[quote_balance]=15, include=base_asset, order=desc, page[order]=desc}"
 
         val params = OffersPageParamsV3(
                 baseBalance = "10",
@@ -189,17 +169,11 @@ class QueryParamsTest {
                 ownerAccount = accountId,
                 orderBook = Long.MAX_VALUE,
                 isBuy = false,
-                include = listOf(OfferParamsV3.Includes.BASE_ASSET)
+                include = listOf(OfferParamsV3.Includes.BASE_ASSET),
+                pagingParams = PagingParamsV2(PagingOrder.DESC)
         )
 
-        Assert.assertEquals(expected, params.map().toSortedMap().toString())
-    }
-
-    @Test
-    fun offersParamsBuilder() {
-        val expected = "{filter[base_asset]=ETH, filter[base_balance]=10, filter[is_buy]=false, filter[order_book]=9223372036854775807, filter[owner]=$accountId, filter[quote_asset]=BTC, filter[quote_balance]=15, include=base_asset}"
-
-        val params = OffersPageParamsV3.Builder()
+        val builtParams = OffersPageParamsV3.Builder()
                 .withBaseBalance("10")
                 .withQuoteBalance("15")
                 .withBaseAsset("ETH")
@@ -208,16 +182,18 @@ class QueryParamsTest {
                 .withOrderBook(Long.MAX_VALUE)
                 .withIsBuy(false)
                 .withInclude(OfferParamsV3.Includes.BASE_ASSET)
+                .withPagingParams(PagingParamsV2(PagingOrder.DESC))
                 .build()
 
         Assert.assertEquals(expected, params.map().toSortedMap().toString())
+        Assert.assertEquals(expected, builtParams.map().toSortedMap().toString())
     }
 
     @Test
     fun requestsParams() {
         val updated = 1549618720L
 
-        val expected = "{filter[requestor]=$accountId, filter[reviewer]=$accountId, filter[state_i]=3, filter[type]=10, filter[updated_after]=1549618720, include=request_details}"
+        val expected = "{filter[requestor]=$accountId, filter[reviewer]=$accountId, filter[state_i]=3, filter[type]=10, filter[updated_after]=1549618720, include=request_details, order=desc, page[order]=desc}"
 
         val params = RequestsPageParamsV3(
                 reviewer = accountId,
@@ -225,85 +201,75 @@ class QueryParamsTest {
                 state = RequestState.APPROVED,
                 type = ReviewableRequestType.ASSET_CREATE,
                 updatedAfter = updated,
-                includes = listOf(RequestParamsV3.Includes.REQUEST_DETAILS)
+                includes = listOf(RequestParamsV3.Includes.REQUEST_DETAILS),
+                pagingParams = PagingParamsV2(PagingOrder.DESC)
         )
 
-        Assert.assertEquals(expected, params.map().toSortedMap().toString())
-    }
-
-    @Test
-    fun requestsParamsBuilder() {
-        val updated = 1549618720L
-
-        val expected = "{filter[requestor]=$accountId, filter[reviewer]=$accountId, filter[state_i]=3, filter[type]=10, filter[updated_after]=1549618720, include=request_details}"
-
-        val params = RequestsPageParamsV3.Builder()
+        val builtParams = RequestsPageParamsV3.Builder()
                 .withReviewer(accountId)
                 .withRequestor(accountId)
                 .withState(RequestState.APPROVED)
                 .withType(ReviewableRequestType.ASSET_CREATE)
                 .withUpdateAfter(updated)
                 .withInclude(RequestParamsV3.Includes.REQUEST_DETAILS)
+                .withPagingParams(PagingParamsV2(PagingOrder.DESC))
                 .build()
 
         Assert.assertEquals(expected, params.map().toSortedMap().toString())
+        Assert.assertEquals(expected, builtParams.map().toSortedMap().toString())
     }
 
     @Test
     fun salesParams() {
-        val expected = "{filter[base_asset]=BTC, filter[max_end_time]=2019-02-08T09:38:40Z, filter[max_hard_cap]=1, filter[max_start_time]=2019-02-08T09:38:40Z, filter[min_soft_cap]=10, filter[owner]=$accountId, filter[sale_type]=2, filter[state]=1, include=base_asset}"
+        val expected = "{filter[base_asset]=BTC, filter[max_end_time]=2019-02-08T09:38:40Z, filter[max_hard_cap]=1, filter[max_start_time]=2019-02-08T09:28:40Z, filter[min_soft_cap]=10, filter[owner]=$accountId, filter[sale_type]=2, filter[state]=1, include=base_asset, order=desc, page[order]=desc}"
 
         val params = SalesPageParamsV3(
                 baseAsset = "BTC",
                 owner = accountId,
                 state = SaleState.OPEN,
                 maxEndTime = Date(1549618720 * 1000L),
-                maxStartTime = Date(1549618720 * 1000L),
+                maxStartTime = Date(1549618120 * 1000L),
                 maxHardCap = BigDecimal.ONE,
                 minSoftCap = BigDecimal.TEN,
                 saleType = SaleType.CROWD_FUNDING,
-                includes = listOf(SaleParamsV3.Includes.BASE_ASSET)
+                includes = listOf(SaleParamsV3.Includes.BASE_ASSET),
+                pagingParams = PagingParamsV2(PagingOrder.DESC)
         )
 
-        Assert.assertEquals(expected, params.map().toSortedMap().toString())
-    }
-
-    @Test
-    fun saleParamsBuilder() {
-        val expected = "{filter[base_asset]=BTC, filter[max_end_time]=2019-02-08T09:38:40Z, filter[max_hard_cap]=10, filter[max_soft_cap]=1, filter[owner]=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, filter[sale_type]=2, filter[state]=1}"
-
-        val params = SalesPageParamsV3.Builder()
+        val builtParams = SalesPageParamsV3.Builder()
                 .withBaseAsset("BTC")
-                .withMaxEndTime(Date(1549618720 * 1000L))
-                .withMaxHardCap(BigDecimal.TEN)
-                .withMaxSoftCap(BigDecimal.ONE)
                 .withOwner(accountId)
                 .withState(SaleState.OPEN)
+                .withMaxEndTime(Date(1549618720 * 1000L))
+                .withMaxStartTime(Date(1549618120 * 1000L))
+                .withMaxHardCap(BigDecimal.ONE)
+                .withMinSoftCap(BigDecimal.TEN)
                 .withSaleType(SaleType.CROWD_FUNDING)
                 .withInclude(SaleParamsV3.Includes.BASE_ASSET)
+                .withPagingParams(PagingParamsV2(PagingOrder.DESC))
                 .build()
 
         Assert.assertEquals(expected, params.map().toSortedMap().toString())
+        Assert.assertEquals(expected, builtParams.map().toSortedMap().toString())
     }
 
     @Test
     fun transactionsParams() {
-        val expected = "{filter[account_id]=$accountId}"
+        val expected = "{filter[account_id]=$accountId, order=desc, page[order]=desc}"
 
-        val params = TransactionsPageParams(account = accountId)
+        val params = TransactionsPageParams(
+                account = accountId,
+                pagingParams = PagingParamsV2(PagingOrder.DESC)
+        )
 
-        Assert.assertEquals(expected, params.map().toSortedMap().toString())
-    }
-
-    @Test
-    fun transactionsParamsBuilder() {
-        val expected = "{filter[account_id]=$accountId}"
-
-        val params = TransactionsPageParams.Builder()
+        val builtParams = TransactionsPageParams.Builder()
                 .withAccount(accountId)
+                .withPagingParams(PagingParamsV2(PagingOrder.DESC))
                 .build()
 
+
         Assert.assertEquals(expected, params.map().toSortedMap().toString())
+        Assert.assertEquals(expected, builtParams.map().toSortedMap().toString())
     }
 
     @Test
@@ -326,14 +292,7 @@ class QueryParamsTest {
 
         )
 
-        Assert.assertEquals(expected, params.map().toSortedMap().toString())
-    }
-
-    @Test
-    fun participantEffectsParamsBuilder() {
-        val expected = "{cursor=6, filter[account]=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, filter[balance]=superbalance, include=operation,operation.details,effect, limit=18, order=desc, page=6, page[limit]=18, page[number]=6, page[order]=desc}"
-
-        val params = ParticipantEffectsPageParams.Builder()
+        val builtParams = ParticipantEffectsPageParams.Builder()
                 .withAccount(accountId)
                 .withBalance("superbalance")
                 .withInclude(
@@ -351,6 +310,7 @@ class QueryParamsTest {
                 .build()
 
         Assert.assertEquals(expected, params.map().toSortedMap().toString())
+        Assert.assertEquals(expected, builtParams.map().toSortedMap().toString())
     }
 
     @Test
@@ -372,14 +332,7 @@ class QueryParamsTest {
                 )
         )
 
-        Assert.assertEquals(expected, params.map().toSortedMap().toString())
-    }
-
-    @Test
-    fun oderBookParamsBuilder() {
-        val expected = "{cursor=8, filter[base_asset]=BTC, filter[is_buy]=false, filter[quote_asset]=ETH, include=base_asset,quote_asset, limit=10, order=desc, page=8, page[limit]=10, page[number]=8, page[order]=desc}"
-
-        val params = OrderBookPageParams.Builder()
+        val builtParams = OrderBookPageParams.Builder()
                 .withBaseAsset("BTC")
                 .withQuoteAsset("ETH")
                 .withIsBuy(false)
@@ -397,5 +350,6 @@ class QueryParamsTest {
                 .build()
 
         Assert.assertEquals(expected, params.map().toSortedMap().toString())
+        Assert.assertEquals(expected, builtParams.map().toSortedMap().toString())
     }
 }

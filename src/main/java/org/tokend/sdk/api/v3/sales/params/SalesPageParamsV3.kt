@@ -101,7 +101,8 @@ class SalesPageParamsV3(
 
         override fun build(): SalesPageParamsV3 {
             return SalesPageParamsV3(owner, minStartTime, minEndTime, maxStartTime, maxEndTime,
-                    state, maxSoftCap, maxHardCap, minSoftCap, minHardCap, baseAsset, saleType)
+                    state, maxSoftCap, maxHardCap, minSoftCap, minHardCap, baseAsset, saleType,
+                    include, pagingParams)
         }
     }
 }
