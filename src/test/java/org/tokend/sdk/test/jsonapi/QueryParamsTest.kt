@@ -5,7 +5,7 @@ import org.junit.Test
 import org.tokend.sdk.api.base.params.PagingOrder
 import org.tokend.sdk.api.base.params.PagingParamsV2
 import org.tokend.sdk.api.requests.model.base.RequestState
-import org.tokend.sdk.api.sales.model.SaleStates
+import org.tokend.sdk.api.sales.model.SaleState
 import org.tokend.sdk.api.v3.accounts.params.AccountParamsV3
 import org.tokend.sdk.api.v3.accounts.params.AccountsPageParamsV3
 import org.tokend.sdk.api.v3.assetpairs.params.AssetPairParams
@@ -256,7 +256,7 @@ class QueryParamsTest {
         val params = SalesPageParamsV3(
                 baseAsset = "BTC",
                 owner = accountId,
-                state = SaleStates.STATE_OPEN,
+                state = SaleState.OPEN,
                 maxEndTime = Date(1549618720 * 1000L),
                 maxStartTime = Date(1549618720 * 1000L),
                 maxHardCap = BigDecimal.ONE,
@@ -278,7 +278,7 @@ class QueryParamsTest {
                 .withMaxHardCap(BigDecimal.TEN)
                 .withMaxSoftCap(BigDecimal.ONE)
                 .withOwner(accountId)
-                .withState(SaleStates.STATE_OPEN)
+                .withState(SaleState.OPEN)
                 .withSaleType(SaleType.CROWD_FUNDING)
                 .withInclude(SaleParamsV3.Includes.BASE_ASSET)
                 .build()
