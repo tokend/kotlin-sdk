@@ -1,7 +1,7 @@
 package org.tokend.sdk.api.v3.sales.params
 
 import org.tokend.sdk.api.base.params.PagingParamsV2
-import org.tokend.sdk.api.sales.model.SaleStates
+import org.tokend.sdk.api.sales.model.SaleState
 import org.tokend.sdk.api.v3.base.PageQueryParams
 import org.tokend.sdk.utils.ApiDateUtil
 import org.tokend.sdk.utils.BigDecimalUtil
@@ -20,7 +20,7 @@ class SalesPageParamsV3(
         val minEndTime: Date? = null,
         val maxStartTime: Date? = null,
         val maxEndTime: Date? = null,
-        val state: Int? = null,
+        val state: SaleState? = null,
         val maxSoftCap: BigDecimal? = null,
         val maxHardCap: BigDecimal? = null,
         val minSoftCap: BigDecimal? = null,
@@ -38,7 +38,7 @@ class SalesPageParamsV3(
             minEndTime?.also { putFilter("min_end_time", ApiDateUtil.formatDateForRequest(it)) }
             maxStartTime?.also { putFilter("max_start_time", ApiDateUtil.formatDateForRequest(it)) }
             maxEndTime?.also { putFilter("max_end_time", ApiDateUtil.formatDateForRequest(it)) }
-            state?.also { putFilter("state", it) }
+            state?.also { putFilter("state", it.value) }
             maxSoftCap?.also { putFilter("max_soft_cap", BigDecimalUtil.toPlainString(it)) }
             maxHardCap?.also { putFilter("max_hard_cap", BigDecimalUtil.toPlainString(it)) }
             minSoftCap?.also { putFilter("min_soft_cap", BigDecimalUtil.toPlainString(it)) }
@@ -55,7 +55,7 @@ class SalesPageParamsV3(
         private var minEndTime: Date? = null
         private var maxStartTime: Date? = null
         private var maxEndTime: Date? = null
-        private var state: Int? = null
+        private var state: SaleState? = null
         private var maxSoftCap: BigDecimal? = null
         private var maxHardCap: BigDecimal? = null
         private var minSoftCap: BigDecimal? = null
@@ -73,7 +73,7 @@ class SalesPageParamsV3(
 
         fun withMaxEndTime(maxEndTime: Date) = also { this.maxEndTime = maxEndTime }
 
-        fun withState(state: Int) = also { this.state = state }
+        fun withState(state: SaleState) = also { this.state = state }
 
         fun withMaxSoftCap(maxSoftCap: BigDecimal) = also { this.maxSoftCap = maxSoftCap }
 

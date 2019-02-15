@@ -1,7 +1,7 @@
 package org.tokend.sdk.utils.extentions
 
 import org.tokend.sdk.api.generated.resources.SaleResource
-import org.tokend.sdk.api.sales.model.SaleStates
+import org.tokend.sdk.api.sales.model.SaleState
 import java.util.*
 
 fun SaleResource.isAvailable(): Boolean {
@@ -17,9 +17,9 @@ fun SaleResource.isEnded(): Boolean {
 }
 
 fun SaleResource.isClosed(): Boolean {
-    return saleState.value == SaleStates.STATE_CLOSED
+    return saleState.value == SaleState.CLOSED.value
 }
 
 fun SaleResource.isCanceled(): Boolean {
-    return saleState.value == SaleStates.STATE_CANCELED
+    return saleState.value == SaleState.CANCELED.value
 }
