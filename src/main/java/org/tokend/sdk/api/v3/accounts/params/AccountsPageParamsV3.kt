@@ -20,10 +20,10 @@ open class AccountsPageParamsV3(
     override fun map(): Map<String, Any> {
         return super.map().toMutableMap().apply {
             accountTypes?.also {
-                putFilter("account_type", accountTypes.map { it.value.toLong() }.bitmask())
+                putFilter("account_type", accountTypes.map { it.value }.bitmask())
             }
             signerTypes?.also {
-                putFilter("signer_type", signerTypes.map { it.value.toLong() }.bitmask())
+                putFilter("signer_type", signerTypes.map { it.value }.bitmask())
             }
             isBlocked?.also { putFilter("is_blocked", isBlocked) }
         }

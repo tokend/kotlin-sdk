@@ -10,13 +10,13 @@ open class AccountParamsV3(
 ) : JsonApiQueryParams(include) {
     class Includes {
         companion object {
-            const val ROLE = "role"
-            const val ROLE_RULES = "role.rules"
+            const val FEES = "fees"
             const val BALANCES = "balances"
             const val BALANCES_ASSET = "balances.asset"
             const val BALANCES_STATE = "balances.state"
             const val REFERRER = "referrer"
-            const val STATE = "state"
+            const val LIMITS = "limits"
+            const val EXTERNAL_SYSTEM_IDS = "external_system_ids"
         }
     }
 }

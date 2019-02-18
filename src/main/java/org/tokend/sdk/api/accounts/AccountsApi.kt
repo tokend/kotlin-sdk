@@ -187,7 +187,10 @@ open class AccountsApi(
      * Will return limits and statistics of given account.
      *
      * @see <a href="https://tokend.gitlab.io/docs/#get-account-limits">Docs</a>
+     *
+     * @see org.tokend.sdk.api.v3.accounts.AccountsApiV3.getLimits
      */
+    @Deprecated("We are going to replace with AccountsApiV3.getLimits")
     open fun getLimits(accountId: String): ApiRequest<Limits> {
         return MappedRetrofitApiRequest(
                 accountsService.getLimits(accountId),
