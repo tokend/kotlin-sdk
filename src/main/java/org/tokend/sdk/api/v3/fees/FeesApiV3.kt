@@ -5,8 +5,8 @@ import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.base.model.DataPage
 import org.tokend.sdk.api.base.params.map
-import org.tokend.sdk.api.v3.fees.model.ExactFeeResource
-import org.tokend.sdk.api.v3.fees.model.FeeResource
+import org.tokend.sdk.api.generated.resources.CalculatedFeeResource
+import org.tokend.sdk.api.generated.resources.FeeResource
 import org.tokend.sdk.api.v3.fees.params.FeeCalculationParams
 import org.tokend.sdk.api.v3.fees.params.FeesPageParamsV3
 
@@ -20,10 +20,10 @@ open class FeesApiV3(
         )
     }
 
-    open fun calculate(params: FeeCalculationParams): ApiRequest<ExactFeeResource> {
+    open fun getCalculatedFee(accountId: String, params: FeeCalculationParams): ApiRequest<CalculatedFeeResource> {
         return MappedRetrofitApiRequest(
-                feesService.calculateFee(params.map()),
-                JSONAPIDocument<ExactFeeResource>::get
+                feesService.getCalculatedFee(accountId, params.map()),
+                JSONAPIDocument<CalculatedFeeResource>::get
         )
     }
 }

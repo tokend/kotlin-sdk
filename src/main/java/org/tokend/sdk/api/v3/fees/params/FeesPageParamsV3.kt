@@ -8,14 +8,14 @@ import org.tokend.wallet.xdr.FeeType
 import java.math.BigDecimal
 
 /**
- * @see FeeParamsV3.Includes
+ * @see FeesPageParamsV3.Includes
  */
 open class FeesPageParamsV3(
         val asset: String? = null,
         val type: FeeType? = null,
         val subtype: Int? = null,
         val account: String? = null,
-        val accountType: AccountType? = null,
+        val accountRole: Int? = null,
         val lowerBound: BigDecimal? = null,
         val upperBound: BigDecimal? = null,
         include: Collection<String>? = null,
@@ -27,8 +27,8 @@ open class FeesPageParamsV3(
             asset?.also { putFilter("asset", it) }
             type?.also { putFilter("fee_type", it.value) }
             subtype?.also { putFilter("subtype", it) }
-            account?.also { putFilter("account_id", it) }
-            accountType?.also { putFilter("account_type", it.value) }
+            account?.also { putFilter("account", it) }
+            accountRole?.also { putFilter("account_role", it) }
             lowerBound?.also { putFilter("lower_bound", BigDecimalUtil.toPlainString(it)) }
             upperBound?.also { putFilter("upper_bound", BigDecimalUtil.toPlainString(it)) }
         }
@@ -39,7 +39,7 @@ open class FeesPageParamsV3(
         private var type: FeeType? = null
         private var subtype: Int? = null
         private var account: String? = null
-        private var accountType: AccountType? = null
+        private var accountRole: Int? = null
         private var lowerBound: BigDecimal? = null
         private var upperBound: BigDecimal? = null
 
@@ -51,7 +51,7 @@ open class FeesPageParamsV3(
 
         fun withAccount(account: String) = also { this.account = account }
 
-        fun withAccountType(accountType: AccountType) = also { this.accountType = accountType }
+        fun withAccountRole(accountRole: Int) = also { this.accountRole = accountRole }
 
         fun withLowerBound(lowerBound: BigDecimal) = also { this.lowerBound = lowerBound }
 
@@ -70,7 +70,15 @@ open class FeesPageParamsV3(
         }
 
         override fun build(): FeesPageParamsV3 {
-            return FeesPageParamsV3(asset, type, subtype, account, accountType, lowerBound, upperBound, include, pagingParams)
+            return FeesPageParamsV3(asset, type, subtype, account, accountRole, lowerBound, upperBound, include, pagingParams)
+        }
+    }
+
+    class Includes {
+        companion object {
+            const val ACCOUNT = "account"
+            const val ACCOUNT_ROLE = "account_role"
+            const val ASSET = "asset"
         }
     }
 }
