@@ -19,8 +19,10 @@ import org.tokend.sdk.api.base.model.*;
 public class OpManageOfferDetailsResource extends OperationDetailsResource {
     
     @JsonProperty("offer_id")
+    @Nullable
     private Long offerId;
     
+    @Nullable
     public Long getOfferId() {
         return offerId;
     }
@@ -69,8 +71,7 @@ public class OpManageOfferDetailsResource extends OperationDetailsResource {
     
     @Override
     public boolean hasAttributes() {
-        return             offerId != null &&
-            orderBookId != null &&
+        return             orderBookId != null &&
             baseAmount != null &&
             price != null &&
             isBuy != null &&
