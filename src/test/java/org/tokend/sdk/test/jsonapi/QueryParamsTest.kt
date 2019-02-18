@@ -14,7 +14,6 @@ import org.tokend.sdk.api.v3.assets.params.AssetParams
 import org.tokend.sdk.api.v3.assets.params.AssetsPageParams
 import org.tokend.sdk.api.v3.balances.params.BalanceParams
 import org.tokend.sdk.api.v3.balances.params.BalancesPageParams
-import org.tokend.sdk.api.v3.fees.params.FeeParamsV3
 import org.tokend.sdk.api.v3.fees.params.FeesPageParamsV3
 import org.tokend.sdk.api.v3.history.params.ParticipantEffectsPageParams
 import org.tokend.sdk.api.v3.history.params.ParticipantEffectsParams
@@ -127,17 +126,17 @@ class QueryParamsTest {
 
     @Test
     fun feesParams() {
-        val expected = "{filter[account_id]=$accountId, filter[account_type]=10, filter[asset]=ETH, filter[fee_type]=0, filter[lower_bound]=1, filter[subtype]=1, filter[upper_bound]=10, include=account, order=desc, page[order]=desc}"
+        val expected = "{filter[account]=$accountId, filter[account_role]=1, filter[asset]=ETH, filter[fee_type]=0, filter[lower_bound]=1, filter[subtype]=1, filter[upper_bound]=10, include=account, order=desc, page[order]=desc}"
 
         val params = FeesPageParamsV3(
                 asset = "ETH",
                 type = FeeType.PAYMENT_FEE,
                 subtype = 1,
                 account = accountId,
-                accountType = AccountType.VERIFIED,
+                accountRole = 1,
                 lowerBound = BigDecimal.ONE,
                 upperBound = BigDecimal.TEN,
-                include = listOf(FeeParamsV3.Includes.ACCOUNT),
+                include = listOf(FeesPageParamsV3.Includes.ACCOUNT),
                 pagingParams = PagingParamsV2(PagingOrder.DESC)
         )
 
@@ -146,10 +145,10 @@ class QueryParamsTest {
                 .withType(FeeType.PAYMENT_FEE)
                 .withSubtype(1)
                 .withAccount(accountId)
-                .withAccountType(AccountType.VERIFIED)
+                .withAccountRole(1)
                 .withLowerBound(BigDecimal.ONE)
                 .withUpperBound(BigDecimal.TEN)
-                .withInclude(FeeParamsV3.Includes.ACCOUNT)
+                .withInclude(FeesPageParamsV3.Includes.ACCOUNT)
                 .withPagingParams(PagingParamsV2(PagingOrder.DESC))
                 .build()
 
