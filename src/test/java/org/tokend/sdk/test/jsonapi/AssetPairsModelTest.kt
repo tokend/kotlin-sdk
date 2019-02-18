@@ -26,34 +26,37 @@ class AssetPairsModelTest {
         Assert.assertTrue(pair.policies.has(AssetPairPolicy.TRADEABLE_SECONDARY_MARKET.value))
     }
 
-    private val assetPairResponse = "{  \n" +
-            "   \"data\":{  \n" +
-            "      \"type\":\"asset_pairs\",\n" +
-            "      \"id\":\"BTC-HHCT\",\n" +
-            "      \"attributes\":{  \n" +
-            "         \"price\":\"1.000000\",\n" +
-            "         \"policy_i\":1,\n" +
-            "         \"policies\":[  \n" +
-            "            {  \n" +
-            "               \"name\":\"AssetPairPolicyTradeableSecondaryMarket\",\n" +
-            "               \"value\":1\n" +
-            "            }\n" +
-            "         ]\n" +
-            "      },\n" +
-            "      \"relationships\":{  \n" +
-            "         \"base_asset\":{  \n" +
-            "            \"data\":{  \n" +
-            "               \"type\":\"assets\",\n" +
-            "               \"id\":\"HHCT\"\n" +
-            "            }\n" +
-            "         },\n" +
-            "         \"quote_asset\":{  \n" +
-            "            \"data\":{  \n" +
-            "               \"type\":\"assets\",\n" +
-            "               \"id\":\"BTC\"\n" +
-            "            }\n" +
-            "         }\n" +
-            "      }\n" +
-            "   }\n" +
+    private val assetPairResponse = "{\n" +
+            "\"data\": {\n" +
+            "\"id\": \"0CC7D7:D648B1\",\n" +
+            "\"type\": \"asset-pairs\",\n" +
+            "\"attributes\": {\n" +
+            "\"price\": \"5.500000\",\n" +
+            "\"policies\": {\n" +
+            "\"value\": 1,\n" +
+            "\"flags\": [\n" +
+            "{\n" +
+            "\"name\": \"tradeable_secondary_market\",\n" +
+            "\"value\": 1\n" +
+            "}\n" +
+            "]\n" +
+            "}\n" +
+            "},\n" +
+            "\"relationships\": {\n" +
+            "\"base_asset\": {\n" +
+            "\"data\": {\n" +
+            "\"id\": \"0CC7D7\",\n" +
+            "\"type\": \"assets\"\n" +
+            "}\n" +
+            "},\n" +
+            "\"quote_asset\": {\n" +
+            "\"data\": {\n" +
+            "\"id\": \"D648B1\",\n" +
+            "\"type\": \"assets\"\n" +
+            "}\n" +
+            "}\n" +
+            "}\n" +
+            "},\n" +
+            "\"included\": []\n" +
             "}"
 }
