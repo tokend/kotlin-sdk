@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
 
 
-@Type("operations-payment")
+@Type("operations-payment-v2")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OpPaymentDetailsResource extends OperationDetailsResource {
     
