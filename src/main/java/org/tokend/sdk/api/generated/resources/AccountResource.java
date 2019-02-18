@@ -40,4 +40,25 @@ public class AccountResource extends BaseResource {
     public AccountResource getReferrer() {
         return referrer;
     }
+    
+    @Relationship("limits")
+    private List<LimitResource> limits;
+    
+    public List<? extends LimitResource> getLimits() {
+        return limits;
+    }
+    
+    @Relationship("external_system_ids")
+    private List<ExternalSystemIdResource> externalSystemIds;
+    
+    public List<? extends ExternalSystemIdResource> getExternalSystemIds() {
+        return externalSystemIds;
+    }
+    
+    @Relationship("fees")
+    private List<FeeResource> fees;
+    
+    public List<? extends FeeResource> getFees() {
+        return fees;
+    }
 }
