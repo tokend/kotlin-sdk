@@ -52,7 +52,9 @@ open class AccountsApiV3(
      */
     open fun getBalances(accountId: String): ApiRequest<List<BalanceResource>> {
         return getById(accountId, AccountParamsV3(
-                listOf(AccountParamsV3.Includes.BALANCES, AccountParamsV3.Includes.BALANCES_STATE)
+                listOf(AccountParamsV3.Includes.BALANCES,
+                        AccountParamsV3.Includes.BALANCES_STATE,
+                        AccountParamsV3.Includes.BALANCES_ASSET)
         ))
                 .map { it.balances ?: emptyList() }
     }
