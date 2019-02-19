@@ -2,14 +2,14 @@ package org.tokend.sdk.test.jsonapi
 
 import org.junit.Assert
 import org.junit.Test
-import org.tokend.sdk.api.v2.requests.model.ReviewableRequestResource
-import org.tokend.sdk.api.v2.requests.model.details.AssetCreateRequestDetailsResource
-import org.tokend.sdk.factory.JsonApiFactory
+import org.tokend.sdk.api.generated.resources.AssetCreateRequestDetailsResource
+import org.tokend.sdk.api.generated.resources.ReviewableRequestResource
+import org.tokend.sdk.factory.JsonApiToolsProvider
 
 class ReviewableRequestsModelTest {
     @Test
     fun singleRequest() {
-        val document = JsonApiFactory().getResourceConverter().readDocument(
+        val document = JsonApiToolsProvider.getResourceConverter().readDocument(
                 requestAssetCreateResponse.toByteArray(),
                 ReviewableRequestResource::class.java
         )
@@ -19,7 +19,7 @@ class ReviewableRequestsModelTest {
         JsonApiUtil.checkResourceNullability(request)
 
         Assert.assertTrue(request.hasAttributes())
-        Assert.assertTrue(request.getDetails<AssetCreateRequestDetailsResource>().hasAttributes())
+        Assert.assertTrue((request.requestDetails as AssetCreateRequestDetailsResource).hasAttributes())
     }
 
     private val requestAssetCreateResponse = "{  \n" +

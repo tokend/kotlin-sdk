@@ -3,8 +3,8 @@ package org.tokend.sdk.test.jsonapi
 import org.junit.Assert
 import org.junit.Test
 import org.tokend.sdk.api.base.model.DataPage
-import org.tokend.sdk.api.v2.accounts.model.AccountResource
-import org.tokend.sdk.factory.JsonApiFactory
+import org.tokend.sdk.api.generated.resources.AccountResource
+import org.tokend.sdk.factory.JsonApiToolsProvider
 
 class PaginationTest {
     @Test
@@ -29,7 +29,7 @@ class PaginationTest {
                 "   }\n" +
                 "}"
 
-        val document = JsonApiFactory().getResourceConverter().readDocumentCollection(
+        val document = JsonApiToolsProvider.getResourceConverter().readDocumentCollection(
                 response.toByteArray(),
                 AccountResource::class.java
         )

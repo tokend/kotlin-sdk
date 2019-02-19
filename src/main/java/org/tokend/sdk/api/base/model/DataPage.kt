@@ -2,6 +2,7 @@ package org.tokend.sdk.api.base.model
 
 import com.github.jasminb.jsonapi.JSONAPIDocument
 import org.tokend.sdk.api.base.params.PagingParamsV2
+import java.net.URLDecoder
 import java.util.regex.Pattern
 
 /**
@@ -41,14 +42,22 @@ class DataPage<T>(val nextCursor: String?,
          * Creates [DataPage] from collection [JSONAPIDocument] with specific meta info.
          */
         fun <T> fromPageDocument(pageDocument: JSONAPIDocument<List<T>>): DataPage<T> {
-            val nextLink = pageDocument.links.next.href
+            val selfLink = URLDecoder.decode(pageDocument.links.self.href, "UTF-8")
+            val nextLink = pageDocument.links?.next?.href?.let {
+                URLDecoder.decode(it, "UTF-8")
+            }
 
-            val nextCursor = getNumberParamFromLink(nextLink, PagingParamsV2.QUERY_PARAM_PAGE_NUMBER)
-            val limit = getNumberParamFromLink(nextLink, PagingParamsV2.QUERY_PARAM_LIMIT)
+            val nextCursor =
+                    getNumberParamFromLink(nextLink
+                            ?: selfLink, PagingParamsV2.QUERY_PARAM_PAGE_NUMBER)
+
+            val limit = getNumberParamFromLink(nextLink
+                    ?: selfLink, PagingParamsV2.QUERY_PARAM_LIMIT)
                     ?.toIntOrNull()
                     ?: 0
+
             val items = pageDocument.get()
-            val isLast = items.size < limit
+            val isLast = nextLink == null || items.size < limit
 
             return DataPage(nextCursor, items, isLast)
         }

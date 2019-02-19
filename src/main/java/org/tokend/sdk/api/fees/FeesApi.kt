@@ -14,7 +14,10 @@ open class FeesApi(
     /**
      *  Will return list of all possible fees for all assets.
      *  @see <a href="https://tokend.gitlab.io/docs/?http#get-fees">Docs</a>
+     *
+     *  @see org.tokend.sdk.api.v3.fees.FeesApiV3.get
      */
+    @Deprecated("We are going to replace with FeesApiV3.get")
     open fun getFees(): ApiRequest<Fees> {
         return MappedRetrofitApiRequest(
                 feesService.getFees(),
@@ -25,7 +28,10 @@ open class FeesApi(
     /**
      *  Will return list of existing fees for all assets.
      *  @see <a href="https://tokend.gitlab.io/docs/#get-existing-fees">Docs</a>
+     *
+     *  @see org.tokend.sdk.api.v3.fees.FeesApiV3.get
      */
+    @Deprecated("We are going to replace with FeesApiV3.get")
     open fun getExistingFees(accountId: String? = null): ApiRequest<Fees> {
         return MappedRetrofitApiRequest(
                 feesService.getExistingFees(),
@@ -49,7 +55,10 @@ open class FeesApi(
     /**
      * Will return specific fee information.
      * @see <a href="https://tokend.gitlab.io/docs/?http#get-fee-by-type">Docs</a>
+     *
+     *  @see org.tokend.sdk.api.v3.fees.FeesApiV3.getCalculatedFee
      */
+    @Deprecated("We are going to replace with FeesApiV3.getCalculatedFee")
     open fun getByType(feeType: Int,
                        params: FeeParams): ApiRequest<Fee> {
         return SimpleRetrofitApiRequest(

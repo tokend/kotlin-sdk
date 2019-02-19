@@ -31,7 +31,7 @@ import org.tokend.sdk.api.transactions.TransactionsApi
 import org.tokend.sdk.api.transactions.TransactionsService
 import org.tokend.sdk.api.users.UsersApi
 import org.tokend.sdk.api.users.UsersService
-import org.tokend.sdk.api.v2.TokenDApiV2
+import org.tokend.sdk.api.v3.TokenDApiV3
 import org.tokend.sdk.api.wallets.WalletsApi
 import org.tokend.sdk.api.wallets.WalletsService
 import org.tokend.sdk.signing.AccountRequestSigner
@@ -64,8 +64,8 @@ constructor(
         forceContentType: Boolean = false,
         withLogs: Boolean = true
 ) : BaseApi(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent, forceContentType, withLogs) {
-    open val v2: TokenDApiV2 by lazy {
-        TokenDApiV2(rootUrl + "v2/", requestSigner, tfaCallback, cookieJarProvider, userAgent, withLogs)
+    open val v3: TokenDApiV3 by lazy {
+        TokenDApiV3(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent, withLogs)
     }
 
     open val accounts: AccountsApi by lazy {

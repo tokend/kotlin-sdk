@@ -8,9 +8,9 @@ import com.google.gson.annotations.SerializedName
  */
 data class NameValue<T>(
         @SerializedName("name")
-        @JsonProperty("name")
+        @JsonProperty("string")
         val name: String,
         @SerializedName("value")
-        @JsonProperty("value")
+        @JsonProperty("int")
         val value: T
 )

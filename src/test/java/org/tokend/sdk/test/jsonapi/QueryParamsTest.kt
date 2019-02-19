@@ -5,29 +5,30 @@ import org.junit.Test
 import org.tokend.sdk.api.base.params.PagingOrder
 import org.tokend.sdk.api.base.params.PagingParamsV2
 import org.tokend.sdk.api.requests.model.base.RequestState
-import org.tokend.sdk.api.v2.accounts.params.AccountParamsV2
-import org.tokend.sdk.api.v2.accounts.params.AccountsPageParamsV2
-import org.tokend.sdk.api.v2.assetpairs.params.AssetPairParams
-import org.tokend.sdk.api.v2.assetpairs.params.AssetPairsPageParams
-import org.tokend.sdk.api.v2.assets.params.AssetParams
-import org.tokend.sdk.api.v2.assets.params.AssetsPageParams
-import org.tokend.sdk.api.v2.balances.params.BalanceParams
-import org.tokend.sdk.api.v2.balances.params.BalancesPageParams
-import org.tokend.sdk.api.v2.fees.params.FeeParamsV2
-import org.tokend.sdk.api.v2.fees.params.FeesPageParamsV2
-import org.tokend.sdk.api.v2.offers.params.OfferParamsV2
-import org.tokend.sdk.api.v2.offers.params.OffersPageParamsV2
-import org.tokend.sdk.api.v2.operations.params.OperationParamsV2
-import org.tokend.sdk.api.v2.operations.params.OperationsPageParamsV2
-import org.tokend.sdk.api.v2.requests.params.AssetRequestPageParams
-import org.tokend.sdk.api.v2.requests.params.RequestParamsV2
-import org.tokend.sdk.api.v2.requests.params.RequestsPageParamsV2
-import org.tokend.sdk.api.v2.sales.params.SaleParamsV2
-import org.tokend.sdk.api.v2.sales.params.SalesPageParamsV2
-import org.tokend.sdk.api.v2.transactions.params.TransactionsPageParams
+import org.tokend.sdk.api.sales.model.SaleState
+import org.tokend.sdk.api.v3.accounts.params.AccountParamsV3
+import org.tokend.sdk.api.v3.accounts.params.AccountsPageParamsV3
+import org.tokend.sdk.api.v3.assetpairs.params.AssetPairParams
+import org.tokend.sdk.api.v3.assetpairs.params.AssetPairsPageParams
+import org.tokend.sdk.api.v3.assets.params.AssetParams
+import org.tokend.sdk.api.v3.assets.params.AssetsPageParams
+import org.tokend.sdk.api.v3.balances.params.BalanceParams
+import org.tokend.sdk.api.v3.balances.params.BalancesPageParams
+import org.tokend.sdk.api.v3.fees.params.FeesPageParamsV3
+import org.tokend.sdk.api.v3.history.params.ParticipantEffectsPageParams
+import org.tokend.sdk.api.v3.history.params.ParticipantEffectsParams
+import org.tokend.sdk.api.v3.offers.params.OfferParamsV3
+import org.tokend.sdk.api.v3.offers.params.OffersPageParamsV3
+import org.tokend.sdk.api.v3.orderbook.params.OrderBookPageParams
+import org.tokend.sdk.api.v3.requests.params.RequestParamsV3
+import org.tokend.sdk.api.v3.requests.params.RequestsPageParamsV3
+import org.tokend.sdk.api.v3.sales.params.SaleParamsV3
+import org.tokend.sdk.api.v3.sales.params.SalesPageParamsV3
+import org.tokend.sdk.api.v3.transactions.params.TransactionsPageParams
 import org.tokend.sdk.test.Config
 import org.tokend.wallet.xdr.*
 import java.math.BigDecimal
+import java.util.*
 
 class QueryParamsTest {
 
@@ -35,323 +36,319 @@ class QueryParamsTest {
 
     @Test
     fun accountsParams() {
-        val expected = "{include=external_accounts, account_type=5, signer_type=2048, is_blocked=false}"
+        val expected = "{filter[account_type]=5, filter[is_blocked]=false, filter[signer_type]=2048, include=balances.state, order=desc, page[order]=desc}"
 
-        val params = AccountsPageParamsV2(
+        val params = AccountsPageParamsV3(
                 accountTypes = listOf(AccountType.NOT_VERIFIED),
                 signerTypes = listOf(SignerType.ACCOUNT_MANAGER),
                 isBlocked = false,
-                include = listOf(AccountParamsV2.Includes.EXTERNAL_ACCOUNTS)
+                include = listOf(AccountParamsV3.Includes.BALANCES_STATE),
+                pagingParams = PagingParamsV2(PagingOrder.DESC)
         )
 
-        Assert.assertEquals(expected, params.map().toString())
-    }
-
-    @Test
-    fun accountsParamsBuilder() {
-        val expected = "{include=external_accounts, account_type=5, signer_type=2048, is_blocked=false}"
-
-        val params = AccountsPageParamsV2.Builder()
+        val builtParams = AccountsPageParamsV3.Builder()
                 .withAccountTypes(AccountType.NOT_VERIFIED)
                 .withSignerTypes(SignerType.ACCOUNT_MANAGER)
                 .withIsBlocked(false)
-                .withInclude(AccountParamsV2.Includes.EXTERNAL_ACCOUNTS)
+                .withInclude(AccountParamsV3.Includes.BALANCES_STATE)
+                .withPagingParams(PagingParamsV2(PagingOrder.DESC))
                 .build()
 
-        Assert.assertEquals(expected, params.map().toString())
+        Assert.assertEquals(expected, params.map().toSortedMap().toString())
+        Assert.assertEquals(expected, builtParams.map().toSortedMap().toString())
     }
 
     @Test
     fun assetPairsParams() {
-        val expected = "{include=base_asset, policy=4, base_asset=BTC, quote_asset=ETH}"
+        val expected = "{filter[base_asset]=BTC, filter[policy]=4, filter[quote_asset]=ETH, include=base_asset, order=desc, page[order]=desc}"
 
         val params = AssetPairsPageParams(
                 policies = listOf(AssetPairPolicy.CURRENT_PRICE_RESTRICTION),
                 baseAsset = "BTC",
                 quoteAsset = "ETH",
-                include = listOf(AssetPairParams.Includes.BASE_ASSET)
+                include = listOf(AssetPairParams.Includes.BASE_ASSET),
+                pagingParams = PagingParamsV2(PagingOrder.DESC)
         )
 
-        Assert.assertEquals(expected, params.map().toString())
-    }
-
-    @Test
-    fun assetPairsParamsBuilder() {
-        val expected = "{include=base_asset, policy=4, base_asset=BTC, quote_asset=ETH}"
-
-        val params = AssetPairsPageParams.Builder()
+        val buildParams = AssetPairsPageParams.Builder()
                 .withPolicies(AssetPairPolicy.CURRENT_PRICE_RESTRICTION)
                 .withBaseAsset("BTC")
                 .withQuoteAsset("ETH")
                 .withInclude(AssetPairParams.Includes.BASE_ASSET)
+                .withPagingParams(PagingParamsV2(PagingOrder.DESC))
                 .build()
 
-        Assert.assertEquals(expected, params.map().toString())
+        Assert.assertEquals(expected, params.map().toSortedMap().toString())
+        Assert.assertEquals(expected, buildParams.map().toSortedMap().toString())
     }
 
     @Test
     fun assetsParams() {
-        val expected = "{include=owner, filter[policy]=2}"
+        val expected = "{filter[policy]=2, include=owner, order=desc, page[order]=desc}"
 
         val params = AssetsPageParams(
                 policies = listOf(AssetPolicy.BASE_ASSET),
-                include = listOf(AssetParams.Includes.OWNER)
+                include = listOf(AssetParams.Includes.OWNER),
+                pagingParams = PagingParamsV2(PagingOrder.DESC)
         )
 
-        Assert.assertEquals(expected, params.map().toString())
-    }
-
-    @Test
-    fun assetParamsBuilder() {
-        val expected = "{include=owner, filter[policy]=2}"
-
-        val params = AssetsPageParams.Builder()
+        val builtParams = AssetsPageParams.Builder()
                 .withPolicies(AssetPolicy.BASE_ASSET)
                 .withInclude(AssetParams.Includes.OWNER)
+                .withPagingParams(PagingParamsV2(PagingOrder.DESC))
                 .build()
 
-        Assert.assertEquals(expected, params.map().toString())
+        Assert.assertEquals(expected, params.map().toSortedMap().toString())
+        Assert.assertEquals(expected, builtParams.map().toSortedMap().toString())
     }
 
     @Test
     fun balancesParams() {
-        val expected = "{include=account, asset=ETH, account=$accountId}"
+        val expected = "{filter[account]=$accountId, filter[asset]=ETH, include=account, order=desc, page[order]=desc}"
 
         val params = BalancesPageParams(
                 asset = "ETH",
                 account = accountId,
-                include = listOf(BalanceParams.Includes.ACCOUNT)
+                include = listOf(BalanceParams.Includes.ACCOUNT),
+                pagingParams = PagingParamsV2(PagingOrder.DESC)
         )
 
-        Assert.assertEquals(expected, params.map().toString())
-    }
-
-    @Test
-    fun balanceParamsBuilder() {
-        val expected = "{include=account, asset=ETH, account=$accountId}"
-
-        val params = BalancesPageParams.Builder()
+        val builtParams = BalancesPageParams.Builder()
                 .withAsset("ETH")
                 .withAccount(accountId)
                 .withInclude(BalanceParams.Includes.ACCOUNT)
+                .withPagingParams(PagingParamsV2(PagingOrder.DESC))
                 .build()
 
-        Assert.assertEquals(expected, params.map().toString())
+        Assert.assertEquals(expected, params.map().toSortedMap().toString())
+        Assert.assertEquals(expected, builtParams.map().toSortedMap().toString())
     }
 
     @Test
     fun feesParams() {
-        val expected = "{include=account, asset=ETH, fee_type=0, subtype=1, account_id=$accountId, account_type=10, lower_bound=1, upper_bound=10}"
+        val expected = "{filter[account]=$accountId, filter[account_role]=1, filter[asset]=ETH, filter[fee_type]=0, filter[lower_bound]=1, filter[subtype]=1, filter[upper_bound]=10, include=account, order=desc, page[order]=desc}"
 
-        val params = FeesPageParamsV2(
+        val params = FeesPageParamsV3(
                 asset = "ETH",
                 type = FeeType.PAYMENT_FEE,
                 subtype = 1,
                 account = accountId,
-                accountType = AccountType.VERIFIED,
+                accountRole = 1,
                 lowerBound = BigDecimal.ONE,
                 upperBound = BigDecimal.TEN,
-                include = listOf(FeeParamsV2.Includes.ACCOUNT)
+                include = listOf(FeesPageParamsV3.Includes.ACCOUNT),
+                pagingParams = PagingParamsV2(PagingOrder.DESC)
         )
 
-        Assert.assertEquals(expected, params.map().toString())
-    }
-
-    @Test
-    fun feesParamsBuilder() {
-        val expected = "{include=account, asset=ETH, fee_type=0, subtype=1, account_id=$accountId, account_type=10, lower_bound=1, upper_bound=10}"
-
-        val params = FeesPageParamsV2.Builder()
+        val builtParams = FeesPageParamsV3.Builder()
                 .withAsset("ETH")
                 .withType(FeeType.PAYMENT_FEE)
                 .withSubtype(1)
                 .withAccount(accountId)
-                .withAccountType(AccountType.VERIFIED)
+                .withAccountRole(1)
                 .withLowerBound(BigDecimal.ONE)
                 .withUpperBound(BigDecimal.TEN)
-                .withInclude(FeeParamsV2.Includes.ACCOUNT)
+                .withInclude(FeesPageParamsV3.Includes.ACCOUNT)
+                .withPagingParams(PagingParamsV2(PagingOrder.DESC))
                 .build()
 
-        Assert.assertEquals(expected, params.map().toString())
+        Assert.assertEquals(expected, params.map().toSortedMap().toString())
+        Assert.assertEquals(expected, builtParams.map().toSortedMap().toString())
     }
 
     @Test
     fun offersParams() {
-        val expected = "{include=base_asset, base_balance=10, quote_balance=15, base_asset=ETH, quote_asset=BTC, owner=$accountId, order_book_id=${Long.MAX_VALUE}}"
+        val expected = "{filter[base_asset]=ETH, filter[base_balance]=10, filter[is_buy]=false, filter[order_book]=9223372036854775807, filter[owner]=$accountId, filter[quote_asset]=BTC, filter[quote_balance]=15, include=base_asset, order=desc, page[order]=desc}"
 
-        val params = OffersPageParamsV2(
+        val params = OffersPageParamsV3(
                 baseBalance = "10",
                 quoteBalance = "15",
                 baseAsset = "ETH",
                 quoteAsset = "BTC",
                 ownerAccount = accountId,
-                orderBookId = Long.MAX_VALUE,
-                include = listOf(OfferParamsV2.Includes.BASE_ASSET)
+                orderBook = Long.MAX_VALUE,
+                isBuy = false,
+                include = listOf(OfferParamsV3.Includes.BASE_ASSET),
+                pagingParams = PagingParamsV2(PagingOrder.DESC)
         )
 
-        Assert.assertEquals(expected, params.map().toString())
-    }
-
-    @Test
-    fun offersParamsBuilder() {
-        val expected = "{include=base_asset, base_balance=10, quote_balance=15, base_asset=ETH, quote_asset=BTC, owner=$accountId, order_book_id=${Long.MAX_VALUE}}"
-
-        val params = OffersPageParamsV2.Builder()
+        val builtParams = OffersPageParamsV3.Builder()
                 .withBaseBalance("10")
                 .withQuoteBalance("15")
                 .withBaseAsset("ETH")
                 .withQuoteAsset("BTC")
                 .withOwnerAccount(accountId)
-                .withOrderBookId(Long.MAX_VALUE)
-                .withInclude(OfferParamsV2.Includes.BASE_ASSET)
+                .withOrderBook(Long.MAX_VALUE)
+                .withIsBuy(false)
+                .withInclude(OfferParamsV3.Includes.BASE_ASSET)
+                .withPagingParams(PagingParamsV2(PagingOrder.DESC))
                 .build()
 
-        Assert.assertEquals(expected, params.map().toString())
+        Assert.assertEquals(expected, params.map().toSortedMap().toString())
+        Assert.assertEquals(expected, builtParams.map().toSortedMap().toString())
     }
 
     @Test
     fun requestsParams() {
-        val updated = System.currentTimeMillis()
+        val updated = 1549618720L
 
-        val expected = "{include=request_details, reviewer=$accountId, requestor=$accountId, state_i=3, type=0, updated_after=$updated}"
+        val expected = "{filter[requestor]=$accountId, filter[reviewer]=$accountId, filter[state_i]=3, filter[type]=10, filter[updated_after]=1549618720, include=request_details, order=desc, page[order]=desc}"
 
-        val params = RequestsPageParamsV2(
+        val params = RequestsPageParamsV3(
                 reviewer = accountId,
                 requestor = accountId,
                 state = RequestState.APPROVED,
                 type = ReviewableRequestType.ASSET_CREATE,
                 updatedAfter = updated,
-                includes = listOf(RequestParamsV2.Includes.REQUEST_DETAILS)
+                includes = listOf(RequestParamsV3.Includes.REQUEST_DETAILS),
+                pagingParams = PagingParamsV2(PagingOrder.DESC)
         )
 
-        Assert.assertEquals(expected, params.map().toString())
-    }
-
-    @Test
-    fun requestsParamsBuilder() {
-        val updated = System.currentTimeMillis()
-
-        val expected = "{include=request_details, reviewer=$accountId, requestor=$accountId, state_i=3, type=0, updated_after=$updated}"
-
-        val params = RequestsPageParamsV2.Builder()
+        val builtParams = RequestsPageParamsV3.Builder()
                 .withReviewer(accountId)
                 .withRequestor(accountId)
                 .withState(RequestState.APPROVED)
                 .withType(ReviewableRequestType.ASSET_CREATE)
                 .withUpdateAfter(updated)
-                .withInclude(RequestParamsV2.Includes.REQUEST_DETAILS)
+                .withInclude(RequestParamsV3.Includes.REQUEST_DETAILS)
+                .withPagingParams(PagingParamsV2(PagingOrder.DESC))
                 .build()
 
-        Assert.assertEquals(expected, params.map().toString())
+        Assert.assertEquals(expected, params.map().toSortedMap().toString())
+        Assert.assertEquals(expected, builtParams.map().toSortedMap().toString())
     }
 
     @Test
     fun salesParams() {
-        val expected = "{include=base_asset, name=BestNameEver, base_asset=BTC, owner=$accountId, open_only=true, upcoming=true, voting=true, promotions=true, sort_by=2}"
+        val expected = "{filter[base_asset]=BTC, filter[max_end_time]=2019-02-08T09:38:40Z, filter[max_hard_cap]=1, filter[max_start_time]=2019-02-08T09:28:40Z, filter[min_soft_cap]=10, filter[owner]=$accountId, filter[sale_type]=2, filter[state]=1, include=base_asset, order=desc, page[order]=desc}"
 
-        val params = SalesPageParamsV2(
-                name = "BestNameEver",
+        val params = SalesPageParamsV3(
                 baseAsset = "BTC",
-                ownerAccount = accountId,
-                openOnly = true,
-                upcoming = true,
-                voting = true,
-                promotions = true,
-                sortBy = SalesPageParamsV2.SortCriteria.MOST_FUNDED,
-                includes = listOf(SaleParamsV2.Includes.BASE_ASSET)
+                owner = accountId,
+                state = SaleState.OPEN,
+                maxEndTime = Date(1549618720 * 1000L),
+                maxStartTime = Date(1549618120 * 1000L),
+                maxHardCap = BigDecimal.ONE,
+                minSoftCap = BigDecimal.TEN,
+                saleType = SaleType.CROWD_FUNDING,
+                includes = listOf(SaleParamsV3.Includes.BASE_ASSET),
+                pagingParams = PagingParamsV2(PagingOrder.DESC)
         )
 
-        Assert.assertEquals(expected, params.map().toString())
-    }
-
-    @Test
-    fun saleParamsBuilder() {
-        val expected = "{include=base_asset, name=BestNameEver, base_asset=BTC, owner=$accountId, open_only=true, upcoming=true, voting=true, promotions=true, sort_by=2}"
-
-        val params = SalesPageParamsV2.Builder()
-                .withName("BestNameEver")
+        val builtParams = SalesPageParamsV3.Builder()
                 .withBaseAsset("BTC")
-                .withOwnerAccount(accountId)
-                .withOpenOnly(true)
-                .withUpcoming(true)
-                .withVoting(true)
-                .withPromotions(true)
-                .withSortBy(SalesPageParamsV2.SortCriteria.MOST_FUNDED)
-                .withInclude(SaleParamsV2.Includes.BASE_ASSET)
+                .withOwner(accountId)
+                .withState(SaleState.OPEN)
+                .withMaxEndTime(Date(1549618720 * 1000L))
+                .withMaxStartTime(Date(1549618120 * 1000L))
+                .withMaxHardCap(BigDecimal.ONE)
+                .withMinSoftCap(BigDecimal.TEN)
+                .withSaleType(SaleType.CROWD_FUNDING)
+                .withInclude(SaleParamsV3.Includes.BASE_ASSET)
+                .withPagingParams(PagingParamsV2(PagingOrder.DESC))
                 .build()
 
-        Assert.assertEquals(expected, params.map().toString())
+        Assert.assertEquals(expected, params.map().toSortedMap().toString())
+        Assert.assertEquals(expected, builtParams.map().toSortedMap().toString())
     }
 
     @Test
     fun transactionsParams() {
-        val expected = "{account_id=$accountId}"
+        val expected = "{filter[account_id]=$accountId, order=desc, page[order]=desc}"
 
-        val params = TransactionsPageParams(account = accountId)
+        val params = TransactionsPageParams(
+                account = accountId,
+                pagingParams = PagingParamsV2(PagingOrder.DESC)
+        )
 
-        Assert.assertEquals(expected, params.map().toString())
-    }
-
-    @Test
-    fun transactionsParamsBuilder() {
-        val expected = "{account_id=$accountId}"
-
-        val params = TransactionsPageParams.Builder()
+        val builtParams = TransactionsPageParams.Builder()
                 .withAccount(accountId)
+                .withPagingParams(PagingParamsV2(PagingOrder.DESC))
                 .build()
 
-        Assert.assertEquals(expected, params.map().toString())
+
+        Assert.assertEquals(expected, params.map().toSortedMap().toString())
+        Assert.assertEquals(expected, builtParams.map().toSortedMap().toString())
     }
 
     @Test
-    fun operationsParams() {
-        val expected = "{include=operation_details,source, order=desc, limit=42, cursor=10, page=10, page[number]=10, page[limit]=42, tx_id=txid, account_id=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, reference=reference, account_type=6, states=7, subset=payments}"
+    fun participantEffectsParams() {
+        val expected = "{cursor=6, filter[account]=$accountId, filter[balance]=superbalance, include=operation,operation.details,effect, limit=18, order=desc, page=6, page[limit]=18, page[number]=6, page[order]=desc}"
 
-        val params = OperationsPageParamsV2(
-                transaction = "txid",
+        val params = ParticipantEffectsPageParams(
                 account = accountId,
-                reference = "reference",
-                accountType = AccountType.SYNDICATE,
-                subset = OperationsPageParamsV2.Subsets.PAYMENTS,
-                states = listOf(1, 2, 4),
+                balance = "superbalance",
                 include = listOf(
-                        OperationParamsV2.Includes.OPERATION_DETAILS,
-                        OperationParamsV2.Includes.SOURCE
+                        ParticipantEffectsParams.Includes.OPERATION,
+                        ParticipantEffectsParams.Includes.OPERATION_DETAILS,
+                        ParticipantEffectsParams.Includes.EFFECT
                 ),
                 pagingParams = PagingParamsV2(
                         order = PagingOrder.DESC,
-                        limit = 42,
-                        page = "10"
+                        limit = 18,
+                        page = "6"
                 )
+
         )
 
-        Assert.assertEquals(expected, params.map().toString())
-    }
-
-    @Test
-    fun operationsParamsBuilder() {
-        val expected = "{include=operation_details,source, order=desc, limit=42, cursor=10, page=10, page[number]=10, page[limit]=42, tx_id=txid, account_id=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, reference=reference, account_type=6, states=7, subset=payments}"
-
-        val params = OperationsPageParamsV2.Builder()
-                .withTransaction("txid")
+        val builtParams = ParticipantEffectsPageParams.Builder()
                 .withAccount(accountId)
-                .withReference("reference")
-                .withAccountType(AccountType.SYNDICATE)
-                .withSubset(OperationsPageParamsV2.Subsets.PAYMENTS)
-                .withStates(1, 2, 4)
+                .withBalance("superbalance")
+                .withInclude(
+                        ParticipantEffectsParams.Includes.OPERATION,
+                        ParticipantEffectsParams.Includes.OPERATION_DETAILS,
+                        ParticipantEffectsParams.Includes.EFFECT
+                )
                 .withPagingParams(
                         PagingParamsV2(
                                 order = PagingOrder.DESC,
-                                limit = 42,
-                                page = "10"
+                                limit = 18,
+                                page = "6"
                         )
-                )
-                .withInclude(
-                        OperationParamsV2.Includes.OPERATION_DETAILS,
-                        OperationParamsV2.Includes.SOURCE
                 )
                 .build()
 
-        Assert.assertEquals(expected, params.map().toString())
+        Assert.assertEquals(expected, params.map().toSortedMap().toString())
+        Assert.assertEquals(expected, builtParams.map().toSortedMap().toString())
+    }
+
+    @Test
+    fun orderBookParams() {
+        val expected = "{cursor=8, filter[base_asset]=BTC, filter[is_buy]=false, filter[quote_asset]=ETH, include=base_asset,quote_asset, limit=10, order=desc, page=8, page[limit]=10, page[number]=8, page[order]=desc}"
+
+        val params = OrderBookPageParams(
+                baseAsset = "BTC",
+                quoteAsset = "ETH",
+                isBuy = false,
+                include = listOf(
+                        OrderBookPageParams.Includes.BASE_ASSET,
+                        OrderBookPageParams.Includes.QUOTE_ASSET
+                ),
+                pagingParams = PagingParamsV2(
+                        order = PagingOrder.DESC,
+                        limit = 10,
+                        page = "8"
+                )
+        )
+
+        val builtParams = OrderBookPageParams.Builder()
+                .withBaseAsset("BTC")
+                .withQuoteAsset("ETH")
+                .withIsBuy(false)
+                .withInclude(
+                        OrderBookPageParams.Includes.BASE_ASSET,
+                        OrderBookPageParams.Includes.QUOTE_ASSET
+                )
+                .withPagingParams(
+                        PagingParamsV2(
+                                order = PagingOrder.DESC,
+                                limit = 10,
+                                page = "8"
+                        )
+                )
+                .build()
+
+        Assert.assertEquals(expected, params.map().toSortedMap().toString())
+        Assert.assertEquals(expected, builtParams.map().toSortedMap().toString())
     }
 }

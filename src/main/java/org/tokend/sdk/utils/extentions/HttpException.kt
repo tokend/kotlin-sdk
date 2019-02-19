@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.jasminb.jsonapi.ErrorUtils
 import com.github.jasminb.jsonapi.models.errors.Error
 import com.github.jasminb.jsonapi.models.errors.Errors
-import org.tokend.sdk.factory.JsonApiFactory
+import org.tokend.sdk.factory.JsonApiToolsProvider
 import retrofit2.HttpException
 import java.io.IOException
 import java.net.HttpURLConnection
@@ -40,7 +40,7 @@ fun HttpException.codeIs(httpCode: Int): Boolean =
  */
 @JvmOverloads
 @Throws(IOException::class)
-fun HttpException.getErrors(mapper: ObjectMapper = JsonApiFactory().getObjectMapper()): List<Error> {
+fun HttpException.getErrors(mapper: ObjectMapper = JsonApiToolsProvider.getObjectMapper()): List<Error> {
     return response().errorBody().use { errorBody ->
         val stream = errorBody.byteStream()
 

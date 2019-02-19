@@ -7,6 +7,10 @@ import java.io.Serializable
 import java.math.BigDecimal
 import java.util.*
 
+/**
+ * @see org.tokend.sdk.api.generated.resources.SaleResource
+ */
+@Deprecated("We are going to replace with SaleResource")
 open class Sale<DetailsType, StatisticsType, QuoteAssetType>(@SerializedName("id")
                                                              val id: Long,
                                                              @SerializedName("paging_token")
@@ -56,10 +60,10 @@ open class Sale<DetailsType, StatisticsType, QuoteAssetType>(@SerializedName("id
         get() = isClosed || isCanceled
 
     open val isClosed: Boolean
-        get() = state.value == STATE_CLOSED
+        get() = state == SaleState.CLOSED
 
     open val isCanceled: Boolean
-        get() = state.value == STATE_CANCELED
+        get() = state == SaleState.CANCELED
 
     open val quoteAssets: List<QuoteAssetType>
         get() = mQuoteAssets.items
@@ -71,11 +75,5 @@ open class Sale<DetailsType, StatisticsType, QuoteAssetType>(@SerializedName("id
 
     override fun hashCode(): Int {
         return id.hashCode()
-    }
-
-    companion object {
-        const val STATE_OPEN = 1
-        const val STATE_CLOSED = 2
-        const val STATE_CANCELED = 4
     }
 }

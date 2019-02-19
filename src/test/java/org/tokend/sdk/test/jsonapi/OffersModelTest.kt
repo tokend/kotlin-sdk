@@ -2,13 +2,13 @@ package org.tokend.sdk.test.jsonapi
 
 import org.junit.Assert
 import org.junit.Test
-import org.tokend.sdk.api.v2.offers.model.OfferResource
-import org.tokend.sdk.factory.JsonApiFactory
+import org.tokend.sdk.api.generated.resources.OfferResource
+import org.tokend.sdk.factory.JsonApiToolsProvider
 
 class OffersModelTest {
     @Test
     fun singleOffer() {
-        val document = JsonApiFactory().getResourceConverter().readDocument(
+        val document = JsonApiToolsProvider.getResourceConverter().readDocument(
                 offerResponseUnincluded.toByteArray(),
                 OfferResource::class.java
         )
@@ -28,7 +28,10 @@ class OffersModelTest {
             "      \"id\":\"10\",\n" +
             "      \"attributes\":{  \n" +
             "         \"order_book_id\":0,\n" +
-            "         \"fee\":\"0.000000\",\n" +
+            "         \"fee\":{\n" +
+                "        \"fixed\": \"0.000000\",\n" +
+                "        \"calculated_percent\": \"0.000000\"\n" +
+                "      },\n" +
             "         \"base_asset_code\":\"RTOKEN\",\n" +
             "         \"quote_asset_code\":\"BTC\",\n" +
             "         \"is_buy\":true,\n" +
