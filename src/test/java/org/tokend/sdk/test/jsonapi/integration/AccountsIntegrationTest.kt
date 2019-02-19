@@ -74,21 +74,6 @@ class AccountsIntegrationTest {
     }
 
     @Test
-    fun getLimits() {
-        val api = Util.getSignedApi()
-
-        val limits = api
-                .v3
-                .accounts
-                .getLimits(accountId)
-                .execute()
-                .get()
-
-        Assert.assertTrue("No limits found", limits.isNotEmpty())
-        JsonApiUtil.checkResourceNullability(limits)
-    }
-
-    @Test
     fun getFees() {
         val api = Util.getSignedApi()
 
