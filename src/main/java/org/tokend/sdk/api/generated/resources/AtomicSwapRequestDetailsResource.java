@@ -25,9 +25,17 @@ public class AtomicSwapRequestDetailsResource extends RequestDetailsResource {
         return baseAmount;
     }
     
+    @JsonProperty("creator_details")
+    private JsonNode creatorDetails;
+    
+    public JsonNode getCreatorDetails() {
+        return creatorDetails;
+    }
+    
     @Override
     public boolean hasAttributes() {
-        return             baseAmount != null 
+        return             baseAmount != null &&
+            creatorDetails != null 
         ;
     }
     

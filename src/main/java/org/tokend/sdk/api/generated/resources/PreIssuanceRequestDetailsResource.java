@@ -39,11 +39,19 @@ public class PreIssuanceRequestDetailsResource extends RequestDetailsResource {
         return reference;
     }
     
+    @JsonProperty("creator_details")
+    private JsonNode creatorDetails;
+    
+    public JsonNode getCreatorDetails() {
+        return creatorDetails;
+    }
+    
     @Override
     public boolean hasAttributes() {
         return             amount != null &&
             signature != null &&
-            reference != null 
+            reference != null &&
+            creatorDetails != null 
         ;
     }
     

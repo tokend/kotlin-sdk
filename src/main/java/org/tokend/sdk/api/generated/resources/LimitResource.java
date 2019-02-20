@@ -79,9 +79,9 @@ public class LimitResource extends BaseResource {
     }
     
     @Relationship("account_role")
-    private RoleResource accountRole;
+    private AccountRoleResource accountRole;
     
-    public RoleResource getAccountRole() {
+    public AccountRoleResource getAccountRole() {
         return accountRole;
     }
     

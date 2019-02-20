@@ -14,22 +14,15 @@ import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
 
 
-@Type("request-details-update-kyc")
+@Type("request-details-change-role")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UpdateKYCRequestDetailsResource extends RequestDetailsResource {
+public class ChangeRoleRequestDetailsResource extends RequestDetailsResource {
     
-    @JsonProperty("account_type_to_set")
-    private XdrEnumValue accountTypeToSet;
+    @JsonProperty("account_role_to_set")
+    private Long accountRoleToSet;
     
-    public XdrEnumValue getAccountTypeToSet() {
-        return accountTypeToSet;
-    }
-    
-    @JsonProperty("kyc_level")
-    private Long kycLevel;
-    
-    public Long getKycLevel() {
-        return kycLevel;
+    public Long getAccountRoleToSet() {
+        return accountRoleToSet;
     }
     
     @JsonProperty("kyc_data")
@@ -46,27 +39,19 @@ public class UpdateKYCRequestDetailsResource extends RequestDetailsResource {
         return sequenceNumber;
     }
     
-    @JsonProperty("external_details")
-    private List<JsonNode> externalDetails;
+    @JsonProperty("creator_details")
+    private List<JsonNode> creatorDetails;
     
-    public List<? extends JsonNode> getExternalDetails() {
-        return externalDetails;
+    public List<? extends JsonNode> getCreatorDetails() {
+        return creatorDetails;
     }
     
     @Override
     public boolean hasAttributes() {
-        return             accountTypeToSet != null &&
-            kycLevel != null &&
+        return             accountRoleToSet != null &&
             kycData != null &&
             sequenceNumber != null &&
-            externalDetails != null 
+            creatorDetails != null 
         ;
-    }
-    
-    @Relationship("account_to_update_kyc")
-    private AccountResource accountToUpdateKyc;
-    
-    public AccountResource getAccountToUpdateKyc() {
-        return accountToUpdateKyc;
     }
 }

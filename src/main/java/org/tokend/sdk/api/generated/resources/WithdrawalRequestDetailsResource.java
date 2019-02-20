@@ -32,11 +32,11 @@ public class WithdrawalRequestDetailsResource extends RequestDetailsResource {
         return amount;
     }
     
-    @JsonProperty("external_details")
-    private JsonNode externalDetails;
+    @JsonProperty("creator_details")
+    private JsonNode creatorDetails;
     
-    public JsonNode getExternalDetails() {
-        return externalDetails;
+    public JsonNode getCreatorDetails() {
+        return creatorDetails;
     }
     
     @JsonProperty("reviewer_details")
@@ -50,7 +50,7 @@ public class WithdrawalRequestDetailsResource extends RequestDetailsResource {
     public boolean hasAttributes() {
         return             fee != null &&
             amount != null &&
-            externalDetails != null &&
+            creatorDetails != null &&
             reviewerDetails != null 
         ;
     }

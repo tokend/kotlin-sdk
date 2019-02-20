@@ -14,16 +14,9 @@ import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
 
 
-@Type("operations-create-kyc-request")
+@Type("operations-create-change-role-request")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class OpCreateKYCRequestDetailsResource extends OperationDetailsResource {
-    
-    @JsonProperty("account_type_to_set")
-    private XdrEnumValue accountTypeToSet;
-    
-    public XdrEnumValue getAccountTypeToSet() {
-        return accountTypeToSet;
-    }
+public class OpCreateChangeRoleRequestDetailsResource extends OperationDetailsResource {
     
     @JsonProperty("kyc_data")
     private JsonNode kycData;
@@ -34,25 +27,24 @@ public class OpCreateKYCRequestDetailsResource extends OperationDetailsResource 
     
     @JsonProperty("all_tasks")
     @Nullable
-    private Integer allTasks;
+    private Long allTasks;
     
     @Nullable
-    public Integer getAllTasks() {
+    public Long getAllTasks() {
         return allTasks;
     }
     
     @Override
     public boolean hasAttributes() {
-        return             accountTypeToSet != null &&
-            kycData != null 
+        return             kycData != null 
         ;
     }
     
-    @Relationship("account_to_update_kyc")
-    private AccountResource accountToUpdateKyc;
+    @Relationship("account_to_update_role")
+    private AccountResource accountToUpdateRole;
     
-    public AccountResource getAccountToUpdateKyc() {
-        return accountToUpdateKyc;
+    public AccountResource getAccountToUpdateRole() {
+        return accountToUpdateRole;
     }
     
     @Relationship("request")
@@ -60,5 +52,12 @@ public class OpCreateKYCRequestDetailsResource extends OperationDetailsResource 
     
     public ReviewableRequestResource getRequest() {
         return request;
+    }
+    
+    @Relationship("role_to_set")
+    private AccountRoleResource roleToSet;
+    
+    public AccountRoleResource getRoleToSet() {
+        return roleToSet;
     }
 }

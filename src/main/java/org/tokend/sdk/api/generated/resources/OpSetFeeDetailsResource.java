@@ -55,13 +55,13 @@ public class OpSetFeeDetailsResource extends OperationDetailsResource {
         return accountAddress;
     }
     
-    @JsonProperty("account_type")
+    @JsonProperty("account_role")
     @Nullable
-    private XdrEnumValue accountType;
+    private Long accountRole;
     
     @Nullable
-    public XdrEnumValue getAccountType() {
-        return accountType;
+    public Long getAccountRole() {
+        return accountRole;
     }
     
     @JsonProperty("subtype")

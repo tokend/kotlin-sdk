@@ -46,11 +46,11 @@ public class SaleRequestDetailsResource extends RequestDetailsResource {
         return saleType;
     }
     
-    @JsonProperty("details")
-    private JsonNode details;
+    @JsonProperty("creator_details")
+    private JsonNode creatorDetails;
     
-    public JsonNode getDetails() {
-        return details;
+    public JsonNode getCreatorDetails() {
+        return creatorDetails;
     }
     
     @Override
@@ -59,7 +59,7 @@ public class SaleRequestDetailsResource extends RequestDetailsResource {
             startTime != null &&
             endTime != null &&
             saleType != null &&
-            details != null 
+            creatorDetails != null 
         ;
     }
     

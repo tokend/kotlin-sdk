@@ -14,27 +14,9 @@ import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
 
 
-@Type("request-details-update-sale-end-time")
+@Type("operations-create-signer-rule")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UpdateSaleEndTimeRequestDetailsResource extends RequestDetailsResource {
-    
-    @JsonProperty("new_end_time")
-    private Date newEndTime;
-    
-    public Date getNewEndTime() {
-        return newEndTime;
-    }
-    
+public class OpCreateSignerRuleDetailsResource extends OpManageSignerRuleDetailsResource {
     @Override
-    public boolean hasAttributes() {
-        return             newEndTime != null 
-        ;
-    }
-    
-    @Relationship("sale")
-    private SaleResource sale;
-    
-    public SaleResource getSale() {
-        return sale;
-    }
+    public boolean hasAttributes() { return false; }
 }

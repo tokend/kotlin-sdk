@@ -25,17 +25,17 @@ public class ASwapBidRequestDetailsResource extends RequestDetailsResource {
         return baseAmount;
     }
     
-    @JsonProperty("details")
-    private JsonNode details;
+    @JsonProperty("creator_details")
+    private JsonNode creatorDetails;
     
-    public JsonNode getDetails() {
-        return details;
+    public JsonNode getCreatorDetails() {
+        return creatorDetails;
     }
     
     @Override
     public boolean hasAttributes() {
         return             baseAmount != null &&
-            details != null 
+            creatorDetails != null 
         ;
     }
     

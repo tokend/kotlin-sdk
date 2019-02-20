@@ -14,27 +14,9 @@ import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
 
 
-@Type("roles")
+@Type("operations-remove-signer-rule")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RoleResource extends BaseResource {
-    
-    @JsonProperty("details")
-    private JsonNode details;
-    
-    public JsonNode getDetails() {
-        return details;
-    }
-    
+public class OpRemoveSignerRuleDetailsResource extends OpManageSignerRuleDetailsResource {
     @Override
-    public boolean hasAttributes() {
-        return             details != null 
-        ;
-    }
-    
-    @Relationship("rules")
-    private List<RuleResource> rules;
-    
-    public List<? extends RuleResource> getRules() {
-        return rules;
-    }
+    public boolean hasAttributes() { return false; }
 }

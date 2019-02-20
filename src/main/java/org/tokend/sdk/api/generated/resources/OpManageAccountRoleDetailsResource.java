@@ -14,27 +14,34 @@ import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
 
 
-@Type("request-details-update-sale-details")
+@Type("operations-manage-account-role")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UpdateSaleDetailsRequestDetailsResource extends RequestDetailsResource {
+public class OpManageAccountRoleDetailsResource extends OperationDetailsResource {
     
-    @JsonProperty("creator_details")
-    private JsonNode creatorDetails;
+    @JsonProperty("details")
+    private JsonNode details;
     
-    public JsonNode getCreatorDetails() {
-        return creatorDetails;
+    public JsonNode getDetails() {
+        return details;
     }
     
     @Override
     public boolean hasAttributes() {
-        return             creatorDetails != null 
+        return             details != null 
         ;
     }
     
-    @Relationship("sale")
-    private SaleResource sale;
+    @Relationship("role")
+    private AccountRoleResource role;
     
-    public SaleResource getSale() {
-        return sale;
+    public AccountRoleResource getRole() {
+        return role;
+    }
+    
+    @Relationship("rules")
+    private List<AccountRuleResource> rules;
+    
+    public List<? extends AccountRuleResource> getRules() {
+        return rules;
     }
 }

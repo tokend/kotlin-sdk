@@ -14,22 +14,15 @@ import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
 
 
-@Type("signers")
+@Type("operations-manage-signer-role")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SignerResource extends BaseResource {
+public class OpManageSignerRoleDetailsResource extends OperationDetailsResource {
     
-    @JsonProperty("weight")
-    private Long weight;
+    @JsonProperty("is_read_only")
+    private Boolean isReadOnly;
     
-    public Long getWeight() {
-        return weight;
-    }
-    
-    @JsonProperty("identity")
-    private Long identity;
-    
-    public Long getIdentity() {
-        return identity;
+    public Boolean isReadOnly() {
+        return isReadOnly;
     }
     
     @JsonProperty("details")
@@ -41,17 +34,9 @@ public class SignerResource extends BaseResource {
     
     @Override
     public boolean hasAttributes() {
-        return             weight != null &&
-            identity != null &&
+        return             isReadOnly != null &&
             details != null 
         ;
-    }
-    
-    @Relationship("account")
-    private AccountResource account;
-    
-    public AccountResource getAccount() {
-        return account;
     }
     
     @Relationship("role")
@@ -59,5 +44,12 @@ public class SignerResource extends BaseResource {
     
     public SignerRoleResource getRole() {
         return role;
+    }
+    
+    @Relationship("rules")
+    private List<SignerRuleResource> rules;
+    
+    public List<? extends SignerRuleResource> getRules() {
+        return rules;
     }
 }

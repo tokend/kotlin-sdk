@@ -25,17 +25,17 @@ public class IssuanceRequestDetailsResource extends RequestDetailsResource {
         return amount;
     }
     
-    @JsonProperty("external_details")
-    private JsonNode externalDetails;
+    @JsonProperty("creator_details")
+    private JsonNode creatorDetails;
     
-    public JsonNode getExternalDetails() {
-        return externalDetails;
+    public JsonNode getCreatorDetails() {
+        return creatorDetails;
     }
     
     @Override
     public boolean hasAttributes() {
         return             amount != null &&
-            externalDetails != null 
+            creatorDetails != null 
         ;
     }
     
