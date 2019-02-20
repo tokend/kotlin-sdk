@@ -17,6 +17,7 @@ constructor(
                     cursor?.also {
                         put("page", it)
                         put(QUERY_PARAM_PAGE_NUMBER, it)
+                        put(QUERY_PARAM_PAGE_CURSOR, it)
                     }
                     limit?.also { put(QUERY_PARAM_LIMIT, it) }
                     order?.also { put(QUERY_PARAM_ORDER, it) }
@@ -44,6 +45,7 @@ constructor(
 
     companion object {
         const val QUERY_PARAM_PAGE_NUMBER = "page[number]"
+        const val QUERY_PARAM_PAGE_CURSOR = "page[cursor]"
         const val QUERY_PARAM_LIMIT = "page[limit]"
         const val QUERY_PARAM_ORDER = "page[order]"
     }

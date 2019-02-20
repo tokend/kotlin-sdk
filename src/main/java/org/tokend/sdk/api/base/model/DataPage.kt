@@ -43,13 +43,29 @@ class DataPage<T>(val nextCursor: String?,
          */
         fun <T> fromPageDocument(pageDocument: JSONAPIDocument<List<T>>): DataPage<T> {
             val selfLink = URLDecoder.decode(pageDocument.links.self.href, "UTF-8")
-            val nextLink = pageDocument.links?.next?.href?.let {
-                URLDecoder.decode(it, "UTF-8")
-            }
+            val nextLink = pageDocument.links?.next?.href?.let { URLDecoder.decode(it, "UTF-8") }
+
+            val selfCursor =
+                    getNumberParamFromLink(selfLink, PagingParamsV2.QUERY_PARAM_PAGE_CURSOR)
+            val selfPageNumber =
+                    getNumberParamFromLink(selfLink, PagingParamsV2.QUERY_PARAM_PAGE_NUMBER)
 
             val nextCursor =
-                    getNumberParamFromLink(nextLink
-                            ?: selfLink, PagingParamsV2.QUERY_PARAM_PAGE_NUMBER)
+                    if (nextLink != null)
+                        getNumberParamFromLink(nextLink, PagingParamsV2.QUERY_PARAM_PAGE_CURSOR)
+                    else
+                        selfCursor
+            val nextPageNumber =
+                    if (nextLink != null)
+                        getNumberParamFromLink(nextLink, PagingParamsV2.QUERY_PARAM_PAGE_NUMBER)
+                    else
+                        selfPageNumber
+
+            val next =
+                    if (selfCursor != nextCursor)
+                        nextCursor
+                    else
+                        nextPageNumber
 
             val limit = getNumberParamFromLink(nextLink
                     ?: selfLink, PagingParamsV2.QUERY_PARAM_LIMIT)
@@ -59,7 +75,7 @@ class DataPage<T>(val nextCursor: String?,
             val items = pageDocument.get()
             val isLast = nextLink == null || items.size < limit
 
-            return DataPage(nextCursor, items, isLast)
+            return DataPage(next, items, isLast)
         }
     }
 }
