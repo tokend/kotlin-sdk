@@ -5,12 +5,8 @@ import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.base.model.DataPage
 import org.tokend.sdk.api.base.params.map
-import org.tokend.sdk.api.generated.resources.AccountResource
-import org.tokend.sdk.api.generated.resources.BalanceResource
-import org.tokend.sdk.api.generated.resources.FeeResource
-import org.tokend.sdk.api.generated.resources.LimitResource
-import org.tokend.sdk.api.v3.accounts.params.AccountParamsV3
-import org.tokend.sdk.api.v3.accounts.params.AccountsPageParamsV3
+import org.tokend.sdk.api.generated.resources.*
+import org.tokend.sdk.api.v3.accounts.params.*
 
 open class AccountsApiV3(
         protected open val accountsService: AccountsServiceV3
@@ -79,5 +75,46 @@ open class AccountsApiV3(
                 listOf(AccountParamsV3.Includes.FEES)
         ))
                 .map { it.fees ?: emptyList() }
+    }
+
+    /**
+     * @return account roles page.
+     */
+    open fun getRoles(params: AccountRolesPageParamsV3? = null): ApiRequest<DataPage<AccountRoleResource>> {
+        return MappedRetrofitApiRequest(
+                accountsService.getAccountRoles(params.map()),
+                DataPage.Companion::fromPageDocument
+        )
+    }
+
+    /**
+     * @return role by it's id.
+     */
+    open fun getRoleById(roleId: String,
+                                params: AccountRoleParamsV3? = null): ApiRequest<AccountRoleResource> {
+        return MappedRetrofitApiRequest(
+                accountsService.getAccountRoleById(roleId, params.map()),
+                JSONAPIDocument<AccountRoleResource>::get
+        )
+    }
+
+    /**
+     * @return account rules page.
+     */
+    open fun getRules(params: AccountRulesPageParamsV3? = null): ApiRequest<DataPage<AccountRuleResource>> {
+        return MappedRetrofitApiRequest(
+                accountsService.getAccountRules(params.map()),
+                DataPage.Companion::fromPageDocument
+        )
+    }
+
+    /**
+     * @return rule by it's id.
+     */
+    open fun getRuleById(ruleId: String): ApiRequest<AccountRuleResource> {
+        return MappedRetrofitApiRequest(
+                accountsService.getAccountRuleById(ruleId),
+                JSONAPIDocument<AccountRuleResource>::get
+        )
     }
 }
