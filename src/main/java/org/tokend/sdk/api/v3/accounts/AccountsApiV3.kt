@@ -6,24 +6,14 @@ import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.base.model.DataPage
 import org.tokend.sdk.api.base.params.map
 import org.tokend.sdk.api.generated.resources.*
-import org.tokend.sdk.api.v3.accounts.params.*
+import org.tokend.sdk.api.v3.accounts.params.AccountParamsV3
+import org.tokend.sdk.api.v3.accounts.params.AccountRoleParamsV3
+import org.tokend.sdk.api.v3.accounts.params.AccountRolesPageParamsV3
+import org.tokend.sdk.api.v3.accounts.params.AccountRulesPageParamsV3
 
 open class AccountsApiV3(
         protected open val accountsService: AccountsServiceV3
 ) {
-    /**
-     * @return accounts list page
-     *
-     * Should be signed by signer of requested account or signer of master account
-     *
-     */
-    open fun get(params: AccountsPageParamsV3?): ApiRequest<DataPage<AccountResource>> {
-        return MappedRetrofitApiRequest(
-                accountsService.getAccounts(params.map()),
-                DataPage.Companion::fromPageDocument
-        )
-    }
-
     /**
      * @return account by it's ID
      *
