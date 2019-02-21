@@ -171,7 +171,7 @@ class QueryParamsTest {
                 reviewer = accountId,
                 requestor = accountId,
                 state = RequestState.APPROVED,
-                type = ReviewableRequestType.ASSET_CREATE,
+                type = ReviewableRequestType.CREATE_ASSET,
                 updatedAfter = updated,
                 includes = listOf(RequestParamsV3.Includes.REQUEST_DETAILS),
                 pagingParams = PagingParamsV2(PagingOrder.DESC)
@@ -181,7 +181,7 @@ class QueryParamsTest {
                 .withReviewer(accountId)
                 .withRequestor(accountId)
                 .withState(RequestState.APPROVED)
-                .withType(ReviewableRequestType.ASSET_CREATE)
+                .withType(ReviewableRequestType.CREATE_ASSET)
                 .withUpdateAfter(updated)
                 .withInclude(RequestParamsV3.Includes.REQUEST_DETAILS)
                 .withPagingParams(PagingParamsV2(PagingOrder.DESC))

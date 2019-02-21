@@ -3,7 +3,6 @@ package org.tokend.sdk.api.v3.fees.params
 import org.tokend.sdk.api.base.params.PagingParamsV2
 import org.tokend.sdk.api.v3.base.PageQueryParams
 import org.tokend.sdk.utils.BigDecimalUtil
-import org.tokend.wallet.xdr.AccountType
 import org.tokend.wallet.xdr.FeeType
 import java.math.BigDecimal
 
@@ -15,7 +14,7 @@ open class FeesPageParamsV3(
         val type: FeeType? = null,
         val subtype: Int? = null,
         val account: String? = null,
-        val accountRole: Int? = null,
+        val accountRole: Long? = null,
         val lowerBound: BigDecimal? = null,
         val upperBound: BigDecimal? = null,
         include: Collection<String>? = null,
@@ -39,7 +38,7 @@ open class FeesPageParamsV3(
         private var type: FeeType? = null
         private var subtype: Int? = null
         private var account: String? = null
-        private var accountRole: Int? = null
+        private var accountRole: Long? = null
         private var lowerBound: BigDecimal? = null
         private var upperBound: BigDecimal? = null
 
@@ -51,7 +50,7 @@ open class FeesPageParamsV3(
 
         fun withAccount(account: String) = also { this.account = account }
 
-        fun withAccountRole(accountRole: Int) = also { this.accountRole = accountRole }
+        fun withAccountRole(accountRole: Long) = also { this.accountRole = accountRole }
 
         fun withLowerBound(lowerBound: BigDecimal) = also { this.lowerBound = lowerBound }
 

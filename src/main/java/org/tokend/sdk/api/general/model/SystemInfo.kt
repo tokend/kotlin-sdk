@@ -13,8 +13,8 @@ open class SystemInfo(
         val commissionAccountId: String,
         @SerializedName("operational_account_id")
         val operationalAccountId: String,
-        @SerializedName("master_account_id")
-        val masterExchangeAccountId: String,
+        @SerializedName("admin_account_id")
+        val adminAccountId: String,
         @SerializedName("master_exchange_name")
         val masterExchangeName: String,
         @SerializedName("precision")
@@ -24,11 +24,11 @@ open class SystemInfo(
         return other is SystemInfo
                 && other.passphrase == passphrase
                 && other.masterExchangeName == masterExchangeName
-                && other.masterExchangeAccountId == masterExchangeAccountId
+                && other.adminAccountId == adminAccountId
     }
 
     override fun hashCode(): Int {
-        return HashCodes.ofMany(passphrase, masterExchangeName, masterExchangeAccountId)
+        return HashCodes.ofMany(passphrase, masterExchangeName, adminAccountId)
     }
 
     fun toNetworkParams(): NetworkParams {

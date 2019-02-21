@@ -2,15 +2,19 @@ package org.tokend.sdk.keyserver
 
 import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.MappedCallableApiRequest
+import org.tokend.sdk.api.generated.resources.SignerResource
+import org.tokend.sdk.api.keyvaluestorage.KeyValueStorageApi
+import org.tokend.sdk.api.v3.signers.SignersApiV3
 import org.tokend.sdk.api.wallets.WalletsApi
 import org.tokend.sdk.api.wallets.model.EmailAlreadyTakenException
 import org.tokend.sdk.api.wallets.model.EmailNotVerifiedException
 import org.tokend.sdk.api.wallets.model.InvalidCredentialsException
+import org.tokend.sdk.factory.JsonApiToolsProvider
 import org.tokend.sdk.keyserver.models.*
+import org.tokend.sdk.utils.extentions.isNotFound
 import org.tokend.wallet.*
-import org.tokend.wallet.xdr.Operation
-import org.tokend.wallet.xdr.op_extensions.RemoveMasterKeyOp
-import org.tokend.wallet.xdr.op_extensions.UpdateSignerOp
+import org.tokend.wallet.Transaction
+import org.tokend.wallet.xdr.*
 import retrofit2.HttpException
 
 class KeyServer constructor(
@@ -166,7 +170,90 @@ class KeyServer constructor(
         return result
     }
 
+    fun updateWalletPassword(currentWalletInfo: WalletInfo,
+                             currentAccount: Account,
+                             newPassword: CharArray,
+                             newAccount: Account,
+                             networkParams: NetworkParams,
+                             signersApiV3: SignersApiV3,
+                             keyValueApi: KeyValueStorageApi): ApiRequest<WalletInfo> {
+        return MappedCallableApiRequest(
+                {
+                    getUpdateWalletPasswordResult(currentWalletInfo, currentAccount,
+                            newPassword, newAccount, networkParams, signersApiV3, keyValueApi)
+                },
+                { it }
+        )
+    }
+
+    private fun getUpdateWalletPasswordResult(currentWalletInfo: WalletInfo,
+                                              currentAccount: Account,
+                                              newPassword: CharArray,
+                                              newAccount: Account,
+                                              networkParams: NetworkParams,
+                                              signersApiV3: SignersApiV3,
+                                              keyValueApi: KeyValueStorageApi): WalletInfo {
+        val signers: List<SignerResource> = try {
+            signersApiV3
+                    .get(currentWalletInfo.accountId)
+                    .execute()
+                    .get()
+        } catch (e: HttpException) {
+            if (e.isNotFound())
+                emptyList()
+            else
+                throw e
+        }
+
+        val defaultSignerRole = try {
+            keyValueApi
+                    .getEntryByKey(DEFAULT_SIGNER_ROLE_KEY_VALUE_KEY)
+                    .execute()
+                    .get()
+                    .uint32Value
+        } catch (e: Exception) {
+            throw IllegalStateException("Unable to obtain default role for signer " +
+                    "by key $DEFAULT_SIGNER_ROLE_KEY_VALUE_KEY", e)
+        }
+
+        val signersUpdateTx = createSignersUpdateTransaction(
+                networkParams = networkParams,
+                currentAccount = currentAccount,
+                newAccount = newAccount,
+                originalAccountId = currentWalletInfo.accountId,
+                signers = signers,
+                defaultSignerRole = defaultSignerRole.toLong()
+        )
+
+        val newLoginParams = currentWalletInfo.loginParams.copy()
+
+        // New KDF salt should be generated.
+        newLoginParams.kdfAttributes.salt = null
+
+        val newWallet = createWallet(
+                email = currentWalletInfo.email,
+                password = newPassword,
+                loginParams = newLoginParams,
+                rootAccount = newAccount,
+                recoveryAccount = newAccount
+        )
+
+        newWallet.walletData.addTransactionRelation(signersUpdateTx)
+
+        updateWallet(currentWalletInfo.walletIdHex, newWallet.walletData)
+
+        return currentWalletInfo.copy(
+                loginParams = newLoginParams,
+                secretSeed = newAccount.secretSeed!!
+        )
+    }
+
     companion object {
+        private const val RECOVERY_SIGNER_ROLE_ID = "1"
+        private const val DEFAULT_SIGNER_IDENTITY = 0L
+        private const val DEFAULT_SIGNER_WEIGHT = 1000L
+        private const val DEFAULT_SIGNER_ROLE_KEY_VALUE_KEY = "signer_role:default"
+
         /**
          * @return completed wallet for sign up or update
          * @param email user's email
@@ -296,23 +383,57 @@ class KeyServer constructor(
         fun createSignersUpdateTransaction(networkParams: NetworkParams,
                                            originalAccountId: String,
                                            currentAccount: Account,
-                                           signers: Collection<org.tokend.sdk.api.accounts.model.Account.Signer>,
-                                           newAccount: Account): Transaction {
+                                           signers: Collection<SignerResource>,
+                                           newAccount: Account,
+                                           defaultSignerRole: Uint64): Transaction {
+            class SignerData(
+                    val identity: Uint32,
+                    val weight: Uint32,
+                    val roleId: Uint64,
+                    val details: String
+            )
+
             val operationBodies = mutableListOf<Operation.OperationBody>()
 
+            val currentSigner = signers
+                    .find {
+                        it.id == currentAccount.accountId
+                                && it.role.id != RECOVERY_SIGNER_ROLE_ID
+                    }
+
             // Add new signer.
-            val currentSigner =
-                    signers.find {
-                        it.accountId == currentAccount.accountId
-                    } ?: org.tokend.sdk.api.accounts.model.Account.Signer(originalAccountId)
+            val newSignerData = currentSigner
+                    ?.let {
+                        SignerData(
+                                identity = it.identity,
+                                weight = it.weight,
+                                roleId = it.role.id.toLong(),
+                                details = JsonApiToolsProvider.getObjectMapper().writeValueAsString(it.details)
+                        )
+                    }
+                    ?: SignerData(
+                            identity = DEFAULT_SIGNER_IDENTITY,
+                            weight = DEFAULT_SIGNER_WEIGHT,
+                            roleId = defaultSignerRole,
+                            details = "{}"
+                    )
 
             operationBodies.add(
-                    Operation.OperationBody.SetOptions(
-                            UpdateSignerOp(
-                                    newAccount.accountId,
-                                    currentSigner.weight,
-                                    currentSigner.type,
-                                    currentSigner.identity
+                    Operation.OperationBody.ManageSigner(
+                            ManageSignerOp(
+                                    ManageSignerOp.ManageSignerOpData.Create(
+                                            UpdateSignerData(
+                                                    publicKey = PublicKeyFactory.fromAccountId(
+                                                            newAccount.accountId
+                                                    ),
+                                                    identity = newSignerData.identity,
+                                                    weight = newSignerData.weight,
+                                                    roleID = newSignerData.roleId,
+                                                    details = newSignerData.details,
+                                                    ext = EmptyExt.EmptyVersion()
+                                            )
+                                    ),
+                                    EmptyExt.EmptyVersion()
                             )
                     )
             )
@@ -321,27 +442,28 @@ class KeyServer constructor(
             signers
                     .sortedBy {
                         // Remove current signer lastly, otherwise tx will be failed.
-                        it.accountId == currentAccount.accountId
+                        it.id == currentAccount.accountId
+                    }
+                    .filter {
+                        // Do not remove recovery signer.
+                        it.role.id != RECOVERY_SIGNER_ROLE_ID
                     }
                     .forEach {
-                        if (it.accountId != newAccount.accountId) {
-                            // Master key removal is specific.
-                            if (it.accountId == originalAccountId) {
-                                operationBodies.add(
-                                        Operation.OperationBody.SetOptions(
-                                                RemoveMasterKeyOp()
+                        operationBodies.add(
+                                Operation.OperationBody.ManageSigner(
+                                        ManageSignerOp(
+                                                ManageSignerOp.ManageSignerOpData.Remove(
+                                                        RemoveSignerData(
+                                                                publicKey = PublicKeyFactory.fromAccountId(
+                                                                        it.id
+                                                                ),
+                                                                ext = EmptyExt.EmptyVersion()
+                                                        )
+                                                ),
+                                                EmptyExt.EmptyVersion()
                                         )
                                 )
-                            } else {
-                                // Other keys can be removed by setting 0 weight.
-                                operationBodies.add(
-                                        Operation.OperationBody.SetOptions(
-                                                UpdateSignerOp(it.accountId,
-                                                        0, 1, it.identity)
-                                        )
-                                )
-                            }
-                        }
+                        )
                     }
 
             val transaction =

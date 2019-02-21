@@ -8,7 +8,6 @@ import org.tokend.sdk.api.requests.model.SimpleReviewableRequest
 import org.tokend.sdk.api.requests.model.aml.AmlAlertReviewableRequest
 import org.tokend.sdk.api.requests.model.asset.SimpleAssetReviewableRequest
 import org.tokend.sdk.api.requests.model.issuance.IssuanceReviewableRequest
-import org.tokend.sdk.api.requests.model.kyc.KycUpdateReviewableRequest
 import org.tokend.sdk.api.requests.model.limits.LimitsUpdateReviewableRequest
 import org.tokend.sdk.api.requests.model.preissuance.PreIssuanceReviewableRequest
 import org.tokend.sdk.api.requests.model.sale.SimpleSaleReviewableRequest
@@ -109,18 +108,6 @@ open class RequestsApi(
             : ApiRequest<DataPage<LimitsUpdateReviewableRequest>> {
         return MappedRetrofitApiRequest(
                 requestsService.getLimitsUpdates(params.map()),
-                { DataPage.fromPage(it) }
-        )
-    }
-
-    /**
-     * Will return list of KYC update reviewable requests.
-     * @see <a href="https://tokend.gitlab.io/docs/#get-update-kyc-requests">Docs</a>
-     */
-    open fun getKycUpdates(params: KycUpdateRequestsParams?)
-            : ApiRequest<DataPage<KycUpdateReviewableRequest>> {
-        return MappedRetrofitApiRequest(
-                requestsService.getKycUpdates(params.map()),
                 { DataPage.fromPage(it) }
         )
     }
