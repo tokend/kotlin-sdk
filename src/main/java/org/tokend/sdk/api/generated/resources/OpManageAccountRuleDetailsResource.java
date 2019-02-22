@@ -32,11 +32,11 @@ public class OpManageAccountRuleDetailsResource extends OperationDetailsResource
         return action;
     }
     
-    @JsonProperty("is_forbid")
-    private Boolean isForbid;
+    @JsonProperty("forbids")
+    private Boolean forbids;
     
-    public Boolean isForbid() {
-        return isForbid;
+    public Boolean forbids() {
+        return forbids;
     }
     
     @JsonProperty("details")
@@ -50,7 +50,7 @@ public class OpManageAccountRuleDetailsResource extends OperationDetailsResource
     public boolean hasAttributes() {
         return             resource != null &&
             action != null &&
-            isForbid != null &&
+            forbids != null &&
             details != null 
         ;
     }

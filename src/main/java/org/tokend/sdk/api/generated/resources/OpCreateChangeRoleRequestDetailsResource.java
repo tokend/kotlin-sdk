@@ -18,11 +18,11 @@ import org.tokend.sdk.api.base.model.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OpCreateChangeRoleRequestDetailsResource extends OperationDetailsResource {
     
-    @JsonProperty("kyc_data")
-    private JsonNode kycData;
+    @JsonProperty("creator_details")
+    private JsonNode creatorDetails;
     
-    public JsonNode getKycData() {
-        return kycData;
+    public JsonNode getCreatorDetails() {
+        return creatorDetails;
     }
     
     @JsonProperty("all_tasks")
@@ -36,7 +36,7 @@ public class OpCreateChangeRoleRequestDetailsResource extends OperationDetailsRe
     
     @Override
     public boolean hasAttributes() {
-        return             kycData != null 
+        return             creatorDetails != null 
         ;
     }
     

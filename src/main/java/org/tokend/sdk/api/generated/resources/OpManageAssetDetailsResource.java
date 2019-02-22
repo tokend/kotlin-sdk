@@ -41,11 +41,11 @@ public class OpManageAssetDetailsResource extends OperationDetailsResource {
         return policies;
     }
     
-    @JsonProperty("details")
-    private JsonNode details;
+    @JsonProperty("creator_details")
+    private JsonNode creatorDetails;
     
-    public JsonNode getDetails() {
-        return details;
+    public JsonNode getCreatorDetails() {
+        return creatorDetails;
     }
     
     @JsonProperty("preissuance_signer")
@@ -66,7 +66,7 @@ public class OpManageAssetDetailsResource extends OperationDetailsResource {
     public boolean hasAttributes() {
         return             assetCode != null &&
             action != null &&
-            details != null &&
+            creatorDetails != null &&
             preissuanceSigner != null &&
             maxIssuanceAmount != null 
         ;

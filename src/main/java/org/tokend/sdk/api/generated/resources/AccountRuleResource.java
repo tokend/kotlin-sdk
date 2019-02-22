@@ -25,11 +25,11 @@ public class AccountRuleResource extends BaseResource {
         return action;
     }
     
-    @JsonProperty("is_forbid")
-    private Boolean isForbid;
+    @JsonProperty("forbids")
+    private Boolean forbids;
     
-    public Boolean isForbid() {
-        return isForbid;
+    public Boolean forbids() {
+        return forbids;
     }
     
     @JsonProperty("details")
@@ -49,7 +49,7 @@ public class AccountRuleResource extends BaseResource {
     @Override
     public boolean hasAttributes() {
         return             action != null &&
-            isForbid != null &&
+            forbids != null &&
             details != null &&
             resource != null 
         ;

@@ -25,17 +25,17 @@ public class OpCreateAMLAlertRequestDetailsResource extends OperationDetailsReso
         return amount;
     }
     
-    @JsonProperty("reason")
-    private String reason;
+    @JsonProperty("creator_details")
+    private JsonNode creatorDetails;
     
-    public String getReason() {
-        return reason;
+    public JsonNode getCreatorDetails() {
+        return creatorDetails;
     }
     
     @Override
     public boolean hasAttributes() {
         return             amount != null &&
-            reason != null 
+            creatorDetails != null 
         ;
     }
     

@@ -46,11 +46,11 @@ public class OpCreateSaleRequestDetailsResource extends OperationDetailsResource
         return hardCap;
     }
     
-    @JsonProperty("details")
-    private JsonNode details;
+    @JsonProperty("creator_details")
+    private JsonNode creatorDetails;
     
-    public JsonNode getDetails() {
-        return details;
+    public JsonNode getCreatorDetails() {
+        return creatorDetails;
     }
     
     @Override
@@ -59,7 +59,7 @@ public class OpCreateSaleRequestDetailsResource extends OperationDetailsResource
             endTime != null &&
             softCap != null &&
             hardCap != null &&
-            details != null 
+            creatorDetails != null 
         ;
     }
     
