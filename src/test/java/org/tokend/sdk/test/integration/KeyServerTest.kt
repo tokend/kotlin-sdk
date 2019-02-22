@@ -190,8 +190,8 @@ class KeyServerTest {
                 newPassword = newPassword,
                 newAccount = Account.random(),
                 currentWalletInfo = currentWalletInfo,
-                signersApiV3 = api.v3.signers,
-                keyValueApi = api.keyValueEntries
+                signersApi = api.v3.signers,
+                keyValueApi = api.v3.keyValue
         )
                 .execute()
                 .get()

@@ -3,7 +3,7 @@ package org.tokend.sdk.keyserver
 import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.MappedCallableApiRequest
 import org.tokend.sdk.api.generated.resources.SignerResource
-import org.tokend.sdk.api.keyvaluestorage.KeyValueStorageApi
+import org.tokend.sdk.api.v3.keyvalue.KeyValueStorageApiV3
 import org.tokend.sdk.api.v3.signers.SignersApiV3
 import org.tokend.sdk.api.wallets.WalletsApi
 import org.tokend.sdk.api.wallets.model.EmailAlreadyTakenException
@@ -175,12 +175,12 @@ class KeyServer constructor(
                              newPassword: CharArray,
                              newAccount: Account,
                              networkParams: NetworkParams,
-                             signersApiV3: SignersApiV3,
-                             keyValueApi: KeyValueStorageApi): ApiRequest<WalletInfo> {
+                             signersApi: SignersApiV3,
+                             keyValueApi: KeyValueStorageApiV3): ApiRequest<WalletInfo> {
         return MappedCallableApiRequest(
                 {
                     getUpdateWalletPasswordResult(currentWalletInfo, currentAccount,
-                            newPassword, newAccount, networkParams, signersApiV3, keyValueApi)
+                            newPassword, newAccount, networkParams, signersApi, keyValueApi)
                 },
                 { it }
         )
@@ -191,10 +191,10 @@ class KeyServer constructor(
                                               newPassword: CharArray,
                                               newAccount: Account,
                                               networkParams: NetworkParams,
-                                              signersApiV3: SignersApiV3,
-                                              keyValueApi: KeyValueStorageApi): WalletInfo {
+                                              signersApi: SignersApiV3,
+                                              keyValueApi: KeyValueStorageApiV3): WalletInfo {
         val signers: List<SignerResource> = try {
-            signersApiV3
+            signersApi
                     .get(currentWalletInfo.accountId)
                     .execute()
                     .get()
@@ -207,10 +207,11 @@ class KeyServer constructor(
 
         val defaultSignerRole = try {
             keyValueApi
-                    .getEntryByKey(DEFAULT_SIGNER_ROLE_KEY_VALUE_KEY)
+                    .getById(DEFAULT_SIGNER_ROLE_KEY_VALUE_KEY)
                     .execute()
                     .get()
-                    .uint32Value
+                    .value
+                    .u32!!
         } catch (e: Exception) {
             throw IllegalStateException("Unable to obtain default role for signer " +
                     "by key $DEFAULT_SIGNER_ROLE_KEY_VALUE_KEY", e)
