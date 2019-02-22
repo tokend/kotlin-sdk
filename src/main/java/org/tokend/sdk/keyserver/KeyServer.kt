@@ -286,18 +286,18 @@ class KeyServer constructor(
         ): WalletCreateResult {
             val recoveryAccountSeed = recoveryAccount.secretSeed
                     ?: throw IllegalArgumentException("Recovery account must have private key")
-            val email = if (kdfVersion == 2L) email.toLowerCase() else email
+            val emailInProperCase = if (kdfVersion == 2L) email.toLowerCase() else email
 
             val kdfSalt = kdfAttributes.salt ?: WalletKeyDerivation.generateKdfSalt()
             kdfAttributes.salt = kdfSalt
 
             val walletKey = WalletKeyDerivation
-                    .deriveWalletEncryptionKey(email, password, kdfAttributes)
+                    .deriveWalletEncryptionKey(emailInProperCase, password, kdfAttributes)
             val walletId = WalletKeyDerivation
-                    .deriveAndEncodeWalletId(email, password, kdfAttributes)
+                    .deriveAndEncodeWalletId(emailInProperCase, password, kdfAttributes)
 
             val encryptedSeed = WalletEncryption.encryptAccount(
-                    email,
+                    emailInProperCase,
                     rootAccount,
                     walletKey,
                     kdfSalt
@@ -315,7 +315,7 @@ class KeyServer constructor(
 
             val passwordFactorAccount = Account.random()
             val encryptedPasswordFactor = WalletEncryption.encryptAccount(
-                    email,
+                    emailInProperCase,
                     passwordFactorAccount,
                     walletKey,
                     kdfSalt
@@ -331,12 +331,12 @@ class KeyServer constructor(
             )
 
             val recoveryWalletKey = WalletKeyDerivation
-                    .deriveWalletEncryptionKey(email, recoveryAccountSeed, kdfAttributes)
+                    .deriveWalletEncryptionKey(emailInProperCase, recoveryAccountSeed, kdfAttributes)
             val recoveryWalletId = WalletKeyDerivation
-                    .deriveAndEncodeWalletId(email, recoveryAccountSeed, kdfAttributes)
+                    .deriveAndEncodeWalletId(emailInProperCase, recoveryAccountSeed, kdfAttributes)
 
             val encryptedRecovery = WalletEncryption.encryptAccount(
-                    email,
+                    emailInProperCase,
                     recoveryAccount,
                     recoveryWalletKey,
                     kdfSalt
