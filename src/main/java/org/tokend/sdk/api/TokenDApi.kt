@@ -49,7 +49,6 @@ open class TokenDApi
  * If not set requests protected by 2FA will be uncompletable
  * @param cookieJarProvider if set will be used to store cookies
  * @param userAgent overrides default user agent
- * @param forceContentType send 'Accept' header with specific content type, affects errors format
  * @param withLogs enable/disable HTTP Logs. True by default.
  *
  * @see [AccountRequestSigner]
@@ -61,9 +60,8 @@ constructor(
         tfaCallback: TfaCallback? = null,
         cookieJarProvider: CookieJarProvider? = null,
         userAgent: String? = null,
-        forceContentType: Boolean = false,
         withLogs: Boolean = true
-) : BaseApi(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent, forceContentType, withLogs) {
+) : BaseApi(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent, withLogs) {
     open val v3: TokenDApiV3 by lazy {
         TokenDApiV3(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent, withLogs)
     }
@@ -141,7 +139,6 @@ constructor(
         private var tfaCallback: TfaCallback? = null
         private var cookieJarProvider: CookieJarProvider? = null
         private var userAgent: String? = null
-        private var forceContentType: Boolean = false
         private var withLogs: Boolean = true
 
         /**
@@ -179,14 +176,6 @@ constructor(
         }
 
         /**
-         * Send 'Accept' header with specific content type, affects errors format.
-         */
-        fun forceContentType(forceContentType: Boolean): Builder {
-            this.forceContentType = forceContentType
-            return this
-        }
-
-        /**
          * Enable/disable HTTP Logs. True by default.
          */
         fun withLogs(withLogs: Boolean): Builder {
@@ -200,7 +189,6 @@ constructor(
                 tfaCallback,
                 cookieJarProvider,
                 userAgent,
-                forceContentType,
                 withLogs)
     }
 

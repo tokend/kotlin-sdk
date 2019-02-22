@@ -15,7 +15,6 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
  */
 class ServiceFactory(private val url: String,
                      private val userAgent: String? = null,
-                     private val forceContentType: Boolean = false,
                      private val withLogs: Boolean) {
     fun getTfaVerificationService(): TfaVerificationService {
         return getCustomService(TfaVerificationService::class.java,
@@ -87,17 +86,11 @@ class ServiceFactory(private val url: String,
     }
 
     private fun getDefaultHeaders(userAgent: String?): Map<String, String?> {
-        return if (forceContentType) {
-            mapOf(
-                    HEADER_USER_AGENT_NAME to userAgent,
-                    HEADER_CONTENT_TYPE_NAME to CONTENT_TYPE,
-                    HEADER_ACCEPT_NAME to CONTENT_TYPE
-            )
-        } else {
-            mapOf(
-                    HEADER_USER_AGENT_NAME to userAgent
-            )
-        }
+        return mapOf(
+                HEADER_USER_AGENT_NAME to userAgent,
+                HEADER_CONTENT_TYPE_NAME to CONTENT_TYPE,
+                HEADER_ACCEPT_NAME to CONTENT_TYPE
+        )
     }
 
     companion object {
