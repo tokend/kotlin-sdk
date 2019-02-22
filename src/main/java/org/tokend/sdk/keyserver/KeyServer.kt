@@ -260,8 +260,8 @@ class KeyServer constructor(
 
     companion object {
         private const val RECOVERY_SIGNER_ROLE_ID = "1"
-        private const val DEFAULT_SIGNER_IDENTITY = 0L
-        private const val DEFAULT_SIGNER_WEIGHT = 1000L
+        private const val DEFAULT_SIGNER_IDENTITY = 0
+        private const val DEFAULT_SIGNER_WEIGHT = 1000
         private const val DEFAULT_SIGNER_ROLE_KEY_VALUE_KEY = "signer_role:default"
 
         /**
@@ -416,8 +416,8 @@ class KeyServer constructor(
             val newSignerData = currentSigner
                     ?.let {
                         SignerData(
-                                identity = it.identity,
-                                weight = it.weight,
+                                identity = it.identity.toInt(),
+                                weight = it.weight.toInt(),
                                 roleId = it.role.id.toLong(),
                                 details = JsonApiToolsProvider.getObjectMapper().writeValueAsString(it.details)
                         )
