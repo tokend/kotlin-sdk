@@ -150,6 +150,8 @@ class KeyServerTest {
                 = keyServer.createAndSaveWallet(email, password).execute().get()
         email = wallet.attributes!!.email
 
+        val currentWalletInfo = keyServer.getWalletInfo(email, password).execute().get()
+
         val tfaCallback = object : TfaCallback {
             override fun onTfaRequired(exception: NeedTfaException,
                                        verifierInterface: TfaVerifier.Interface) {
@@ -169,12 +171,6 @@ class KeyServerTest {
                 .create(rootAccount.accountId)
                 .execute()
 
-        val signers = signedApi
-                .accounts
-                .getSigners(rootAccount.accountId)
-                .execute()
-                .get()
-
         val netParams = api
                 .general
                 .getSystemInfo()
@@ -186,33 +182,33 @@ class KeyServerTest {
         val newPassword = "qweqwe".toCharArray()
         val newAccount = Account.random()
 
-        val transaction = KeyServer.createSignersUpdateTransaction(
-                netParams,
-                rootAccount.accountId,
-                rootAccount,
-                signers,
-                newAccount
-        )
-
-        val newWallet = KeyServer.createWallet(
-                email = email,
-                password = newPassword,
-                rootAccount = newAccount,
-                recoveryAccount = Account.random(),
-                loginParams = keyServer.getLoginParams(email).execute().get()
-        ).walletData
-
-        newWallet.addTransactionRelation(transaction)
-
         val signedKeyServer = KeyServer(signedApi.wallets)
-        signedKeyServer.updateWallet(wallet.id!!, newWallet).execute()
 
-        val newWalletInfo = try {
+        val newWalletInfo = signedKeyServer.updateWalletPassword(
+                currentAccount = rootAccount,
+                networkParams = netParams,
+                newPassword = newPassword,
+                newAccount = Account.random(),
+                currentWalletInfo = currentWalletInfo,
+                signersApi = api.v3.signers,
+                keyValueApi = api.v3.keyValue
+        )
+                .execute()
+                .get()
+
+
+        val remoteNewWalletInfo =  try {
             keyServer.getWalletInfo(email, newPassword).execute().get()
         } catch (e: Exception) {
             Assert.fail("New wallet must be accessible with new credentials")
             throw e
         }
+
+        Assert.assertEquals(
+                "Updated info from the key server must be equal to the returned one",
+                newWalletInfo,
+                remoteNewWalletInfo
+        )
 
         Assert.assertNotEquals(
                 "Wallet ID must be changed after password change",

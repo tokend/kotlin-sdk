@@ -25,17 +25,17 @@ public class AmlAlertRequestDetailsResource extends RequestDetailsResource {
         return amount;
     }
     
-    @JsonProperty("reason")
-    private String reason;
+    @JsonProperty("creator_details")
+    private String creatorDetails;
     
-    public String getReason() {
-        return reason;
+    public String getCreatorDetails() {
+        return creatorDetails;
     }
     
     @Override
     public boolean hasAttributes() {
         return             amount != null &&
-            reason != null 
+            creatorDetails != null 
         ;
     }
     

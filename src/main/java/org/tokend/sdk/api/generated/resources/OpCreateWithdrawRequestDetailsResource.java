@@ -32,18 +32,18 @@ public class OpCreateWithdrawRequestDetailsResource extends OperationDetailsReso
         return fee;
     }
     
-    @JsonProperty("external_details")
-    private JsonNode externalDetails;
+    @JsonProperty("creator_details")
+    private JsonNode creatorDetails;
     
-    public JsonNode getExternalDetails() {
-        return externalDetails;
+    public JsonNode getCreatorDetails() {
+        return creatorDetails;
     }
     
     @Override
     public boolean hasAttributes() {
         return             amount != null &&
             fee != null &&
-            externalDetails != null 
+            creatorDetails != null 
         ;
     }
     

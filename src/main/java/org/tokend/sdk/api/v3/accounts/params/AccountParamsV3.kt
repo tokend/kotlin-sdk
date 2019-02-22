@@ -17,6 +17,8 @@ open class AccountParamsV3(
             const val REFERRER = "referrer"
             const val LIMITS = "limits"
             const val EXTERNAL_SYSTEM_IDS = "external_system_ids"
+            const val ROLE = "role"
+            const val ROLE_RULES = "role.rules"
         }
     }
 }

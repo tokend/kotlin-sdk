@@ -25,17 +25,17 @@ public class AssetUpdateREquestDetailsResource extends RequestDetailsResource {
         return policies;
     }
     
-    @JsonProperty("details")
-    private JsonNode details;
+    @JsonProperty("creator_details")
+    private JsonNode creatorDetails;
     
-    public JsonNode getDetails() {
-        return details;
+    public JsonNode getCreatorDetails() {
+        return creatorDetails;
     }
     
     @Override
     public boolean hasAttributes() {
         return             policies != null &&
-            details != null 
+            creatorDetails != null 
         ;
     }
     

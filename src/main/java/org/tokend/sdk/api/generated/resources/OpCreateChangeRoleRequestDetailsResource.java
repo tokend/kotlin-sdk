@@ -14,45 +14,37 @@ import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
 
 
-@Type("operations-create-kyc-request")
+@Type("operations-create-change-role-request")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class OpCreateKYCRequestDetailsResource extends OperationDetailsResource {
+public class OpCreateChangeRoleRequestDetailsResource extends OperationDetailsResource {
     
-    @JsonProperty("account_type_to_set")
-    private XdrEnumValue accountTypeToSet;
+    @JsonProperty("creator_details")
+    private JsonNode creatorDetails;
     
-    public XdrEnumValue getAccountTypeToSet() {
-        return accountTypeToSet;
-    }
-    
-    @JsonProperty("kyc_data")
-    private JsonNode kycData;
-    
-    public JsonNode getKycData() {
-        return kycData;
+    public JsonNode getCreatorDetails() {
+        return creatorDetails;
     }
     
     @JsonProperty("all_tasks")
     @Nullable
-    private Integer allTasks;
+    private Long allTasks;
     
     @Nullable
-    public Integer getAllTasks() {
+    public Long getAllTasks() {
         return allTasks;
     }
     
     @Override
     public boolean hasAttributes() {
-        return             accountTypeToSet != null &&
-            kycData != null 
+        return             creatorDetails != null 
         ;
     }
     
-    @Relationship("account_to_update_kyc")
-    private AccountResource accountToUpdateKyc;
+    @Relationship("account_to_update_role")
+    private AccountResource accountToUpdateRole;
     
-    public AccountResource getAccountToUpdateKyc() {
-        return accountToUpdateKyc;
+    public AccountResource getAccountToUpdateRole() {
+        return accountToUpdateRole;
     }
     
     @Relationship("request")
@@ -60,5 +52,12 @@ public class OpCreateKYCRequestDetailsResource extends OperationDetailsResource 
     
     public ReviewableRequestResource getRequest() {
         return request;
+    }
+    
+    @Relationship("role_to_set")
+    private AccountRoleResource roleToSet;
+    
+    public AccountRoleResource getRoleToSet() {
+        return roleToSet;
     }
 }

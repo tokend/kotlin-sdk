@@ -1,7 +1,6 @@
 package org.tokend.sdk.api.authenticator.model
 
 import org.tokend.sdk.uri.TokenDUri
-import org.tokend.wallet.xdr.SignerType
 import java.util.*
 
 /**
@@ -14,14 +13,6 @@ class AuthRequest(
         val publicKey: String,
         val expirationDate: Date?
 ) {
-    val accessTypes: List<SignerType> =
-            SignerType.values().fold(mutableListOf()) { result, type ->
-                if (type.value and scope == type.value) {
-                    result.add(type)
-                }
-                result
-            }
-
     val uri = TokenDUri.Builder(URI_HOST)
             .addQueryParam(URI_NETWORK_URL_KEY, networkUrl)
             .addQueryParam(URI_APP_NAME_KEY, appName)

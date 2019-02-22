@@ -18,16 +18,16 @@ import org.tokend.sdk.api.base.model.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OpCreateManageLimitsRequestDetailsResource extends OperationDetailsResource {
     
-    @JsonProperty("data")
-    private JsonNode data;
+    @JsonProperty("creator_details")
+    private JsonNode creatorDetails;
     
-    public JsonNode getData() {
-        return data;
+    public JsonNode getCreatorDetails() {
+        return creatorDetails;
     }
     
     @Override
     public boolean hasAttributes() {
-        return             data != null 
+        return             creatorDetails != null 
         ;
     }
     

@@ -48,11 +48,11 @@ public class OpCreateIssuanceRequestDetailsResource extends OperationDetailsReso
         return allTasks;
     }
     
-    @JsonProperty("external_details")
-    private JsonNode externalDetails;
+    @JsonProperty("creator_details")
+    private JsonNode creatorDetails;
     
-    public JsonNode getExternalDetails() {
-        return externalDetails;
+    public JsonNode getCreatorDetails() {
+        return creatorDetails;
     }
     
     @Override
@@ -60,7 +60,7 @@ public class OpCreateIssuanceRequestDetailsResource extends OperationDetailsReso
         return             fee != null &&
             amount != null &&
             reference != null &&
-            externalDetails != null 
+            creatorDetails != null 
         ;
     }
     

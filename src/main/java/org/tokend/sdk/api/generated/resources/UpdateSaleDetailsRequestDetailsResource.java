@@ -18,16 +18,16 @@ import org.tokend.sdk.api.base.model.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UpdateSaleDetailsRequestDetailsResource extends RequestDetailsResource {
     
-    @JsonProperty("new_details")
-    private JsonNode newDetails;
+    @JsonProperty("creator_details")
+    private JsonNode creatorDetails;
     
-    public JsonNode getNewDetails() {
-        return newDetails;
+    public JsonNode getCreatorDetails() {
+        return creatorDetails;
     }
     
     @Override
     public boolean hasAttributes() {
-        return             newDetails != null 
+        return             creatorDetails != null 
         ;
     }
     

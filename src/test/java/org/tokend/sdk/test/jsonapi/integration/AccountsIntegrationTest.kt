@@ -17,7 +17,7 @@ class AccountsIntegrationTest {
                 .getSystemInfo()
                 .execute()
                 .get()
-                .masterExchangeAccountId
+                .adminAccountId
     }
 
     @Test

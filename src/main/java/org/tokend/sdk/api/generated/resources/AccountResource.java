@@ -21,9 +21,9 @@ public class AccountResource extends BaseResource {
     public boolean hasAttributes() { return false; }
     
     @Relationship("role")
-    private RoleResource role;
+    private AccountRoleResource role;
     
-    public RoleResource getRole() {
+    public AccountRoleResource getRole() {
         return role;
     }
     

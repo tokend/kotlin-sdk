@@ -18,24 +18,16 @@ import org.tokend.sdk.api.base.model.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LimitsUpdateRequestDetailsResource extends RequestDetailsResource {
     
-    @JsonProperty("document_hash")
-    private String documentHash;
+    @JsonProperty("creator_details")
+    private JsonNode creatorDetails;
     
-    public String getDocumentHash() {
-        return documentHash;
-    }
-    
-    @JsonProperty("details")
-    private JsonNode details;
-    
-    public JsonNode getDetails() {
-        return details;
+    public JsonNode getCreatorDetails() {
+        return creatorDetails;
     }
     
     @Override
     public boolean hasAttributes() {
-        return             documentHash != null &&
-            details != null 
+        return             creatorDetails != null 
         ;
     }
 }

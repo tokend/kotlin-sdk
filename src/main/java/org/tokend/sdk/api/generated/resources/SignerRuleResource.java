@@ -14,14 +14,14 @@ import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
 
 
-@Type("rules")
+@Type("signer-rules")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RuleResource extends BaseResource {
+public class SignerRuleResource extends BaseResource {
     
     @JsonProperty("resource")
-    private String resource;
+    private JsonNode resource;
     
-    public String getResource() {
+    public JsonNode getResource() {
         return resource;
     }
     
@@ -32,11 +32,18 @@ public class RuleResource extends BaseResource {
         return action;
     }
     
-    @JsonProperty("is_forbidden")
-    private Boolean isForbidden;
+    @JsonProperty("forbids")
+    private Boolean forbids;
     
-    public Boolean isForbidden() {
-        return isForbidden;
+    public Boolean forbids() {
+        return forbids;
+    }
+    
+    @JsonProperty("is_default")
+    private Boolean isDefault;
+    
+    public Boolean isDefault() {
+        return isDefault;
     }
     
     @JsonProperty("details")
@@ -50,8 +57,23 @@ public class RuleResource extends BaseResource {
     public boolean hasAttributes() {
         return             resource != null &&
             action != null &&
-            isForbidden != null &&
+            forbids != null &&
+            isDefault != null &&
             details != null 
         ;
+    }
+    
+    @Relationship("rules")
+    private List<SignerRuleResource> rules;
+    
+    public List<? extends SignerRuleResource> getRules() {
+        return rules;
+    }
+    
+    @Relationship("owner")
+    private AccountResource owner;
+    
+    public AccountResource getOwner() {
+        return owner;
     }
 }

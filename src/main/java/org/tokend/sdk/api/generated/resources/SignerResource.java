@@ -19,16 +19,16 @@ import org.tokend.sdk.api.base.model.*;
 public class SignerResource extends BaseResource {
     
     @JsonProperty("weight")
-    private Integer weight;
+    private Long weight;
     
-    public Integer getWeight() {
+    public Long getWeight() {
         return weight;
     }
     
     @JsonProperty("identity")
-    private Integer identity;
+    private Long identity;
     
-    public Integer getIdentity() {
+    public Long getIdentity() {
         return identity;
     }
     
@@ -47,10 +47,17 @@ public class SignerResource extends BaseResource {
         ;
     }
     
-    @Relationship("role")
-    private RoleResource role;
+    @Relationship("account")
+    private AccountResource account;
     
-    public RoleResource getRole() {
+    public AccountResource getAccount() {
+        return account;
+    }
+    
+    @Relationship("role")
+    private SignerRoleResource role;
+    
+    public SignerRoleResource getRole() {
         return role;
     }
 }

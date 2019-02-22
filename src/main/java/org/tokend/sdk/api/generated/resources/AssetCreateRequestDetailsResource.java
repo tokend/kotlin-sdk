@@ -53,11 +53,11 @@ public class AssetCreateRequestDetailsResource extends RequestDetailsResource {
         return initialPreissuedAmount;
     }
     
-    @JsonProperty("details")
-    private JsonNode details;
+    @JsonProperty("creator_details")
+    private JsonNode creatorDetails;
     
-    public JsonNode getDetails() {
-        return details;
+    public JsonNode getCreatorDetails() {
+        return creatorDetails;
     }
     
     @Override
@@ -67,7 +67,7 @@ public class AssetCreateRequestDetailsResource extends RequestDetailsResource {
             preIssuanceAssetSigner != null &&
             maxIssuanceAmount != null &&
             initialPreissuedAmount != null &&
-            details != null 
+            creatorDetails != null 
         ;
     }
 }

@@ -6,8 +6,6 @@ import org.tokend.sdk.api.base.params.PagingOrder
 import org.tokend.sdk.api.base.params.PagingParamsV2
 import org.tokend.sdk.api.requests.model.base.RequestState
 import org.tokend.sdk.api.sales.model.SaleState
-import org.tokend.sdk.api.v3.accounts.params.AccountParamsV3
-import org.tokend.sdk.api.v3.accounts.params.AccountsPageParamsV3
 import org.tokend.sdk.api.v3.assetpairs.params.AssetPairParams
 import org.tokend.sdk.api.v3.assetpairs.params.AssetPairsPageParams
 import org.tokend.sdk.api.v3.assets.params.AssetParams
@@ -31,32 +29,7 @@ import java.math.BigDecimal
 import java.util.*
 
 class QueryParamsTest {
-
     private val accountId = Config.ADMIN_ACCOUNT.accountId
-
-    @Test
-    fun accountsParams() {
-        val expected = "{filter[account_type]=5, filter[is_blocked]=false, filter[signer_type]=2048, include=balances.state, order=desc, page[order]=desc}"
-
-        val params = AccountsPageParamsV3(
-                accountTypes = listOf(AccountType.NOT_VERIFIED),
-                signerTypes = listOf(SignerType.ACCOUNT_MANAGER),
-                isBlocked = false,
-                include = listOf(AccountParamsV3.Includes.BALANCES_STATE),
-                pagingParams = PagingParamsV2(PagingOrder.DESC)
-        )
-
-        val builtParams = AccountsPageParamsV3.Builder()
-                .withAccountTypes(AccountType.NOT_VERIFIED)
-                .withSignerTypes(SignerType.ACCOUNT_MANAGER)
-                .withIsBlocked(false)
-                .withInclude(AccountParamsV3.Includes.BALANCES_STATE)
-                .withPagingParams(PagingParamsV2(PagingOrder.DESC))
-                .build()
-
-        Assert.assertEquals(expected, params.map().toSortedMap().toString())
-        Assert.assertEquals(expected, builtParams.map().toSortedMap().toString())
-    }
 
     @Test
     fun assetPairsParams() {
@@ -198,7 +171,7 @@ class QueryParamsTest {
                 reviewer = accountId,
                 requestor = accountId,
                 state = RequestState.APPROVED,
-                type = ReviewableRequestType.ASSET_CREATE,
+                type = ReviewableRequestType.CREATE_ASSET,
                 updatedAfter = updated,
                 includes = listOf(RequestParamsV3.Includes.REQUEST_DETAILS),
                 pagingParams = PagingParamsV2(PagingOrder.DESC)
@@ -208,7 +181,7 @@ class QueryParamsTest {
                 .withReviewer(accountId)
                 .withRequestor(accountId)
                 .withState(RequestState.APPROVED)
-                .withType(ReviewableRequestType.ASSET_CREATE)
+                .withType(ReviewableRequestType.CREATE_ASSET)
                 .withUpdateAfter(updated)
                 .withInclude(RequestParamsV3.Includes.REQUEST_DETAILS)
                 .withPagingParams(PagingParamsV2(PagingOrder.DESC))

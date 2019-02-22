@@ -17,25 +17,20 @@ import org.tokend.sdk.api.base.model.*;
 @Type("operations-create-account")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OpCreateAccountDetailsResource extends OperationDetailsResource {
-    
-    @JsonProperty("account_address")
-    private String accountAddress;
-    
-    public String getAccountAddress() {
-        return accountAddress;
-    }
-    
-    @JsonProperty("account_type")
-    private XdrEnumValue accountType;
-    
-    public XdrEnumValue getAccountType() {
-        return accountType;
-    }
-    
     @Override
-    public boolean hasAttributes() {
-        return             accountAddress != null &&
-            accountType != null 
-        ;
+    public boolean hasAttributes() { return false; }
+    
+    @Relationship("account")
+    private AccountResource account;
+    
+    public AccountResource getAccount() {
+        return account;
+    }
+    
+    @Relationship("role")
+    private AccountRoleResource role;
+    
+    public AccountRoleResource getRole() {
+        return role;
     }
 }

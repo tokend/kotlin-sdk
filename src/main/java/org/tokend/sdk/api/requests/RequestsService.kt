@@ -5,7 +5,6 @@ import org.tokend.sdk.api.requests.model.SimpleReviewableRequest
 import org.tokend.sdk.api.requests.model.aml.AmlAlertReviewableRequest
 import org.tokend.sdk.api.requests.model.asset.SimpleAssetReviewableRequest
 import org.tokend.sdk.api.requests.model.issuance.IssuanceReviewableRequest
-import org.tokend.sdk.api.requests.model.kyc.KycUpdateReviewableRequest
 import org.tokend.sdk.api.requests.model.limits.LimitsUpdateReviewableRequest
 import org.tokend.sdk.api.requests.model.preissuance.PreIssuanceReviewableRequest
 import org.tokend.sdk.api.requests.model.sale.SimpleSaleReviewableRequest
@@ -48,10 +47,6 @@ interface RequestsService {
     @JvmSuppressWildcards
     @GET("request/limits_updates")
     fun getLimitsUpdates(@QueryMap query: Map<String, Any>): Call<Page<LimitsUpdateReviewableRequest>>
-
-    @JvmSuppressWildcards
-    @GET("request/update_kyc")
-    fun getKycUpdates(@QueryMap query: Map<String, Any>): Call<Page<KycUpdateReviewableRequest>>
 
     @JvmSuppressWildcards
     @GET("request/update_sale_details")

@@ -23,6 +23,8 @@ import org.tokend.sdk.api.v3.requests.RequestsApiV3
 import org.tokend.sdk.api.v3.requests.RequestsServiceV3
 import org.tokend.sdk.api.v3.sales.SalesApiV3
 import org.tokend.sdk.api.v3.sales.SalesServiceV3
+import org.tokend.sdk.api.v3.signers.SignersApiV3
+import org.tokend.sdk.api.v3.signers.SignersServiceV3
 import org.tokend.sdk.api.v3.transactions.TransactionsApiV3
 import org.tokend.sdk.api.v3.transactions.TransactionsServiceV3
 import org.tokend.sdk.signing.RequestSigner
@@ -85,5 +87,9 @@ open class TokenDApiV3(rootUrl: String,
 
     open val orderBooks: OrderBooksApi by lazy {
         OrderBooksApi(getService(OrderBooksService::class.java))
+    }
+
+    open val signers: SignersApiV3 by lazy {
+        SignersApiV3(getService(SignersServiceV3::class.java))
     }
 }
