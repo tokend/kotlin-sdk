@@ -1,13 +1,13 @@
 package org.tokend.sdk.api.sales.model
 
-enum class SaleState(val value: Long) {
+enum class SaleState(val value: Int) {
     OPEN(1),
     CLOSED(2),
     CANCELED(3);
 
     companion object {
         @JvmStatic
-        fun fromValue(value: Long): SaleState {
+        fun fromValue(value: Int): SaleState {
             return when (value) {
                 OPEN.value -> OPEN
                 CLOSED.value -> CLOSED
