@@ -14,9 +14,9 @@ import org.jetbrains.annotations.Nullable;
 public class XdrEnumBitmask {
     
     @JsonProperty("value")
-    private Integer value;
+    private Long value;
     
-    public Integer getValue() {
+    public Long getValue() {
         return value;
     }
     

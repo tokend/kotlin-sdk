@@ -21,9 +21,9 @@ public class XdrEnumValue {
     }
     
     @JsonProperty("value")
-    private Integer value;
+    private Long value;
     
-    public Integer getValue() {
+    public Long getValue() {
         return value;
     }
 }
