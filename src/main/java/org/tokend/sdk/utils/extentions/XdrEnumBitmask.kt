@@ -7,9 +7,7 @@ import org.tokend.sdk.api.generated.inner.XdrEnumBitmask
  * @return true if given [value] is set in bitmask,
  * false otherwise
  */
-fun XdrEnumBitmask.has(value: Int): Boolean {
-    return (this.value and value) == value
-}
+fun XdrEnumBitmask.has(value: Int): Boolean = has(value.toLong())
 
 /**
  * @see [has]
