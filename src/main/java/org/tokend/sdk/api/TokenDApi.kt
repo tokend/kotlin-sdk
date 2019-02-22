@@ -29,8 +29,6 @@ import org.tokend.sdk.api.trades.TradesApi
 import org.tokend.sdk.api.trades.TradesService
 import org.tokend.sdk.api.transactions.TransactionsApi
 import org.tokend.sdk.api.transactions.TransactionsService
-import org.tokend.sdk.api.users.UsersApi
-import org.tokend.sdk.api.users.UsersService
 import org.tokend.sdk.api.v3.TokenDApiV3
 import org.tokend.sdk.api.wallets.WalletsApi
 import org.tokend.sdk.api.wallets.WalletsService
@@ -72,10 +70,6 @@ constructor(
 
     open val transactions: TransactionsApi by lazy {
         TransactionsApi(getService(TransactionsService::class.java))
-    }
-
-    open val users: UsersApi by lazy {
-        UsersApi(getService(UsersService::class.java))
     }
 
     open val sales: SalesApi by lazy {

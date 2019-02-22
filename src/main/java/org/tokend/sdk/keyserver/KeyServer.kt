@@ -241,7 +241,11 @@ class KeyServer constructor(
 
         newWallet.walletData.addTransactionRelation(signersUpdateTx)
 
-        updateWallet(currentWalletInfo.walletIdHex, newWallet.walletData)
+        updateWallet(
+                currentWalletInfo.walletIdHex,
+                newWallet.walletData
+        )
+                .execute()
 
         return currentWalletInfo.copy(
                 loginParams = newLoginParams,

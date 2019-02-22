@@ -166,11 +166,6 @@ class KeyServerTest {
 
         val signedApi = Util.getSignedApi(rootAccount, api.rootUrl, tfaCallback = tfaCallback)
 
-        signedApi
-                .users
-                .create(rootAccount.accountId)
-                .execute()
-
         val netParams = api
                 .general
                 .getSystemInfo()
