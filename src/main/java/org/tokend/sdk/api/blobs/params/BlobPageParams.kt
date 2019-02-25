@@ -10,8 +10,7 @@ open class BlobPageParams(
         include: Collection<String>? = null
 ) : PageQueryParams(pagingParamsV2, include) {
     override fun map(): Map<String, Any> {
-        return mutableMapOf<String, Any>()
-                .apply {
+        return super.map().toMutableMap().apply {
                     type?.also { putFilter("type", it) }
                     isDeleted?.also { putFilter("deleted", it) }
                 }
