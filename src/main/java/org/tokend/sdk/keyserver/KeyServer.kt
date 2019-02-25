@@ -253,6 +253,7 @@ class KeyServer constructor(
                 .execute()
 
         return currentWalletInfo.copy(
+                walletIdHex = newWallet.walletData.id!!,
                 loginParams = newLoginParams,
                 secretSeed = newAccount.secretSeed!!
         )

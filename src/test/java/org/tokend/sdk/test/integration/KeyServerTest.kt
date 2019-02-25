@@ -183,7 +183,7 @@ class KeyServerTest {
                 currentAccount = rootAccount,
                 networkParams = netParams,
                 newPassword = newPassword,
-                newAccount = Account.random(),
+                newAccount = newAccount,
                 currentWalletInfo = currentWalletInfo,
                 signersApi = api.v3.signers,
                 keyValueApi = api.v3.keyValue
