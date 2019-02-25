@@ -13,6 +13,7 @@ class TransactionFailedException(val submitResponse: SubmitTransactionResponse):
     companion object {
         const val TX_FAILED = "tx_failed"
         const val TX_BAD_AUTH = "tx_bad_auth_extra"
+        const val TX_NO_ROLE_PERMISSION = "tx_no_role_permission"
 
         const val OP_LIMITS_EXCEEDED = "op_limits_exceeded"
         const val OP_INSUFFICIENT_BALANCE = "op_underfunded"
@@ -29,5 +30,6 @@ class TransactionFailedException(val submitResponse: SubmitTransactionResponse):
         const val OP_AMOUNT_LESS_THEN_DEST_FEE = "op_payment_amount_is_less_than_dest_fee"
         const val OP_REQUIRES_KYC = "op_requires_kyc"
         const val OP_NOT_FOUND = "op_not_found"
+        const val OP_NO_ROLE_PERMISSION = "op_no_role_permission"
     }
 }
