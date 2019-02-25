@@ -6,15 +6,16 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface FavoritesService {
-    @POST("users/{accountId}/favorites")
-    fun add(@Path("accountId") accountId: String,
-            @Body entry: FavoriteEntry): Call<Void>
+    @POST("accounts/{account}/favorites")
+    fun add(@Path("account") accountId: String,
+            @Body entry: FavoriteEntry): Call<FavoriteEntry>
 
-    @DELETE("users/{accountId}/favorites/{entryId}")
-    fun delete(@Path("accountId") accountId: String,
-               @Path("entryId") id: Long): Call<Void>
+    @DELETE("accounts/{account}/favorites/{favorite}")
+    fun delete(@Path("account") accountId: String,
+               @Path("favorite") favoriteId: Long): Call<Void>
 
-    @GET("users/{accountId}/favorites")
-    fun get(@Path("accountId") accountId: String):
-            Call<DataEntity<List<FavoriteEntry>>>
+    @GET("accounts/{account}/favorites")
+    @JvmSuppressWildcards
+    fun get(@Path("account") accountId: String,
+            @QueryMap query: Map<String, Any>): Call<DataEntity<List<FavoriteEntry>>>
 }
