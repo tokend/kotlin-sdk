@@ -1,14 +1,14 @@
 package org.tokend.sdk.api.favorites
 
-import org.tokend.sdk.api.favorites.model.FavoriteEntry
 import org.tokend.sdk.api.base.model.DataEntity
+import org.tokend.sdk.api.favorites.model.FavoriteEntry
 import retrofit2.Call
 import retrofit2.http.*
 
 interface FavoritesService {
     @POST("accounts/{account}/favorites")
     fun add(@Path("account") accountId: String,
-            @Body entry: FavoriteEntry): Call<FavoriteEntry>
+            @Body entry: FavoriteEntry): Call<Void>
 
     @DELETE("accounts/{account}/favorites/{favorite}")
     fun delete(@Path("account") accountId: String,

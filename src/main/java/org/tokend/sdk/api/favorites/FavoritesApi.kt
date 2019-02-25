@@ -19,7 +19,7 @@ open class FavoritesApi(
     }
 
     open fun add(accountId: String,
-                 entry: FavoriteEntry): ApiRequest<FavoriteEntry> {
+                 entry: FavoriteEntry): ApiRequest<Void> {
         return SimpleRetrofitApiRequest(
                 favoritesService.add(
                         accountId,
