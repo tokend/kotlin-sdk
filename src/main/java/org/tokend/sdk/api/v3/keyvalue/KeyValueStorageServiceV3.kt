@@ -8,11 +8,11 @@ import retrofit2.http.Path
 import retrofit2.http.QueryMap
 
 interface KeyValueStorageServiceV3 {
-    @GET("v3/key_value")
+    @GET("v3/key_values")
     @JvmSuppressWildcards
     fun getEntries(@QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<KeyValueEntryResource>>>
 
-    @GET("v3/key_value/{id}")
+    @GET("v3/key_values/{id}")
     @JvmSuppressWildcards
     fun getEntryById(@Path("id") id: String,
                      @QueryMap query: Map<String, Any>): Call<JSONAPIDocument<KeyValueEntryResource>>

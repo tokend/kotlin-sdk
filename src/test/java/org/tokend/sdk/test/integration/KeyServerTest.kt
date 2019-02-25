@@ -166,11 +166,6 @@ class KeyServerTest {
 
         val signedApi = Util.getSignedApi(rootAccount, api.rootUrl, tfaCallback = tfaCallback)
 
-        signedApi
-                .users
-                .create(rootAccount.accountId)
-                .execute()
-
         val netParams = api
                 .general
                 .getSystemInfo()
@@ -188,7 +183,7 @@ class KeyServerTest {
                 currentAccount = rootAccount,
                 networkParams = netParams,
                 newPassword = newPassword,
-                newAccount = Account.random(),
+                newAccount = newAccount,
                 currentWalletInfo = currentWalletInfo,
                 signersApi = api.v3.signers,
                 keyValueApi = api.v3.keyValue
@@ -227,5 +222,22 @@ class KeyServerTest {
                 newAccount.secretSeed,
                 newWalletInfo.secretSeed
         )
+
+        val signers = api
+                .v3
+                .signers
+                .get(currentWalletInfo.accountId)
+                .execute()
+                .get()
+
+        Assert.assertTrue("A new signer ${newAccount.accountId} must be added to account signers",
+                signers.any { signer ->
+                    signer.id == newAccount.accountId
+                })
+
+        Assert.assertFalse("The old signer ${rootAccount.accountId} must be removed from account signers",
+                signers.any { signer ->
+                    signer.id == rootAccount.accountId
+                })
     }
 }

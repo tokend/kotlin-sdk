@@ -170,17 +170,20 @@ class KeyServer constructor(
         return result
     }
 
+    @JvmOverloads
     fun updateWalletPassword(currentWalletInfo: WalletInfo,
                              currentAccount: Account,
                              newPassword: CharArray,
                              newAccount: Account,
                              networkParams: NetworkParams,
                              signersApi: SignersApiV3,
-                             keyValueApi: KeyValueStorageApiV3): ApiRequest<WalletInfo> {
+                             keyValueApi: KeyValueStorageApiV3,
+                             defaultSignerDetailsJson: String = "{}"): ApiRequest<WalletInfo> {
         return MappedCallableApiRequest(
                 {
                     getUpdateWalletPasswordResult(currentWalletInfo, currentAccount,
-                            newPassword, newAccount, networkParams, signersApi, keyValueApi)
+                            newPassword, newAccount, networkParams, signersApi, keyValueApi,
+                            defaultSignerDetailsJson)
                 },
                 { it }
         )
@@ -192,7 +195,8 @@ class KeyServer constructor(
                                               newAccount: Account,
                                               networkParams: NetworkParams,
                                               signersApi: SignersApiV3,
-                                              keyValueApi: KeyValueStorageApiV3): WalletInfo {
+                                              keyValueApi: KeyValueStorageApiV3,
+                                              defaultSignerDetailsJson: String): WalletInfo {
         val signers: List<SignerResource> = try {
             signersApi
                     .get(currentWalletInfo.accountId)
@@ -223,7 +227,8 @@ class KeyServer constructor(
                 newAccount = newAccount,
                 originalAccountId = currentWalletInfo.accountId,
                 signers = signers,
-                defaultSignerRole = defaultSignerRole.toLong()
+                defaultSignerRole = defaultSignerRole,
+                defaultSignerDetailsJson = defaultSignerDetailsJson
         )
 
         val newLoginParams = currentWalletInfo.loginParams.copy()
@@ -241,9 +246,14 @@ class KeyServer constructor(
 
         newWallet.walletData.addTransactionRelation(signersUpdateTx)
 
-        updateWallet(currentWalletInfo.walletIdHex, newWallet.walletData)
+        updateWallet(
+                currentWalletInfo.walletIdHex,
+                newWallet.walletData
+        )
+                .execute()
 
         return currentWalletInfo.copy(
+                walletIdHex = newWallet.walletData.id!!,
                 loginParams = newLoginParams,
                 secretSeed = newAccount.secretSeed!!
         )
@@ -251,8 +261,8 @@ class KeyServer constructor(
 
     companion object {
         private const val RECOVERY_SIGNER_ROLE_ID = "1"
-        private const val DEFAULT_SIGNER_IDENTITY = 0L
-        private const val DEFAULT_SIGNER_WEIGHT = 1000L
+        private const val DEFAULT_SIGNER_IDENTITY = 0
+        private const val DEFAULT_SIGNER_WEIGHT = 1000
         private const val DEFAULT_SIGNER_ROLE_KEY_VALUE_KEY = "signer_role:default"
 
         /**
@@ -277,18 +287,18 @@ class KeyServer constructor(
         ): WalletCreateResult {
             val recoveryAccountSeed = recoveryAccount.secretSeed
                     ?: throw IllegalArgumentException("Recovery account must have private key")
-            val email = if (kdfVersion == 2L) email.toLowerCase() else email
+            val emailInProperCase = if (kdfVersion == 2L) email.toLowerCase() else email
 
             val kdfSalt = kdfAttributes.salt ?: WalletKeyDerivation.generateKdfSalt()
             kdfAttributes.salt = kdfSalt
 
             val walletKey = WalletKeyDerivation
-                    .deriveWalletEncryptionKey(email, password, kdfAttributes)
+                    .deriveWalletEncryptionKey(emailInProperCase, password, kdfAttributes)
             val walletId = WalletKeyDerivation
-                    .deriveAndEncodeWalletId(email, password, kdfAttributes)
+                    .deriveAndEncodeWalletId(emailInProperCase, password, kdfAttributes)
 
             val encryptedSeed = WalletEncryption.encryptAccount(
-                    email,
+                    emailInProperCase,
                     rootAccount,
                     walletKey,
                     kdfSalt
@@ -306,7 +316,7 @@ class KeyServer constructor(
 
             val passwordFactorAccount = Account.random()
             val encryptedPasswordFactor = WalletEncryption.encryptAccount(
-                    email,
+                    emailInProperCase,
                     passwordFactorAccount,
                     walletKey,
                     kdfSalt
@@ -322,12 +332,12 @@ class KeyServer constructor(
             )
 
             val recoveryWalletKey = WalletKeyDerivation
-                    .deriveWalletEncryptionKey(email, recoveryAccountSeed, kdfAttributes)
+                    .deriveWalletEncryptionKey(emailInProperCase, recoveryAccountSeed, kdfAttributes)
             val recoveryWalletId = WalletKeyDerivation
-                    .deriveAndEncodeWalletId(email, recoveryAccountSeed, kdfAttributes)
+                    .deriveAndEncodeWalletId(emailInProperCase, recoveryAccountSeed, kdfAttributes)
 
             val encryptedRecovery = WalletEncryption.encryptAccount(
-                    email,
+                    emailInProperCase,
                     recoveryAccount,
                     recoveryWalletKey,
                     kdfSalt
@@ -386,7 +396,8 @@ class KeyServer constructor(
                                            currentAccount: Account,
                                            signers: Collection<SignerResource>,
                                            newAccount: Account,
-                                           defaultSignerRole: Uint64): Transaction {
+                                           defaultSignerRole: Uint64,
+                                           defaultSignerDetailsJson: String): Transaction {
             class SignerData(
                     val identity: Uint32,
                     val weight: Uint32,
@@ -406,8 +417,8 @@ class KeyServer constructor(
             val newSignerData = currentSigner
                     ?.let {
                         SignerData(
-                                identity = it.identity,
-                                weight = it.weight,
+                                identity = it.identity.toInt(),
+                                weight = it.weight.toInt(),
                                 roleId = it.role.id.toLong(),
                                 details = JsonApiToolsProvider.getObjectMapper().writeValueAsString(it.details)
                         )
@@ -416,7 +427,7 @@ class KeyServer constructor(
                             identity = DEFAULT_SIGNER_IDENTITY,
                             weight = DEFAULT_SIGNER_WEIGHT,
                             roleId = defaultSignerRole,
-                            details = "{}"
+                            details = defaultSignerDetailsJson
                     )
 
             operationBodies.add(

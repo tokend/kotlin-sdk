@@ -39,7 +39,7 @@ open class TokenDApiV3(rootUrl: String,
                        withLogs: Boolean
 ) : BaseApi(
         rootUrl, requestSigner, tfaCallback, cookieJarProvider,
-        userAgent, true, withLogs
+        userAgent, withLogs
 ) {
     open val accounts: AccountsApiV3 by lazy {
         AccountsApiV3(getService(AccountsServiceV3::class.java))

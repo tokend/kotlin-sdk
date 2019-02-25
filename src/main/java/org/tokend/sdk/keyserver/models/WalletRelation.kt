@@ -30,10 +30,11 @@ open class WalletRelation(val name: String,
         }
 
     companion object {
-        var RELATION_RECOVERY = "recovery"
-        var RELATION_PASSWORD_FACTOR = "factor"
-        var RELATION_PASSWORD = "password"
-        var RELATION_KDF = "kdf"
-        var RELATION_REFERRER = "referrer"
+        const val RELATION_RECOVERY = "recovery"
+        const val RELATION_PASSWORD_FACTOR = "factor"
+        const val RELATION_PASSWORD = "password"
+        const val RELATION_KDF = "kdf"
+        const val RELATION_REFERRER = "referrer"
+        const val RELATION_TRANSACTION = "transaction"
     }
 }

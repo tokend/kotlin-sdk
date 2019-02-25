@@ -29,8 +29,6 @@ import org.tokend.sdk.api.trades.TradesApi
 import org.tokend.sdk.api.trades.TradesService
 import org.tokend.sdk.api.transactions.TransactionsApi
 import org.tokend.sdk.api.transactions.TransactionsService
-import org.tokend.sdk.api.users.UsersApi
-import org.tokend.sdk.api.users.UsersService
 import org.tokend.sdk.api.v3.TokenDApiV3
 import org.tokend.sdk.api.wallets.WalletsApi
 import org.tokend.sdk.api.wallets.WalletsService
@@ -49,7 +47,6 @@ open class TokenDApi
  * If not set requests protected by 2FA will be uncompletable
  * @param cookieJarProvider if set will be used to store cookies
  * @param userAgent overrides default user agent
- * @param forceContentType send 'Accept' header with specific content type, affects errors format
  * @param withLogs enable/disable HTTP Logs. True by default.
  *
  * @see [AccountRequestSigner]
@@ -61,9 +58,8 @@ constructor(
         tfaCallback: TfaCallback? = null,
         cookieJarProvider: CookieJarProvider? = null,
         userAgent: String? = null,
-        forceContentType: Boolean = false,
         withLogs: Boolean = true
-) : BaseApi(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent, forceContentType, withLogs) {
+) : BaseApi(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent, withLogs) {
     open val v3: TokenDApiV3 by lazy {
         TokenDApiV3(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent, withLogs)
     }
@@ -74,10 +70,6 @@ constructor(
 
     open val transactions: TransactionsApi by lazy {
         TransactionsApi(getService(TransactionsService::class.java))
-    }
-
-    open val users: UsersApi by lazy {
-        UsersApi(getService(UsersService::class.java))
     }
 
     open val sales: SalesApi by lazy {
@@ -141,7 +133,6 @@ constructor(
         private var tfaCallback: TfaCallback? = null
         private var cookieJarProvider: CookieJarProvider? = null
         private var userAgent: String? = null
-        private var forceContentType: Boolean = false
         private var withLogs: Boolean = true
 
         /**
@@ -179,14 +170,6 @@ constructor(
         }
 
         /**
-         * Send 'Accept' header with specific content type, affects errors format.
-         */
-        fun forceContentType(forceContentType: Boolean): Builder {
-            this.forceContentType = forceContentType
-            return this
-        }
-
-        /**
          * Enable/disable HTTP Logs. True by default.
          */
         fun withLogs(withLogs: Boolean): Builder {
@@ -200,7 +183,6 @@ constructor(
                 tfaCallback,
                 cookieJarProvider,
                 userAgent,
-                forceContentType,
                 withLogs)
     }
 

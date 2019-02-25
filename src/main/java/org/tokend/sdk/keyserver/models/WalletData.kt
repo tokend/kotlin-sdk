@@ -8,13 +8,13 @@ import org.tokend.wallet.Transaction
 
 open class WalletData(
         @SerializedName("type")
-        var type: String,
+        val type: String,
         @SerializedName("id")
-        var id: String?,
+        val id: String?,
         @SerializedName("attributes")
         var attributes: WalletAttributes?,
         @SerializedName("relationships")
-        var relationships: MutableMap<String, DataEntity<Any>>
+        val relationships: MutableMap<String, DataEntity<Any>>
 ) {
     open class WalletAttributes(
             @SerializedName("account_id")
@@ -66,8 +66,10 @@ open class WalletData(
     }
 
     fun addTransactionRelation(transaction: Transaction) {
-        relationships["transaction"] =
+        relationships[WalletRelation.RELATION_TRANSACTION] =
                 DataEntity(hashMapOf(
+                        "id" to "tx",
+                        "type" to WalletRelation.RELATION_TRANSACTION,
                         "attributes" to hashMapOf(
                                 "envelope" to transaction.getEnvelope().toBase64()
                         ))

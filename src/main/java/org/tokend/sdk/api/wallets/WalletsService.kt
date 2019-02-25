@@ -2,9 +2,10 @@ package org.tokend.sdk.api.wallets
 
 import org.tokend.sdk.api.base.model.AttributesEntity
 import org.tokend.sdk.api.base.model.DataEntity
-import org.tokend.sdk.keyserver.models.WalletData
 import org.tokend.sdk.api.wallets.model.VerifyWalletRequestBody
+import org.tokend.sdk.api.wallets.model.WalletResourceBody
 import org.tokend.sdk.keyserver.models.LoginParams
+import org.tokend.sdk.keyserver.models.WalletData
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -29,9 +30,9 @@ interface WalletsService {
     @PUT("wallets/{walletId}")
     @JvmSuppressWildcards
     fun update(@Path("walletId") walletId: String,
-               @Body data: DataEntity<WalletData>): Call<Void>
+               @Body wallet: WalletResourceBody): Call<Void>
 
     @POST("wallets")
     @JvmSuppressWildcards
-    fun create(@Body data: DataEntity<WalletData>): Call<Void>
+    fun create(@Body wallet: WalletResourceBody): Call<Void>
 }

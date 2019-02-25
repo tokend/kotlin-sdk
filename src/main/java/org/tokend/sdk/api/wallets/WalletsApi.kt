@@ -5,10 +5,7 @@ import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.base.SimpleRetrofitApiRequest
 import org.tokend.sdk.api.base.model.AttributesEntity
 import org.tokend.sdk.api.base.model.DataEntity
-import org.tokend.sdk.api.wallets.model.EmailAlreadyTakenException
-import org.tokend.sdk.api.wallets.model.EmailNotVerifiedException
-import org.tokend.sdk.api.wallets.model.InvalidCredentialsException
-import org.tokend.sdk.api.wallets.model.VerifyWalletRequestBody
+import org.tokend.sdk.api.wallets.model.*
 import org.tokend.sdk.keyserver.models.LoginParams
 import org.tokend.sdk.keyserver.models.WalletData
 import org.tokend.sdk.redirects.ClientRedirectPayload
@@ -50,7 +47,7 @@ open class WalletsApi(
     open fun create(data: WalletData): ApiRequest<Void> {
         return SimpleRetrofitApiRequest(
                 walletsService.create(
-                        DataEntity(data)
+                        WalletResourceBody(data)
                 )
         ) { error ->
             if (error is HttpException &&
@@ -71,7 +68,7 @@ open class WalletsApi(
         return SimpleRetrofitApiRequest(
                 walletsService.update(
                         walletId,
-                        DataEntity(data)
+                        WalletResourceBody(data)
                 )
         )
     }
