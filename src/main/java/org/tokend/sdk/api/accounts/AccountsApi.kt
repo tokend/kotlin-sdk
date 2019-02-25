@@ -30,20 +30,6 @@ open class AccountsApi(
     }
 
     /**
-     * Will return information about all account signers.
-     * @see <a href="https://tokend.gitlab.io/docs/?http#get-account-signers">Docs</a>
-     */
-    open fun getSigners(accountId: String): ApiRequest<List<Account.Signer>> {
-
-        return MappedRetrofitApiRequest(
-                accountsService.getSigners(accountId),
-                { accountResponse ->
-                    accountResponse.signers
-                }
-        )
-    }
-
-    /**
      * Will return account balances.
      * @see <a href="https://tokend.gitlab.io/docs/?http#get-account-balances">Docs</a>
      *
