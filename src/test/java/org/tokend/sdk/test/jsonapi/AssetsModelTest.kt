@@ -42,6 +42,7 @@ class AssetsModelTest {
             "         \"max_issuance_amount\":\"1000.000001\",\n" +
             "         \"available_for_issuance\":\"20.000000\",\n" +
             "         \"issued\":\"10.000000\",\n" +
+            "         \"type\":\"1\",\n" +
             "         \"pending_issuance\":\"123.000123\",\n" +
             "         \"policies\":{  \n" +
             "            \"value\":4,\n" +
