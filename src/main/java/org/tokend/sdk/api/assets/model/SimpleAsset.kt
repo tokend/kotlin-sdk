@@ -7,5 +7,6 @@ import java.math.BigDecimal
  */
 @Deprecated("Asset details are system-specific and will be removed from SDK")
 open class SimpleAsset(code: String, ownerAccount: String, policy: Int, details: AssetDetails,
-                       issued: BigDecimal, available: BigDecimal, maximum: BigDecimal
-) : Asset<AssetDetails>(code, ownerAccount, policy, details, issued, available, maximum)
+                       issued: BigDecimal, available: BigDecimal, maximum: BigDecimal,
+                       type: Long
+) : Asset<AssetDetails>(code, ownerAccount, policy, details, issued, available, maximum, type)

@@ -74,6 +74,13 @@ public class AssetResource extends BaseResource {
         return trailingDigits;
     }
     
+    @JsonProperty("type")
+    private Long type;
+    
+    public Long getType() {
+        return type;
+    }
+    
     @Override
     public boolean hasAttributes() {
         return             preIssuanceAssetSigner != null &&
@@ -83,7 +90,8 @@ public class AssetResource extends BaseResource {
             issued != null &&
             pendingIssuance != null &&
             policies != null &&
-            trailingDigits != null 
+            trailingDigits != null &&
+            type != null 
         ;
     }
     

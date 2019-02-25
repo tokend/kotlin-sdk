@@ -39,19 +39,11 @@ public class WithdrawalRequestDetailsResource extends RequestDetailsResource {
         return creatorDetails;
     }
     
-    @JsonProperty("reviewer_details")
-    private JsonNode reviewerDetails;
-    
-    public JsonNode getReviewerDetails() {
-        return reviewerDetails;
-    }
-    
     @Override
     public boolean hasAttributes() {
         return             fee != null &&
             amount != null &&
-            creatorDetails != null &&
-            reviewerDetails != null 
+            creatorDetails != null 
         ;
     }
     

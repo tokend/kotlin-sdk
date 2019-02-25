@@ -5,7 +5,7 @@ import org.tokend.sdk.api.requests.model.base.ReviewableRequestDetails
 
 class WithdrawalReviewableRequestDetails(
         typeI: Int,
-        @SerializedName("withdraw")
+        @SerializedName("create_withdraw")
         val withdrawal: WithdrawalDetails?,
         @SerializedName("two_step_withdrawal")
         val twoStepWithdrawal: WithdrawalDetails?

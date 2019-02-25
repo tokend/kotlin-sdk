@@ -5,7 +5,7 @@ import org.tokend.sdk.api.requests.model.base.ReviewableRequestDetails
 
 class AmlAlertReviewableRequestDetails(
         typeI: Int,
-        @SerializedName("aml_alert")
+        @SerializedName("create_aml_alert")
         val amlAlert: AmlAlertDetails
 
 ) : ReviewableRequestDetails(typeI)

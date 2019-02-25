@@ -19,9 +19,9 @@ import org.tokend.sdk.api.base.model.*;
 public class AccountRuleResource extends BaseResource {
     
     @JsonProperty("action")
-    private String action;
+    private XdrEnumValue action;
     
-    public String getAction() {
+    public XdrEnumValue getAction() {
         return action;
     }
     

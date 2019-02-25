@@ -26,9 +26,9 @@ public class SignerRuleResource extends BaseResource {
     }
     
     @JsonProperty("action")
-    private String action;
+    private XdrEnumValue action;
     
-    public String getAction() {
+    public XdrEnumValue getAction() {
         return action;
     }
     

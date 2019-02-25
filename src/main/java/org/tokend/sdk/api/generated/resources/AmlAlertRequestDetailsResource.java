@@ -26,9 +26,9 @@ public class AmlAlertRequestDetailsResource extends RequestDetailsResource {
     }
     
     @JsonProperty("creator_details")
-    private String creatorDetails;
+    private JsonNode creatorDetails;
     
-    public String getCreatorDetails() {
+    public JsonNode getCreatorDetails() {
         return creatorDetails;
     }
     

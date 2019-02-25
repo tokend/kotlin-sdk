@@ -60,6 +60,13 @@ public class AssetCreateRequestDetailsResource extends RequestDetailsResource {
         return creatorDetails;
     }
     
+    @JsonProperty("type")
+    private Long type;
+    
+    public Long getType() {
+        return type;
+    }
+    
     @Override
     public boolean hasAttributes() {
         return             asset != null &&
@@ -67,7 +74,8 @@ public class AssetCreateRequestDetailsResource extends RequestDetailsResource {
             preIssuanceAssetSigner != null &&
             maxIssuanceAmount != null &&
             initialPreissuedAmount != null &&
-            creatorDetails != null 
+            creatorDetails != null &&
+            type != null 
         ;
     }
 }

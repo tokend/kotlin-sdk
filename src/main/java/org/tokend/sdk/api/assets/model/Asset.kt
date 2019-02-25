@@ -15,7 +15,8 @@ open class Asset<DetailsType : AssetDetails>(
         @SerializedName("details") val details: DetailsType,
         @SerializedName("issued") val issued: BigDecimal?,
         @SerializedName("available_for_issuance") val available: BigDecimal?,
-        @SerializedName("max_issuance_amount") val maximum: BigDecimal) : Serializable {
+        @SerializedName("max_issuance_amount") val maximum: BigDecimal,
+        @SerializedName("type") val type: Long) : Serializable {
 
     open val isBackedByExternalSystem: Boolean
         get() = details.externalSystemType != null

@@ -19,8 +19,10 @@ import org.tokend.sdk.api.base.model.*;
 public class ReviewableRequestResource extends BaseResource {
     
     @JsonProperty("reference")
+    @Nullable
     private String reference;
     
+    @Nullable
     public String getReference() {
         return reference;
     }
@@ -39,6 +41,29 @@ public class ReviewableRequestResource extends BaseResource {
         return hash;
     }
     
+    @JsonProperty("all_tasks")
+    private Long allTasks;
+    
+    public Long getAllTasks() {
+        return allTasks;
+    }
+    
+    @JsonProperty("pending_tasks")
+    private Long pendingTasks;
+    
+    public Long getPendingTasks() {
+        return pendingTasks;
+    }
+    
+    @JsonProperty("external_details")
+    @Nullable
+    private JsonNode externalDetails;
+    
+    @Nullable
+    public JsonNode getExternalDetails() {
+        return externalDetails;
+    }
+    
     @JsonProperty("created_at")
     private Date createdAt;
     
@@ -53,13 +78,38 @@ public class ReviewableRequestResource extends BaseResource {
         return updatedAt;
     }
     
+    @JsonProperty("state")
+    private String state;
+    
+    public String getState() {
+        return state;
+    }
+    
+    @JsonProperty("state_i")
+    private Integer stateI;
+    
+    public Integer getStateI() {
+        return stateI;
+    }
+    
+    @JsonProperty("xdr_type")
+    private XdrEnumValue xdrType;
+    
+    public XdrEnumValue getXdrType() {
+        return xdrType;
+    }
+    
     @Override
     public boolean hasAttributes() {
-        return             reference != null &&
-            rejectReason != null &&
+        return             rejectReason != null &&
             hash != null &&
+            allTasks != null &&
+            pendingTasks != null &&
             createdAt != null &&
-            updatedAt != null 
+            updatedAt != null &&
+            state != null &&
+            stateI != null &&
+            xdrType != null 
         ;
     }
     

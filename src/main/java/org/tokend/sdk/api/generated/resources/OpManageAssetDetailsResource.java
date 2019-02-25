@@ -62,13 +62,21 @@ public class OpManageAssetDetailsResource extends OperationDetailsResource {
         return maxIssuanceAmount;
     }
     
+    @JsonProperty("type")
+    private Long type;
+    
+    public Long getType() {
+        return type;
+    }
+    
     @Override
     public boolean hasAttributes() {
         return             assetCode != null &&
             action != null &&
             creatorDetails != null &&
             preissuanceSigner != null &&
-            maxIssuanceAmount != null 
+            maxIssuanceAmount != null &&
+            type != null 
         ;
     }
 }

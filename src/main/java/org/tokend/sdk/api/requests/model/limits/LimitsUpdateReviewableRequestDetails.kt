@@ -5,7 +5,7 @@ import org.tokend.sdk.api.requests.model.base.ReviewableRequestDetails
 
 class LimitsUpdateReviewableRequestDetails(
         typeI: Int,
-        @SerializedName("limits_update")
+        @SerializedName("update_limits")
         val limitsUpdate: LimitsUpdateDetailsHolder
 
 ) : ReviewableRequestDetails(typeI)

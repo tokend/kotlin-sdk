@@ -5,7 +5,7 @@ import org.tokend.sdk.api.requests.model.base.ReviewableRequestDetails
 
 class PreIssuanceReviewableRequestDetails(
         typeI: Int,
-        @SerializedName("pre_issuance_create")
+        @SerializedName("create_pre_issuance")
         val preIssuanceCreate: PreIssuanceCreateDetails
 
 ) : ReviewableRequestDetails(typeI) {

@@ -5,8 +5,8 @@ import org.tokend.sdk.api.requests.model.base.ReviewableRequestDetails
 
 open class AssetRequestDetails<AssetType>(
         typeI: Int,
-        @SerializedName("asset_create")
+        @SerializedName("create_asset")
         val assetCreate: AssetType?,
-        @SerializedName("asset_update")
+        @SerializedName("update_asset")
         val assetUpdate: AssetType?
 ) : ReviewableRequestDetails(typeI)

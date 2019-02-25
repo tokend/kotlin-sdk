@@ -34,6 +34,13 @@ public class FeeAppliedTo {
         return feeType;
     }
     
+    @JsonProperty("fee_type_extended")
+    private XdrEnumValue feeTypeExtended;
+    
+    public XdrEnumValue getFeeTypeExtended() {
+        return feeTypeExtended;
+    }
+    
     @JsonProperty("lower_bound")
     private BigDecimal lowerBound;
     

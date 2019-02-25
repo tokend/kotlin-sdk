@@ -25,13 +25,6 @@ public class ChangeRoleRequestDetailsResource extends RequestDetailsResource {
         return accountRoleToSet;
     }
     
-    @JsonProperty("kyc_data")
-    private JsonNode kycData;
-    
-    public JsonNode getKycData() {
-        return kycData;
-    }
-    
     @JsonProperty("sequence_number")
     private Long sequenceNumber;
     
@@ -40,16 +33,15 @@ public class ChangeRoleRequestDetailsResource extends RequestDetailsResource {
     }
     
     @JsonProperty("creator_details")
-    private List<JsonNode> creatorDetails;
+    private JsonNode creatorDetails;
     
-    public List<? extends JsonNode> getCreatorDetails() {
+    public JsonNode getCreatorDetails() {
         return creatorDetails;
     }
     
     @Override
     public boolean hasAttributes() {
         return             accountRoleToSet != null &&
-            kycData != null &&
             sequenceNumber != null &&
             creatorDetails != null 
         ;
