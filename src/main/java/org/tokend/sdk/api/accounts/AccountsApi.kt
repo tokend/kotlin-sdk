@@ -1,6 +1,8 @@
 package org.tokend.sdk.api.accounts
 
-import org.tokend.sdk.api.accounts.model.*
+import org.tokend.sdk.api.accounts.model.Account
+import org.tokend.sdk.api.accounts.model.SimpleBalanceDetails
+import org.tokend.sdk.api.accounts.model.UnifiedOperationRecord
 import org.tokend.sdk.api.accounts.model.limits.Limits
 import org.tokend.sdk.api.accounts.params.OffersParams
 import org.tokend.sdk.api.accounts.params.PaymentsParams
@@ -145,27 +147,6 @@ open class AccountsApi(
                         offersParams?.map()
                 ),
                 { DataPage.fromPage(it) }
-        )
-    }
-
-    /**
-     * Will return list of account details for given list of account ids.
-     */
-    open fun getDetails(accountIds: Collection<String>): ApiRequest<AccountsDetailsResponse> {
-        return SimpleRetrofitApiRequest(
-                accountsService.getAccountsDetails(
-                        AccountsDetailsRequestBody(accountIds)
-                )
-        )
-    }
-
-    /**
-     * Will return [Account] for given email.
-     */
-    open fun getAccountIdByEmail(email: String): ApiRequest<String> {
-        return MappedRetrofitApiRequest(
-                accountsService.getAccountIdByEmail(email),
-                { it.accountId }
         )
     }
 

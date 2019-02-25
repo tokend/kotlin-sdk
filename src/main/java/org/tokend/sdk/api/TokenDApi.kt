@@ -17,6 +17,8 @@ import org.tokend.sdk.api.fees.FeesApi
 import org.tokend.sdk.api.fees.FeesService
 import org.tokend.sdk.api.general.GeneralApi
 import org.tokend.sdk.api.general.GeneralService
+import org.tokend.sdk.api.identity.IdentitiesApi
+import org.tokend.sdk.api.identity.IdentitiesService
 import org.tokend.sdk.api.keyvaluestorage.KeyValueStorageApi
 import org.tokend.sdk.api.keyvaluestorage.KeyValueStorageService
 import org.tokend.sdk.api.requests.RequestsApi
@@ -122,6 +124,10 @@ constructor(
 
     open val authResults: AuthResultsApi by lazy {
         AuthResultsApi(getService(AuthResultsService::class.java))
+    }
+
+    open val identities: IdentitiesApi by lazy {
+        IdentitiesApi(getService(IdentitiesService::class.java))
     }
 
     /**

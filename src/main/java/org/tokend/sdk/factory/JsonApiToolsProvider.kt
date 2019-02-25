@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule
 import com.github.jasminb.jsonapi.ResourceConverter
 import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory
 import org.tokend.sdk.api.generated.resources.AllResources
+import org.tokend.sdk.api.identity.model.IdentityResource
 import org.tokend.sdk.utils.ApiDateUtil
 import org.tokend.sdk.utils.BigDecimalUtil
 import retrofit2.Converter
@@ -27,7 +28,8 @@ object JsonApiToolsProvider {
     fun getResourceConverter(): ResourceConverter = synchronized(this) {
         return resourceConverter
                 ?: ResourceConverter(getObjectMapper(),
-                        *AllResources.ARRAY
+                        *AllResources.ARRAY,
+                        IdentityResource::class.java
                 )
                         .also { resourceConverter = it }
     }

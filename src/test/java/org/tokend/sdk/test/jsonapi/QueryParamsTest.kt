@@ -4,6 +4,7 @@ import org.junit.Assert
 import org.junit.Test
 import org.tokend.sdk.api.base.params.PagingOrder
 import org.tokend.sdk.api.base.params.PagingParamsV2
+import org.tokend.sdk.api.identity.params.IdentitiesPageParams
 import org.tokend.sdk.api.requests.model.base.RequestState
 import org.tokend.sdk.api.sales.model.SaleState
 import org.tokend.sdk.api.v3.assetpairs.params.AssetPairParams
@@ -319,6 +320,38 @@ class QueryParamsTest {
                                 page = "8"
                         )
                 )
+                .build()
+
+        Assert.assertEquals(expected, params.map().toSortedMap().toString())
+        Assert.assertEquals(expected, builtParams.map().toSortedMap().toString())
+    }
+
+    @Test
+    fun identityParams() {
+        val expected = "{cursor=8, filter[address]=$accountId, filter[email]=email, include=, limit=10, order=desc, page=8, page[cursor]=8, page[limit]=10, page[number]=8, page[order]=desc}"
+
+        val params = IdentitiesPageParams(
+                address = accountId,
+                email = "email",
+                pagingParams = PagingParamsV2(
+                        order = PagingOrder.DESC,
+                        limit = 10,
+                        page = "8"
+                ),
+                include = emptyList()
+        )
+
+        val builtParams = IdentitiesPageParams.Builder()
+                .withAddress(accountId)
+                .withEmail("email")
+                .withPagingParams(
+                        PagingParamsV2(
+                                order = PagingOrder.DESC,
+                                limit = 10,
+                                page = "8"
+                        )
+                )
+                .withInclude()
                 .build()
 
         Assert.assertEquals(expected, params.map().toSortedMap().toString())
