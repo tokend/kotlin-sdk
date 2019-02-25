@@ -2,14 +2,12 @@ package org.tokend.sdk.keyserver
 
 import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.MappedCallableApiRequest
-import org.tokend.sdk.api.generated.resources.SignerResource
 import org.tokend.sdk.api.v3.keyvalue.KeyValueStorageApiV3
 import org.tokend.sdk.api.v3.signers.SignersApiV3
 import org.tokend.sdk.api.wallets.WalletsApi
 import org.tokend.sdk.api.wallets.model.EmailAlreadyTakenException
 import org.tokend.sdk.api.wallets.model.EmailNotVerifiedException
 import org.tokend.sdk.api.wallets.model.InvalidCredentialsException
-import org.tokend.sdk.factory.JsonApiToolsProvider
 import org.tokend.sdk.keyserver.models.*
 import org.tokend.sdk.utils.extentions.isNotFound
 import org.tokend.wallet.*
@@ -189,6 +187,25 @@ class KeyServer constructor(
         )
     }
 
+    @JvmOverloads
+    fun updateWalletPassword(currentWalletInfo: WalletInfo,
+                             currentAccount: Account,
+                             newPassword: CharArray,
+                             newAccount: Account,
+                             networkParams: NetworkParams,
+                             currentSigners: List<SignerData>,
+                             defaultSignerRole: Uint64,
+                             defaultSignerDetailsJson: String = "{}"): ApiRequest<WalletInfo> {
+        return MappedCallableApiRequest(
+                {
+                    getUpdateWalletPasswordResult(currentWalletInfo, currentAccount,
+                            newPassword, newAccount, networkParams, currentSigners, defaultSignerRole,
+                            defaultSignerDetailsJson)
+                },
+                { it }
+        )
+    }
+
     private fun getUpdateWalletPasswordResult(currentWalletInfo: WalletInfo,
                                               currentAccount: Account,
                                               newPassword: CharArray,
@@ -197,11 +214,12 @@ class KeyServer constructor(
                                               signersApi: SignersApiV3,
                                               keyValueApi: KeyValueStorageApiV3,
                                               defaultSignerDetailsJson: String): WalletInfo {
-        val signers: List<SignerResource> = try {
+        val signers: List<SignerData> = try {
             signersApi
                     .get(currentWalletInfo.accountId)
                     .execute()
                     .get()
+                    .map { SignerData(it) }
         } catch (e: HttpException) {
             if (e.isNotFound())
                 emptyList()
@@ -221,12 +239,26 @@ class KeyServer constructor(
                     "by key $DEFAULT_SIGNER_ROLE_KEY_VALUE_KEY", e)
         }
 
+        return getUpdateWalletPasswordResult(currentWalletInfo, currentAccount,
+                newPassword, newAccount, networkParams,
+                signers, defaultSignerRole, defaultSignerDetailsJson
+        )
+    }
+
+    private fun getUpdateWalletPasswordResult(currentWalletInfo: WalletInfo,
+                                              currentAccount: Account,
+                                              newPassword: CharArray,
+                                              newAccount: Account,
+                                              networkParams: NetworkParams,
+                                              currentSigners: List<SignerData>,
+                                              defaultSignerRole: Uint64,
+                                              defaultSignerDetailsJson: String): WalletInfo {
         val signersUpdateTx = createSignersUpdateTransaction(
                 networkParams = networkParams,
                 currentAccount = currentAccount,
                 newAccount = newAccount,
                 originalAccountId = currentWalletInfo.accountId,
-                signers = signers,
+                signers = currentSigners,
                 defaultSignerRole = defaultSignerRole,
                 defaultSignerDetailsJson = defaultSignerDetailsJson
         )
@@ -260,7 +292,7 @@ class KeyServer constructor(
     }
 
     companion object {
-        private const val RECOVERY_SIGNER_ROLE_ID = "1"
+        private const val RECOVERY_SIGNER_ROLE_ID = 1L
         private const val DEFAULT_SIGNER_IDENTITY = 0
         private const val DEFAULT_SIGNER_WEIGHT = 1000
         private const val DEFAULT_SIGNER_ROLE_KEY_VALUE_KEY = "signer_role:default"
@@ -394,40 +426,24 @@ class KeyServer constructor(
         fun createSignersUpdateTransaction(networkParams: NetworkParams,
                                            originalAccountId: String,
                                            currentAccount: Account,
-                                           signers: Collection<SignerResource>,
+                                           signers: Collection<SignerData>,
                                            newAccount: Account,
                                            defaultSignerRole: Uint64,
                                            defaultSignerDetailsJson: String): Transaction {
-            class SignerData(
-                    val identity: Uint32,
-                    val weight: Uint32,
-                    val roleId: Uint64,
-                    val details: String
-            )
-
             val operationBodies = mutableListOf<Operation.OperationBody>()
 
-            val currentSigner = signers
+            // Add new signer.
+            val newSignerData = signers
                     .find {
                         it.id == currentAccount.accountId
-                                && it.role.id != RECOVERY_SIGNER_ROLE_ID
-                    }
-
-            // Add new signer.
-            val newSignerData = currentSigner
-                    ?.let {
-                        SignerData(
-                                identity = it.identity.toInt(),
-                                weight = it.weight.toInt(),
-                                roleId = it.role.id.toLong(),
-                                details = JsonApiToolsProvider.getObjectMapper().writeValueAsString(it.details)
-                        )
+                                && it.roleId != RECOVERY_SIGNER_ROLE_ID
                     }
                     ?: SignerData(
                             identity = DEFAULT_SIGNER_IDENTITY,
                             weight = DEFAULT_SIGNER_WEIGHT,
                             roleId = defaultSignerRole,
-                            details = defaultSignerDetailsJson
+                            detailsJson = defaultSignerDetailsJson,
+                            id = newAccount.accountId
                     )
 
             operationBodies.add(
@@ -441,7 +457,7 @@ class KeyServer constructor(
                                                     identity = newSignerData.identity,
                                                     weight = newSignerData.weight,
                                                     roleID = newSignerData.roleId,
-                                                    details = newSignerData.details,
+                                                    details = newSignerData.detailsJson ?: "{}",
                                                     ext = EmptyExt.EmptyVersion()
                                             )
                                     ),
@@ -458,7 +474,7 @@ class KeyServer constructor(
                     }
                     .filter {
                         // Do not remove recovery signer.
-                        it.role.id != RECOVERY_SIGNER_ROLE_ID
+                        it.roleId != RECOVERY_SIGNER_ROLE_ID
                     }
                     .forEach {
                         operationBodies.add(
