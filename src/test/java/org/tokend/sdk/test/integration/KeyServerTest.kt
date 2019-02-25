@@ -222,5 +222,22 @@ class KeyServerTest {
                 newAccount.secretSeed,
                 newWalletInfo.secretSeed
         )
+
+        val signers = api
+                .v3
+                .signers
+                .get(currentWalletInfo.accountId)
+                .execute()
+                .get()
+
+        Assert.assertTrue("A new signer ${newAccount.accountId} must be added to account signers",
+                signers.any { signer ->
+                    signer.id == newAccount.accountId
+                })
+
+        Assert.assertFalse("The old signer ${rootAccount.accountId} must be removed from account signers",
+                signers.any { signer ->
+                    signer.id == rootAccount.accountId
+                })
     }
 }
