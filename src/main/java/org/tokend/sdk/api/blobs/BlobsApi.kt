@@ -66,7 +66,7 @@ open class BlobsApi(
     /**
      * Will create blob.
      */
-    fun crete(blob: Blob): ApiRequest<Blob> {
+    fun create(blob: Blob): ApiRequest<Blob> {
         return MappedRetrofitApiRequest(
                 blobsService.create(DataEntity(blob)),
                 { it.data }

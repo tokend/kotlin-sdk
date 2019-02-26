@@ -13,6 +13,7 @@ interface BlobsService {
                              @QueryMap query: Map<String, Any>): Call<DataEntity<List<Blob>>>
 
     @POST("accounts/{account}/blobs")
+    @JvmSuppressWildcards
     fun creteAccountOwnedBlob(@Path("account") accountId: String,
                               @Body blob: DataEntity<Blob>): Call<DataEntity<Blob>>
 
@@ -27,5 +28,6 @@ interface BlobsService {
     fun delete(@Path("blob") blobId: String): Call<Void>
 
     @POST("blobs")
+    @JvmSuppressWildcards
     fun create(@Body blob: DataEntity<Blob>): Call<DataEntity<Blob>>
 }
