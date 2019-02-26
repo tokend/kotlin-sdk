@@ -4,6 +4,8 @@ import org.junit.Assert
 import org.junit.Test
 import org.tokend.sdk.api.base.params.PagingOrder
 import org.tokend.sdk.api.base.params.PagingParamsV2
+import org.tokend.sdk.api.blobs.model.BlobType
+import org.tokend.sdk.api.blobs.params.BlobPageParams
 import org.tokend.sdk.api.identity.params.IdentitiesPageParams
 import org.tokend.sdk.api.requests.model.base.RequestState
 import org.tokend.sdk.api.sales.model.SaleState
@@ -344,6 +346,38 @@ class QueryParamsTest {
         val builtParams = IdentitiesPageParams.Builder()
                 .withAddress(accountId)
                 .withEmail("email")
+                .withPagingParams(
+                        PagingParamsV2(
+                                order = PagingOrder.DESC,
+                                limit = 10,
+                                page = "8"
+                        )
+                )
+                .withInclude()
+                .build()
+
+        Assert.assertEquals(expected, params.map().toSortedMap().toString())
+        Assert.assertEquals(expected, builtParams.map().toSortedMap().toString())
+    }
+
+    @Test
+    fun blobsParams() {
+        val expected = "{cursor=8, filter[deleted]=false, filter[type]=128, include=, limit=10, order=desc, page=8, page[cursor]=8, page[limit]=10, page[number]=8, page[order]=desc}"
+
+        val params = BlobPageParams(
+                type = BlobType.CHARLIE,
+                isDeleted = false,
+                pagingParams = PagingParamsV2(
+                        order = PagingOrder.DESC,
+                        limit = 10,
+                        page = "8"
+                ),
+                include = emptyList()
+        )
+
+        val builtParams = BlobPageParams.Builder()
+                .withType(BlobType.CHARLIE)
+                .withIsDeleted(false)
                 .withPagingParams(
                         PagingParamsV2(
                                 order = PagingOrder.DESC,

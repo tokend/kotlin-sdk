@@ -7,9 +7,9 @@ import org.tokend.sdk.api.v3.base.PageQueryParams
 open class BlobPageParams(
         val type: BlobType? = null,
         val isDeleted: Boolean? = null,
-        pagingParamsV2: PagingParamsV2? = null,
+        pagingParams: PagingParamsV2? = null,
         include: Collection<String>? = null
-) : PageQueryParams(pagingParamsV2, include) {
+) : PageQueryParams(pagingParams, include) {
     override fun map(): Map<String, Any> {
         return super.map().toMutableMap().apply {
                     type?.also { putFilter("type", it.value) }
