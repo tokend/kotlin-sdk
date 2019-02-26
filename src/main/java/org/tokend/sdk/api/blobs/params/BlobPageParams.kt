@@ -1,26 +1,27 @@
 package org.tokend.sdk.api.blobs.params
 
 import org.tokend.sdk.api.base.params.PagingParamsV2
+import org.tokend.sdk.api.blobs.model.BlobType
 import org.tokend.sdk.api.v3.base.PageQueryParams
 
 open class BlobPageParams(
-        val type: String? = null,
+        val type: BlobType? = null,
         val isDeleted: Boolean? = null,
         pagingParamsV2: PagingParamsV2? = null,
         include: Collection<String>? = null
 ) : PageQueryParams(pagingParamsV2, include) {
     override fun map(): Map<String, Any> {
         return super.map().toMutableMap().apply {
-                    type?.also { putFilter("type", it) }
+                    type?.also { putFilter("type", it.value) }
                     isDeleted?.also { putFilter("deleted", it) }
                 }
     }
 
     class Builder: PageQueryParams.Builder() {
-        private var type: String? = null
+        private var type: BlobType? = null
         private var isDeleted: Boolean? = null
 
-        fun withType(type: String) = also { this.type = type }
+        fun withType(type: BlobType) = also { this.type = type }
 
         fun withIsDeleted(isDeleted: Boolean) = also { this.isDeleted = isDeleted }
 
