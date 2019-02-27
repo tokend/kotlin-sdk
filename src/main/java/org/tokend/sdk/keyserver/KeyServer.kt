@@ -46,12 +46,12 @@ class KeyServer constructor(
                                 isRecovery: Boolean = false): WalletInfo {
         val loginParams = getLoginParams(login, isRecovery).execute().get()
 
-        val tempLogin = if (loginParams.id == 2L) login.toLowerCase() else login
+        val derivationLogin = login.toLowerCase()
 
         val hexWalletId = WalletKeyDerivation
-                .deriveAndEncodeWalletId(tempLogin, password, loginParams.kdfAttributes)
+                .deriveAndEncodeWalletId(derivationLogin, password, loginParams.kdfAttributes)
         val walletKey = WalletKeyDerivation
-                .deriveWalletEncryptionKey(tempLogin, password, loginParams.kdfAttributes)
+                .deriveWalletEncryptionKey(derivationLogin, password, loginParams.kdfAttributes)
 
         val walletData = getWalletData(hexWalletId).execute().get()
 
@@ -263,7 +263,9 @@ class KeyServer constructor(
                 defaultSignerDetailsJson = defaultSignerDetailsJson
         )
 
-        val newLoginParams = currentWalletInfo.loginParams.copy()
+        val newLoginParams = currentWalletInfo.loginParams.copy(
+                kdfAttributes = currentWalletInfo.loginParams.kdfAttributes.copy()
+        )
 
         // New KDF salt should be generated.
         newLoginParams.kdfAttributes.salt = null
@@ -275,6 +277,8 @@ class KeyServer constructor(
                 rootAccount = newAccount,
                 recoveryAccount = newAccount
         )
+
+        newLoginParams.kdfAttributes.encodedSalt = newWallet.walletData.attributes?.salt
 
         newWallet.walletData.addTransactionRelation(signersUpdateTx)
 
@@ -319,18 +323,20 @@ class KeyServer constructor(
         ): WalletCreateResult {
             val recoveryAccountSeed = recoveryAccount.secretSeed
                     ?: throw IllegalArgumentException("Recovery account must have private key")
-            val emailInProperCase = if (kdfVersion == 2L) email.toLowerCase() else email
+
+            val derivationEmail = email.toLowerCase()
 
             val kdfSalt = kdfAttributes.salt ?: WalletKeyDerivation.generateKdfSalt()
-            kdfAttributes.salt = kdfSalt
+            val kdfAttributesWithSalt = kdfAttributes.copy()
+            kdfAttributesWithSalt.salt = kdfSalt
 
             val walletKey = WalletKeyDerivation
-                    .deriveWalletEncryptionKey(emailInProperCase, password, kdfAttributes)
+                    .deriveWalletEncryptionKey(derivationEmail, password, kdfAttributesWithSalt)
             val walletId = WalletKeyDerivation
-                    .deriveAndEncodeWalletId(emailInProperCase, password, kdfAttributes)
+                    .deriveAndEncodeWalletId(derivationEmail, password, kdfAttributesWithSalt)
 
             val encryptedSeed = WalletEncryption.encryptAccount(
-                    emailInProperCase,
+                    derivationEmail,
                     rootAccount,
                     walletKey,
                     kdfSalt
@@ -348,7 +354,7 @@ class KeyServer constructor(
 
             val passwordFactorAccount = Account.random()
             val encryptedPasswordFactor = WalletEncryption.encryptAccount(
-                    emailInProperCase,
+                    derivationEmail,
                     passwordFactorAccount,
                     walletKey,
                     kdfSalt
@@ -364,12 +370,12 @@ class KeyServer constructor(
             )
 
             val recoveryWalletKey = WalletKeyDerivation
-                    .deriveWalletEncryptionKey(emailInProperCase, recoveryAccountSeed, kdfAttributes)
+                    .deriveWalletEncryptionKey(derivationEmail, recoveryAccountSeed, kdfAttributesWithSalt)
             val recoveryWalletId = WalletKeyDerivation
-                    .deriveAndEncodeWalletId(emailInProperCase, recoveryAccountSeed, kdfAttributes)
+                    .deriveAndEncodeWalletId(derivationEmail, recoveryAccountSeed, kdfAttributesWithSalt)
 
             val encryptedRecovery = WalletEncryption.encryptAccount(
-                    emailInProperCase,
+                    derivationEmail,
                     recoveryAccount,
                     recoveryWalletKey,
                     kdfSalt

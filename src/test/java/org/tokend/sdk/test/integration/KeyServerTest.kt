@@ -192,7 +192,7 @@ class KeyServerTest {
                 .get()
 
 
-        val remoteNewWalletInfo =  try {
+        val remoteNewWalletInfo = try {
             keyServer.getWalletInfo(email, newPassword).execute().get()
         } catch (e: Exception) {
             Assert.fail("New wallet must be accessible with new credentials")
@@ -209,6 +209,13 @@ class KeyServerTest {
                 "Wallet ID must be changed after password change",
                 wallet.id,
                 newWalletInfo.walletIdHex
+        )
+
+        Assert.assertFalse(
+                "Wallet KDF salt must be changed after password change",
+                currentWalletInfo.loginParams.kdfAttributes.salt!!.contentEquals(
+                        remoteNewWalletInfo.loginParams.kdfAttributes.salt!!
+                )
         )
 
         Assert.assertEquals(
