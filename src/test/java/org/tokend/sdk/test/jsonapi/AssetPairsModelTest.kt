@@ -19,7 +19,7 @@ class AssetPairsModelTest {
 
         JsonApiUtil.checkResourceNullability(pair)
 
-        Assert.assertTrue(pair.hasAttributes())
+        Assert.assertTrue(pair.isFilled())
         Assert.assertNotNull(pair.baseAsset)
         Assert.assertNotNull(pair.quoteAsset)
         Assert.assertNotEquals(pair.baseAsset.id, pair.quoteAsset.id)

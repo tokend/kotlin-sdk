@@ -26,7 +26,7 @@ public class AccountRoleResource extends BaseResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             details != null 
         ;
     }

@@ -26,8 +26,9 @@ public class OpManageAccountRoleDetailsResource extends OperationDetailsResource
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             details != null 
+            && super.isFilled()
         ;
     }
     

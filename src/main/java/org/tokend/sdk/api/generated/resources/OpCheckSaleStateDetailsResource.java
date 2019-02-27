@@ -26,8 +26,9 @@ public class OpCheckSaleStateDetailsResource extends OperationDetailsResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             effect != null 
+            && super.isFilled()
         ;
     }
     

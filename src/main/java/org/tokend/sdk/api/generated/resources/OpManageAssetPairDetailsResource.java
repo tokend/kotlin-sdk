@@ -47,11 +47,12 @@ public class OpManageAssetPairDetailsResource extends OperationDetailsResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             physicalPrice != null &&
             physicalPriceCorrection != null &&
             maxPriceStep != null &&
             policies != null 
+            && super.isFilled()
         ;
     }
     

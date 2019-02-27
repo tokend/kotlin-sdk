@@ -70,13 +70,14 @@ public class OpManageOfferDetailsResource extends OperationDetailsResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             orderBookId != null &&
             baseAmount != null &&
             price != null &&
             isBuy != null &&
             fee != null &&
             isDeleted != null 
+            && super.isFilled()
         ;
     }
     

@@ -30,7 +30,7 @@ public abstract class BaseResource {
      * @see <a href="https://jsonapi.org/format/#document-resource-object-attributes">JSONAPI Attributes</a>
      * @see <a href="https://jsonapi.org/format/#document-resource-object-relationships">JSONAPI Relationships</a>
      */
-    public abstract boolean hasAttributes();
+    public abstract boolean isFilled();
 
     @Override
     public boolean equals(Object o) {

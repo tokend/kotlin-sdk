@@ -33,9 +33,10 @@ public class OpCreateAMLAlertRequestDetailsResource extends OperationDetailsReso
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             amount != null &&
             creatorDetails != null 
+            && super.isFilled()
         ;
     }
     

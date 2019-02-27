@@ -18,7 +18,7 @@ import org.tokend.sdk.api.base.model.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BalanceResource extends BaseResource {
     @Override
-    public boolean hasAttributes() { return false; }
+    public boolean isFilled() { return true; }
     
     @Relationship("asset")
     private AssetResource asset;

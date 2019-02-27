@@ -70,13 +70,14 @@ public class OpManageAssetDetailsResource extends OperationDetailsResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             assetCode != null &&
             action != null &&
             creatorDetails != null &&
             preissuanceSigner != null &&
             maxIssuanceAmount != null &&
             type != null 
+            && super.isFilled()
         ;
     }
 }

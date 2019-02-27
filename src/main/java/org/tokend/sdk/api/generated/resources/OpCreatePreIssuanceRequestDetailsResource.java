@@ -33,9 +33,10 @@ public class OpCreatePreIssuanceRequestDetailsResource extends OperationDetailsR
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             amount != null &&
             creatorDetails != null 
+            && super.isFilled()
         ;
     }
     

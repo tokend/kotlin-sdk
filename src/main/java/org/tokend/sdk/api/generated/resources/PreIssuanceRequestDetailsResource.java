@@ -47,11 +47,12 @@ public class PreIssuanceRequestDetailsResource extends RequestDetailsResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             amount != null &&
             signature != null &&
             reference != null &&
             creatorDetails != null 
+            && super.isFilled()
         ;
     }
     

@@ -54,7 +54,7 @@ public class SignerRuleResource extends BaseResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             resource != null &&
             action != null &&
             forbids != null &&

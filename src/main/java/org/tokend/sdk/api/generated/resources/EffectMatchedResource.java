@@ -54,12 +54,13 @@ public class EffectMatchedResource extends EffectResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             offerId != null &&
             orderBookId != null &&
             price != null &&
             charged != null &&
             funded != null 
+            && super.isFilled()
         ;
     }
 }

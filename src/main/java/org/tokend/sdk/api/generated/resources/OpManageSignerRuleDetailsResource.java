@@ -61,13 +61,14 @@ public class OpManageSignerRuleDetailsResource extends OperationDetailsResource 
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             resource != null &&
             action != null &&
             forbids != null &&
             isDefault != null &&
             isReadOnly != null &&
             details != null 
+            && super.isFilled()
         ;
     }
     

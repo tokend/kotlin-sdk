@@ -54,7 +54,7 @@ public class ExternalSystemIdResource extends BaseResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             externalSystemType != null &&
             data != null &&
             isDeleted != null &&

@@ -26,7 +26,7 @@ public class QuoteAssetResource extends BaseResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             price != null 
         ;
     }

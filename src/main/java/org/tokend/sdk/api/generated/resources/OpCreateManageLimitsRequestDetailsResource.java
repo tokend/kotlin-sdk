@@ -26,8 +26,9 @@ public class OpCreateManageLimitsRequestDetailsResource extends OperationDetails
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             creatorDetails != null 
+            && super.isFilled()
         ;
     }
     

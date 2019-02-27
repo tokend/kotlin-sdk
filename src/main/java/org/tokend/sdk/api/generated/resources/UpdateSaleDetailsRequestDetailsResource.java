@@ -26,8 +26,9 @@ public class UpdateSaleDetailsRequestDetailsResource extends RequestDetailsResou
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             creatorDetails != null 
+            && super.isFilled()
         ;
     }
     

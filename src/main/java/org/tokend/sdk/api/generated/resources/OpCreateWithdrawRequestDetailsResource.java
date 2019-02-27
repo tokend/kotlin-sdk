@@ -40,10 +40,11 @@ public class OpCreateWithdrawRequestDetailsResource extends OperationDetailsReso
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             amount != null &&
             fee != null &&
             creatorDetails != null 
+            && super.isFilled()
         ;
     }
     

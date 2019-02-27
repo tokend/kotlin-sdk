@@ -33,9 +33,10 @@ public class EffectBalanceChangeResource extends EffectResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             amount != null &&
             fee != null 
+            && super.isFilled()
         ;
     }
 }

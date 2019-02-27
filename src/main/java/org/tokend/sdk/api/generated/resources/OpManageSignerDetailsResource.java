@@ -40,10 +40,11 @@ public class OpManageSignerDetailsResource extends OperationDetailsResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             weight != null &&
             identity != null &&
             details != null 
+            && super.isFilled()
         ;
     }
     

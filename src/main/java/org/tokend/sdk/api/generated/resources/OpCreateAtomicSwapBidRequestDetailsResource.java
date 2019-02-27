@@ -33,9 +33,10 @@ public class OpCreateAtomicSwapBidRequestDetailsResource extends OperationDetail
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             amount != null &&
             details != null 
+            && super.isFilled()
         ;
     }
     

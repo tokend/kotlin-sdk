@@ -40,7 +40,7 @@ public class FeeResource extends BaseResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             fixed != null &&
             percent != null &&
             appliedTo != null 

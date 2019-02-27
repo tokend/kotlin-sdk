@@ -1,6 +1,6 @@
 package org.tokend.sdk.test.jsonapi
 
-import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.tokend.sdk.api.generated.resources.BalanceResource
 import org.tokend.sdk.factory.JsonApiToolsProvider
@@ -17,7 +17,7 @@ class BalanceModelTest {
 
         JsonApiUtil.checkResourceNullability(balance)
 
-        assertFalse(balance.hasAttributes())
+        assertTrue(balance.isFilled())
     }
 
     private val balanceResponse = "{  \n" +

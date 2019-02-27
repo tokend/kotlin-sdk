@@ -54,12 +54,13 @@ public class SaleRequestDetailsResource extends RequestDetailsResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             baseAssetForHardCap != null &&
             startTime != null &&
             endTime != null &&
             saleType != null &&
             creatorDetails != null 
+            && super.isFilled()
         ;
     }
     

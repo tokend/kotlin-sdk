@@ -61,13 +61,14 @@ public class OpPayoutDetailsResource extends OperationDetailsResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             maxPayoutAmount != null &&
             minAssetHolderAmount != null &&
             minPayoutAmount != null &&
             expectedFee != null &&
             actualFee != null &&
             actualPayoutAmount != null 
+            && super.isFilled()
         ;
     }
     

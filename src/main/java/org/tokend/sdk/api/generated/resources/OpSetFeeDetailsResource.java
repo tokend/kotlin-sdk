@@ -93,7 +93,7 @@ public class OpSetFeeDetailsResource extends OperationDetailsResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             assetCode != null &&
             fixedFee != null &&
             percentFee != null &&
@@ -102,6 +102,7 @@ public class OpSetFeeDetailsResource extends OperationDetailsResource {
             lowerBound != null &&
             upperBound != null &&
             isDelete != null 
+            && super.isFilled()
         ;
     }
 }

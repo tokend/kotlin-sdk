@@ -44,8 +44,9 @@ public class OpManageExternalSystemPoolDetailsResource extends OperationDetailsR
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             action != null 
+            && super.isFilled()
         ;
     }
 }

@@ -18,5 +18,5 @@ import org.tokend.sdk.api.base.model.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OpUpdateSignerDetailsResource extends OpManageSignerDetailsResource {
     @Override
-    public boolean hasAttributes() { return false; }
+    public boolean isFilled() { return super.isFilled(); }
 }

@@ -17,7 +17,7 @@ class OffersModelTest {
 
         JsonApiUtil.checkResourceNullability(offer)
 
-        Assert.assertTrue(offer.hasAttributes())
+        Assert.assertTrue(offer.isFilled())
         Assert.assertNotNull(offer.baseAsset)
         Assert.assertNotNull(offer.quoteAsset)
     }

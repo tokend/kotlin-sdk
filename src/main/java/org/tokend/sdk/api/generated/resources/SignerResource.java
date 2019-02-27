@@ -40,7 +40,7 @@ public class SignerResource extends BaseResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             weight != null &&
             identity != null &&
             details != null 

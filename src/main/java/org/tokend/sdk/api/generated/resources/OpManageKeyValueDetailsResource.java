@@ -42,9 +42,10 @@ public class OpManageKeyValueDetailsResource extends OperationDetailsResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             key != null &&
             action != null 
+            && super.isFilled()
         ;
     }
 }

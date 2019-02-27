@@ -18,7 +18,6 @@ class AccountModelTest {
 
         JsonApiUtil.checkResourceNullability(account)
 
-        Assert.assertFalse(account.hasAttributes())
         Assert.assertTrue(account.balances.isNotEmpty())
         Assert.assertTrue(account.limits.isNotEmpty())
         Assert.assertNotNull(account.referrer)

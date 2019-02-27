@@ -33,9 +33,10 @@ public class OpManageSaleDetailsResource extends OperationDetailsResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             saleId != null &&
             action != null 
+            && super.isFilled()
         ;
     }
 }

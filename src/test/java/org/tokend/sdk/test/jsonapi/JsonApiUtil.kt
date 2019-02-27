@@ -25,7 +25,7 @@ object JsonApiUtil {
             return
         }
 
-        val bypassNulls = entity is BaseResource && !entity.hasAttributes()
+        val bypassNulls = entity is BaseResource && !entity.isFilled
 
         properties
                 .filter { property ->

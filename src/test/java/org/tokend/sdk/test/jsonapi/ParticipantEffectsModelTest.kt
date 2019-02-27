@@ -1,6 +1,5 @@
 package org.tokend.sdk.test.jsonapi
 
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.tokend.sdk.api.generated.resources.ParticipantEffectResource
@@ -23,8 +22,7 @@ class ParticipantEffectsModelTest {
 
         JsonApiUtil.checkResourceNullability(participantEffect)
 
-        assertFalse(participantEffect.hasAttributes())
-        //TODO: add includes after api refactoring
+        assertTrue(participantEffect.isFilled())
     }
 
     private val participantEffectsResponse = "{\n" +

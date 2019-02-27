@@ -61,7 +61,7 @@ public class LimitResource extends BaseResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             dailyOut != null &&
             weeklyOut != null &&
             monthlyOut != null &&

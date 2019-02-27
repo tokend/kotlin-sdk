@@ -33,7 +33,7 @@ public class CalculatedFeeResource extends BaseResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             fixed != null &&
             calculatedPercent != null 
         ;

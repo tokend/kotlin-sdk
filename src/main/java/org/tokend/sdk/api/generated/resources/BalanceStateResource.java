@@ -33,7 +33,7 @@ public class BalanceStateResource extends BaseResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             available != null &&
             locked != null 
         ;

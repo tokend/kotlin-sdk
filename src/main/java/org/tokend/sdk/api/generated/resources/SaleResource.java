@@ -61,7 +61,7 @@ public class SaleResource extends BaseResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             startTime != null &&
             endTime != null &&
             saleType != null &&

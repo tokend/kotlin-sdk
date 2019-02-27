@@ -61,13 +61,14 @@ public class OpPaymentDetailsResource extends OperationDetailsResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             amount != null &&
             sourceFee != null &&
             destinationFee != null &&
             sourcePayForDestination != null &&
             subject != null &&
             reference != null 
+            && super.isFilled()
         ;
     }
     

@@ -40,10 +40,11 @@ public class WithdrawalRequestDetailsResource extends RequestDetailsResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             fee != null &&
             amount != null &&
             creatorDetails != null 
+            && super.isFilled()
         ;
     }
     

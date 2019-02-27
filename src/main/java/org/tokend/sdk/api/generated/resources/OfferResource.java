@@ -68,7 +68,7 @@ public class OfferResource extends BaseResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             isBuy != null &&
             orderBookId != null &&
             createdAt != null &&

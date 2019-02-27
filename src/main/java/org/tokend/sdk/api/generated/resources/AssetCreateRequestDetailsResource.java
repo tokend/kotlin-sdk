@@ -68,7 +68,7 @@ public class AssetCreateRequestDetailsResource extends RequestDetailsResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             asset != null &&
             policies != null &&
             preIssuanceAssetSigner != null &&
@@ -76,6 +76,7 @@ public class AssetCreateRequestDetailsResource extends RequestDetailsResource {
             initialPreissuedAmount != null &&
             creatorDetails != null &&
             type != null 
+            && super.isFilled()
         ;
     }
 }

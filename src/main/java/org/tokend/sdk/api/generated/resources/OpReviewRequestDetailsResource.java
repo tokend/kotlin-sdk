@@ -75,7 +75,7 @@ public class OpReviewRequestDetailsResource extends OperationDetailsResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             action != null &&
             reason != null &&
             requestHash != null &&
@@ -84,6 +84,7 @@ public class OpReviewRequestDetailsResource extends OperationDetailsResource {
             addedTasks != null &&
             removedTasks != null &&
             externalDetails != null 
+            && super.isFilled()
         ;
     }
 }

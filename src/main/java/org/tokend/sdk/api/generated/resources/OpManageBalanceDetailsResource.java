@@ -33,9 +33,10 @@ public class OpManageBalanceDetailsResource extends OperationDetailsResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             action != null &&
             balanceAddress != null 
+            && super.isFilled()
         ;
     }
     

@@ -26,7 +26,7 @@ public class KeyValueEntryResource extends BaseResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             value != null 
         ;
     }

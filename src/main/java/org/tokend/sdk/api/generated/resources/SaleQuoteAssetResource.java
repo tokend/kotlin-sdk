@@ -54,7 +54,7 @@ public class SaleQuoteAssetResource extends BaseResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             price != null &&
             currentCap != null &&
             hardCap != null &&

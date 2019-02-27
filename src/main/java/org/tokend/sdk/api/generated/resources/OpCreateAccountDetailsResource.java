@@ -18,7 +18,7 @@ import org.tokend.sdk.api.base.model.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OpCreateAccountDetailsResource extends OperationDetailsResource {
     @Override
-    public boolean hasAttributes() { return false; }
+    public boolean isFilled() { return super.isFilled(); }
     
     @Relationship("account")
     private AccountResource account;

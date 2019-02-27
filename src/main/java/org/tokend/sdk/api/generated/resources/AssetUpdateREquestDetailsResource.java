@@ -33,9 +33,10 @@ public class AssetUpdateREquestDetailsResource extends RequestDetailsResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             policies != null &&
             creatorDetails != null 
+            && super.isFilled()
         ;
     }
     

@@ -54,12 +54,13 @@ public class OpLicenseDetailsResource extends OperationDetailsResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             dueDate != null &&
             adminCount != null &&
             ledgerHash != null &&
             prevLicenseHash != null &&
             signatures != null 
+            && super.isFilled()
         ;
     }
 }

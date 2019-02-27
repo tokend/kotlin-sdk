@@ -26,8 +26,9 @@ public class LimitsUpdateRequestDetailsResource extends RequestDetailsResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             creatorDetails != null 
+            && super.isFilled()
         ;
     }
 }

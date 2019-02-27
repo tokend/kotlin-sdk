@@ -24,7 +24,7 @@ public class IdentityResource extends BaseResource {
     }
 
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return address != null && email != null;
     }
 }

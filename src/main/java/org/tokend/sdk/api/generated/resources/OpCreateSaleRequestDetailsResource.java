@@ -54,12 +54,13 @@ public class OpCreateSaleRequestDetailsResource extends OperationDetailsResource
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             startTime != null &&
             endTime != null &&
             softCap != null &&
             hardCap != null &&
             creatorDetails != null 
+            && super.isFilled()
         ;
     }
     

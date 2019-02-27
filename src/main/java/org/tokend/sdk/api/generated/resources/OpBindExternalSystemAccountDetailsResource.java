@@ -26,8 +26,9 @@ public class OpBindExternalSystemAccountDetailsResource extends OperationDetails
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             externalSystemType != null 
+            && super.isFilled()
         ;
     }
 }

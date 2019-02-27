@@ -47,7 +47,7 @@ public class AccountRuleResource extends BaseResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             action != null &&
             forbids != null &&
             details != null &&

@@ -33,9 +33,10 @@ public class AtomicSwapRequestDetailsResource extends RequestDetailsResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             baseAmount != null &&
             creatorDetails != null 
+            && super.isFilled()
         ;
     }
     

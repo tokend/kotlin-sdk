@@ -33,9 +33,10 @@ public class OpManageSignerRoleDetailsResource extends OperationDetailsResource 
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             isReadOnly != null &&
             details != null 
+            && super.isFilled()
         ;
     }
     

@@ -44,8 +44,9 @@ public class OpManageLimitsDetailsResource extends OperationDetailsResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             action != null 
+            && super.isFilled()
         ;
     }
 }

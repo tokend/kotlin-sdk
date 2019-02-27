@@ -35,8 +35,9 @@ public class OpCreateChangeRoleRequestDetailsResource extends OperationDetailsRe
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             creatorDetails != null 
+            && super.isFilled()
         ;
     }
     

@@ -82,7 +82,7 @@ public class AssetResource extends BaseResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             preIssuanceAssetSigner != null &&
             details != null &&
             maxIssuanceAmount != null &&

@@ -56,11 +56,12 @@ public class OpCreateIssuanceRequestDetailsResource extends OperationDetailsReso
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             fee != null &&
             amount != null &&
             reference != null &&
             creatorDetails != null 
+            && super.isFilled()
         ;
     }
     

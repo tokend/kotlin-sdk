@@ -47,11 +47,12 @@ public class OpManageAccountRuleDetailsResource extends OperationDetailsResource
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             resource != null &&
             action != null &&
             forbids != null &&
             details != null 
+            && super.isFilled()
         ;
     }
     

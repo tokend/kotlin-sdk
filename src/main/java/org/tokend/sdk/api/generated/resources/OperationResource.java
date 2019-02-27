@@ -26,7 +26,7 @@ public class OperationResource extends BaseResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             appliedAt != null 
         ;
     }

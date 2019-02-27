@@ -33,9 +33,10 @@ public class OpStamlDetailsResource extends OperationDetailsResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             ledgerHash != null &&
             licenseHash != null 
+            && super.isFilled()
         ;
     }
 }

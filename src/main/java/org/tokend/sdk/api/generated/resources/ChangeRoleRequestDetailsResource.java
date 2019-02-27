@@ -40,10 +40,11 @@ public class ChangeRoleRequestDetailsResource extends RequestDetailsResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             accountRoleToSet != null &&
             sequenceNumber != null &&
             creatorDetails != null 
+            && super.isFilled()
         ;
     }
 }

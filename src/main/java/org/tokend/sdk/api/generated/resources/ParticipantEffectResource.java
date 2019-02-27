@@ -18,7 +18,7 @@ import org.tokend.sdk.api.base.model.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ParticipantEffectResource extends BaseResource {
     @Override
-    public boolean hasAttributes() { return false; }
+    public boolean isFilled() { return true; }
     
     @Relationship("account")
     private AccountResource account;

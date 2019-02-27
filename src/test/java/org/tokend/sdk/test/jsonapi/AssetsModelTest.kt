@@ -19,7 +19,7 @@ class AssetsModelTest {
 
         JsonApiUtil.checkResourceNullability(asset)
 
-        Assert.assertTrue(asset.hasAttributes())
+        Assert.assertTrue(asset.isFilled())
         Assert.assertNotNull(asset.details.get("name").asText())
         Assert.assertTrue(asset.policies.has(AssetPolicy.STATS_QUOTE_ASSET.value))
         Assert.assertNotNull(asset.owner)

@@ -100,7 +100,7 @@ public class ReviewableRequestResource extends BaseResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             rejectReason != null &&
             hash != null &&
             allTasks != null &&

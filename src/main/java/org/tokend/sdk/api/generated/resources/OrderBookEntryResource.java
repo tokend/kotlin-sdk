@@ -54,7 +54,7 @@ public class OrderBookEntryResource extends BaseResource {
     }
     
     @Override
-    public boolean hasAttributes() {
+    public boolean isFilled() {
         return             isBuy != null &&
             price != null &&
             baseAmount != null &&
