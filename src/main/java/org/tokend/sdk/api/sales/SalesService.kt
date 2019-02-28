@@ -1,6 +1,5 @@
 package org.tokend.sdk.api.sales
 
-import org.tokend.sdk.api.sales.model.SaleAnte
 import org.tokend.sdk.api.base.model.Page
 import org.tokend.sdk.api.sales.model.SimpleSale
 import retrofit2.Call
@@ -15,8 +14,4 @@ interface SalesService {
 
     @GET("sales/{saleId}")
     fun getSale(@Path("saleId") id: Long): Call<SimpleSale>
-
-    @GET("sale_antes")
-    @JvmSuppressWildcards
-    fun getSaleAntes(@QueryMap query: Map<String, Any>?): Call<Page<SaleAnte>>
 }
