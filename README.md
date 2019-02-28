@@ -34,6 +34,7 @@ If you would like to use RxJava in your project check out [Rx extensions for SDK
 ### Android integration
 For correct ProGuard minification add following lines to your project's `proguard-rules.pro`:
 ```proguard
+# SDK
 -dontwarn com.squareup.**
 -dontwarn okio.**
 -dontnote retrofit2.Platform
@@ -52,6 +53,19 @@ For correct ProGuard minification add following lines to your project's `proguar
 -keepnames class com.fasterxml.jackson.** { *; }
 -dontwarn com.fasterxml.jackson.databind.**
 -keep class * implements com.github.jasminb.jsonapi.ResourceIdHandler
+-keep class sun.misc.Unsafe { *; }
+-keep class org.codehaus.** { *; }
+-keep class com.fasterxml.jackson.annotation.** { *; }
+-keep @com.fasterxml.jackson.annotation.JsonIgnoreProperties class * { *; }
+-keep @com.fasterxml.jackson.annotation.JsonCreator class * { *; }
+-keep @com.fasterxml.jackson.annotation.JsonValue class * { *; }
+-keep class com.fasterxml.** { *; }
+-keepclassmembers public final enum com.fasterxml.jackson.annotation.JsonAutoDetect$Visibility {
+    public static final com.fasterxml.jackson.annotation.JsonAutoDetect$Visibility *;
+}
+
+# General
+-keepattributes SourceFile,LineNumberTable,*Annotation*,EnclosingMethod,Signature,Exceptions,InnerClasses
 ```
 
 ## Documentation
