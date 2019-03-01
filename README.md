@@ -24,7 +24,7 @@ dependencies {
 ```kotlin
 const val TOKEND_URL = "https://api.testnet.tokend.org"
 
-val api = TokendApi(TOKEND_URL)
+val api = TokenDApi(TOKEND_URL)
 val keyServer = KeyServer(api.wallets)
 ```
 
