@@ -3,7 +3,6 @@ package org.tokend.sdk.factory
 import okhttp3.ConnectionSpec
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.TlsVersion
 import okhttp3.logging.HttpLoggingInterceptor
 import org.tokend.sdk.utils.CookieJarProvider
 import org.tokend.sdk.utils.CustomHeadersInterceptor
@@ -31,7 +30,7 @@ class HttpClientFactory {
                 .sslSocketFactory(sslFactory)
 
         val connectionSpec = ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
-                .tlsVersions(TlsVersion.TLS_1_2)
+                .allEnabledTlsVersions()
                 .allEnabledCipherSuites()
                 .build()
 
