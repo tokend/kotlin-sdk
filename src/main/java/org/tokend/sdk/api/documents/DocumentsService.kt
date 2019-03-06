@@ -6,11 +6,12 @@ import org.tokend.sdk.api.base.model.AttributesEntity
 import org.tokend.sdk.api.base.model.DataEntity
 import org.tokend.sdk.api.documents.model.DocumentUploadPolicy
 import org.tokend.sdk.api.documents.model.DocumentUploadRequest
+import org.tokend.sdk.api.documents.model.DocumentUrlRequest
 import retrofit2.Call
 import retrofit2.http.*
 
 interface DocumentsService {
-    @POST("users/{accountId}/documents")
+    @POST("accounts/{accountId}/documents")
     fun requestUpload(@Path("accountId") accountId: String,
                       @Body requestBody: DataEntity<DocumentUploadRequest>
     ): Call<DataEntity<AttributesEntity<DocumentUploadPolicy>>>
@@ -21,4 +22,8 @@ interface DocumentsService {
     fun upload(@Url bucketUrl: String,
                @PartMap partMap: Map<String, RequestBody>,
                @Part filePart: MultipartBody.Part): Call<Void>
+
+    @GET("accounts/{accountId}/documents/{document}")
+    fun getUrl(@Path("accountId") accountId: String,
+               @Path("document") document: String): Call<DataEntity<DocumentUrlRequest>>
 }
