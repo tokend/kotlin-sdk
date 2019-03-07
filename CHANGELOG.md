@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [2.1.0] 2019-03-07
+
+### Added
+- All TLS suites support in in HTTP client
+- Extensions with typed getters for details of 
+`ReviewableRequestResource` (`.getTypedRequestDetails`)
+ and `OperationResource` (`.getTypedDetails`)
+
+### Fixed
+- Actualized documents API
+- Actualized reviewable requests API V3
+
 ## [2.0.0] 2019-02-28
 
 ### Added
@@ -32,3 +44,4 @@ for further information about branching and tagging conventions.
 - `accessTypes` from `AuthRequest`
 
 [2.0.0]: https://github.com/tokend/kotlin-sdk/compare/1.2.18...2.0.0
+[2.1.0]: https://github.com/tokend/kotlin-sdk/compare/2.0.0...2.1.0
