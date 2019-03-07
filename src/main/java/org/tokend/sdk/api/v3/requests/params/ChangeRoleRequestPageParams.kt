@@ -5,34 +5,38 @@ import org.tokend.sdk.api.requests.model.base.RequestState
 import org.tokend.wallet.xdr.ReviewableRequestType
 
 /**
- * @see AssetRequestPageParams.Includes
+ * @see ChangeRoleRequestPageParams.Includes
  */
-open class AssetRequestPageParams(
+class ChangeRoleRequestPageParams(
         reviewer: String? = null,
         requestor: String? = null,
         state: RequestState? = null,
-        type: ReviewableRequestType? = null,
         pendingTasks: Long? = null,
         pendingTasksNotSet: Long? = null,
         pendingTasksAnyOf: Long? = null,
         missingPendingTasks: Long? = null,
-        val assetCode: String? = null,
+        val destinationAccount: String? = null,
+        val accountRoleToSet: Long? = null,
         includes: Collection<String>? = null,
         pagingParams: PagingParamsV2? = null
-) : RequestsPageParamsV3(reviewer, requestor, state, type,
+) : RequestsPageParamsV3(reviewer, requestor, state, ReviewableRequestType.CHANGE_ROLE,
         pendingTasks, pendingTasksNotSet, pendingTasksAnyOf, missingPendingTasks,
         includes, pagingParams) {
 
     override fun map(): Map<String, Any> {
         return super.map().toMutableMap().apply {
-            assetCode?.also { putFilter("request_details.asset", it) }
+            destinationAccount?.also { putFilter("request_details.destination_account", it) }
+            accountRoleToSet?.also { putFilter("request_details.account_role_to_set", it) }
         }
     }
 
     open class Builder : RequestsPageParamsV3.Builder() {
-        private var assetCode: String? = null
+        protected var destinationAccount: String? = null
+        protected var accountRoleToSet: Long? = null
 
-        fun withAssetCode(assetCode: String) = also { this.assetCode = assetCode }
+        open fun withDestinationAccount(destinationAccount: String) = also { this.destinationAccount = destinationAccount }
+
+        open fun withAccountRoleToSet(accountRoleToSet: Long) = also { this.accountRoleToSet = accountRoleToSet }
 
         override fun withReviewer(reviewer: String) = also { super.withReviewer(reviewer) }
 
@@ -40,7 +44,8 @@ open class AssetRequestPageParams(
 
         override fun withState(state: RequestState) = also { super.withState(state) }
 
-        override fun withType(type: ReviewableRequestType) = also { super.withType(type) }
+        override fun withType(type: ReviewableRequestType) =
+                throw NotImplementedError("Type is already defined by the request you are trying to perform with this params")
 
         override fun withPendingTasks(pendingTasks: Long) = also { super.withPendingTasks(pendingTasks) }
 
@@ -62,16 +67,16 @@ open class AssetRequestPageParams(
             super.withInclude(*include)
         }
 
-        override fun build(): AssetRequestPageParams {
-            return AssetRequestPageParams(reviewer, requestor, state, type, pendingTasks,
+        override fun build(): ChangeRoleRequestPageParams {
+            return ChangeRoleRequestPageParams(reviewer, requestor, state, pendingTasks,
                     pendingTasksNotSet, pendingTasksAnyOf, missingPendingTasks,
-                    assetCode, include, pagingParams)
+                    destinationAccount, accountRoleToSet, include, pagingParams)
         }
     }
 
     class Includes {
         companion object {
-            const val ASSET = "request_details.asset"
+            const val DESTINATION_ACCOUNT = "request_details.account"
         }
     }
 }

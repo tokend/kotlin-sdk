@@ -10,7 +10,10 @@ open class RequestsPageParamsV3(
         val requestor: String? = null,
         val state: RequestState? = null,
         val type: ReviewableRequestType? = null,
-        val updatedAfter: Long? = null,
+        val pendingTasks: Long? = null,
+        val pendingTasksNotSet: Long? = null,
+        val pendingTasksAnyOf: Long? = null,
+        val missingPendingTasks: Long? = null,
         includes: Collection<String>? = null,
         pagingParams: PagingParamsV2? = null
 ) : PageQueryParams(pagingParams, includes) {
@@ -19,9 +22,12 @@ open class RequestsPageParamsV3(
         return super.map().toMutableMap().apply {
             reviewer?.also { putFilter("reviewer", it) }
             requestor?.also { putFilter("requestor", it) }
-            state?.also { putFilter("state_i", it.i) }
+            state?.also { putFilter("state", it.i) }
             type?.also { putFilter("type", it.value) }
-            updatedAfter?.also { putFilter("updated_after", it) }
+            pendingTasks?.also { putFilter("pending_tasks", it) }
+            pendingTasksNotSet?.also { putFilter("pending_tasks_not_set", it) }
+            pendingTasksAnyOf?.also { putFilter("pending_tasks_any_of", it) }
+            missingPendingTasks?.also { putFilter("missing_pending_tasks", it) }
         }
     }
 
@@ -30,17 +36,26 @@ open class RequestsPageParamsV3(
         protected var requestor: String? = null
         protected var state: RequestState? = null
         protected var type: ReviewableRequestType? = null
-        protected var updatedAfter: Long? = null
+        protected var pendingTasks: Long? = null
+        protected var pendingTasksNotSet: Long? = null
+        protected var pendingTasksAnyOf: Long? = null
+        protected var missingPendingTasks: Long? = null
 
-        fun withReviewer(reviewer: String) = also { this.reviewer = reviewer }
+        open fun withReviewer(reviewer: String) = also { this.reviewer = reviewer }
 
-        fun withRequestor(requestor: String) = also { this.requestor = requestor }
+        open fun withRequestor(requestor: String) = also { this.requestor = requestor }
 
-        fun withState(state: RequestState) = also { this.state = state }
+        open fun withState(state: RequestState) = also { this.state = state }
 
-        fun withType(type: ReviewableRequestType) = also { this.type = type }
+        open fun withType(type: ReviewableRequestType) = also { this.type = type }
 
-        fun withUpdateAfter(updateAfter: Long) = also { this.updatedAfter = updateAfter }
+        open fun withPendingTasks(pendingTasks: Long) = also { this.pendingTasks = pendingTasks }
+
+        open fun withPendingTasksNotSet(pendingTasksNotSet: Long) = also { this.pendingTasksNotSet = pendingTasksNotSet }
+
+        open fun withPendingTasksAnyOf(pendingTasksAnyOf: Long) = also { this.pendingTasksAnyOf = pendingTasksAnyOf }
+
+        open fun withMissingPendingTasks(missingPendingTasks: Long) = also { this.missingPendingTasks = missingPendingTasks }
 
         override fun withPagingParams(pagingParams: PagingParamsV2) = also {
             super.withPagingParams(pagingParams)
@@ -55,7 +70,9 @@ open class RequestsPageParamsV3(
         }
 
         override fun build(): RequestsPageParamsV3 {
-            return RequestsPageParamsV3(reviewer, requestor, state, type, updatedAfter, include, pagingParams)
+            return RequestsPageParamsV3(reviewer, requestor, state, type,
+                    pendingTasks, pendingTasksNotSet, pendingTasksAnyOf, missingPendingTasks,
+                    include, pagingParams)
         }
     }
 }

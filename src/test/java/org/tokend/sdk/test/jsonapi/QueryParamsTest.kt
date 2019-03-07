@@ -166,16 +166,17 @@ class QueryParamsTest {
 
     @Test
     fun requestsParams() {
-        val updated = 1549618720L
-
-        val expected = "{filter[requestor]=$accountId, filter[reviewer]=$accountId, filter[state_i]=3, filter[type]=10, filter[updated_after]=1549618720, include=request_details, order=desc, page[order]=desc}"
+        val expected = "{filter[missing_pending_tasks]=1, filter[pending_tasks]=2, filter[pending_tasks_any_of]=3, filter[pending_tasks_not_set]=4, filter[requestor]=$accountId, filter[reviewer]=$accountId, filter[state]=3, filter[type]=10, include=request_details, order=desc, page[order]=desc}"
 
         val params = RequestsPageParamsV3(
                 reviewer = accountId,
                 requestor = accountId,
                 state = RequestState.APPROVED,
                 type = ReviewableRequestType.CREATE_ASSET,
-                updatedAfter = updated,
+                missingPendingTasks = 1,
+                pendingTasks = 2,
+                pendingTasksAnyOf = 3,
+                pendingTasksNotSet = 4,
                 includes = listOf(RequestParamsV3.Includes.REQUEST_DETAILS),
                 pagingParams = PagingParamsV2(PagingOrder.DESC)
         )
@@ -185,7 +186,10 @@ class QueryParamsTest {
                 .withRequestor(accountId)
                 .withState(RequestState.APPROVED)
                 .withType(ReviewableRequestType.CREATE_ASSET)
-                .withUpdateAfter(updated)
+                .withMissingPendingTasks(1)
+                .withPendingTasks(2)
+                .withPendingTasksAnyOf(3)
+                .withPendingTasksNotSet(4)
                 .withInclude(RequestParamsV3.Includes.REQUEST_DETAILS)
                 .withPagingParams(PagingParamsV2(PagingOrder.DESC))
                 .build()
