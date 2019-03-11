@@ -1,6 +1,6 @@
 package org.tokend.sdk.api.transactions.model
 
-class TransactionFailedException(val submitResponse: SubmitTransactionResponse): Exception() {
+class TransactionFailedException(val submitResponse: SubmitTransactionResponse) : Exception() {
     val transactionResultCode: String
         get() = submitResponse.extras.resultCodes.transactionResultCode
     val operationResultCodes: Collection<String>
@@ -31,5 +31,6 @@ class TransactionFailedException(val submitResponse: SubmitTransactionResponse):
         const val OP_REQUIRES_KYC = "op_requires_kyc"
         const val OP_NOT_FOUND = "op_not_found"
         const val OP_NO_ROLE_PERMISSION = "op_no_role_permission"
+        const val OP_NO_ENTRY = "op_no_entry"
     }
 }
