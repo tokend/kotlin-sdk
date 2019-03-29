@@ -4,6 +4,8 @@ import com.github.jasminb.jsonapi.JSONAPIDocument
 import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.base.model.DataPage
+import org.tokend.sdk.api.base.params.PagingParamsV2
+import org.tokend.sdk.api.base.params.map
 import org.tokend.sdk.api.generated.resources.KeyValueEntryResource
 
 open class KeyValueStorageApiV3(
@@ -12,9 +14,10 @@ open class KeyValueStorageApiV3(
     /**
      * @return key-value entries list page
      */
-    open fun get(): ApiRequest<DataPage<KeyValueEntryResource>> {
+    @JvmOverloads
+    open fun get(params: PagingParamsV2? = null): ApiRequest<DataPage<KeyValueEntryResource>> {
         return MappedRetrofitApiRequest(
-                keyValueStorageService.getEntries(emptyMap()),
+                keyValueStorageService.getEntries(params.map()),
                 DataPage.Companion::fromPageDocument
         )
     }
