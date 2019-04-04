@@ -53,8 +53,8 @@ open class TfaInterceptor(
     }
 
     protected open fun extractTfaException(response: Response): NeedTfaException? {
-        val responseString = response.peekBody(response.body().contentLength()).string()
         val error = try {
+            val responseString = response.peekBody(response.body().contentLength()).string()
             ErrorBody.fromJsonString(responseString).firstOrNull
         } catch (_: Exception) {
             null
