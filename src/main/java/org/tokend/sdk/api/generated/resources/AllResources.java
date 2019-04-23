@@ -78,6 +78,7 @@ public class AllResources {
         OpRemoveAccountRuleDetailsResource.class,
         EffectIssuedResource.class,
         UpdateSaleDetailsRequestDetailsResource.class,
+        PublicKeyEntryResource.class,
         OpManageBalanceDetailsResource.class,
         EffectMatchedResource.class,
         OpCreateSignerRoleDetailsResource.class,

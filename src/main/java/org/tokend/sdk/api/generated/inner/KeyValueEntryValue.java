@@ -20,7 +20,7 @@ public class KeyValueEntryValue {
         return type;
     }
     
-    @JsonProperty("u_32")
+    @JsonProperty("u32")
     @Nullable
     private Long u32;
     
@@ -29,7 +29,7 @@ public class KeyValueEntryValue {
         return u32;
     }
     
-    @JsonProperty("u_64")
+    @JsonProperty("u64")
     @Nullable
     private Long u64;
     
