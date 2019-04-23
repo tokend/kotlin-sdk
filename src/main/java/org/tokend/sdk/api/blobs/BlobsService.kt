@@ -17,7 +17,7 @@ interface BlobsService {
     fun creteAccountOwnedBlob(@Path("account") accountId: String,
                               @Body blob: DataEntity<Blob>): Call<DataEntity<Blob>>
 
-    @GET("blobs/{blob}")
+    @GET("blobs/{blobId}")
     fun get(@Path("blobId") blobId: String): Call<DataEntity<Blob>>
 
     @GET("accounts/{account}/blobs/{blob}")
