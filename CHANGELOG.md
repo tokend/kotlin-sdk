@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [2.2.2] 2019-04-26
+
+### Fixed
+- Key-value entry value serialization
+
+### Added
+- Integration tests for documents and blobs upload
+
 ## [2.2.1] 2019-04-04
 
 ### Fixed
@@ -61,3 +69,4 @@ for further information about branching and tagging conventions.
 [2.1.0]: https://github.com/tokend/kotlin-sdk/compare/2.0.0...2.1.0
 [2.2.0]: https://github.com/tokend/kotlin-sdk/compare/2.1.0...2.2.0
 [2.2.1]: https://github.com/tokend/kotlin-sdk/compare/2.2.0...2.2.1
+[2.2.2]: https://github.com/tokend/kotlin-sdk/compare/2.2.1...2.2.2
