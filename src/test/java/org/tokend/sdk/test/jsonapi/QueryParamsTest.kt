@@ -21,6 +21,7 @@ import org.tokend.sdk.api.v3.history.params.ParticipantEffectsParams
 import org.tokend.sdk.api.v3.offers.params.OfferParamsV3
 import org.tokend.sdk.api.v3.offers.params.OffersPageParamsV3
 import org.tokend.sdk.api.v3.orderbook.params.OrderBookPageParams
+import org.tokend.sdk.api.v3.orderbook.params.OrderBookParamsV3
 import org.tokend.sdk.api.v3.requests.params.RequestParamsV3
 import org.tokend.sdk.api.v3.requests.params.RequestsPageParamsV3
 import org.tokend.sdk.api.v3.sales.params.SaleParamsV3
@@ -293,7 +294,7 @@ class QueryParamsTest {
     }
 
     @Test
-    fun orderBookParams() {
+    fun orderBookPageParams() {
         val expected = "{cursor=8, filter[base_asset]=BTC, filter[is_buy]=false, filter[quote_asset]=ETH, include=base_asset,quote_asset, limit=10, order=desc, page=8, page[cursor]=8, page[limit]=10, page[number]=8, page[order]=desc}"
 
         val params = OrderBookPageParams(
@@ -390,6 +391,30 @@ class QueryParamsTest {
                         )
                 )
                 .withInclude()
+                .build()
+
+        Assert.assertEquals(expected, params.map().toSortedMap().toString())
+        Assert.assertEquals(expected, builtParams.map().toSortedMap().toString())
+    }
+
+    @Test
+    fun orderBookParams() {
+        val expected = "{include=buy_entries,sell_entries, max_entries=50}"
+
+        val params = OrderBookParamsV3(
+                maxEntries = 50,
+                include = listOf(
+                        OrderBookParamsV3.Includes.BUY_ENTRIES,
+                        OrderBookParamsV3.Includes.SELL_ENTRIES
+                )
+        )
+
+        val builtParams = OrderBookParamsV3.Builder()
+                .withMaxEntries(50)
+                .withInclude(
+                        OrderBookParamsV3.Includes.BUY_ENTRIES,
+                        OrderBookParamsV3.Includes.SELL_ENTRIES
+                )
                 .build()
 
         Assert.assertEquals(expected, params.map().toSortedMap().toString())

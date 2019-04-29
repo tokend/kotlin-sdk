@@ -46,6 +46,20 @@ public class OrderBookEntryResource extends BaseResource {
         return quoteAmount;
     }
     
+    @JsonProperty("cumulative_base_amount")
+    private BigDecimal cumulativeBaseAmount;
+    
+    public BigDecimal getCumulativeBaseAmount() {
+        return cumulativeBaseAmount;
+    }
+    
+    @JsonProperty("cumulative_quote_amount")
+    private BigDecimal cumulativeQuoteAmount;
+    
+    public BigDecimal getCumulativeQuoteAmount() {
+        return cumulativeQuoteAmount;
+    }
+    
     @JsonProperty("created_at")
     private Date createdAt;
     
@@ -59,15 +73,10 @@ public class OrderBookEntryResource extends BaseResource {
             price != null &&
             baseAmount != null &&
             quoteAmount != null &&
+            cumulativeBaseAmount != null &&
+            cumulativeQuoteAmount != null &&
             createdAt != null 
         ;
-    }
-    
-    @Relationship("offer")
-    private OfferResource offer;
-    
-    public OfferResource getOffer() {
-        return offer;
     }
     
     @Relationship("base_asset")
