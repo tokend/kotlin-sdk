@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [2.3.0] 2019-04-29
+
+### Added
+- New order book get method to `OrderBooksApi`
+- Movements get method to `HistoryApi`
+
+### Deprecated
+- Get order book by Long ID method in `OrderBooksApi`
+
 ## [2.2.2] 2019-04-26
 
 ### Fixed
@@ -70,3 +79,4 @@ for further information about branching and tagging conventions.
 [2.2.0]: https://github.com/tokend/kotlin-sdk/compare/2.1.0...2.2.0
 [2.2.1]: https://github.com/tokend/kotlin-sdk/compare/2.2.0...2.2.1
 [2.2.2]: https://github.com/tokend/kotlin-sdk/compare/2.2.1...2.2.2
+[2.3.0]: https://github.com/tokend/kotlin-sdk/compare/2.2.2...2.3.0
