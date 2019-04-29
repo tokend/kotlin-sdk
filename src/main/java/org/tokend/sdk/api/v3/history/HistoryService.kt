@@ -10,4 +10,8 @@ interface HistoryService {
     @GET("v3/history")
     @JvmSuppressWildcards
     fun getHistory(@QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<ParticipantEffectResource>>>
+
+    @GET("v3/movements")
+    @JvmSuppressWildcards
+    fun getMovements(@QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<ParticipantEffectResource>>>
 }

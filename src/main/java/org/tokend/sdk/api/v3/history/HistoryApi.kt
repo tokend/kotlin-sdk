@@ -11,11 +11,21 @@ open class HistoryApi(
         protected open val historyService: HistoryService
 ) {
     /**
-     * @return list of the effects page
+     * @return participants effects page
      */
     open fun get(params: ParticipantEffectsPageParams? = null): ApiRequest<DataPage<ParticipantEffectResource>> {
         return MappedRetrofitApiRequest(
                 historyService.getHistory(params.map()),
+                DataPage.Companion::fromPageDocument
+        )
+    }
+
+    /**
+     * @return balance-related participants effects page
+     */
+    open fun getMovements(params: ParticipantEffectsPageParams? = null): ApiRequest<DataPage<ParticipantEffectResource>> {
+        return MappedRetrofitApiRequest(
+                historyService.getMovements(params.map()),
                 DataPage.Companion::fromPageDocument
         )
     }
