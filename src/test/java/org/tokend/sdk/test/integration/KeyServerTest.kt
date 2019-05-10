@@ -5,6 +5,8 @@ import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runners.MethodSorters
 import org.tokend.sdk.api.tfa.model.TfaFactor
+import org.tokend.sdk.api.wallets.model.EmailAlreadyTakenException
+import org.tokend.sdk.api.wallets.model.InvalidCredentialsException
 import org.tokend.sdk.keyserver.KeyServer
 import org.tokend.sdk.keyserver.models.WalletCreateResult
 import org.tokend.sdk.keyserver.models.WalletData
@@ -14,7 +16,9 @@ import org.tokend.sdk.tfa.NeedTfaException
 import org.tokend.sdk.tfa.PasswordTfaOtpGenerator
 import org.tokend.sdk.tfa.TfaCallback
 import org.tokend.sdk.tfa.TfaVerifier
+import org.tokend.sdk.utils.extentions.encodeHexString
 import org.tokend.wallet.Account
+import java.security.SecureRandom
 import kotlin.math.absoluteValue
 import kotlin.random.Random
 
@@ -246,5 +250,94 @@ class KeyServerTest {
                 signers.any { signer ->
                     signer.id == rootAccount.accountId
                 })
+    }
+
+    @Test
+    fun dSignUpTakenEmail() {
+        val email = "signUpTakenEmailTest" + Random.nextInt().absoluteValue + "@mail.com"
+        val password = "qwe123".toCharArray()
+
+        val api = Util.getApi()
+
+        val keyServer = KeyServer(api.wallets)
+
+        System.out.println("Attempt to sign up $email ${password.joinToString("")}")
+
+        keyServer.createAndSaveWallet(email, password).execute().get()
+
+        try {
+            keyServer.createAndSaveWallet(email, password).execute().get()
+
+            Assert.fail("${EmailAlreadyTakenException::class.java.name} expected")
+        } catch (e: Exception) {
+            if (e !is EmailAlreadyTakenException) {
+                Assert.fail("${EmailAlreadyTakenException::class.java.name} expected " +
+                        "but ${e::class.java.name} occurred")
+            }
+        }
+    }
+
+    @Test
+    fun eSignIn() {
+        val email = "signInTest" + Random.nextInt().absoluteValue + "@mail.com"
+        val password = "qwe123".toCharArray()
+
+        val api = Util.getApi()
+
+        val keyServer = KeyServer(api.wallets)
+
+        System.out.println("Attempt to sign up $email ${password.joinToString("")}")
+
+        val (_, rootAccount, _) = keyServer.createAndSaveWallet(email, password).execute().get()
+
+        val walletInfo = keyServer.getWalletInfo(email, password).execute().get()
+
+        Assert.assertEquals("Remote wallet email must be " +
+                "a lowercased current", email.toLowerCase(), walletInfo.email)
+        Assert.assertEquals("Remote wallet account ID must be equal to the one used for sign up",
+                rootAccount.accountId, walletInfo.accountId)
+    }
+
+    @Test
+    fun eSignInInvalidCredentials() {
+        val email = "signUpInvalidCredentialsTest" + Random.nextInt().absoluteValue + "@mail.com"
+        val password = "qwe123".toCharArray()
+
+        val api = Util.getApi()
+
+        val keyServer = KeyServer(api.wallets)
+
+        System.out.println("Attempt to sign up $email ${password.joinToString("")}")
+
+        keyServer.createAndSaveWallet(email, charArrayOf()).execute().get()
+
+        try {
+            keyServer.getWalletInfo(email, "qweqwe".toCharArray()).execute().get()
+
+            Assert.fail("${InvalidCredentialsException::class.java.name} expected")
+        } catch (e: Exception) {
+            if (e !is InvalidCredentialsException) {
+                Assert.fail("${InvalidCredentialsException::class.java.name} expected " +
+                        "but ${e::class.java.name} occurred")
+            } else if (e.credential != InvalidCredentialsException.Credential.PASSWORD) {
+                Assert.fail("Password was wrong but in the exception credential is ${e.credential}")
+            }
+        }
+
+        try {
+            keyServer.getWalletInfo(
+                    SecureRandom.getSeed(12).encodeHexString(),
+                    password
+            ).execute().get()
+
+            Assert.fail("${InvalidCredentialsException::class.java.name} expected")
+        } catch (e: Exception) {
+            if (e !is InvalidCredentialsException) {
+                Assert.fail("${InvalidCredentialsException::class.java.name} expected " +
+                        "but ${e::class.java.name} occurred")
+            } else if (e.credential != InvalidCredentialsException.Credential.EMAIL) {
+                Assert.fail("Email was wrong but in the exception credential is ${e.credential}")
+            }
+        }
     }
 }
