@@ -44,11 +44,12 @@ open class WalletsApi(
      * Will create new wallet.
      * @see <a href="https://tokend.gitlab.io/docs/?http#create-wallet">Docs</a>
      */
-    open fun create(data: WalletData): ApiRequest<Void> {
-        return SimpleRetrofitApiRequest(
+    open fun create(data: WalletData): ApiRequest<WalletData> {
+        return MappedRetrofitApiRequest(
                 walletsService.create(
                         WalletResourceBody(data)
-                )
+                ),
+                DataEntity<WalletData>::data
         ) { error ->
             if (error is HttpException &&
                     error.code() == HttpURLConnection.HTTP_CONFLICT)

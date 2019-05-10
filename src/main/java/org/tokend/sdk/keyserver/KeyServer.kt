@@ -110,7 +110,7 @@ class KeyServer constructor(
             EmailAlreadyTakenException::class,
             HttpException::class
     )
-    fun saveWallet(walletData: WalletData): ApiRequest<Void> {
+    fun saveWallet(walletData: WalletData): ApiRequest<WalletData> {
         return walletsApi.create(walletData)
     }
 
@@ -163,9 +163,11 @@ class KeyServer constructor(
                 recoveryAccount
         )
 
-        saveWallet(result.walletData).execute()
+        val remoteWalletData = saveWallet(result.walletData)
+                .execute()
+                .get()
 
-        return result
+        return result.copy(walletData = remoteWalletData)
     }
 
     @JvmOverloads

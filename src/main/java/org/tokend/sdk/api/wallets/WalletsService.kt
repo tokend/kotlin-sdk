@@ -34,5 +34,5 @@ interface WalletsService {
 
     @POST("wallets")
     @JvmSuppressWildcards
-    fun create(@Body wallet: WalletResourceBody): Call<Void>
+    fun create(@Body wallet: WalletResourceBody): Call<DataEntity<WalletData>>
 }
