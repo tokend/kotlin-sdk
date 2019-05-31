@@ -20,6 +20,13 @@ public class ConvertedBalancesCollectionResource extends BaseResource {
     @Override
     public boolean isFilled() { return true; }
     
+    @Relationship("asset")
+    private AssetResource asset;
+    
+    public AssetResource getAsset() {
+        return asset;
+    }
+    
     @Relationship("states")
     private List<ConvertedBalanceStateResource> states;
     

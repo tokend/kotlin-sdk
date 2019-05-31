@@ -21,6 +21,7 @@ class ConvertedBalancesParams(
 
     class Includes {
         companion object {
+            const val ASSET = "asset"
             const val STATES = "states"
             const val BALANCE = "balance"
             const val BALANCE_ASSET = "balance.asset"

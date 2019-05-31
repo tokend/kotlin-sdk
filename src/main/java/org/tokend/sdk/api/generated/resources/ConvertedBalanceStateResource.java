@@ -55,13 +55,6 @@ public class ConvertedBalanceStateResource extends BaseResource {
         ;
     }
     
-    @Relationship("asset")
-    private AssetResource asset;
-    
-    public AssetResource getAsset() {
-        return asset;
-    }
-    
     @Relationship("balance")
     private BalanceResource balance;
     
