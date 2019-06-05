@@ -19,6 +19,8 @@ import org.tokend.sdk.api.v3.offers.OffersApiV3
 import org.tokend.sdk.api.v3.offers.OffersServiceV3
 import org.tokend.sdk.api.v3.orderbook.OrderBooksApi
 import org.tokend.sdk.api.v3.orderbook.OrderBooksService
+import org.tokend.sdk.api.v3.polls.PollsApi
+import org.tokend.sdk.api.v3.polls.PollsService
 import org.tokend.sdk.api.v3.requests.RequestsApiV3
 import org.tokend.sdk.api.v3.requests.RequestsServiceV3
 import org.tokend.sdk.api.v3.sales.SalesApiV3
@@ -91,5 +93,9 @@ open class TokenDApiV3(rootUrl: String,
 
     open val signers: SignersApiV3 by lazy {
         SignersApiV3(getService(SignersServiceV3::class.java))
+    }
+
+    open val polls: PollsApi by lazy {
+        PollsApi(getService(PollsService::class.java))
     }
 }
