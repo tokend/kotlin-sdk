@@ -7,7 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+
 ## [2.4.0] 2019-05-31
+
+### Added
+- Polls and votes endpoints
 
 ### Added
 - Get converted balances method
@@ -93,3 +98,4 @@ for further information about branching and tagging conventions.
 [2.2.2]: https://github.com/tokend/kotlin-sdk/compare/2.2.1...2.2.2
 [2.3.0]: https://github.com/tokend/kotlin-sdk/compare/2.2.2...2.3.0
 [2.4.0]: https://github.com/tokend/kotlin-sdk/compare/2.3.0...2.4.0
+[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/2.4.0...HEAD
