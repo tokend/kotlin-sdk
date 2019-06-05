@@ -22,6 +22,9 @@ import org.tokend.sdk.api.v3.offers.params.OfferParamsV3
 import org.tokend.sdk.api.v3.offers.params.OffersPageParamsV3
 import org.tokend.sdk.api.v3.orderbook.params.OrderBookPageParams
 import org.tokend.sdk.api.v3.orderbook.params.OrderBookParamsV3
+import org.tokend.sdk.api.v3.polls.model.PollState
+import org.tokend.sdk.api.v3.polls.params.PollParams
+import org.tokend.sdk.api.v3.polls.params.PollsPageParams
 import org.tokend.sdk.api.v3.requests.params.RequestParamsV3
 import org.tokend.sdk.api.v3.requests.params.RequestsPageParamsV3
 import org.tokend.sdk.api.v3.sales.params.SaleParamsV3
@@ -414,6 +417,58 @@ class QueryParamsTest {
                 .withInclude(
                         OrderBookParamsV3.Includes.BUY_ENTRIES,
                         OrderBookParamsV3.Includes.SELL_ENTRIES
+                )
+                .build()
+
+        Assert.assertEquals(expected, params.map().toSortedMap().toString())
+        Assert.assertEquals(expected, builtParams.map().toSortedMap().toString())
+    }
+
+    @Test
+    fun pollsPageParams() {
+        val expected = "{cursor=8, filter[max_end_time]=2028-08-11T14:58:40Z, filter[max_start_time]=2025-06-11T05:12:00Z, filter[min_end_time]=2022-04-10T19:25:20Z, filter[min_start_time]=2019-02-08T09:38:40Z, filter[owner]=$accountId, filter[permission_type]=0, filter[poll_type]=0, filter[state]=3, filter[vote_confirmation]=true, include=participation,participation.votes, limit=10, order=desc, page=8, page[cursor]=8, page[limit]=10, page[number]=8, page[order]=desc}"
+
+        val params = PollsPageParams(
+                owner = accountId,
+                permissionType = 0,
+                pollType = PollType.SINGLE_CHOICE,
+                voteConfirmation = true,
+                minStartTime = Date(1549618720 * 1000L),
+                minEndTime = Date(1649618720 * 1000L),
+                maxStartTime = Date(1749618720 * 1000L),
+                maxEndTime = Date(1849618720 * 1000L),
+                state = PollState.FAILED,
+                include = listOf(
+                        PollParams.Includes.PARTICIPATION,
+                        PollParams.Includes.PARTICIPATION_VOTES
+                ),
+                pagingParams = PagingParamsV2(
+                        order = PagingOrder.DESC,
+                        limit = 10,
+                        page = "8"
+                )
+        )
+
+        val builtParams = PollsPageParams.Builder()
+                .withOwner(accountId)
+                .withPermissionType(0)
+                .withPollType(PollType.SINGLE_CHOICE)
+                .withVoteConfirmation(true)
+                .withMinStartTime(Date(1549618720 * 1000L))
+                .withMinEndTime(Date(1649618720 * 1000L))
+                .withMaxStartTime(Date(1749618720 * 1000L))
+                .withMaxEndTime(Date(1849618720 * 1000L))
+                .withState(PollState.FAILED)
+                .withInclude(
+                        PollParams.Includes.PARTICIPATION,
+                        PollParams.Includes.PARTICIPATION_VOTES
+                )
+                .withPagingParams(
+                        PagingParamsV2(
+                                order = PagingOrder.DESC,
+                                limit = 10,
+                                page = "8"
+                        )
                 )
                 .build()
 

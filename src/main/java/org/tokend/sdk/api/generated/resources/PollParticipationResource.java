@@ -14,16 +14,16 @@ import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
 
 
-@Type("public-key-entries")
+@Type("poll-outcome")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PublicKeyEntryResource extends BaseResource {
+public class PollParticipationResource extends BaseResource {
     @Override
     public boolean isFilled() { return true; }
     
-    @Relationship("accounts")
-    private List<AccountResource> accounts;
+    @Relationship("votes")
+    private List<VoteResource> votes;
     
-    public List<? extends AccountResource> getAccounts() {
-        return accounts;
+    public List<? extends VoteResource> getVotes() {
+        return votes;
     }
 }
