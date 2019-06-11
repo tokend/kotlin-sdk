@@ -6,6 +6,7 @@ package org.tokend.sdk.api.generated.resources;
 public class AllResources {
     public static final Class<?>[] ARRAY = {
         OpCreateSaleRequestDetailsResource.class,
+        AtomicSwapAskResource.class,
         EffectLockedResource.class,
         OpRemoveSignerRuleDetailsResource.class,
         OpBindExternalSystemAccountDetailsResource.class,

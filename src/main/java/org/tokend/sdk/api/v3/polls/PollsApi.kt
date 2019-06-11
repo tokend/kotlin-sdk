@@ -46,7 +46,7 @@ open class PollsApi(
 
     open fun getVoteById(pollId: String,
                          voterAccountId: String,
-                         params: VoteParams?): ApiRequest<VoteResource> {
+                         params: VoteParams? = null): ApiRequest<VoteResource> {
         return MappedRetrofitApiRequest(
                 pollsService.getVoteById(
                         pollId,

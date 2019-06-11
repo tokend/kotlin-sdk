@@ -7,6 +7,8 @@ import org.tokend.sdk.api.v3.assetpairs.AssetPairsApi
 import org.tokend.sdk.api.v3.assetpairs.AssetPairsService
 import org.tokend.sdk.api.v3.assets.AssetsApiV3
 import org.tokend.sdk.api.v3.assets.AssetsServiceV3
+import org.tokend.sdk.api.v3.atomicswap.AtomicSwapsApi
+import org.tokend.sdk.api.v3.atomicswap.AtomicSwapsService
 import org.tokend.sdk.api.v3.balances.BalancesApi
 import org.tokend.sdk.api.v3.balances.BalancesService
 import org.tokend.sdk.api.v3.fees.FeesApiV3
@@ -97,5 +99,9 @@ open class TokenDApiV3(rootUrl: String,
 
     open val polls: PollsApi by lazy {
         PollsApi(getService(PollsService::class.java))
+    }
+
+    open val atomicSwaps: AtomicSwapsApi by lazy {
+        AtomicSwapsApi(getService(AtomicSwapsService::class.java))
     }
 }

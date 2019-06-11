@@ -30,11 +30,4 @@ public class QuoteAssetResource extends BaseResource {
         return             price != null 
         ;
     }
-    
-    @Relationship("asset")
-    private AssetResource asset;
-    
-    public AssetResource getAsset() {
-        return asset;
-    }
 }

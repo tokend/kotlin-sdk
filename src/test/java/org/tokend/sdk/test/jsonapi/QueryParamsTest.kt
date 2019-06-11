@@ -13,6 +13,8 @@ import org.tokend.sdk.api.v3.assetpairs.params.AssetPairParams
 import org.tokend.sdk.api.v3.assetpairs.params.AssetPairsPageParams
 import org.tokend.sdk.api.v3.assets.params.AssetParams
 import org.tokend.sdk.api.v3.assets.params.AssetsPageParams
+import org.tokend.sdk.api.v3.atomicswap.params.AtomicSwapAskParams
+import org.tokend.sdk.api.v3.atomicswap.params.AtomicSwapAsksPageParams
 import org.tokend.sdk.api.v3.balances.params.BalanceParams
 import org.tokend.sdk.api.v3.balances.params.BalancesPageParams
 import org.tokend.sdk.api.v3.fees.params.FeesPageParamsV3
@@ -462,6 +464,50 @@ class QueryParamsTest {
                 .withInclude(
                         PollParams.Includes.PARTICIPATION,
                         PollParams.Includes.PARTICIPATION_VOTES
+                )
+                .withPagingParams(
+                        PagingParamsV2(
+                                order = PagingOrder.DESC,
+                                limit = 10,
+                                page = "8"
+                        )
+                )
+                .build()
+
+        Assert.assertEquals(expected, params.map().toSortedMap().toString())
+        Assert.assertEquals(expected, builtParams.map().toSortedMap().toString())
+    }
+
+    @Test
+    fun atomicSwapAsksPageParams() {
+        val expected = "{cursor=8, filter[base_asset]=MAA, filter[owner]=$accountId, filter[quote_assets]=BTC,ETH,DOGE, include=base_asset,base_balance,owner,quote_assets, limit=10, order=desc, page=8, page[cursor]=8, page[limit]=10, page[number]=8, page[order]=desc}"
+
+        val params = AtomicSwapAsksPageParams(
+                baseAsset = "MAA",
+                owner = accountId,
+                quoteAssets = listOf("BTC", "ETH", "DOGE"),
+                include = listOf(
+                        AtomicSwapAskParams.Includes.BASE_ASSET,
+                        AtomicSwapAskParams.Includes.BASE_BALANCE,
+                        AtomicSwapAskParams.Includes.OWNER,
+                        AtomicSwapAskParams.Includes.QUOTE_ASSETS
+                ),
+                pagingParams = PagingParamsV2(
+                        order = PagingOrder.DESC,
+                        limit = 10,
+                        page = "8"
+                )
+        )
+
+        val builtParams = AtomicSwapAsksPageParams.Builder()
+                .withBaseAsset("MAA")
+                .withOwner(accountId)
+                .withQuoteAssets("BTC", "ETH", "DOGE")
+                .withInclude(
+                        AtomicSwapAskParams.Includes.BASE_ASSET,
+                        AtomicSwapAskParams.Includes.BASE_BALANCE,
+                        AtomicSwapAskParams.Includes.OWNER,
+                        AtomicSwapAskParams.Includes.QUOTE_ASSETS
                 )
                 .withPagingParams(
                         PagingParamsV2(
