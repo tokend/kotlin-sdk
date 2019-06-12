@@ -11,6 +11,8 @@ open class VoteParams(
     class Includes {
         companion object {
             const val POLL = "poll"
+            const val POLLS = "polls"
+            const val ACCOUNT = "account"
         }
     }
 }

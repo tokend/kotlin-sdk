@@ -56,4 +56,15 @@ open class PollsApi(
                 JSONAPIDocument<VoteResource>::get
         )
     }
+
+    open fun getVotesByVoter(accountId: String,
+                             params: VotesPageParams? = null): ApiRequest<DataPage<VoteResource>> {
+        return MappedRetrofitApiRequest(
+                pollsService.getVotesByVoter(
+                        accountId,
+                        params.map()
+                ),
+                DataPage.Companion::fromPageDocument
+        )
+    }
 }

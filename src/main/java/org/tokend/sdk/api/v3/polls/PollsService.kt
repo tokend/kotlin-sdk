@@ -28,4 +28,9 @@ interface PollsService {
     fun getVoteById(@Path("id") pollId: String,
                     @Path("voter") voterAccountId: String,
                     @QueryMap query: Map<String, Any>): Call<JSONAPIDocument<VoteResource>>
+
+    @GET("v3/votes/{voter}")
+    @JvmSuppressWildcards
+    fun getVotesByVoter(@Path("voter") accountId: String,
+                        @QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<VoteResource>>>
 }
