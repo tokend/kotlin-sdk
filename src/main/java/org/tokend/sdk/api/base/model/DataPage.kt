@@ -43,7 +43,9 @@ class DataPage<T>(val nextCursor: String?,
          */
         fun <T> fromPageDocument(pageDocument: JSONAPIDocument<List<T>>): DataPage<T> {
             val selfLink = URLDecoder.decode(pageDocument.links.self.href, "UTF-8")
-            val nextLink = pageDocument.links?.next?.href?.let { URLDecoder.decode(it, "UTF-8") }
+            val nextLink = pageDocument.links?.next?.href
+                    ?.takeIf(String::isNotBlank)
+                    ?.let { URLDecoder.decode(it, "UTF-8") }
 
             val selfCursor =
                     getNumberParamFromLink(selfLink, PagingParamsV2.QUERY_PARAM_PAGE_CURSOR)
