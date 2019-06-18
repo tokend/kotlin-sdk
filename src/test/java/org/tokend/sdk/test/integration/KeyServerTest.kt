@@ -9,8 +9,6 @@ import org.tokend.sdk.api.wallets.model.EmailAlreadyTakenException
 import org.tokend.sdk.api.wallets.model.InvalidCredentialsException
 import org.tokend.sdk.keyserver.KeyServer
 import org.tokend.sdk.keyserver.models.WalletCreateResult
-import org.tokend.sdk.keyserver.models.WalletData
-import org.tokend.sdk.keyserver.models.WalletRelation
 import org.tokend.sdk.test.Util
 import org.tokend.sdk.tfa.NeedTfaException
 import org.tokend.sdk.tfa.PasswordTfaOtpGenerator
@@ -86,16 +84,6 @@ class KeyServerTest {
                 "Account ID in wallet data must be equal to the root account ID",
                 result.rootAccount.accountId,
                 result.walletData.attributes?.accountId
-        )
-
-        Assert.assertEquals(
-                "Recovery relation account ID in wallet data must be equal to the recovery account ID",
-                result.recoveryAccount.accountId,
-                result.walletData.relationships[WalletRelation.RELATION_RECOVERY]
-                        ?.data
-                        ?.let { it as WalletData }
-                        ?.attributes
-                        ?.accountId
         )
 
         Assert.assertFalse(
