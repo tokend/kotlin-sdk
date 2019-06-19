@@ -32,10 +32,26 @@ public class AssetPairResource extends BaseResource {
         return policies;
     }
     
+    @JsonProperty("max_price_step")
+    private BigDecimal maxPriceStep;
+    
+    public BigDecimal getMaxPriceStep() {
+        return maxPriceStep;
+    }
+    
+    @JsonProperty("physical_price_correction")
+    private BigDecimal physicalPriceCorrection;
+    
+    public BigDecimal getPhysicalPriceCorrection() {
+        return physicalPriceCorrection;
+    }
+    
     @Override
     public boolean isFilled() {
         return             price != null &&
-            policies != null 
+            policies != null &&
+            maxPriceStep != null &&
+            physicalPriceCorrection != null 
         ;
     }
     

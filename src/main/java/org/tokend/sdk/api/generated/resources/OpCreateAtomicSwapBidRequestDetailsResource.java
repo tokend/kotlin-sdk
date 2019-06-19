@@ -14,28 +14,28 @@ import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
 
 
-@Type("operations-create-aswap-bid-request")
+@Type("operations-create-atomic-swap-bid-request")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OpCreateAtomicSwapBidRequestDetailsResource extends OperationDetailsResource {
     
-    @JsonProperty("amount")
-    private BigDecimal amount;
+    @JsonProperty("base_amount")
+    private BigDecimal baseAmount;
     
-    public BigDecimal getAmount() {
-        return amount;
+    public BigDecimal getBaseAmount() {
+        return baseAmount;
     }
     
-    @JsonProperty("details")
-    private JsonNode details;
+    @JsonProperty("creator_details")
+    private JsonNode creatorDetails;
     
-    public JsonNode getDetails() {
-        return details;
+    public JsonNode getCreatorDetails() {
+        return creatorDetails;
     }
     
     @Override
     public boolean isFilled() {
-        return             amount != null &&
-            details != null 
+        return             baseAmount != null &&
+            creatorDetails != null 
             && super.isFilled()
         ;
     }
@@ -47,17 +47,17 @@ public class OpCreateAtomicSwapBidRequestDetailsResource extends OperationDetail
         return request;
     }
     
-    @Relationship("base_balance")
-    private BalanceResource baseBalance;
+    @Relationship("ask")
+    private AtomicSwapAskResource ask;
     
-    public BalanceResource getBaseBalance() {
-        return baseBalance;
+    public AtomicSwapAskResource getAsk() {
+        return ask;
     }
     
-    @Relationship("quote_assets")
-    private List<AssetResource> quoteAssets;
+    @Relationship("quote_asset")
+    private AssetResource quoteAsset;
     
-    public List<? extends AssetResource> getQuoteAssets() {
-        return quoteAssets;
+    public AssetResource getQuoteAsset() {
+        return quoteAsset;
     }
 }

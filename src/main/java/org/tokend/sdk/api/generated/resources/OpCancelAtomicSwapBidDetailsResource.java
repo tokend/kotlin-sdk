@@ -14,16 +14,16 @@ import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
 
 
-@Type("operations-cancel-aswap-bid")
+@Type("operations-cancel-atomic-swap-ask")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OpCancelAtomicSwapBidDetailsResource extends OperationDetailsResource {
     @Override
     public boolean isFilled() { return super.isFilled(); }
     
-    @Relationship("bid")
-    private ASwapBidRequestDetailsResource bid;
+    @Relationship("ask")
+    private AtomicSwapAskResource ask;
     
-    public ASwapBidRequestDetailsResource getBid() {
-        return bid;
+    public AtomicSwapAskResource getAsk() {
+        return ask;
     }
 }
