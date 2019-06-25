@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.*
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.github.jasminb.jsonapi.ResourceConverter
 import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory
+import org.tokend.sdk.api.base.model.BaseResource
 import org.tokend.sdk.api.generated.resources.AllResources
 import org.tokend.sdk.api.identity.model.IdentityResource
 import org.tokend.sdk.utils.ApiDateUtil
@@ -13,12 +14,35 @@ import org.tokend.sdk.utils.BigDecimalUtil
 import retrofit2.Converter
 import java.math.BigDecimal
 import java.util.*
+import java.util.logging.Level
+import java.util.logging.LogRecord
+import java.util.logging.Logger
 
 /**
  * Constructs and provides base [ObjectMapper] and base [JSONAPIConverterFactory]
  * with type adapters for SDK models.
  */
 object JsonApiToolsProvider {
+    private val extraResources = mutableSetOf<Class<out BaseResource>>(
+            IdentityResource::class.java
+    )
+
+    /**
+     * Adds extra JSONAPI resource out of [AllResources]
+     * to use in [ResourceConverter].
+     *
+     * Make sure to add all extra resources before
+     * the first call of [getResourceConverter]
+     */
+    @JvmStatic
+    fun addExtraResources(vararg resourceClass: Class<out BaseResource>) {
+        if (resourceConverter != null) {
+            Logger.getGlobal().log(Level.WARNING, "Attempt to add extra resources " +
+                    "when the converter is already created and cached. This will have no effect!")
+        }
+        extraResources.addAll(resourceClass)
+    }
+
     /**
      * @return [ResourceConverter] set up for TokenD JSON API.
      *
@@ -29,7 +53,7 @@ object JsonApiToolsProvider {
         return resourceConverter
                 ?: ResourceConverter(getObjectMapper(),
                         *AllResources.ARRAY,
-                        IdentityResource::class.java
+                        *extraResources.toTypedArray()
                 )
                         .also { resourceConverter = it }
     }
