@@ -16,4 +16,15 @@ interface SalesServiceV3 {
     @JvmSuppressWildcards
     fun getSaleById(@Path("id") id: String,
                     @QueryMap query: Map<String, Any>): Call<JSONAPIDocument<SaleResource>>
+
+    @GET("v3/accounts/{id}/sales")
+    @JvmSuppressWildcards
+    fun getSalesForAccount(@Path("id") accountId: String,
+                           @QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<SaleResource>>>
+
+    @GET("v3/accounts/{id}/sales/{sale_id}")
+    @JvmSuppressWildcards
+    fun getSaleByIdForAccount(@Path("id") accountId: String,
+                              @Path("sale_id") saleId: String,
+                              @QueryMap query: Map<String, Any>): Call<JSONAPIDocument<SaleResource>>
 }
