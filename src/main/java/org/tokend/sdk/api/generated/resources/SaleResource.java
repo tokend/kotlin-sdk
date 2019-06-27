@@ -46,11 +46,18 @@ public class SaleResource extends BaseResource {
         return saleState;
     }
     
-    @JsonProperty("investors_count")
-    private Integer investorsCount;
+    @JsonProperty("access_definition_type")
+    private XdrEnumValue accessDefinitionType;
     
-    public Integer getInvestorsCount() {
-        return investorsCount;
+    public XdrEnumValue getAccessDefinitionType() {
+        return accessDefinitionType;
+    }
+    
+    @JsonProperty("base_hard_cap")
+    private BigDecimal baseHardCap;
+    
+    public BigDecimal getBaseHardCap() {
+        return baseHardCap;
     }
     
     @JsonProperty("details")
@@ -66,7 +73,8 @@ public class SaleResource extends BaseResource {
             endTime != null &&
             saleType != null &&
             saleState != null &&
-            investorsCount != null &&
+            accessDefinitionType != null &&
+            baseHardCap != null &&
             details != null 
         ;
     }

@@ -62,4 +62,11 @@ public class SaleQuoteAssetResource extends BaseResource {
             totalCurrentCap != null 
         ;
     }
+    
+    @Relationship("asset")
+    private AssetResource asset;
+    
+    public AssetResource getAsset() {
+        return asset;
+    }
 }
