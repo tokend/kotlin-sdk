@@ -9,13 +9,14 @@ import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory
 import org.tokend.sdk.api.base.model.BaseResource
 import org.tokend.sdk.api.generated.resources.AllResources
 import org.tokend.sdk.api.identity.model.IdentityResource
+import org.tokend.sdk.api.integrations.dns.model.BusinessResource
+import org.tokend.sdk.api.integrations.dns.model.ClientResource
 import org.tokend.sdk.utils.ApiDateUtil
 import org.tokend.sdk.utils.BigDecimalUtil
 import retrofit2.Converter
 import java.math.BigDecimal
 import java.util.*
 import java.util.logging.Level
-import java.util.logging.LogRecord
 import java.util.logging.Logger
 
 /**
@@ -24,7 +25,9 @@ import java.util.logging.Logger
  */
 object JsonApiToolsProvider {
     private val extraResources = mutableSetOf<Class<out BaseResource>>(
-            IdentityResource::class.java
+            IdentityResource::class.java,
+            BusinessResource::class.java,
+            ClientResource::class.java
     )
 
     /**
