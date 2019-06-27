@@ -35,4 +35,34 @@ open class SalesApiV3(
                 JSONAPIDocument<SaleResource>::get
         )
     }
+
+    /**
+     * @return sales for given account
+     */
+    open fun getForAccount(accountId: String,
+                           params: SaleParamsV3? = null): ApiRequest<DataPage<SaleResource>> {
+        return MappedRetrofitApiRequest(
+                salesService.getSalesForAccount(
+                        accountId,
+                        params.map()
+                ),
+                DataPage.Companion::fromPageDocument
+        )
+    }
+
+    /**
+     * @return sale for by it's ID for given account
+     */
+    open fun getByIdForAccount(accountId: String,
+                               saleId: String,
+                               params: SaleParamsV3? = null): ApiRequest<SaleResource> {
+        return MappedRetrofitApiRequest(
+                salesService.getSaleByIdForAccount(
+                        accountId,
+                        saleId,
+                        params.map()
+                ),
+                JSONAPIDocument<SaleResource>::get
+        )
+    }
 }
