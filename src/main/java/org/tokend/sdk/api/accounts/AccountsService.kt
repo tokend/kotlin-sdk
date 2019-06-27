@@ -12,10 +12,6 @@ interface AccountsService {
     fun getAccount(@Path("accountId") accountId: String?):
             Call<Account>
 
-    @GET("accounts/{accountId}/signers")
-    fun getSigners(@Path("accountId") accountId: String?):
-            Call<Account>
-
     @GET("accounts/{accountId}/balances")
     fun getBalances(@Path("accountId") accountId: String):
             Call<List<Account.Balance>>
