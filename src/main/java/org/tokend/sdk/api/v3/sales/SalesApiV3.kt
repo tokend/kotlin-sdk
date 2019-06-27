@@ -40,7 +40,7 @@ open class SalesApiV3(
      * @return sales for given account
      */
     open fun getForAccount(accountId: String,
-                           params: SaleParamsV3? = null): ApiRequest<DataPage<SaleResource>> {
+                           params: SalesPageParamsV3? = null): ApiRequest<DataPage<SaleResource>> {
         return MappedRetrofitApiRequest(
                 salesService.getSalesForAccount(
                         accountId,
