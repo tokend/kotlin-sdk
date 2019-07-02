@@ -5,11 +5,11 @@ import com.google.gson.annotations.SerializedName
 import java.util.*
 
 open class SubmitTransactionResponse constructor(@SerializedName("extras")
-                                                 val extras: Extras,
+                                                 val extras: Extras?,
                                                  @SerializedName("ledger")
                                                  val ledger: Long?,
                                                  @SerializedName("hash")
-                                                 val hash: String,
+                                                 val hash: String?,
                                                  @SerializedName("envelope_xdr")
                                                  private val envelopeXdr: String,
                                                  @SerializedName("result_xdr")
@@ -22,7 +22,7 @@ open class SubmitTransactionResponse constructor(@SerializedName("extras")
         return if (this.isSuccess) {
             this.envelopeXdr
         } else {
-            this.extras.envelopeXdr
+            this.extras!!.envelopeXdr
         }
     }
 
@@ -30,8 +30,7 @@ open class SubmitTransactionResponse constructor(@SerializedName("extras")
         return if (this.isSuccess) {
             this.resultXdr
         } else {
-            val extras = this.extras
-            extras.resultXdr
+            this.extras!!.resultXdr
         }
     }
 

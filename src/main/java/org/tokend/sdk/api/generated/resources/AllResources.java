@@ -8,6 +8,7 @@ public class AllResources {
         OpCreateSaleRequestDetailsResource.class,
         AtomicSwapAskResource.class,
         EffectLockedResource.class,
+        LedgerEntryChangeResource.class,
         OpRemoveSignerRuleDetailsResource.class,
         OpBindExternalSystemAccountDetailsResource.class,
         BalanceResource.class,

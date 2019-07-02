@@ -19,18 +19,21 @@ open class TransactionsApi(
      * Submits given transaction.
      * @see <a href="https://tokend.gitlab.io/docs/?http#submit-a-transaction">Docs</a>
      */
+    @Deprecated("Use TransactionsApiV3.submit instead")
     open fun submit(transaction: Transaction) = submit(transaction.getEnvelope())
 
     /**
      * Submits given transaction envelope.
      * @see <a href="https://tokend.gitlab.io/docs/?http#submit-a-transaction">Docs</a>
      */
+    @Deprecated("Use TransactionsApiV3.submit instead")
     open fun submit(transactionEnvelope: TransactionEnvelope) = submit(transactionEnvelope.toBase64())
 
     /**
      * Submits given transaction envelope.
      * @see <a href="https://tokend.gitlab.io/docs/?http#submit-a-transaction">Docs</a>
      */
+    @Deprecated("Use TransactionsApiV3.submit instead")
     open fun submit(envelopeBase64: String): ApiRequest<SubmitTransactionResponse> {
         return SimpleRetrofitApiRequest(
                 transactionsService.pushTransaction(envelopeBase64)
