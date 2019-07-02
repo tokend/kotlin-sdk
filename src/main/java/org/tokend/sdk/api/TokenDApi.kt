@@ -11,8 +11,6 @@ import org.tokend.sdk.api.blobs.BlobsApi
 import org.tokend.sdk.api.blobs.BlobsService
 import org.tokend.sdk.api.documents.DocumentsApi
 import org.tokend.sdk.api.documents.DocumentsService
-import org.tokend.sdk.api.favorites.FavoritesApi
-import org.tokend.sdk.api.favorites.FavoritesService
 import org.tokend.sdk.api.fees.FeesApi
 import org.tokend.sdk.api.fees.FeesService
 import org.tokend.sdk.api.general.GeneralApi
@@ -99,10 +97,6 @@ constructor(
 
     open val tfa: TfaApi by lazy {
         TfaApi(getService(TfaService::class.java))
-    }
-
-    open val favorites: FavoritesApi by lazy {
-        FavoritesApi(getService(FavoritesService::class.java))
     }
 
     open val general: GeneralApi by lazy {
