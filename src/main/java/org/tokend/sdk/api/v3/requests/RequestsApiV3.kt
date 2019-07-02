@@ -26,13 +26,32 @@ open class RequestsApiV3(
     }
 
     /**
-     * Will return request by it's ID
+     * Will return request by it's ID.
+     * Can only be signed by master
      */
     @JvmOverloads
     open fun getById(requestId: String,
                      params: RequestParamsV3? = null): ApiRequest<ReviewableRequestResource> {
         return MappedRetrofitApiRequest(
                 requestsService.getRequestById(
+                        requestId,
+                        params.map()
+                ),
+                JSONAPIDocument<ReviewableRequestResource>::get
+        )
+    }
+
+    /**
+     * Will return request by it's ID.
+     * This method allows you to sign the request by requestor's signer
+     */
+    @JvmOverloads
+    open fun getById(requestorAccount: String,
+                     requestId: String,
+                     params: RequestParamsV3? = null): ApiRequest<ReviewableRequestResource> {
+        return MappedRetrofitApiRequest(
+                requestsService.getRequestById(
+                        requestorAccount,
                         requestId,
                         params.map()
                 ),

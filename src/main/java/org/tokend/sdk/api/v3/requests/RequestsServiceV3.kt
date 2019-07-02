@@ -1,7 +1,6 @@
 package org.tokend.sdk.api.v3.requests
 
 import com.github.jasminb.jsonapi.JSONAPIDocument
-import org.tokend.sdk.api.generated.resources.ChangeRoleRequestDetailsResource
 import org.tokend.sdk.api.generated.resources.ReviewableRequestResource
 import retrofit2.Call
 import retrofit2.http.GET
@@ -16,6 +15,12 @@ interface RequestsServiceV3 {
     @GET("v3/requests/{id}")
     @JvmSuppressWildcards
     fun getRequestById(@Path("id") id: String,
+                       @QueryMap query: Map<String, Any>): Call<JSONAPIDocument<ReviewableRequestResource>>
+
+    @GET("v3/accounts/{requestor}/requests/{id}")
+    @JvmSuppressWildcards
+    fun getRequestById(@Path("requestor") requestor: String,
+                       @Path("id") id: String,
                        @QueryMap query: Map<String, Any>): Call<JSONAPIDocument<ReviewableRequestResource>>
 
     @GET("v3/change_role_requests")
