@@ -79,10 +79,12 @@ constructor(
         AccountsApi(getService(AccountsService::class.java))
     }
 
+    @Deprecated("Use v3 instead")
     open val transactions: TransactionsApi by lazy {
         TransactionsApi(getService(TransactionsService::class.java))
     }
 
+    @Deprecated("Use v3 instead")
     open val sales: SalesApi by lazy {
         SalesApi(getService(SalesService::class.java))
     }
@@ -107,6 +109,7 @@ constructor(
         GeneralApi(getService(GeneralService::class.java))
     }
 
+    @Deprecated("Use v3 instead")
     open val trades: TradesApi by lazy {
         TradesApi(getService(TradesService::class.java))
     }
@@ -119,6 +122,7 @@ constructor(
         WalletsApi(getService(WalletsService::class.java))
     }
 
+    @Deprecated("Use v3 instead")
     open val keyValueEntries: KeyValueStorageApi by lazy {
         KeyValueStorageApi(getService(KeyValueStorageService::class.java))
     }
@@ -127,6 +131,7 @@ constructor(
         DocumentsApi(getService(DocumentsService::class.java))
     }
 
+    @Deprecated("Use v3 instead")
     open val requests: RequestsApi by lazy {
         RequestsApi(getService(RequestsService::class.java))
     }
