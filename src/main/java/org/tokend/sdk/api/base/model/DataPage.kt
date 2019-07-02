@@ -75,7 +75,7 @@ class DataPage<T>(val nextCursor: String?,
                     ?: 0
 
             val items = pageDocument.get()
-            val isLast = nextLink == null || items.size < limit
+            val isLast = nextLink == null || items.size < limit || limit == 0
 
             return DataPage(next, items, isLast)
         }
