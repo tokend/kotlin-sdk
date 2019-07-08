@@ -77,6 +77,13 @@ public class AtomicSwapAskResource extends BaseResource {
         return baseBalance;
     }
     
+    @Relationship("base_asset")
+    private AssetResource baseAsset;
+    
+    public AssetResource getBaseAsset() {
+        return baseAsset;
+    }
+    
     @Relationship("quote_assets")
     private List<QuoteAssetResource> quoteAssets;
     
