@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
 
 
-@Type("operations-create-atomic-swap-bid-request")
+@Type("operations-create-atomic-swap-ask-request")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OpCreateAtomicSwapBidRequestDetailsResource extends OperationDetailsResource {
     
@@ -47,17 +47,17 @@ public class OpCreateAtomicSwapBidRequestDetailsResource extends OperationDetail
         return request;
     }
     
-    @Relationship("ask")
-    private AtomicSwapAskResource ask;
+    @Relationship("base_balance")
+    private BalanceResource baseBalance;
     
-    public AtomicSwapAskResource getAsk() {
-        return ask;
+    public BalanceResource getBaseBalance() {
+        return baseBalance;
     }
     
-    @Relationship("quote_asset")
-    private AssetResource quoteAsset;
+    @Relationship("quote_assets")
+    private List<QuoteAssetResource> quoteAssets;
     
-    public AssetResource getQuoteAsset() {
-        return quoteAsset;
+    public List<? extends QuoteAssetResource> getQuoteAssets() {
+        return quoteAssets;
     }
 }
