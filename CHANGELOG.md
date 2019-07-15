@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [2.6.0] 2019-07-15
+
+### Added
+- Ability to add extra JSONAPI resources to `JsonApiToolsProvider`
+with `addExtraResources` method
+- Experimental integrations APIs
+- Endpoint for account sales
+- Method to get account's reviewable request by ID
+- V3 transactions API
+
+### Fixed
+- `DataPage` will be last if it can't parse next link
+(avoid infinite pagination)
+
+### Changed
+- Actualized generated resources
+
+### Removed
+- Deprecated account signers endpoint
+- Deprecated favorites API
+
 ## [2.5.0] 2019-06-24
 
 ### Added
@@ -107,4 +128,5 @@ for further information about branching and tagging conventions.
 [2.3.0]: https://github.com/tokend/kotlin-sdk/compare/2.2.2...2.3.0
 [2.4.0]: https://github.com/tokend/kotlin-sdk/compare/2.3.0...2.4.0
 [2.5.0]: https://github.com/tokend/kotlin-sdk/compare/2.4.0...2.5.0
-[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/2.5.0...HEAD
+[2.6.0]: https://github.com/tokend/kotlin-sdk/compare/2.5.0...2.6.0
+[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/2.6.0...HEAD
