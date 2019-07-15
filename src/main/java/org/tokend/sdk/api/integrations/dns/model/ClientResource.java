@@ -12,6 +12,11 @@ import java.util.List;
 @Type("clients")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ClientResource extends BaseResource {
+
+    public ClientResource(String email) {
+        this.email = email;
+    }
+
     @JsonProperty("email")
     private String email;
 

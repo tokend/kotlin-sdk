@@ -8,7 +8,6 @@ import org.tokend.sdk.api.base.model.DataPage
 import org.tokend.sdk.api.base.params.map
 import org.tokend.sdk.api.integrations.dns.model.BusinessResource
 import org.tokend.sdk.api.integrations.dns.model.ClientResource
-import org.tokend.sdk.api.integrations.dns.model.ClientToInviteResource
 import org.tokend.sdk.api.integrations.dns.params.ClientsPageParams
 
 open class DnsApi(
@@ -43,7 +42,7 @@ open class DnsApi(
         return SimpleRetrofitApiRequest(
                 dnsService.inviteClients(
                         businessId,
-                        JSONAPIDocument(emails.map { ClientToInviteResource(it) })
+                        JSONAPIDocument(emails.map { ClientResource(it) })
                 )
         )
     }
