@@ -98,7 +98,7 @@ public class AllResources {
         OpUpdateAccountRuleDetailsResource.class,
         KeyValueEntryResource.class,
         OpPayoutDetailsResource.class,
-        OpCreateAtomicSwapBidRequestDetailsResource.class,
+        OpCreateAtomicSwapAskRequestDetailsResource.class,
         EffectResource.class,
         SaleQuoteAssetResource.class,
         OpUpdateAccountRoleDetailsResource.class,

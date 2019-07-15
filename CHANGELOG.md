@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+
+### Fixed
+- Generated resources for atomic swap ask and bid
+
 ## [2.6.0] 2019-07-15
 
 ### Added
