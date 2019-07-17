@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
 import org.tokend.sdk.api.base.model.BaseResource;
-import org.tokend.sdk.api.generated.resources.BalanceResource;
 
 import java.util.List;
 
@@ -27,7 +26,7 @@ public class ClientResource extends BaseResource {
     private String status;
 
     @Relationship("balances")
-    private List<BalanceResource> balances;
+    private List<ClientBalanceResource> balances;
 
     public String getEmail() {
         return email;
@@ -41,7 +40,7 @@ public class ClientResource extends BaseResource {
         return status;
     }
 
-    public List<? extends BalanceResource> getBalances() {
+    public List<? extends ClientBalanceResource> getBalances() {
         return balances;
     }
 
