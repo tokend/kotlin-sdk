@@ -14,8 +14,8 @@ public class BusinessResource extends BaseResource {
     @JsonProperty("account_id")
     private String accountId;
 
-    @JsonProperty("logo_link")
-    private String logoUrl;
+    @JsonProperty("logo")
+    private String logoJson;
 
     public String getName() {
         return name;
@@ -25,12 +25,12 @@ public class BusinessResource extends BaseResource {
         return accountId;
     }
 
-    public String getLogoUrl() {
-        return logoUrl;
+    public String getLogoJson() {
+        return logoJson;
     }
 
     @Override
     public boolean isFilled() {
-        return name != null && accountId != null && logoUrl != null;
+        return name != null && accountId != null && logoJson != null;
     }
 }
