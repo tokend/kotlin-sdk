@@ -33,8 +33,8 @@ class BlobsTest {
 
         val blob = signedApi
                 .blobs
-                .createAccountOwnedBlob(
-                        accountId = currentWalletInfo.accountId,
+                .create(
+                        ownerAccountId = currentWalletInfo.accountId,
                         blob = Blob(BlobType.ALPHA, content)
                 )
                 .execute()
@@ -42,8 +42,7 @@ class BlobsTest {
 
         val downloadedBlob = signedApi
                 .blobs
-                .getAccountOwnedBlob(
-                        accountId = currentWalletInfo.accountId,
+                .getBlob(
                         blobId = blob.id
                 )
                 .execute()

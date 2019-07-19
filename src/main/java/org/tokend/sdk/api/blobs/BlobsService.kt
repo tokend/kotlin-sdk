@@ -2,6 +2,7 @@ package org.tokend.sdk.api.blobs
 
 import org.tokend.sdk.api.blobs.model.Blob
 import org.tokend.sdk.api.base.model.DataEntity
+import org.tokend.sdk.api.blobs.model.BlobCreationRequestBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -29,5 +30,5 @@ interface BlobsService {
 
     @POST("blobs")
     @JvmSuppressWildcards
-    fun create(@Body blob: DataEntity<Blob>): Call<DataEntity<Blob>>
+    fun create(@Body blob: DataEntity<BlobCreationRequestBody>): Call<DataEntity<Blob>>
 }
