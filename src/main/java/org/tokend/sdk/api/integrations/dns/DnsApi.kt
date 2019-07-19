@@ -46,4 +46,21 @@ open class DnsApi(
                 )
         )
     }
+
+    open fun getBusiness(businessId: String): ApiRequest<BusinessResource> {
+        return MappedRetrofitApiRequest(
+                dnsService.getBusiness(businessId),
+                JSONAPIDocument<BusinessResource>::get
+        )
+    }
+
+    open fun addClientBusiness(clientId: String,
+                               businessId: String): ApiRequest<Void> {
+        return SimpleRetrofitApiRequest(
+                dnsService.addClientBusiness(
+                        clientId,
+                        JSONAPIDocument(BusinessResource(businessId))
+                )
+        )
+    }
 }

@@ -8,6 +8,12 @@ import org.tokend.sdk.api.base.model.BaseResource;
 @Type("businesses")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BusinessResource extends BaseResource {
+    private BusinessResource() {}
+
+    public BusinessResource(String accountId) {
+        this.accountId = accountId;
+    }
+
     @JsonProperty("name")
     private String name;
 
