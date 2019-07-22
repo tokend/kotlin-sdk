@@ -11,6 +11,7 @@ public class BusinessResource extends BaseResource {
     private BusinessResource() {}
 
     public BusinessResource(String accountId) {
+        this.id = accountId;
         this.accountId = accountId;
     }
 

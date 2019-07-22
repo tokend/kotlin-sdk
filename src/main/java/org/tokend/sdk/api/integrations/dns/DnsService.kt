@@ -17,7 +17,7 @@ interface DnsService {
     fun getClientBusinesses(@Path("id") id: String,
                             @QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<BusinessResource>>>
 
-    @GET("integrations/dns/clients/{id}/businesses")
+    @POST("integrations/dns/clients/{id}/businesses")
     @JvmSuppressWildcards
     fun addClientBusiness(@Path("id") id: String,
                           @Body body: JSONAPIDocument<BusinessResource>): Call<Void>

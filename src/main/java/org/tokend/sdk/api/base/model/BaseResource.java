@@ -13,7 +13,7 @@ public abstract class BaseResource {
     private com.github.jasminb.jsonapi.Links links;
 
     @Id
-    private String id;
+    protected String id;
 
     @Nullable
     public com.github.jasminb.jsonapi.Links getLinks() {
