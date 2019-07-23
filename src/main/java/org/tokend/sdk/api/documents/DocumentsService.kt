@@ -11,9 +11,8 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface DocumentsService {
-    @POST("accounts/{accountId}/documents")
-    fun requestUpload(@Path("accountId") accountId: String,
-                      @Body requestBody: DataEntity<DocumentUploadRequest>
+    @POST("documents")
+    fun requestUpload(@Body requestBody: DataEntity<DocumentUploadRequest>
     ): Call<DataEntity<AttributesEntity<DocumentUploadPolicy>>>
 
     @POST
@@ -26,4 +25,7 @@ interface DocumentsService {
     @GET("accounts/{accountId}/documents/{document}")
     fun getUrl(@Path("accountId") accountId: String,
                @Path("document") document: String): Call<DataEntity<DocumentUrlRequest>>
+
+    @GET("documents/{document}")
+    fun getUrl(@Path("document") document: String): Call<DataEntity<DocumentUrlRequest>>
 }

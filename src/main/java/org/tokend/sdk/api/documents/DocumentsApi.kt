@@ -46,9 +46,8 @@ open class DocumentsApi(
                            contentType: String): ApiRequest<DocumentUploadPolicy> {
         return MappedRetrofitApiRequest(
                 documentsService.requestUpload(
-                        accountId,
                         DataEntity(
-                                DocumentUploadRequest(documentType, contentType)
+                                DocumentUploadRequest(documentType, contentType, accountId)
                         )
                 ),
                 { it.data.attributes }
@@ -151,10 +150,23 @@ open class DocumentsApi(
      *
      * @see <a href="https://docs.tokend.io/identity/#operation/getAccountDocumentURL">Docs</a>
      */
+    @Deprecated("Use getUrl(documentKey) instead")
     open fun getUrl(accountId: String,
                     documentKey: String): ApiRequest<String> {
         return MappedRetrofitApiRequest(
                 documentsService.getUrl(accountId, documentKey),
+                { it.data.attributes.url }
+        )
+    }
+
+    /**
+     * Will return full, ready to open document URL
+     *
+     * @see <a href="https://docs.tokend.io/identity/#operation/getDocumentURL">Docs</a>
+     */
+    open fun getUrl(documentKey: String): ApiRequest<String> {
+        return MappedRetrofitApiRequest(
+                documentsService.getUrl(documentKey),
                 { it.data.attributes.url }
         )
     }

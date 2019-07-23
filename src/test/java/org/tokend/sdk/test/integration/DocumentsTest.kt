@@ -37,7 +37,7 @@ class DocumentsTest {
                 .documents
                 .requestUpload(
                         accountId = currentWalletInfo.accountId,
-                        documentType = DocumentType.ALPHA,
+                        documentType = DocumentType.GENERAL_PRIVATE,
                         contentType = contentType
                 )
                 .execute()
@@ -62,7 +62,6 @@ class DocumentsTest {
         val uploadedUrl = signedApi
                 .documents
                 .getUrl(
-                        accountId = currentWalletInfo.accountId,
                         documentKey = key
                 )
                 .execute()
