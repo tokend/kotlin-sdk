@@ -57,6 +57,6 @@ class HttpClientFactory {
     }
 
     companion object {
-        const val REQUEST_TIMEOUT = 20 * 1000L
+        const val REQUEST_TIMEOUT = 30 * 1000L
     }
 }
