@@ -76,7 +76,8 @@ open class TransactionsApiV3(
                             resultXdr = transaction.resultXdr,
                             envelopeXdr = transaction.envelopeXdr,
                             hash = transaction.hash,
-                            ledger = transaction.ledgerSequence.toLong()
+                            ledger = transaction.ledgerSequence.toLong(),
+                            createdAt = transaction.createdAt
                     )
                 },
                 { error ->
@@ -117,6 +118,7 @@ open class TransactionsApiV3(
             return SubmitTransactionResponse(
                     extras = extras,
                     ledger = null,
+                    createdAt = null,
                     hash = null,
                     envelopeXdr = extras.envelopeXdr,
                     resultXdr = extras.resultXdr

@@ -8,6 +8,8 @@ open class SubmitTransactionResponse constructor(@SerializedName("extras")
                                                  val extras: Extras?,
                                                  @SerializedName("ledger")
                                                  val ledger: Long?,
+                                                 @SerializedName("created_at")
+                                                 val createdAt: Date?,
                                                  @SerializedName("hash")
                                                  val hash: String?,
                                                  @SerializedName("envelope_xdr")
