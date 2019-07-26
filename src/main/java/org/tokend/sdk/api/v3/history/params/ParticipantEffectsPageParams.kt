@@ -9,6 +9,7 @@ import org.tokend.sdk.api.v3.base.PageQueryParams
 class ParticipantEffectsPageParams(
         val account: String? = null,
         val balance: String? = null,
+        val asset: String? = null,
         include: Collection<String>? = null,
         pagingParams: PagingParamsV2? = null
 ) : PageQueryParams(pagingParams, include) {
@@ -17,16 +18,20 @@ class ParticipantEffectsPageParams(
         return super.map().toMutableMap().apply {
             account?.also { putFilter("account", it) }
             balance?.also { putFilter("balance", it) }
+            asset?.also { putFilter("asset", it) }
         }
     }
 
     class Builder : PageQueryParams.Builder() {
         private var account: String? = null
         private var balance: String? = null
+        private var asset: String? = null
 
         fun withAccount(account: String) = also { this.account = account }
 
         fun withBalance(balance: String) = also { this.balance = balance }
+
+        fun withAsset(asset: String) = also { this.asset = asset }
 
         override fun withPagingParams(pagingParams: PagingParamsV2) = also {
             super.withPagingParams(pagingParams)
@@ -41,7 +46,7 @@ class ParticipantEffectsPageParams(
         }
 
         override fun build(): ParticipantEffectsPageParams {
-            return ParticipantEffectsPageParams(account, balance, include, pagingParams)
+            return ParticipantEffectsPageParams(account, balance, asset, include, pagingParams)
         }
     }
 }

@@ -259,11 +259,12 @@ class QueryParamsTest {
 
     @Test
     fun participantEffectsParams() {
-        val expected = "{cursor=6, filter[account]=$accountId, filter[balance]=superbalance, include=operation,operation.details,effect, limit=18, order=desc, page=6, page[cursor]=6, page[limit]=18, page[number]=6, page[order]=desc}"
+        val expected = "{cursor=6, filter[account]=$accountId, filter[asset]=OLE, filter[balance]=superbalance, include=operation,operation.details,effect, limit=18, order=desc, page=6, page[cursor]=6, page[limit]=18, page[number]=6, page[order]=desc}"
 
         val params = ParticipantEffectsPageParams(
                 account = accountId,
                 balance = "superbalance",
+                asset = "OLE",
                 include = listOf(
                         ParticipantEffectsParams.Includes.OPERATION,
                         ParticipantEffectsParams.Includes.OPERATION_DETAILS,
@@ -280,6 +281,7 @@ class QueryParamsTest {
         val builtParams = ParticipantEffectsPageParams.Builder()
                 .withAccount(accountId)
                 .withBalance("superbalance")
+                .withAsset("OLE")
                 .withInclude(
                         ParticipantEffectsParams.Includes.OPERATION,
                         ParticipantEffectsParams.Includes.OPERATION_DETAILS,
