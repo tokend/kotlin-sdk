@@ -297,6 +297,59 @@ class KeyServer constructor(
         )
     }
 
+    /**
+     * Updates wallet with new password according to the KYC recovery flow.
+     * Temp signer will be added in order to request KYC recovery after
+     * sign in with new credentials.
+     *
+     * This requires email TFA confirmation.
+     */
+    fun recoverWalletPassword(email: String,
+                              newPassword: CharArray,
+                              newAccount: Account): ApiRequest<WalletCreateResult> {
+        return MappedCallableApiRequest(
+                { getRecoverWalletPasswordResult(email, newPassword, newAccount) },
+                { it }
+        )
+    }
+
+    private fun getRecoverWalletPasswordResult(email: String,
+                                               newPassword: CharArray,
+                                               newAccount: Account): WalletCreateResult {
+        val currentLoginParams = getLoginParams(email, true)
+                .execute()
+                .get()
+
+        val newLoginParams = currentLoginParams.copy(
+                kdfAttributes = currentLoginParams.kdfAttributes.copy()
+        )
+
+        // New KDF salt should be generated.
+        newLoginParams.kdfAttributes.salt = null
+
+        val recoveryWallet = createWallet(
+                email = email,
+                password = newPassword,
+                loginParams = newLoginParams,
+                rootAccount = newAccount,
+                recoveryAccount = newAccount,
+                walletType = WalletData.TYPE_RECOVERY
+        )
+
+        newLoginParams.kdfAttributes.encodedSalt = recoveryWallet.walletData.attributes?.salt
+
+        val newWalletId = recoveryWallet.walletData.id
+                ?: throw  IllegalStateException("Missing wallet ID in new wallet data")
+
+        updateWallet(
+                newWalletId,
+                recoveryWallet.walletData
+        )
+                .execute()
+
+        return recoveryWallet
+    }
+
     companion object {
         private const val RECOVERY_SIGNER_ROLE_ID = 1L
         private const val DEFAULT_SIGNER_IDENTITY = 0
@@ -321,7 +374,8 @@ class KeyServer constructor(
                 kdfAttributes: KdfAttributes,
                 kdfVersion: Long,
                 rootAccount: Account = Account.random(),
-                recoveryAccount: Account = Account.random()
+                recoveryAccount: Account = Account.random(),
+                walletType: String = WalletData.TYPE_DEFAULT
         ): WalletCreateResult {
             val recoveryAccountSeed = recoveryAccount.secretSeed
                     ?: throw IllegalArgumentException("Recovery account must have private key")
@@ -344,7 +398,7 @@ class KeyServer constructor(
                     kdfSalt
             )
 
-            val wallet = WalletData(walletId, encryptedSeed, listOf())
+            val wallet = WalletData(walletId, encryptedSeed, listOf(), walletType)
 
             wallet.addRelation(
                     WalletRelation(
@@ -393,6 +447,15 @@ class KeyServer constructor(
                     )
             )
 
+            wallet.addRelation(
+                    WalletRelation(
+                            WalletRelation.RELATION_SIGNER,
+                            WalletRelation.RELATION_SIGNER,
+                            encryptedSeed.accountId,
+                            encryptedSeed.accountId
+                    )
+            )
+
             return WalletCreateResult(
                     wallet,
                     rootAccount,
@@ -415,12 +478,13 @@ class KeyServer constructor(
                 password: CharArray,
                 loginParams: LoginParams,
                 rootAccount: Account = Account.random(),
-                recoveryAccount: Account = Account.random()
+                recoveryAccount: Account = Account.random(),
+                walletType: String = WalletData.TYPE_DEFAULT
         ): WalletCreateResult {
             val kdf = loginParams.kdfAttributes
             val kdfVersion = loginParams.id
 
-            return createWallet(email, password, kdf, kdfVersion, rootAccount, recoveryAccount)
+            return createWallet(email, password, kdf, kdfVersion, rootAccount, recoveryAccount, walletType)
         }
 
         /**

@@ -44,8 +44,9 @@ open class WalletData(
 
     constructor(walletIdHex: String,
                 encryptedAccount: EncryptedWalletAccount,
-                relations: List<WalletRelation>) : this(
-            type = "wallet",
+                relations: List<WalletRelation>,
+                type: String) : this(
+            type = type,
             id = walletIdHex,
             attributes = WalletAttributes(
                     accountId = encryptedAccount.accountId,
@@ -74,5 +75,10 @@ open class WalletData(
                                 "envelope" to transaction.getEnvelope().toBase64()
                         ))
                 )
+    }
+
+    companion object {
+        const val TYPE_DEFAULT = "wallet"
+        const val TYPE_RECOVERY = "recovery-wallet"
     }
 }
