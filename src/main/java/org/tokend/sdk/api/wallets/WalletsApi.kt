@@ -97,8 +97,7 @@ open class WalletsApi(
      * @see verify(walletId, token)
      */
     open fun verify(redirectPayload: ClientRedirectPayload): ApiRequest<Void> {
-        if (!redirectPayload.isSuccessful
-                || redirectPayload.type != ClientRedirectType.EMAIL_VERIFICATION) {
+        if (redirectPayload.type != ClientRedirectType.EMAIL_VERIFICATION) {
             throw IllegalArgumentException("Invalid redirect payload")
         }
 
