@@ -9,6 +9,7 @@ import org.tokend.sdk.api.base.params.map
 import org.tokend.sdk.api.integrations.dns.model.BusinessResource
 import org.tokend.sdk.api.integrations.dns.model.ClientResource
 import org.tokend.sdk.api.integrations.dns.params.ClientsPageParams
+import org.tokend.sdk.api.v3.base.PageQueryParams
 
 open class DnsApi(
         protected open val dnsService: DnsService
@@ -61,6 +62,13 @@ open class DnsApi(
                         clientId,
                         JSONAPIDocument(BusinessResource(businessId))
                 )
+        )
+    }
+
+    open fun getBusinesses(params: PageQueryParams? = null): ApiRequest<DataPage<BusinessResource>> {
+        return MappedRetrofitApiRequest(
+                dnsService.getBusinesses(params.map()),
+                DataPage.Companion::fromPageDocument
         )
     }
 }
