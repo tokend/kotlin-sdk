@@ -17,8 +17,19 @@ import org.tokend.sdk.api.base.model.*;
 @Type("accounts")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AccountResource extends BaseResource {
+    
+    @JsonProperty("kyc_recovery_status")
+    private XdrEnumValue kycRecoveryStatus;
+    
+    public XdrEnumValue getKycRecoveryStatus() {
+        return kycRecoveryStatus;
+    }
+    
     @Override
-    public boolean isFilled() { return true; }
+    public boolean isFilled() {
+        return             kycRecoveryStatus != null 
+        ;
+    }
     
     @Relationship("role")
     private AccountRoleResource role;
