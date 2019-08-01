@@ -24,6 +24,9 @@ public class BusinessResource extends BaseResource {
     @JsonProperty("logo")
     private String logoJson;
 
+    @JsonProperty("industry")
+    private String industry;
+
     public String getName() {
         return name;
     }
@@ -36,8 +39,12 @@ public class BusinessResource extends BaseResource {
         return logoJson;
     }
 
+    public String getIndustry() {
+        return industry;
+    }
+
     @Override
     public boolean isFilled() {
-        return name != null && accountId != null && logoJson != null;
+        return name != null && accountId != null && logoJson != null && industry != null;
     }
 }
