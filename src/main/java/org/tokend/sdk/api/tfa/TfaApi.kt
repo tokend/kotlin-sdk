@@ -37,7 +37,7 @@ open class TfaApi(
                 tfaService.createFactor(
                         walletId,
                         DataEntity(
-                                CreateTfaRequestBody(type.literal)
+                                CreateTfaRequestBody(type.name.toLowerCase())
                         )
                 ),
                 {

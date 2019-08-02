@@ -5,6 +5,7 @@ import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runners.MethodSorters
 import org.tokend.sdk.api.identity.params.IdentitiesPageParams
+import org.tokend.sdk.api.tfa.model.TfaFactor
 import org.tokend.sdk.keyserver.KeyServer
 import org.tokend.sdk.test.Util
 import org.tokend.sdk.tfa.NeedTfaException
@@ -34,10 +35,15 @@ class IdentityTest {
 
         val tfaCallback = object : TfaCallback {
             override fun onTfaRequired(exception: NeedTfaException, verifierInterface: TfaVerifier.Interface) {
-                verifierInterface.verify("000000", onError = {
-                    Assert.fail("Unable to verify default OTP")
+                if (exception.factorType != TfaFactor.Type.PHONE) {
                     verifierInterface.cancelVerification()
-                })
+                    Assert.fail("TFA type ${TfaFactor.Type.PHONE} was expected, got ${exception.factorType}")
+                } else {
+                    verifierInterface.verify("000000", onError = {
+                        verifierInterface.cancelVerification()
+                        Assert.fail("Unable to verify default OTP")
+                    })
+                }
             }
         }
         val signedApi = Util.getSignedApi(rootAccount, api.rootUrl, tfaCallback)

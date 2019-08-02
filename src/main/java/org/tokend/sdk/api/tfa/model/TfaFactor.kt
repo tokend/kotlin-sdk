@@ -10,19 +10,25 @@ open class TfaFactor(
         @SerializedName("attributes")
         val attributes: Attributes
 ) {
-    enum class Type(val literal: String) {
+    enum class Type {
         @SerializedName("totp")
-        TOTP("totp"),
+        TOTP,
         @SerializedName("password")
-        PASSWORD("password"),
+        PASSWORD,
         @SerializedName("email")
-        EMAIL("email"),
-        UNKNOWN("unknown");
+        EMAIL,
+        @SerializedName("phone")
+        PHONE,
+        UNKNOWN;
 
         companion object {
             @JvmStatic
             fun fromLiteral(literal: String?): Type {
-                return values().find { it.literal == literal } ?: UNKNOWN
+                return try {
+                    valueOf(literal?.toUpperCase() ?: "")
+                } catch (_: Exception) {
+                    UNKNOWN
+                }
             }
         }
     }
