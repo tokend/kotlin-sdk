@@ -342,11 +342,13 @@ class QueryParamsTest {
 
     @Test
     fun identityParams() {
-        val expected = "{cursor=8, filter[address]=$accountId, filter[email]=email, include=, limit=10, order=desc, page=8, page[cursor]=8, page[limit]=10, page[number]=8, page[order]=desc}"
+        val expected = "{cursor=8, filter[address]=$accountId, filter[email]=email, filter[identifier]=id, filter[phone]=+380983332211, include=, limit=10, order=desc, page=8, page[cursor]=8, page[limit]=10, page[number]=8, page[order]=desc}"
 
         val params = IdentitiesPageParams(
                 address = accountId,
                 email = "email",
+                identifier = "id",
+                phone = "+380983332211",
                 pagingParams = PagingParamsV2(
                         order = PagingOrder.DESC,
                         limit = 10,
@@ -358,6 +360,8 @@ class QueryParamsTest {
         val builtParams = IdentitiesPageParams.Builder()
                 .withAddress(accountId)
                 .withEmail("email")
+                .withIdentifier("id")
+                .withPhone("+380983332211")
                 .withPagingParams(
                         PagingParamsV2(
                                 order = PagingOrder.DESC,

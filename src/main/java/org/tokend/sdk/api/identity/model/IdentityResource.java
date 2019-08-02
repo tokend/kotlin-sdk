@@ -3,7 +3,6 @@ package org.tokend.sdk.api.identity.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.jasminb.jsonapi.annotations.Type;
-
 import org.tokend.sdk.api.base.model.BaseResource;
 
 @Type("identity")
@@ -15,6 +14,9 @@ public class IdentityResource extends BaseResource {
     @JsonProperty("email")
     private String email;
 
+    @JsonProperty("phone_number")
+    private String phoneNumber;
+
     public String getAddress() {
         return address;
     }
@@ -23,8 +25,12 @@ public class IdentityResource extends BaseResource {
         return email;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
     @Override
     public boolean isFilled() {
-        return address != null && email != null;
+        return address != null && email != null && phoneNumber != null;
     }
 }

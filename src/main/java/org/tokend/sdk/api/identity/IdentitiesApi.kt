@@ -3,11 +3,14 @@ package org.tokend.sdk.api.identity
 import com.github.jasminb.jsonapi.JSONAPIDocument
 import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.MappedRetrofitApiRequest
+import org.tokend.sdk.api.base.SimpleRetrofitApiRequest
+import org.tokend.sdk.api.base.model.AttributesEntity
 import org.tokend.sdk.api.base.model.DataEntity
 import org.tokend.sdk.api.base.model.DataPage
 import org.tokend.sdk.api.base.params.map
 import org.tokend.sdk.api.identity.model.IdentityResource
 import org.tokend.sdk.api.identity.model.MassEmailAccountKey
+import org.tokend.sdk.api.identity.model.SetPhoneRequestAttributes
 import org.tokend.sdk.api.identity.params.IdentitiesPageParams
 
 open class IdentitiesApi(
@@ -40,6 +43,16 @@ open class IdentitiesApi(
                         DataEntity(accountIds.map(::MassEmailAccountKey))
                 ),
                 JSONAPIDocument<List<IdentityResource>>::get
+        )
+    }
+
+    open fun setPhoneNumber(accountId: String,
+                            phoneNumber: String): ApiRequest<Void> {
+        return SimpleRetrofitApiRequest(
+                identitesService.setPhone(
+                        accountId,
+                        DataEntity(AttributesEntity(SetPhoneRequestAttributes(phoneNumber)))
+                )
         )
     }
 }
