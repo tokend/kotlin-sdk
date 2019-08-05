@@ -26,9 +26,9 @@ public class ExternalSystemIdResource extends BaseResource {
     }
     
     @JsonProperty("data")
-    private String data;
+    private ExternalSystemData data;
     
-    public String getData() {
+    public ExternalSystemData getData() {
         return data;
     }
     
