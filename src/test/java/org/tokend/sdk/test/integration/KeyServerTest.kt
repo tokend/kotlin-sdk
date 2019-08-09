@@ -287,7 +287,7 @@ class KeyServerTest {
     }
 
     @Test
-    fun eSignInInvalidCredentials() {
+    fun fSignInInvalidCredentials() {
         val email = "signUpInvalidCredentialsTest" + Random.nextInt().absoluteValue + "@mail.com"
         val password = "qwe123".toCharArray()
 
