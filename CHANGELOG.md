@@ -7,10 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
-## [Unreleased]
+## [2.7.0] 2019-08-09
+
+### Added
+- Actual Blobs API methods
+- Mass emails loading endpoint to `IdentitiesApi`
+- Phone number settings endpoint to `IdentitiesApi`
+- Transaction accept date to `SubmitTransactionResponse`
+- Ledger states to `SystemInfo`
+- `asset` filter to `ParticipantEffectsPageParams`
+- `KeyServer.recoverWalletPassword` method which initiates KYC recovery
+- `TfaFactor.Type.PHONE` for SMS 2FA
 
 ### Fixed
 - Generated resources for atomic swap ask and bid
+
+### Changed
+- Actualized generated resources
+- Actualized Documents API without interface change
+- Increased HTTP timeout to 30 seconds (was 20)
+
+### Removed
+- `status` attribute of `ClientRedirectPayload`
+
+### Deprecated
+- `DocumentsApi.getUrl` method with `accountId` param
+- `-AccountOwnedBlob` methods in `BlobsApi`
 
 ## [2.6.0] 2019-07-15
 
@@ -134,4 +156,5 @@ with `addExtraResources` method
 [2.4.0]: https://github.com/tokend/kotlin-sdk/compare/2.3.0...2.4.0
 [2.5.0]: https://github.com/tokend/kotlin-sdk/compare/2.4.0...2.5.0
 [2.6.0]: https://github.com/tokend/kotlin-sdk/compare/2.5.0...2.6.0
-[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/2.6.0...HEAD
+[2.7.0]: https://github.com/tokend/kotlin-sdk/compare/2.6.0...2.7.0
+[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/2.7.0...HEAD
