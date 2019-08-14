@@ -30,6 +30,14 @@ public class ClientResource extends BaseResource {
     @JsonProperty("status")
     private String status;
 
+    @Nullable
+    @JsonProperty("first_name")
+    private String firstName;
+
+    @Nullable
+    @JsonProperty("last_name")
+    private String lastName;
+
     @Relationship("balances")
     @Nullable
     private List<ClientBalanceResource> balances;
@@ -45,6 +53,16 @@ public class ClientResource extends BaseResource {
 
     public String getStatus() {
         return status;
+    }
+
+    @Nullable
+    public String getFirstName() {
+        return firstName;
+    }
+
+    @Nullable
+    public String getLastName() {
+        return lastName;
     }
 
     @Nullable
