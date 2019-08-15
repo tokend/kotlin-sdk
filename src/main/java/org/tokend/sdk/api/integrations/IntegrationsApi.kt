@@ -3,6 +3,8 @@ package org.tokend.sdk.api.integrations
 import org.tokend.sdk.api.base.BaseApi
 import org.tokend.sdk.api.integrations.dns.DnsApi
 import org.tokend.sdk.api.integrations.dns.DnsService
+import org.tokend.sdk.api.integrations.fiat.FiatApi
+import org.tokend.sdk.api.integrations.fiat.FiatService
 import org.tokend.sdk.signing.RequestSigner
 import org.tokend.sdk.tfa.TfaCallback
 import org.tokend.sdk.utils.CookieJarProvider
@@ -20,5 +22,9 @@ open class IntegrationsApi(
 ) {
     open val dns: DnsApi by lazy {
         DnsApi(getService(DnsService::class.java))
+    }
+
+    open val fiat: FiatApi by lazy {
+        FiatApi(getService(FiatService::class.java))
     }
 }
