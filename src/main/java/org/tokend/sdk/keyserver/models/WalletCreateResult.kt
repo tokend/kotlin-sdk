@@ -4,6 +4,5 @@ import org.tokend.wallet.Account
 
 data class WalletCreateResult(
         val walletData: WalletData,
-        val rootAccount: Account,
-        val recoveryAccount: Account
+        val rootAccount: Account
 )

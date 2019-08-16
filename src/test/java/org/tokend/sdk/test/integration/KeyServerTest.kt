@@ -36,7 +36,6 @@ class KeyServerTest {
         val result = keyServer.createAndSaveWallet(email, password).execute().get()
 
         System.out.println("Account ID is ${result.rootAccount.accountId}")
-        System.out.println("Recovery seed is ${result.recoveryAccount.secretSeed?.joinToString("")}")
 
         checkSignUpResult(email, password, result, keyServer)
     }
@@ -47,7 +46,6 @@ class KeyServerTest {
         val password = "qwe123".toCharArray()
 
         val rootAccount = Account.random()
-        val recoveryAccount = Account.random()
 
         val api = Util.getApi()
 
@@ -55,22 +53,15 @@ class KeyServerTest {
 
         System.out.println("Attempt to sign up $email ${password.joinToString("")}")
 
-        val result = keyServer.createAndSaveWallet(email, password, rootAccount, recoveryAccount)
+        val result = keyServer.createAndSaveWallet(email, password, rootAccount)
                 .execute().get()
 
         System.out.println("Account ID is ${result.rootAccount.accountId}")
-        System.out.println("Recovery seed is ${result.recoveryAccount.secretSeed?.joinToString("")}")
 
         Assert.assertArrayEquals(
                 "Result account must be equal to the provided one",
                 rootAccount.secretSeed,
                 result.rootAccount.secretSeed
-        )
-
-        Assert.assertArrayEquals(
-                "Result recovery account must be equal to the provided one",
-                recoveryAccount.secretSeed,
-                result.recoveryAccount.secretSeed
         )
 
         checkSignUpResult(email, password, result, keyServer)
@@ -138,7 +129,7 @@ class KeyServerTest {
 
         System.out.println("Attempt to sign up $email ${password.joinToString("")}")
 
-        val (wallet, rootAccount, _)
+        val (wallet, rootAccount)
                 = keyServer.createAndSaveWallet(email, password).execute().get()
         email = wallet.attributes!!.email
 
@@ -276,7 +267,7 @@ class KeyServerTest {
 
         System.out.println("Attempt to sign up $email ${password.joinToString("")}")
 
-        val (_, rootAccount, _) = keyServer.createAndSaveWallet(email, password).execute().get()
+        val (_, rootAccount) = keyServer.createAndSaveWallet(email, password).execute().get()
 
         val walletInfo = keyServer.getWalletInfo(email, password).execute().get()
 

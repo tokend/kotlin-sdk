@@ -30,11 +30,9 @@ open class WalletRelation(val name: String,
         }
 
     companion object {
-        const val RELATION_RECOVERY = "recovery"
         const val RELATION_PASSWORD_FACTOR = "factor"
         const val RELATION_PASSWORD = "password"
         const val RELATION_KDF = "kdf"
-        const val RELATION_REFERRER = "referrer"
         const val RELATION_TRANSACTION = "transaction"
         const val RELATION_SIGNER = "signer"
     }

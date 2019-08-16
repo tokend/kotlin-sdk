@@ -129,11 +129,10 @@ class KeyServer constructor(
     @JvmOverloads
     fun createAndSaveWallet(email: String,
                             password: CharArray,
-                            rootAccount: Account = Account.random(),
-                            recoveryAccount: Account = Account.random()
+                            rootAccount: Account = Account.random()
     ): ApiRequest<WalletCreateResult> {
         return MappedCallableApiRequest(
-                { getCreateAndSaveWalletResult(email, password, rootAccount, recoveryAccount) },
+                { getCreateAndSaveWalletResult(email, password, rootAccount) },
                 { it }
         )
     }
@@ -146,21 +145,19 @@ class KeyServer constructor(
     @Throws(EmailAlreadyTakenException::class)
     private fun getCreateAndSaveWalletResult(email: String,
                                              password: CharArray,
-                                             rootAccount: Account = Account.random(),
-                                             recoveryAccount: Account = Account.random()
+                                             rootAccount: Account = Account.random()
     ): WalletCreateResult {
         val loginParams = getLoginParams().execute().get()
 
         val kdf = loginParams.kdfAttributes
         val kdfVersion = loginParams.id
 
-        val result = KeyServer.createWallet(
+        val result = createWallet(
                 email,
                 password,
                 kdf,
                 kdfVersion,
-                rootAccount,
-                recoveryAccount
+                rootAccount
         )
 
         val remoteWalletData = saveWallet(result.walletData)
@@ -276,8 +273,7 @@ class KeyServer constructor(
                 email = currentWalletInfo.email,
                 password = newPassword,
                 loginParams = newLoginParams,
-                rootAccount = newAccount,
-                recoveryAccount = newAccount
+                rootAccount = newAccount
         )
 
         newLoginParams.kdfAttributes.encodedSalt = newWallet.walletData.attributes?.salt
@@ -332,7 +328,6 @@ class KeyServer constructor(
                 password = newPassword,
                 loginParams = newLoginParams,
                 rootAccount = newAccount,
-                recoveryAccount = newAccount,
                 walletType = WalletData.TYPE_RECOVERY
         )
 
@@ -374,12 +369,8 @@ class KeyServer constructor(
                 kdfAttributes: KdfAttributes,
                 kdfVersion: Long,
                 rootAccount: Account = Account.random(),
-                recoveryAccount: Account = Account.random(),
                 walletType: String = WalletData.TYPE_DEFAULT
         ): WalletCreateResult {
-            val recoveryAccountSeed = recoveryAccount.secretSeed
-                    ?: throw IllegalArgumentException("Recovery account must have private key")
-
             val derivationEmail = email.toLowerCase()
 
             val kdfSalt = kdfAttributes.salt ?: WalletKeyDerivation.generateKdfSalt()
@@ -425,28 +416,6 @@ class KeyServer constructor(
                     )
             )
 
-            val recoveryWalletKey = WalletKeyDerivation
-                    .deriveWalletEncryptionKey(derivationEmail, recoveryAccountSeed, kdfAttributesWithSalt)
-            val recoveryWalletId = WalletKeyDerivation
-                    .deriveAndEncodeWalletId(derivationEmail, recoveryAccountSeed, kdfAttributesWithSalt)
-
-            val encryptedRecovery = WalletEncryption.encryptAccount(
-                    derivationEmail,
-                    recoveryAccount,
-                    recoveryWalletKey,
-                    kdfSalt
-            )
-
-            wallet.addRelation(
-                    WalletRelation(
-                            WalletRelation.RELATION_RECOVERY,
-                            WalletRelation.RELATION_RECOVERY,
-                            recoveryWalletId,
-                            recoveryAccount.accountId,
-                            encryptedRecovery
-                    )
-            )
-
             wallet.addRelation(
                     WalletRelation(
                             WalletRelation.RELATION_SIGNER,
@@ -458,8 +427,7 @@ class KeyServer constructor(
 
             return WalletCreateResult(
                     wallet,
-                    rootAccount,
-                    recoveryAccount
+                    rootAccount
             )
         }
 
@@ -478,13 +446,12 @@ class KeyServer constructor(
                 password: CharArray,
                 loginParams: LoginParams,
                 rootAccount: Account = Account.random(),
-                recoveryAccount: Account = Account.random(),
                 walletType: String = WalletData.TYPE_DEFAULT
         ): WalletCreateResult {
             val kdf = loginParams.kdfAttributes
             val kdfVersion = loginParams.id
 
-            return createWallet(email, password, kdf, kdfVersion, rootAccount, recoveryAccount, walletType)
+            return createWallet(email, password, kdf, kdfVersion, rootAccount, walletType)
         }
 
         /**

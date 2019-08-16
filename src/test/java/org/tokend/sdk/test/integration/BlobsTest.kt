@@ -21,7 +21,7 @@ class BlobsTest {
 
         System.out.println("Attempt to sign up $email ${password.joinToString("")}")
 
-        val (wallet, rootAccount, _)
+        val (wallet, rootAccount)
                 = keyServer.createAndSaveWallet(email, password).execute().get()
         email = wallet.attributes!!.email
 
