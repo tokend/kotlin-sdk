@@ -17,6 +17,9 @@ public class IdentityResource extends BaseResource {
     @JsonProperty("phone_number")
     private String phoneNumber;
 
+    @JsonProperty("telegram_username")
+    private String telegramUsername;
+
     public String getAddress() {
         return address;
     }
@@ -29,8 +32,13 @@ public class IdentityResource extends BaseResource {
         return phoneNumber;
     }
 
+    public String getTelegramUsername() {
+        return telegramUsername;
+    }
+
     @Override
     public boolean isFilled() {
-        return address != null && email != null && phoneNumber != null;
+        return address != null && email != null && phoneNumber != null
+                && telegramUsername != null;
     }
 }

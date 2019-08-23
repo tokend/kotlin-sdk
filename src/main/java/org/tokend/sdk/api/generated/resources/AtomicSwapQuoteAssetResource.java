@@ -14,9 +14,9 @@ import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
 
 
-@Type("quote-assets")
+@Type("atomic-swap-quote-assets")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class QuoteAssetResource extends BaseResource {
+public class AtomicSwapQuoteAssetResource extends BaseResource {
     
     @JsonProperty("price")
     private BigDecimal price;
@@ -25,9 +25,17 @@ public class QuoteAssetResource extends BaseResource {
         return price;
     }
     
+    @JsonProperty("quote_asset")
+    private String quoteAsset;
+    
+    public String getQuoteAsset() {
+        return quoteAsset;
+    }
+    
     @Override
     public boolean isFilled() {
-        return             price != null 
+        return             price != null &&
+            quoteAsset != null 
         ;
     }
 }

@@ -48,9 +48,9 @@ public class AtomicSwapBidRequestDetailsResource extends RequestDetailsResource 
     }
     
     @Relationship("quote_asset")
-    private QuoteAssetResource quoteAsset;
+    private AtomicSwapQuoteAssetResource quoteAsset;
     
-    public QuoteAssetResource getQuoteAsset() {
+    public AtomicSwapQuoteAssetResource getQuoteAsset() {
         return quoteAsset;
     }
 }

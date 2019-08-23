@@ -85,9 +85,9 @@ public class AtomicSwapAskResource extends BaseResource {
     }
     
     @Relationship("quote_assets")
-    private List<QuoteAssetResource> quoteAssets;
+    private List<AtomicSwapQuoteAssetResource> quoteAssets;
     
-    public List<? extends QuoteAssetResource> getQuoteAssets() {
+    public List<? extends AtomicSwapQuoteAssetResource> getQuoteAssets() {
         return quoteAssets;
     }
 }

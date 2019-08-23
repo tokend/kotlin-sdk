@@ -11,7 +11,8 @@ open class NeedTfaException(val factorId: Long,
                             val token: String,
                             val keychainData: String,
                             val salt: String,
-                            val walletId: String)
+                            val walletId: String,
+                            val messengerBotUrl: String)
     : ForbiddenException("tfa_required", "Need $factorType TFA") {
 
     companion object {
@@ -21,6 +22,7 @@ open class NeedTfaException(val factorId: Long,
         private const val KEYCHAIN_DATA = "keychain_data"
         private const val SALT = "salt"
         private const val WALLET_ID = "wallet_id"
+        private const val MESSENGER_BOT_URL = "bot_url"
 
         @JvmStatic
         fun fromError(error: ServerError): NeedTfaException? {
@@ -34,7 +36,9 @@ open class NeedTfaException(val factorId: Long,
                         (meta?.get(TOKEN)?.asString).toString(),
                         (meta?.get(KEYCHAIN_DATA)?.asString).toString(),
                         (meta?.get(SALT)?.asString).toString(),
-                        (meta?.get(WALLET_ID)?.asString).toString())
+                        (meta?.get(WALLET_ID)?.asString).toString(),
+                        (meta?.get(MESSENGER_BOT_URL)?.asString).toString()
+                )
             }
 
             return null

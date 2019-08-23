@@ -11,6 +11,7 @@ import org.tokend.sdk.api.base.params.map
 import org.tokend.sdk.api.identity.model.IdentityResource
 import org.tokend.sdk.api.identity.model.MassEmailAccountKey
 import org.tokend.sdk.api.identity.model.SetPhoneRequestAttributes
+import org.tokend.sdk.api.identity.model.SetTelegramRequestAttributes
 import org.tokend.sdk.api.identity.params.IdentitiesPageParams
 
 open class IdentitiesApi(
@@ -52,6 +53,16 @@ open class IdentitiesApi(
                 identitesService.setPhone(
                         accountId,
                         DataEntity(AttributesEntity(SetPhoneRequestAttributes(phoneNumber)))
+                )
+        )
+    }
+
+    open fun setTelegramUsername(accountId: String,
+                                 username: String): ApiRequest<Void> {
+        return SimpleRetrofitApiRequest(
+                identitesService.setTelegramUsername(
+                        accountId,
+                        DataEntity(AttributesEntity(SetTelegramRequestAttributes(username)))
                 )
         )
     }

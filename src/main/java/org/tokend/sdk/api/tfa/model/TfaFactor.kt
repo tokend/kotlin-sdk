@@ -19,6 +19,8 @@ open class TfaFactor(
         EMAIL,
         @SerializedName("phone")
         PHONE,
+        @SerializedName("telegram")
+        TELEGRAM,
         UNKNOWN;
 
         companion object {

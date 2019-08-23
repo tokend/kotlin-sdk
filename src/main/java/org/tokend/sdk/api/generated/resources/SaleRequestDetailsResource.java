@@ -72,16 +72,16 @@ public class SaleRequestDetailsResource extends RequestDetailsResource {
     }
     
     @Relationship("quote_assets")
-    private List<QuoteAssetResource> quoteAssets;
+    private List<SaleQuoteAssetResource> quoteAssets;
     
-    public List<? extends QuoteAssetResource> getQuoteAssets() {
+    public List<? extends SaleQuoteAssetResource> getQuoteAssets() {
         return quoteAssets;
     }
     
     @Relationship("default_quote_asset")
-    private QuoteAssetResource defaultQuoteAsset;
+    private SaleQuoteAssetResource defaultQuoteAsset;
     
-    public QuoteAssetResource getDefaultQuoteAsset() {
+    public SaleQuoteAssetResource getDefaultQuoteAsset() {
         return defaultQuoteAsset;
     }
 }
