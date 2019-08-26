@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [2.8.0] 2019-08-26
+
+### Added
+- Fiat integration API
+- Payment proxy integration API
+
+### Changed
+- Actualized DNS integration API
+
+### Removed
+- Recovery seed concept – wallet creation methods in `KeyServer`
+are affected
+
 ## [2.7.0] 2019-08-09
 
 ### Added
@@ -157,4 +170,5 @@ with `addExtraResources` method
 [2.5.0]: https://github.com/tokend/kotlin-sdk/compare/2.4.0...2.5.0
 [2.6.0]: https://github.com/tokend/kotlin-sdk/compare/2.5.0...2.6.0
 [2.7.0]: https://github.com/tokend/kotlin-sdk/compare/2.6.0...2.7.0
-[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/2.7.0...HEAD
+[2.8.0]: https://github.com/tokend/kotlin-sdk/compare/2.7.0...2.8.0
+[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/2.8.0...HEAD
