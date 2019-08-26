@@ -12,6 +12,7 @@ import org.tokend.sdk.api.identity.model.IdentityResource
 import org.tokend.sdk.api.integrations.dns.model.BusinessResource
 import org.tokend.sdk.api.integrations.dns.model.ClientBalanceResource
 import org.tokend.sdk.api.integrations.dns.model.ClientResource
+import org.tokend.sdk.api.integrations.paymentproxy.model.PaymentAccountResource
 import org.tokend.sdk.utils.ApiDateUtil
 import org.tokend.sdk.utils.BigDecimalUtil
 import retrofit2.Converter
@@ -29,7 +30,8 @@ object JsonApiToolsProvider {
             IdentityResource::class.java,
             BusinessResource::class.java,
             ClientResource::class.java,
-            ClientBalanceResource::class.java
+            ClientBalanceResource::class.java,
+            PaymentAccountResource::class.java
     )
 
     /**
