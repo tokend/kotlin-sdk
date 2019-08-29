@@ -11,6 +11,18 @@ import java.util.regex.Pattern
 class DataPage<T>(val nextCursor: String?,
                   val items: List<T>,
                   val isLast: Boolean = false) {
+    /**
+     * @return a copy of the [DataPage] with items transformed
+     * by [transform]
+     */
+    inline fun <R> mapItems(transform: (T) -> R): DataPage<R> {
+        return DataPage(
+                nextCursor,
+                items.map(transform),
+                isLast
+        )
+    }
+
     companion object {
         fun <T> getNextCursor(page: Page<T>): String? {
             val nextLink = page.getLinks()?.next?.href ?: return null
