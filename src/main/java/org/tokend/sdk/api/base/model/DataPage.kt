@@ -23,6 +23,18 @@ class DataPage<T>(val nextCursor: String?,
         )
     }
 
+    /**
+     * @return a copy of the [DataPage] with only the non-null results of
+     * [transform] applied on it's items
+     */
+    inline fun <R: Any> mapItemsNotNull(transform: (T) -> R?): DataPage<R> {
+        return DataPage(
+                nextCursor,
+                items.mapNotNull(transform),
+                isLast
+        )
+    }
+
     companion object {
         fun <T> getNextCursor(page: Page<T>): String? {
             val nextLink = page.getLinks()?.next?.href ?: return null

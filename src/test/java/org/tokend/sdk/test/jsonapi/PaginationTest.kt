@@ -62,6 +62,21 @@ class PaginationTest {
     }
 
     @Test
+    fun dataPageMapNotNull() {
+        val source = DataPage(null, listOf(1, 2, 3, 4), true)
+        val transform: (Int) -> Int? = { i -> i.takeIf { it % 2 == 0}}
+        val mapped = source.mapItemsNotNull(transform)
+
+        Assert.assertEquals("Mapped page next cursor must be the same",
+                source.nextCursor, mapped.nextCursor)
+        Assert.assertEquals("Mapped page isLast must be the same",
+                source.isLast, mapped.isLast)
+        Assert.assertArrayEquals("Transformation must be applied properly",
+                source.items.mapNotNull(transform).toTypedArray(),
+                mapped.items.toTypedArray())
+    }
+
+    @Test
     fun invalidLinks() {
         val document = JSONAPIDocument<List<Int>>(
                 listOf(1, 2, 3, 4),
