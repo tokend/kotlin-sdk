@@ -35,6 +35,7 @@ dependencies {
     compile 'org.tokend:wallet:3.4.0'
 }
 repositories {
+    jcenter()
     mavenCentral()
     maven { url "https://maven.tokend.org" }
 }
