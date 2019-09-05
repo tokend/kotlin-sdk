@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [2.8.1] 2019-09-05
+
+### Added
+- Ability to map `DataPage` items
+- Initial marketplace integration API
+
+### Changed
+- Updated wallet module version to `3.4.1`
+
 ## [2.8.0] 2019-08-26
 
 ### Added
@@ -171,4 +180,5 @@ with `addExtraResources` method
 [2.6.0]: https://github.com/tokend/kotlin-sdk/compare/2.5.0...2.6.0
 [2.7.0]: https://github.com/tokend/kotlin-sdk/compare/2.6.0...2.7.0
 [2.8.0]: https://github.com/tokend/kotlin-sdk/compare/2.7.0...2.8.0
-[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/2.8.0...HEAD
+[2.8.1]: https://github.com/tokend/kotlin-sdk/compare/2.8.0...2.8.1
+[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/2.8.1...HEAD
