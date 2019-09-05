@@ -32,10 +32,9 @@ dependencies {
 
     compile 'org.tokend:crypto-cipher:1.0.2'
     compile 'org.tokend:crypto-kdf:1.0.4'
-    compile 'org.tokend:wallet:3.4.0'
+    compile 'org.tokend:wallet:3.4.1'
 }
 repositories {
-    jcenter()
     mavenCentral()
     maven { url "https://maven.tokend.org" }
 }

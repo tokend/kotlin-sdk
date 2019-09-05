@@ -67,6 +67,9 @@ For correct ProGuard minification add following lines to your project's `proguar
 
 # General
 -keepattributes SourceFile,LineNumberTable,*Annotation*,EnclosingMethod,Signature,Exceptions,InnerClasses
+
+# Uncomment this if you would like to decode XDRs
+#-keep class org.tokend.wallet.xdr.* { *; }
 ```
 
 ## Documentation
