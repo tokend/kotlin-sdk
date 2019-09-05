@@ -9,6 +9,7 @@ For **Gradle** add following lines to your project's `build.gradle`:
 allprojects {
     repositories {
         ...
+        jcenter()
         maven { url "https://maven.tokend.org" }
     }
 }
