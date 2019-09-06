@@ -38,6 +38,7 @@ For correct ProGuard processing add following lines to your project's `proguard-
 -keepattributes Signature, InnerClasses, EnclosingMethod
 -keepattributes RuntimeVisibleAnnotations, RuntimeVisibleParameterAnnotations
 -dontwarn javax.annotation.**
+-keepclassmembers enum * { *; }
 
 # Retrofit
 -dontwarn org.codehaus.**
