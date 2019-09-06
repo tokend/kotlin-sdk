@@ -32,41 +32,29 @@ val keyServer = KeyServer(api.wallets)
 If you would like to use RxJava in your project check out [Rx extensions for SDK](https://github.com/tokend/kotlin-sdk-rx-extensions).
 
 ### Android integration
-For correct ProGuard minification add following lines to your project's `proguard-rules.pro`:
+For correct ProGuard processing add following lines to your project's `proguard-rules.pro`:
 ```proguard
-# SDK
--dontwarn com.squareup.**
--dontwarn okio.**
--dontnote retrofit2.Platform
--dontwarn retrofit2.Platform$Java8
--dontwarn java.lang.**
--dontwarn javax.lang.**
+# General reflection
+-keepattributes Signature, InnerClasses, EnclosingMethod
+-keepattributes RuntimeVisibleAnnotations, RuntimeVisibleParameterAnnotations
 -dontwarn javax.annotation.**
--keep class com.google.gson.** { *; }
--keepclassmembers enum * { *; }
--keepclassmembers class * { @com.github.jasminb.jsonapi.annotations.Id <fields>; }
--keep class com.fasterxml.jackson.databind.ObjectMapper {
-    public <methods>;
-    protected <methods>;
+
+# Retrofit
+-dontwarn org.codehaus.**
+-keepclassmembers,allowshrinking,allowobfuscation interface * {
+    @retrofit2.http.* <methods>;
 }
--keep class com.fasterxml.jackson.databind.ObjectWriter { public ** writeValueAsString(**); }
--keepnames class com.fasterxml.jackson.** { *; }
--dontwarn com.fasterxml.jackson.databind.**
--keep class * implements com.github.jasminb.jsonapi.ResourceIdHandler
--keep class sun.misc.Unsafe { *; }
--keep class org.codehaus.** { *; }
--keep class com.fasterxml.jackson.annotation.** { *; }
--keep @com.fasterxml.jackson.annotation.JsonIgnoreProperties class * { *; }
--keep @com.fasterxml.jackson.annotation.JsonCreator class * { *; }
--keep @com.fasterxml.jackson.annotation.JsonValue class * { *; }
+
+# Jackson
 -keep class com.fasterxml.** { *; }
--keepclassmembers public final enum com.fasterxml.jackson.annotation.JsonAutoDetect$Visibility {
-    public static final com.fasterxml.jackson.annotation.JsonAutoDetect$Visibility *;
-}
+-keep @com.fasterxml.jackson.annotation.** class * { *; }
+-dontwarn com.fasterxml.jackson.databind.**
 
-# General
--keepattributes SourceFile,LineNumberTable,*Annotation*,EnclosingMethod,Signature,Exceptions,InnerClasses
+# JSONAPI
+-keepclassmembers class * { @com.github.jasminb.jsonapi.annotations.Id <fields>; }
+-keep class * implements com.github.jasminb.jsonapi.ResourceIdHandler
 
+# Wallet
 # Uncomment this if you would like to decode XDRs
 #-keep class org.tokend.wallet.xdr.* { *; }
 ```
