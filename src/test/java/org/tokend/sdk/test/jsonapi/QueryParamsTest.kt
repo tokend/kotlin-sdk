@@ -86,19 +86,21 @@ class QueryParamsTest {
 
     @Test
     fun balancesParams() {
-        val expected = "{filter[account]=$accountId, filter[asset]=ETH, include=account, order=desc, page[order]=desc}"
+        val expected = "{filter[asset]=ETH, filter[asset_owner]=OWNER, filter[owner]=$accountId, include=account,state, order=desc, page[order]=desc}"
 
         val params = BalancesPageParams(
                 asset = "ETH",
                 account = accountId,
-                include = listOf(BalanceParams.Includes.ACCOUNT),
+                assetOwner = "OWNER",
+                include = listOf(BalanceParams.Includes.ACCOUNT, BalanceParams.Includes.STATE),
                 pagingParams = PagingParamsV2(PagingOrder.DESC)
         )
 
         val builtParams = BalancesPageParams.Builder()
                 .withAsset("ETH")
                 .withAccount(accountId)
-                .withInclude(BalanceParams.Includes.ACCOUNT)
+                .withAssetOwner("OWNER")
+                .withInclude(BalanceParams.Includes.ACCOUNT, BalanceParams.Includes.STATE)
                 .withPagingParams(PagingParamsV2(PagingOrder.DESC))
                 .build()
 

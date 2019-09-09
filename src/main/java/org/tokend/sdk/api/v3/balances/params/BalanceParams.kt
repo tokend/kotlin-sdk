@@ -12,6 +12,7 @@ open class BalanceParams(
         companion object {
             const val ACCOUNT = "account"
             const val ASSET = "asset"
+            const val STATE = "state"
         }
     }
 }
