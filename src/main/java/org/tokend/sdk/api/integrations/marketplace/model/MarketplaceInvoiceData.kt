@@ -11,7 +11,7 @@ sealed class MarketplaceInvoiceData {
             val amount: BigDecimal
     ) : MarketplaceInvoiceData() {
         companion object {
-            const val TYPE = "crypto"
+            const val TYPE = "crypto_invoice"
         }
     }
 
