@@ -5,6 +5,8 @@ import org.tokend.sdk.api.integrations.dns.DnsApi
 import org.tokend.sdk.api.integrations.dns.DnsService
 import org.tokend.sdk.api.integrations.fiat.FiatApi
 import org.tokend.sdk.api.integrations.fiat.FiatService
+import org.tokend.sdk.api.integrations.locator.LocatorApi
+import org.tokend.sdk.api.integrations.locator.LocatorService
 import org.tokend.sdk.api.integrations.marketplace.MarketplaceApi
 import org.tokend.sdk.api.integrations.marketplace.MarketplaceService
 import org.tokend.sdk.api.integrations.paymentproxy.PaymentProxyApi
@@ -38,5 +40,9 @@ open class IntegrationsApi(
 
     open val marketplace: MarketplaceApi by lazy {
         MarketplaceApi(getService(MarketplaceService::class.java))
+    }
+
+    open val locator: LocatorApi by lazy {
+        LocatorApi(getService(LocatorService::class.java))
     }
 }
