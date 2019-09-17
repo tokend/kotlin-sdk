@@ -7,6 +7,8 @@ import org.tokend.sdk.api.base.params.PagingParamsV2
 import org.tokend.sdk.api.blobs.model.BlobType
 import org.tokend.sdk.api.blobs.params.BlobPageParams
 import org.tokend.sdk.api.identity.params.IdentitiesPageParams
+import org.tokend.sdk.api.integrations.marketplace.params.MarketplaceOfferParams
+import org.tokend.sdk.api.integrations.marketplace.params.MarketplaceOffersPageParams
 import org.tokend.sdk.api.requests.model.base.RequestState
 import org.tokend.sdk.api.sales.model.SaleState
 import org.tokend.sdk.api.v3.assetpairs.params.AssetPairParams
@@ -517,6 +519,36 @@ class QueryParamsTest {
                         AtomicSwapAskParams.Includes.OWNER,
                         AtomicSwapAskParams.Includes.QUOTE_ASSETS
                 )
+                .withPagingParams(
+                        PagingParamsV2(
+                                order = PagingOrder.DESC,
+                                limit = 10,
+                                page = "8"
+                        )
+                )
+                .build()
+
+        Assert.assertEquals(expected, params.map().toSortedMap().toString())
+        Assert.assertEquals(expected, builtParams.map().toSortedMap().toString())
+    }
+
+    @Test
+    fun marketplaceOffersPageParams() {
+        val expected = "{cursor=8, filter[owner]=$accountId, include=payment_methods, limit=10, order=desc, page=8, page[cursor]=8, page[limit]=10, page[number]=8, page[order]=desc}"
+
+        val params = MarketplaceOffersPageParams(
+                owner = accountId,
+                include = listOf(MarketplaceOfferParams.Includes.PAYMENT_METHODS),
+                pagingParams = PagingParamsV2(
+                        order = PagingOrder.DESC,
+                        limit = 10,
+                        page = "8"
+                )
+        )
+
+        val builtParams = MarketplaceOffersPageParams.Builder()
+                .withOwner(accountId)
+                .withInclude(MarketplaceOfferParams.Includes.PAYMENT_METHODS)
                 .withPagingParams(
                         PagingParamsV2(
                                 order = PagingOrder.DESC,
