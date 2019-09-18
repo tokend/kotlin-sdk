@@ -51,6 +51,7 @@ public class AllResources {
         LimitResource.class,
         ChangeRoleRequestDetailsResource.class,
         OpPaymentDetailsResource.class,
+        SwapResource.class,
         ConvertedBalanceStateResource.class,
         AssetUpdateREquestDetailsResource.class,
         OpManageSignerRuleDetailsResource.class,
