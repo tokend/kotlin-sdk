@@ -29,6 +29,8 @@ import org.tokend.sdk.api.v3.sales.SalesApiV3
 import org.tokend.sdk.api.v3.sales.SalesServiceV3
 import org.tokend.sdk.api.v3.signers.SignersApiV3
 import org.tokend.sdk.api.v3.signers.SignersServiceV3
+import org.tokend.sdk.api.v3.swaps.SwapsApi
+import org.tokend.sdk.api.v3.swaps.SwapsService
 import org.tokend.sdk.api.v3.transactions.TransactionsApiV3
 import org.tokend.sdk.api.v3.transactions.TransactionsServiceV3
 import org.tokend.sdk.signing.RequestSigner
@@ -103,5 +105,9 @@ open class TokenDApiV3(rootUrl: String,
 
     open val atomicSwaps: AtomicSwapsApi by lazy {
         AtomicSwapsApi(getService(AtomicSwapsService::class.java))
+    }
+
+    open val swaps: SwapsApi by lazy {
+        SwapsApi(getService(SwapsService::class.java))
     }
 }
