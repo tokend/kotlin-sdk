@@ -74,6 +74,15 @@ public class SwapResource extends BaseResource {
         return details;
     }
     
+    @JsonProperty("secret")
+    @Nullable
+    private String secret;
+    
+    @Nullable
+    public String getSecret() {
+        return secret;
+    }
+    
     @Override
     public boolean isFilled() {
         return             createdAt != null &&
