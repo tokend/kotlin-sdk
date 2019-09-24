@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [2.9.0] 2019-09-24
+
+### Added
+- Locator integration API
+- Swaps API
+
+### Changed
+- Actualized balances API query params
+- Updated wallet module version to `3.5.0`
+
+### Fixed
+- Missing ProGuard rule for enums
+- Invalid marketplace invoice type for crypto
+
 ## [2.8.2] 2019-09-06
 
 ### Added
@@ -191,4 +205,5 @@ with `addExtraResources` method
 [2.8.0]: https://github.com/tokend/kotlin-sdk/compare/2.7.0...2.8.0
 [2.8.1]: https://github.com/tokend/kotlin-sdk/compare/2.8.0...2.8.1
 [2.8.2]: https://github.com/tokend/kotlin-sdk/compare/2.8.1...2.8.2
-[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/2.8.2...HEAD
+[2.8.2]: https://github.com/tokend/kotlin-sdk/compare/2.8.2...2.9.0
+[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/2.9.0...HEAD
