@@ -7,12 +7,11 @@ import org.tokend.sdk.api.base.params.map
 import org.tokend.sdk.api.generated.resources.SwapResource
 import org.tokend.sdk.api.v3.swaps.params.SwapsPageParams
 
-// TODO: Complete me
 open class SwapsApi(
         protected open val swapsService: SwapsService
 ) {
     @JvmOverloads
-    open fun getSwaps(params: SwapsPageParams? = null): ApiRequest<DataPage<SwapResource>> {
+    open fun get(params: SwapsPageParams? = null): ApiRequest<DataPage<SwapResource>> {
         return MappedRetrofitApiRequest(
                 swapsService.getSwapsPage(params.map()),
                 DataPage.Companion::fromPageDocument

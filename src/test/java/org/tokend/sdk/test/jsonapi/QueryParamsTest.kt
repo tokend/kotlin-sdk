@@ -33,6 +33,9 @@ import org.tokend.sdk.api.v3.requests.params.RequestParamsV3
 import org.tokend.sdk.api.v3.requests.params.RequestsPageParamsV3
 import org.tokend.sdk.api.v3.sales.params.SaleParamsV3
 import org.tokend.sdk.api.v3.sales.params.SalesPageParamsV3
+import org.tokend.sdk.api.v3.swaps.model.SwapState
+import org.tokend.sdk.api.v3.swaps.params.SwapParams
+import org.tokend.sdk.api.v3.swaps.params.SwapsPageParams
 import org.tokend.sdk.api.v3.transactions.params.TransactionsPageParams
 import org.tokend.sdk.test.Config
 import org.tokend.wallet.xdr.*
@@ -556,6 +559,47 @@ class QueryParamsTest {
                                 page = "8"
                         )
                 )
+                .build()
+
+        Assert.assertEquals(expected, params.map().toSortedMap().toString())
+        Assert.assertEquals(expected, builtParams.map().toSortedMap().toString())
+    }
+
+    @Test
+    fun swapsPageParams() {
+        val expected = "{cursor=8, filter[destination]=DEST_$accountId, filter[destination_balance]=DEST_BALANCE, filter[source]=$accountId, filter[source_balance]=SOURCE_BALANCE, filter[state]=1, include=asset,destination_balance,source_balance, limit=10, order=desc, page=8, page[cursor]=8, page[limit]=10, page[number]=8, page[order]=desc}"
+
+        val params = SwapsPageParams(
+                source = accountId,
+                destination = "DEST_" + accountId,
+                sourceBalance = "SOURCE_BALANCE",
+                destinationBalance = "DEST_BALANCE",
+                state = SwapState.OPEN,
+                pagingParams = PagingParamsV2(
+                        order = PagingOrder.DESC,
+                        limit = 10,
+                        page = "8"
+                ),
+                include = listOf(
+                        SwapParams.Includes.ASSET, SwapParams.Includes.DESTINATION_BALANCE,
+                        SwapParams.Includes.SOURCE_BALANCE
+
+                )
+        )
+
+        val builtParams = SwapsPageParams.Builder()
+                .withSource(accountId)
+                .withDestination("DEST_" + accountId)
+                .withSourceBalance("SOURCE_BALANCE")
+                .withDestinationBalance("DEST_BALANCE")
+                .withState(SwapState.OPEN)
+                .withPagingParams(PagingParamsV2(
+                        order = PagingOrder.DESC,
+                        limit = 10,
+                        page = "8"
+                ))
+                .withInclude(SwapParams.Includes.ASSET, SwapParams.Includes.DESTINATION_BALANCE,
+                        SwapParams.Includes.SOURCE_BALANCE)
                 .build()
 
         Assert.assertEquals(expected, params.map().toSortedMap().toString())

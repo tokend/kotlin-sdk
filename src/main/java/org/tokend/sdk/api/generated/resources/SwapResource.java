@@ -33,9 +33,9 @@ public class SwapResource extends BaseResource {
     }
     
     @JsonProperty("state")
-    private Integer state;
+    private XdrEnumValue state;
     
-    public Integer getState() {
+    public XdrEnumValue getState() {
         return state;
     }
     
