@@ -6,25 +6,33 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 object ApiDateUtil {
-    private val supported = arrayOf<DateFormat>(
-            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS"),
-            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"),
-            SimpleDateFormat("yyyy-MM-dd HH:mm:ss"),
-            SimpleDateFormat("yyyy-MM-dd HH:mm"),
-            SimpleDateFormat("yyyy-MM-dd"))
+    private val utcTimezone = TimeZone.getTimeZone("UTC")
+    private val defaultFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
+            .utcTimeZone()
+
+    private val supported = arrayOf(
+            defaultFormat,
+            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").utcTimeZone(),
+            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").utcTimeZone(),
+            SimpleDateFormat("yyyy-MM-dd HH:mm:ss").utcTimeZone(),
+            SimpleDateFormat("yyyy-MM-dd HH:mm").utcTimeZone(),
+            SimpleDateFormat("yyyy-MM-dd").utcTimeZone()
+    )
 
     /**
      * Allow to safety parse Date from String.
+     *
+     * Method is synchronised!
+     *
      * @return parsed value or current Date.
      */
-    fun tryParseDate(strDate: String?): Date {
+    fun tryParseDate(strDate: String?): Date = synchronized(this) {
         if (strDate.isNullOrEmpty())
             return Date()
         for (format in supported) {
-            format.timeZone = TimeZone.getTimeZone("UTC")
             try {
                 return format.parse(strDate)
-            } catch (ignored: ParseException) {
+            } catch (_: ParseException) {
             }
         }
         return Date()
@@ -35,11 +43,10 @@ object ApiDateUtil {
      * @return formatted String or empty String if [dateForRequest] is null.
      */
     fun formatDateForRequest(dateForRequest: Date?): String {
-        dateForRequest?.let { date ->
-            val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
-            format.timeZone = TimeZone.getTimeZone("UTC")
-            return format.format(date)
-        }
-        return ""
+        return dateForRequest?.let(defaultFormat::format) ?: ""
+    }
+
+    private fun DateFormat.utcTimeZone(): DateFormat = apply {
+        timeZone = utcTimezone
     }
 }
