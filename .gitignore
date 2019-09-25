@@ -39,3 +39,4 @@ captures/
 .idea/
 
 repoCredentials.gradle
+src/test/java/org/tokend/sdk/dev/
