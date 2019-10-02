@@ -13,17 +13,17 @@ import org.jetbrains.annotations.Nullable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Fee {
     
-    @JsonProperty("fixed")
-    private BigDecimal fixed;
-    
-    public BigDecimal getFixed() {
-        return fixed;
-    }
-    
     @JsonProperty("calculated_percent")
     private BigDecimal calculatedPercent;
     
     public BigDecimal getCalculatedPercent() {
         return calculatedPercent;
+    }
+    
+    @JsonProperty("fixed")
+    private BigDecimal fixed;
+    
+    public BigDecimal getFixed() {
+        return fixed;
     }
 }

@@ -9,6 +9,7 @@ import com.github.jasminb.jsonapi.annotations.*;
 import org.tokend.sdk.api.generated.*;
 import org.tokend.sdk.api.generated.resources.*;
 import org.tokend.sdk.api.generated.inner.*;
+import org.tokend.sdk.api.generated.inner.Enum;
 import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
@@ -18,25 +19,18 @@ import org.tokend.sdk.api.base.model.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ConvertedBalanceStateResource extends BaseResource {
     
-    @JsonProperty("price")
-    private BigDecimal price;
+    @JsonProperty("converted_amounts")
+    private BalanceStateAttributeAmounts convertedAmounts;
     
-    public BigDecimal getPrice() {
-        return price;
+    public BalanceStateAttributeAmounts getConvertedAmounts() {
+        return convertedAmounts;
     }
     
     @JsonProperty("initial_amounts")
-    private BalanceStateAmounts initialAmounts;
+    private BalanceStateAttributeAmounts initialAmounts;
     
-    public BalanceStateAmounts getInitialAmounts() {
+    public BalanceStateAttributeAmounts getInitialAmounts() {
         return initialAmounts;
-    }
-    
-    @JsonProperty("converted_amounts")
-    private BalanceStateAmounts convertedAmounts;
-    
-    public BalanceStateAmounts getConvertedAmounts() {
-        return convertedAmounts;
     }
     
     @JsonProperty("is_converted")
@@ -46,12 +40,19 @@ public class ConvertedBalanceStateResource extends BaseResource {
         return isConverted;
     }
     
+    @JsonProperty("price")
+    private BigDecimal price;
+    
+    public BigDecimal getPrice() {
+        return price;
+    }
+    
     @Override
     public boolean isFilled() {
-        return             price != null &&
+        return             convertedAmounts != null &&
             initialAmounts != null &&
-            convertedAmounts != null &&
-            isConverted != null 
+            isConverted != null &&
+            price != null 
         ;
     }
     

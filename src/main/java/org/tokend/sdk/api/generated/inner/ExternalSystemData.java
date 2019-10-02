@@ -13,17 +13,17 @@ import org.jetbrains.annotations.Nullable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ExternalSystemData {
     
-    @JsonProperty("type")
-    private String type;
-    
-    public String getType() {
-        return type;
-    }
-    
     @JsonProperty("data")
     private ExternalSystemDataEntry data;
     
     public ExternalSystemDataEntry getData() {
         return data;
+    }
+    
+    @JsonProperty("type")
+    private String type;
+    
+    public String getType() {
+        return type;
     }
 }

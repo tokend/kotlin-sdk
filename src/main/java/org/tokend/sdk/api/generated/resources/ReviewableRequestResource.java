@@ -9,6 +9,7 @@ import com.github.jasminb.jsonapi.annotations.*;
 import org.tokend.sdk.api.generated.*;
 import org.tokend.sdk.api.generated.resources.*;
 import org.tokend.sdk.api.generated.inner.*;
+import org.tokend.sdk.api.generated.inner.Enum;
 import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
@@ -18,50 +19,11 @@ import org.tokend.sdk.api.base.model.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ReviewableRequestResource extends BaseResource {
     
-    @JsonProperty("reference")
-    @Nullable
-    private String reference;
-    
-    @Nullable
-    public String getReference() {
-        return reference;
-    }
-    
-    @JsonProperty("reject_reason")
-    private String rejectReason;
-    
-    public String getRejectReason() {
-        return rejectReason;
-    }
-    
-    @JsonProperty("hash")
-    private String hash;
-    
-    public String getHash() {
-        return hash;
-    }
-    
     @JsonProperty("all_tasks")
     private Long allTasks;
     
     public Long getAllTasks() {
         return allTasks;
-    }
-    
-    @JsonProperty("pending_tasks")
-    private Long pendingTasks;
-    
-    public Long getPendingTasks() {
-        return pendingTasks;
-    }
-    
-    @JsonProperty("external_details")
-    @Nullable
-    private JsonNode externalDetails;
-    
-    @Nullable
-    public JsonNode getExternalDetails() {
-        return externalDetails;
     }
     
     @JsonProperty("created_at")
@@ -71,11 +33,39 @@ public class ReviewableRequestResource extends BaseResource {
         return createdAt;
     }
     
-    @JsonProperty("updated_at")
-    private Date updatedAt;
+    @JsonProperty("external_details")
+    private JsonNode externalDetails;
     
-    public Date getUpdatedAt() {
-        return updatedAt;
+    public JsonNode getExternalDetails() {
+        return externalDetails;
+    }
+    
+    @JsonProperty("hash")
+    private String hash;
+    
+    public String getHash() {
+        return hash;
+    }
+    
+    @JsonProperty("pending_tasks")
+    private Long pendingTasks;
+    
+    public Long getPendingTasks() {
+        return pendingTasks;
+    }
+    
+    @JsonProperty("reference")
+    private String reference;
+    
+    public String getReference() {
+        return reference;
+    }
+    
+    @JsonProperty("reject_reason")
+    private String rejectReason;
+    
+    public String getRejectReason() {
+        return rejectReason;
     }
     
     @JsonProperty("state")
@@ -92,25 +82,41 @@ public class ReviewableRequestResource extends BaseResource {
         return stateI;
     }
     
-    @JsonProperty("xdr_type")
-    private XdrEnumValue xdrType;
+    @JsonProperty("updated_at")
+    private Date updatedAt;
     
-    public XdrEnumValue getXdrType() {
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+    
+    @JsonProperty("xdr_type")
+    private Enum xdrType;
+    
+    public Enum getXdrType() {
         return xdrType;
     }
     
     @Override
     public boolean isFilled() {
-        return             rejectReason != null &&
-            hash != null &&
-            allTasks != null &&
-            pendingTasks != null &&
+        return             allTasks != null &&
             createdAt != null &&
-            updatedAt != null &&
+            externalDetails != null &&
+            hash != null &&
+            pendingTasks != null &&
+            reference != null &&
+            rejectReason != null &&
             state != null &&
             stateI != null &&
+            updatedAt != null &&
             xdrType != null 
         ;
+    }
+    
+    @Relationship("request_details")
+    private BaseReviewableRequestDetailsResource requestDetails;
+    
+    public BaseReviewableRequestDetailsResource getRequestDetails() {
+        return requestDetails;
     }
     
     @Relationship("requestor")
@@ -125,12 +131,5 @@ public class ReviewableRequestResource extends BaseResource {
     
     public AccountResource getReviewer() {
         return reviewer;
-    }
-    
-    @Relationship("request_details")
-    private RequestDetailsResource requestDetails;
-    
-    public RequestDetailsResource getRequestDetails() {
-        return requestDetails;
     }
 }

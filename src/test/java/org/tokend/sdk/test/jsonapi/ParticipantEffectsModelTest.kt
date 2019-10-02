@@ -2,7 +2,7 @@ package org.tokend.sdk.test.jsonapi
 
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import org.tokend.sdk.api.generated.resources.ParticipantEffectResource
+import org.tokend.sdk.api.generated.resources.ParticipantsEffectResource
 import org.tokend.sdk.factory.JsonApiToolsProvider
 
 class ParticipantEffectsModelTest {
@@ -11,7 +11,7 @@ class ParticipantEffectsModelTest {
     fun participantEffectsList() {
         val document = JsonApiToolsProvider.getResourceConverter().readDocumentCollection(
                 participantEffectsResponse.toByteArray(),
-                ParticipantEffectResource::class.java
+                ParticipantsEffectResource::class.java
         )
 
         val entityList = document.get()

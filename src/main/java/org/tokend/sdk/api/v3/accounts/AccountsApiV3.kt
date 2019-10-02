@@ -48,7 +48,7 @@ open class AccountsApiV3(
     /**
      * @return limits of an account with given ID without includes.
      */
-    open fun getLimits(accountId: String): ApiRequest<List<LimitResource>> {
+    open fun getLimits(accountId: String): ApiRequest<List<LimitsResource>> {
         return getById(accountId, AccountParamsV3(
                 listOf(AccountParamsV3.Includes.LIMITS)
         ))
@@ -60,7 +60,7 @@ open class AccountsApiV3(
      *
      * Should be signed by signer of requested account or signer of master account
      */
-    open fun getFees(accountId: String): ApiRequest<List<FeeResource>> {
+    open fun getFees(accountId: String): ApiRequest<List<FeeRecordResource>> {
         return getById(accountId, AccountParamsV3(
                 listOf(AccountParamsV3.Includes.FEES)
         ))

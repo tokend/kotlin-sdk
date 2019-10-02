@@ -9,6 +9,7 @@ import com.github.jasminb.jsonapi.annotations.*;
 import org.tokend.sdk.api.generated.*;
 import org.tokend.sdk.api.generated.resources.*;
 import org.tokend.sdk.api.generated.inner.*;
+import org.tokend.sdk.api.generated.inner.Enum;
 import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
@@ -18,13 +19,6 @@ import org.tokend.sdk.api.base.model.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CalculatedFeeResource extends BaseResource {
     
-    @JsonProperty("fixed")
-    private BigDecimal fixed;
-    
-    public BigDecimal getFixed() {
-        return fixed;
-    }
-    
     @JsonProperty("calculated_percent")
     private BigDecimal calculatedPercent;
     
@@ -32,10 +26,17 @@ public class CalculatedFeeResource extends BaseResource {
         return calculatedPercent;
     }
     
+    @JsonProperty("fixed")
+    private BigDecimal fixed;
+    
+    public BigDecimal getFixed() {
+        return fixed;
+    }
+    
     @Override
     public boolean isFilled() {
-        return             fixed != null &&
-            calculatedPercent != null 
+        return             calculatedPercent != null &&
+            fixed != null 
         ;
     }
 }

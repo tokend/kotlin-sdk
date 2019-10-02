@@ -9,6 +9,7 @@ import com.github.jasminb.jsonapi.annotations.*;
 import org.tokend.sdk.api.generated.*;
 import org.tokend.sdk.api.generated.resources.*;
 import org.tokend.sdk.api.generated.inner.*;
+import org.tokend.sdk.api.generated.inner.Enum;
 import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
@@ -17,20 +18,6 @@ import org.tokend.sdk.api.base.model.*;
 @Type("asset-pairs")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AssetPairResource extends BaseResource {
-    
-    @JsonProperty("price")
-    private BigDecimal price;
-    
-    public BigDecimal getPrice() {
-        return price;
-    }
-    
-    @JsonProperty("policies")
-    private XdrEnumBitmask policies;
-    
-    public XdrEnumBitmask getPolicies() {
-        return policies;
-    }
     
     @JsonProperty("max_price_step")
     private BigDecimal maxPriceStep;
@@ -46,12 +33,26 @@ public class AssetPairResource extends BaseResource {
         return physicalPriceCorrection;
     }
     
+    @JsonProperty("policies")
+    private Mask policies;
+    
+    public Mask getPolicies() {
+        return policies;
+    }
+    
+    @JsonProperty("price")
+    private BigDecimal price;
+    
+    public BigDecimal getPrice() {
+        return price;
+    }
+    
     @Override
     public boolean isFilled() {
-        return             price != null &&
+        return             maxPriceStep != null &&
+            physicalPriceCorrection != null &&
             policies != null &&
-            maxPriceStep != null &&
-            physicalPriceCorrection != null 
+            price != null 
         ;
     }
     

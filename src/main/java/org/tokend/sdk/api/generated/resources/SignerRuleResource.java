@@ -9,6 +9,7 @@ import com.github.jasminb.jsonapi.annotations.*;
 import org.tokend.sdk.api.generated.*;
 import org.tokend.sdk.api.generated.resources.*;
 import org.tokend.sdk.api.generated.inner.*;
+import org.tokend.sdk.api.generated.inner.Enum;
 import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
@@ -18,18 +19,18 @@ import org.tokend.sdk.api.base.model.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SignerRuleResource extends BaseResource {
     
-    @JsonProperty("resource")
-    private JsonNode resource;
+    @JsonProperty("action")
+    private Enum action;
     
-    public JsonNode getResource() {
-        return resource;
+    public Enum getAction() {
+        return action;
     }
     
-    @JsonProperty("action")
-    private XdrEnumValue action;
+    @JsonProperty("details")
+    private JsonNode details;
     
-    public XdrEnumValue getAction() {
-        return action;
+    public JsonNode getDetails() {
+        return details;
     }
     
     @JsonProperty("forbids")
@@ -46,28 +47,21 @@ public class SignerRuleResource extends BaseResource {
         return isDefault;
     }
     
-    @JsonProperty("details")
-    private JsonNode details;
+    @JsonProperty("resource")
+    private JsonNode resource;
     
-    public JsonNode getDetails() {
-        return details;
+    public JsonNode getResource() {
+        return resource;
     }
     
     @Override
     public boolean isFilled() {
-        return             resource != null &&
-            action != null &&
+        return             action != null &&
+            details != null &&
             forbids != null &&
             isDefault != null &&
-            details != null 
+            resource != null 
         ;
-    }
-    
-    @Relationship("rules")
-    private List<SignerRuleResource> rules;
-    
-    public List<? extends SignerRuleResource> getRules() {
-        return rules;
     }
     
     @Relationship("owner")

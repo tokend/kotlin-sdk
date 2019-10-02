@@ -9,6 +9,7 @@ import com.github.jasminb.jsonapi.annotations.*;
 import org.tokend.sdk.api.generated.*;
 import org.tokend.sdk.api.generated.resources.*;
 import org.tokend.sdk.api.generated.inner.*;
+import org.tokend.sdk.api.generated.inner.Enum;
 import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
@@ -18,34 +19,6 @@ import org.tokend.sdk.api.base.model.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SwapResource extends BaseResource {
     
-    @JsonProperty("created_at")
-    private Date createdAt;
-    
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-    
-    @JsonProperty("lock_time")
-    private Date lockTime;
-    
-    public Date getLockTime() {
-        return lockTime;
-    }
-    
-    @JsonProperty("state")
-    private XdrEnumValue state;
-    
-    public XdrEnumValue getState() {
-        return state;
-    }
-    
-    @JsonProperty("secret_hash")
-    private String secretHash;
-    
-    public String getSecretHash() {
-        return secretHash;
-    }
-    
     @JsonProperty("amount")
     private BigDecimal amount;
     
@@ -53,11 +26,11 @@ public class SwapResource extends BaseResource {
         return amount;
     }
     
-    @JsonProperty("source_fee")
-    private Fee sourceFee;
+    @JsonProperty("created_at")
+    private Date createdAt;
     
-    public Fee getSourceFee() {
-        return sourceFee;
+    public Date getCreatedAt() {
+        return createdAt;
     }
     
     @JsonProperty("destination_fee")
@@ -74,33 +47,60 @@ public class SwapResource extends BaseResource {
         return details;
     }
     
+    @JsonProperty("lock_time")
+    private Date lockTime;
+    
+    public Date getLockTime() {
+        return lockTime;
+    }
+    
     @JsonProperty("secret")
-    @Nullable
     private String secret;
     
-    @Nullable
     public String getSecret() {
         return secret;
     }
     
+    @JsonProperty("secret_hash")
+    private String secretHash;
+    
+    public String getSecretHash() {
+        return secretHash;
+    }
+    
+    @JsonProperty("source_fee")
+    private Fee sourceFee;
+    
+    public Fee getSourceFee() {
+        return sourceFee;
+    }
+    
+    @JsonProperty("state")
+    private Integer state;
+    
+    public Integer getState() {
+        return state;
+    }
+    
     @Override
     public boolean isFilled() {
-        return             createdAt != null &&
-            lockTime != null &&
-            state != null &&
-            secretHash != null &&
-            amount != null &&
-            sourceFee != null &&
+        return             amount != null &&
+            createdAt != null &&
             destinationFee != null &&
-            details != null 
+            details != null &&
+            lockTime != null &&
+            secret != null &&
+            secretHash != null &&
+            sourceFee != null &&
+            state != null 
         ;
     }
     
-    @Relationship("source")
-    private AccountResource source;
+    @Relationship("asset")
+    private AssetResource asset;
     
-    public AccountResource getSource() {
-        return source;
+    public AssetResource getAsset() {
+        return asset;
     }
     
     @Relationship("destination")
@@ -110,13 +110,6 @@ public class SwapResource extends BaseResource {
         return destination;
     }
     
-    @Relationship("source_balance")
-    private BalanceResource sourceBalance;
-    
-    public BalanceResource getSourceBalance() {
-        return sourceBalance;
-    }
-    
     @Relationship("destination_balance")
     private BalanceResource destinationBalance;
     
@@ -124,10 +117,17 @@ public class SwapResource extends BaseResource {
         return destinationBalance;
     }
     
-    @Relationship("asset")
-    private AssetResource asset;
+    @Relationship("source")
+    private AccountResource source;
     
-    public AssetResource getAsset() {
-        return asset;
+    public AccountResource getSource() {
+        return source;
+    }
+    
+    @Relationship("source_balance")
+    private BalanceResource sourceBalance;
+    
+    public BalanceResource getSourceBalance() {
+        return sourceBalance;
     }
 }

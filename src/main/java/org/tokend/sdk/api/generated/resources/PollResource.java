@@ -9,6 +9,7 @@ import com.github.jasminb.jsonapi.annotations.*;
 import org.tokend.sdk.api.generated.*;
 import org.tokend.sdk.api.generated.resources.*;
 import org.tokend.sdk.api.generated.inner.*;
+import org.tokend.sdk.api.generated.inner.Enum;
 import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
@@ -54,9 +55,9 @@ public class PollResource extends BaseResource {
     }
     
     @JsonProperty("poll_state")
-    private XdrEnumValue pollState;
+    private Integer pollState;
     
-    public XdrEnumValue getPollState() {
+    public Integer getPollState() {
         return pollState;
     }
     
@@ -94,17 +95,17 @@ public class PollResource extends BaseResource {
         return owner;
     }
     
-    @Relationship("result_provider")
-    private AccountResource resultProvider;
-    
-    public AccountResource getResultProvider() {
-        return resultProvider;
-    }
-    
     @Relationship("participation")
     private PollParticipationResource participation;
     
     public PollParticipationResource getParticipation() {
         return participation;
+    }
+    
+    @Relationship("result_provider")
+    private AccountResource resultProvider;
+    
+    public AccountResource getResultProvider() {
+        return resultProvider;
     }
 }

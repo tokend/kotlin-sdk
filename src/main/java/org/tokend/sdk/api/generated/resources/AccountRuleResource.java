@@ -9,6 +9,7 @@ import com.github.jasminb.jsonapi.annotations.*;
 import org.tokend.sdk.api.generated.*;
 import org.tokend.sdk.api.generated.resources.*;
 import org.tokend.sdk.api.generated.inner.*;
+import org.tokend.sdk.api.generated.inner.Enum;
 import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
@@ -19,17 +20,10 @@ import org.tokend.sdk.api.base.model.*;
 public class AccountRuleResource extends BaseResource {
     
     @JsonProperty("action")
-    private XdrEnumValue action;
+    private Enum action;
     
-    public XdrEnumValue getAction() {
+    public Enum getAction() {
         return action;
-    }
-    
-    @JsonProperty("forbids")
-    private Boolean forbids;
-    
-    public Boolean forbids() {
-        return forbids;
     }
     
     @JsonProperty("details")
@@ -37,6 +31,13 @@ public class AccountRuleResource extends BaseResource {
     
     public JsonNode getDetails() {
         return details;
+    }
+    
+    @JsonProperty("forbids")
+    private Boolean forbids;
+    
+    public Boolean forbids() {
+        return forbids;
     }
     
     @JsonProperty("resource")
@@ -49,8 +50,8 @@ public class AccountRuleResource extends BaseResource {
     @Override
     public boolean isFilled() {
         return             action != null &&
-            forbids != null &&
             details != null &&
+            forbids != null &&
             resource != null 
         ;
     }

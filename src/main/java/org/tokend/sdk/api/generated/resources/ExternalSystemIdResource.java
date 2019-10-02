@@ -9,6 +9,7 @@ import com.github.jasminb.jsonapi.annotations.*;
 import org.tokend.sdk.api.generated.*;
 import org.tokend.sdk.api.generated.resources.*;
 import org.tokend.sdk.api.generated.inner.*;
+import org.tokend.sdk.api.generated.inner.Enum;
 import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
@@ -16,13 +17,13 @@ import org.tokend.sdk.api.base.model.*;
 
 @Type("external-system-ids")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ExternalSystemIdResource extends BaseResource {
+public class ExternalSystemIDResource extends BaseResource {
     
-    @JsonProperty("external_system_type")
-    private Integer externalSystemType;
+    @JsonProperty("binded_at")
+    private Date bindedAt;
     
-    public Integer getExternalSystemType() {
-        return externalSystemType;
+    public Date getBindedAt() {
+        return bindedAt;
     }
     
     @JsonProperty("data")
@@ -32,13 +33,6 @@ public class ExternalSystemIdResource extends BaseResource {
         return data;
     }
     
-    @JsonProperty("is_deleted")
-    private Boolean isDeleted;
-    
-    public Boolean isDeleted() {
-        return isDeleted;
-    }
-    
     @JsonProperty("expires_at")
     private Date expiresAt;
     
@@ -46,20 +40,27 @@ public class ExternalSystemIdResource extends BaseResource {
         return expiresAt;
     }
     
-    @JsonProperty("binded_at")
-    private Date bindedAt;
+    @JsonProperty("external_system_type")
+    private Integer externalSystemType;
     
-    public Date getBindedAt() {
-        return bindedAt;
+    public Integer getExternalSystemType() {
+        return externalSystemType;
+    }
+    
+    @JsonProperty("is_deleted")
+    private Boolean isDeleted;
+    
+    public Boolean isDeleted() {
+        return isDeleted;
     }
     
     @Override
     public boolean isFilled() {
-        return             externalSystemType != null &&
+        return             bindedAt != null &&
             data != null &&
-            isDeleted != null &&
             expiresAt != null &&
-            bindedAt != null 
+            externalSystemType != null &&
+            isDeleted != null 
         ;
     }
     

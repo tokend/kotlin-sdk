@@ -9,6 +9,7 @@ import com.github.jasminb.jsonapi.annotations.*;
 import org.tokend.sdk.api.generated.*;
 import org.tokend.sdk.api.generated.resources.*;
 import org.tokend.sdk.api.generated.inner.*;
+import org.tokend.sdk.api.generated.inner.Enum;
 import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
@@ -31,17 +32,10 @@ public class OperationResource extends BaseResource {
         ;
     }
     
-    @Relationship("tx")
-    private TransactionResource tx;
-    
-    public TransactionResource getTx() {
-        return tx;
-    }
-    
     @Relationship("details")
-    private OperationDetailsResource details;
+    private BaseOperationDetailsResource details;
     
-    public OperationDetailsResource getDetails() {
+    public BaseOperationDetailsResource getDetails() {
         return details;
     }
     
@@ -50,5 +44,12 @@ public class OperationResource extends BaseResource {
     
     public AccountResource getSource() {
         return source;
+    }
+    
+    @Relationship("tx")
+    private TransactionResource tx;
+    
+    public TransactionResource getTx() {
+        return tx;
     }
 }

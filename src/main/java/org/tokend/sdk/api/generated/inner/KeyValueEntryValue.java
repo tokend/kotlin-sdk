@@ -13,37 +13,37 @@ import org.jetbrains.annotations.Nullable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class KeyValueEntryValue {
     
-    @JsonProperty("type")
-    private XdrEnumValue type;
+    @JsonProperty("str")
+    @Nullable
+    private Str str;
     
-    public XdrEnumValue getType() {
+    @Nullable
+    public Str getStr() {
+        return str;
+    }
+    
+    @JsonProperty("type")
+    private Enum type;
+    
+    public Enum getType() {
         return type;
     }
     
     @JsonProperty("u32")
     @Nullable
-    private Long u32;
+    private U32 u32;
     
     @Nullable
-    public Long getU32() {
+    public U32 getU32() {
         return u32;
     }
     
     @JsonProperty("u64")
     @Nullable
-    private Long u64;
+    private U64 u64;
     
     @Nullable
-    public Long getU64() {
+    public U64 getU64() {
         return u64;
-    }
-    
-    @JsonProperty("str")
-    @Nullable
-    private String str;
-    
-    @Nullable
-    public String getStr() {
-        return str;
     }
 }

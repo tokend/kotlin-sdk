@@ -9,6 +9,7 @@ import com.github.jasminb.jsonapi.annotations.*;
 import org.tokend.sdk.api.generated.*;
 import org.tokend.sdk.api.generated.resources.*;
 import org.tokend.sdk.api.generated.inner.*;
+import org.tokend.sdk.api.generated.inner.Enum;
 import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
@@ -16,7 +17,21 @@ import org.tokend.sdk.api.base.model.*;
 
 @Type("effects-matched")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class EffectMatchedResource extends EffectResource {
+public class EffectMatchedResource extends BaseEffectResource {
+    
+    @JsonProperty("charged")
+    private ParticularBalanceChangeEffect charged;
+    
+    public ParticularBalanceChangeEffect getCharged() {
+        return charged;
+    }
+    
+    @JsonProperty("funded")
+    private ParticularBalanceChangeEffect funded;
+    
+    public ParticularBalanceChangeEffect getFunded() {
+        return funded;
+    }
     
     @JsonProperty("offer_id")
     private Long offerId;
@@ -39,27 +54,13 @@ public class EffectMatchedResource extends EffectResource {
         return price;
     }
     
-    @JsonProperty("charged")
-    private ParticularBalanceChange charged;
-    
-    public ParticularBalanceChange getCharged() {
-        return charged;
-    }
-    
-    @JsonProperty("funded")
-    private ParticularBalanceChange funded;
-    
-    public ParticularBalanceChange getFunded() {
-        return funded;
-    }
-    
     @Override
     public boolean isFilled() {
-        return             offerId != null &&
+        return             charged != null &&
+            funded != null &&
+            offerId != null &&
             orderBookId != null &&
-            price != null &&
-            charged != null &&
-            funded != null 
+            price != null 
             && super.isFilled()
         ;
     }

@@ -9,6 +9,7 @@ import com.github.jasminb.jsonapi.annotations.*;
 import org.tokend.sdk.api.generated.*;
 import org.tokend.sdk.api.generated.resources.*;
 import org.tokend.sdk.api.generated.inner.*;
+import org.tokend.sdk.api.generated.inner.Enum;
 import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
@@ -18,25 +19,11 @@ import org.tokend.sdk.api.base.model.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AtomicSwapAskResource extends BaseResource {
     
-    @JsonProperty("details")
-    private JsonNode details;
-    
-    public JsonNode getDetails() {
-        return details;
-    }
-    
     @JsonProperty("available_amount")
     private BigDecimal availableAmount;
     
     public BigDecimal getAvailableAmount() {
         return availableAmount;
-    }
-    
-    @JsonProperty("locked_amount")
-    private BigDecimal lockedAmount;
-    
-    public BigDecimal getLockedAmount() {
-        return lockedAmount;
     }
     
     @JsonProperty("created_at")
@@ -46,6 +33,13 @@ public class AtomicSwapAskResource extends BaseResource {
         return createdAt;
     }
     
+    @JsonProperty("details")
+    private String details;
+    
+    public String getDetails() {
+        return details;
+    }
+    
     @JsonProperty("is_canceled")
     private Boolean isCanceled;
     
@@ -53,21 +47,28 @@ public class AtomicSwapAskResource extends BaseResource {
         return isCanceled;
     }
     
+    @JsonProperty("locked_amount")
+    private BigDecimal lockedAmount;
+    
+    public BigDecimal getLockedAmount() {
+        return lockedAmount;
+    }
+    
     @Override
     public boolean isFilled() {
-        return             details != null &&
-            availableAmount != null &&
-            lockedAmount != null &&
+        return             availableAmount != null &&
             createdAt != null &&
-            isCanceled != null 
+            details != null &&
+            isCanceled != null &&
+            lockedAmount != null 
         ;
     }
     
-    @Relationship("owner")
-    private AccountResource owner;
+    @Relationship("base_asset")
+    private QuoteAssetResource baseAsset;
     
-    public AccountResource getOwner() {
-        return owner;
+    public QuoteAssetResource getBaseAsset() {
+        return baseAsset;
     }
     
     @Relationship("base_balance")
@@ -77,11 +78,11 @@ public class AtomicSwapAskResource extends BaseResource {
         return baseBalance;
     }
     
-    @Relationship("base_asset")
-    private AssetResource baseAsset;
+    @Relationship("owner")
+    private AccountResource owner;
     
-    public AssetResource getBaseAsset() {
-        return baseAsset;
+    public AccountResource getOwner() {
+        return owner;
     }
     
     @Relationship("quote_assets")

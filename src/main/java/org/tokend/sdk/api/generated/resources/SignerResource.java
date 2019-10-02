@@ -9,6 +9,7 @@ import com.github.jasminb.jsonapi.annotations.*;
 import org.tokend.sdk.api.generated.*;
 import org.tokend.sdk.api.generated.resources.*;
 import org.tokend.sdk.api.generated.inner.*;
+import org.tokend.sdk.api.generated.inner.Enum;
 import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
@@ -18,11 +19,11 @@ import org.tokend.sdk.api.base.model.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SignerResource extends BaseResource {
     
-    @JsonProperty("weight")
-    private Long weight;
+    @JsonProperty("details")
+    private JsonNode details;
     
-    public Long getWeight() {
-        return weight;
+    public JsonNode getDetails() {
+        return details;
     }
     
     @JsonProperty("identity")
@@ -32,18 +33,18 @@ public class SignerResource extends BaseResource {
         return identity;
     }
     
-    @JsonProperty("details")
-    private JsonNode details;
+    @JsonProperty("weight")
+    private Long weight;
     
-    public JsonNode getDetails() {
-        return details;
+    public Long getWeight() {
+        return weight;
     }
     
     @Override
     public boolean isFilled() {
-        return             weight != null &&
+        return             details != null &&
             identity != null &&
-            details != null 
+            weight != null 
         ;
     }
     

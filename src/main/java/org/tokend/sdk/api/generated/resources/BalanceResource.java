@@ -9,6 +9,7 @@ import com.github.jasminb.jsonapi.annotations.*;
 import org.tokend.sdk.api.generated.*;
 import org.tokend.sdk.api.generated.resources.*;
 import org.tokend.sdk.api.generated.inner.*;
+import org.tokend.sdk.api.generated.inner.Enum;
 import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
@@ -25,6 +26,13 @@ public class BalanceResource extends BaseResource {
     
     public AssetResource getAsset() {
         return asset;
+    }
+    
+    @Relationship("owner")
+    private AccountResource owner;
+    
+    public AccountResource getOwner() {
+        return owner;
     }
     
     @Relationship("state")
