@@ -70,6 +70,8 @@ class OpenApiIntermediateParser {
         innersMap = innersMap
                 .filterKeys(usedInners::contains)
 
+        performResourcesPostProcessing(resourcesMap)
+
         reportProblems(resourcesMap, keysMap, innersMap)
 
         return OpenApi(resourcesMap, keysMap, innersMap)
@@ -87,6 +89,18 @@ class OpenApiIntermediateParser {
                 }
             }
         }
+    }
+
+    private fun performResourcesPostProcessing(resourcesMap: Map<String, Resource>) {
+        // Custom transformations can be applied here.
+
+        // Resolve 'asset' duplication in CreateAssetRequest.
+        resourcesMap["CreateAssetRequest"]
+                ?.attributes
+                ?.find { it.name == "asset" }
+                ?.also { assetAttribute ->
+                    assetAttribute.name = "assetCode"
+                }
     }
 
     private fun reportProblems(resourcesMap: Map<String, Resource>,
@@ -127,6 +141,43 @@ class OpenApiIntermediateParser {
                     }
                     if (isNotEmpty()) {
                         error("Multitype keys can't be used for multiple resources")
+                    }
+                }
+
+        // Name duplications in resource are not allowed
+        resourcesMap
+                .values
+                .map { res ->
+                    res to listOf(
+                            res.attributes.map { attr ->
+                                attr.name
+                            },
+                            res.relationships.map { rel ->
+                                rel.name
+                            }
+                    ).flatten()
+                }
+                .mapNotNull { (res, names) ->
+                    val duplicatedNames = names
+                            .groupBy { it }
+                            .mapValues { (_, list) ->
+                                list.size
+                            }
+                            .filterValues { it > 1 }
+
+                    if (duplicatedNames.isNotEmpty()) {
+                        res to duplicatedNames
+                    } else {
+                        null
+                    }
+                }
+                .apply {
+                    forEach { (res, names) ->
+                        logWarning("Resource '${res.name}' has duplicated names: " +
+                                names.keys.joinToString(""))
+                    }
+                    if (isNotEmpty()) {
+                        error("Name duplications in resource are not allowed")
                     }
                 }
 

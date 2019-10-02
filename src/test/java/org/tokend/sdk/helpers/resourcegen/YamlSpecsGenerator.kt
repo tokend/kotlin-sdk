@@ -294,15 +294,25 @@ class YamlSpecsGenerator(openApi: OpenApi) {
     private fun generateAttributesSpecPart(attributes: List<Attribute>): String {
         return "attributes:\n" +
                 attributes.joinToString("\n") { attr ->
-                    """
+                    var res =
+                            """
                                 |  -
                                 |    name: ${attr.name}
                                 |    type: ${getAttributeType(attr)}
                                 |    optional: ${attr.isNullable}
                                 |    is_collection: ${attr.isArray}
-                                |    ${if (!attr.description.isNullOrBlank())
-                        "description: " + formatMultilineString(attr.description.capitalize()) else ""}
                             """.trimMargin()
+
+                    if (!attr.description.isNullOrBlank()) {
+                        res += "\n    description: " +
+                                formatMultilineString(attr.description.capitalize())
+                    }
+
+                    if (attr.jsonName != attr.name) {
+                        res += "\n    json_name: " + attr.jsonName
+                    }
+
+                    res
                 }
     }
 }

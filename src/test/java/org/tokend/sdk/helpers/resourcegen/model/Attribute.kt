@@ -3,7 +3,7 @@ package org.tokend.sdk.helpers.resourcegen.model
 import com.fasterxml.jackson.databind.JsonNode
 import org.tokend.sdk.helpers.resourcegen.YAML
 
-class Attribute(val name: String,
+class Attribute(var name: String,
                 val type: String?,
                 val format: String?,
                 val description: String?,
@@ -29,6 +29,8 @@ class Attribute(val name: String,
             isNullable = isNullable,
             isArray = isArray
     )
+
+    var jsonName: String = name
 
     companion object {
         fun getFromComponentSchema(schema: JsonNode): List<Attribute> {
