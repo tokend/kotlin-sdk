@@ -58,12 +58,14 @@ class Attribute(var name: String,
                     else
                         getTypeAttributes(schema)
 
+            val selfNullable = schema["nullable"]
+            val isNullable = (selfNullable != null && selfNullable.asBoolean())
+                    || schema["allOf"]?.any { it["nullable"]?.asBoolean() == true } ?: false
+
             return Attribute(
                     name = name,
                     description = schema["description"]?.asText(),
-                    isNullable = schema["allOf"]
-                            ?.any { it["nullable"]?.asBoolean() == true }
-                            ?: schema["nullable"]?.asBoolean() ?: false,
+                    isNullable = isNullable,
                     isArray = isArray,
                     typeAttributes = typeAttributes
             )
