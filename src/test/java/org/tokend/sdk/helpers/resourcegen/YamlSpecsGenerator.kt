@@ -87,8 +87,7 @@ class YamlSpecsGenerator(openApi: OpenApi) {
                     // Add base resource instead of key.
                     val baseResourceKey = ResourceKey(
                             name = "Base" + keyParentKeyParent.key.name,
-                            types = arrayOf(getSyntheticBaseKeyType(
-                                    keyParentKeyParent.key.name.substringBeforeLast("Key"))
+                            types = arrayOf(getSyntheticBaseKeyType(keyParentKeyParent.key.name)
                             ),
                             aggregatedKeys = emptyArray()
                     )
@@ -149,8 +148,7 @@ class YamlSpecsGenerator(openApi: OpenApi) {
 
                 val newBaseResourceKey = ResourceKey(
                         name = baseResourceKey.name,
-                        types = arrayOf(getSyntheticBaseKeyType(baseResourceKey.name
-                                .substringBeforeLast("Key"))),
+                        types = arrayOf(getSyntheticBaseKeyType(baseResourceKey.name)),
                         aggregatedKeys = emptyArray()
                 )
                 keysMap[newBaseResourceKey.name] = newBaseResourceKey
@@ -219,7 +217,7 @@ class YamlSpecsGenerator(openApi: OpenApi) {
                             """
                                 |  -
                                 |    name: ${rel.name}
-                                |    type: ${getKeyType(rel.keyName)}
+                                |    resource: ${getKeyType(rel.keyName)}
                                 |    is_collection: ${rel.isArray}
                                 |    ${if (!rel.description.isNullOrBlank())
                                 "description: " + formatMultilineString(rel.description.capitalize()) else ""}
@@ -269,7 +267,7 @@ class YamlSpecsGenerator(openApi: OpenApi) {
     }
 
     private fun getSyntheticBaseKeyType(keyName: String): String {
-        return "base" + keyName.pascalToSnake()
+        return "base-" + keyName.substringBeforeLast("Key").pascalToSnake()
     }
 
     private fun formatMultilineString(content: String, depth: Int = 2): String {
