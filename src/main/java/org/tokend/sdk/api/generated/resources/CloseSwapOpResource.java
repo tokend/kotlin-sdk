@@ -20,8 +20,10 @@ import org.tokend.sdk.api.base.model.*;
 public class CloseSwapOpResource extends BaseOperationDetailsResource {
     
     @JsonProperty("secret")
+    @Nullable
     private String secret;
     
+    @Nullable
     public String getSecret() {
         return secret;
     }

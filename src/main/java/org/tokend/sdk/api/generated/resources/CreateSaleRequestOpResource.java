@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
 
 
-@Type("operations-create-issuance-request")
+@Type("operations-create-sale-request")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CreateSaleRequestOpResource extends BaseOperationDetailsResource {
     

@@ -20,8 +20,10 @@ import org.tokend.sdk.api.base.model.*;
 public class AccountSpecificRuleResource extends BaseResource {
     
     @JsonProperty("account_id")
+    @Nullable
     private String accountId;
     
+    @Nullable
     public String getAccountId() {
         return accountId;
     }
@@ -42,8 +44,7 @@ public class AccountSpecificRuleResource extends BaseResource {
     
     @Override
     public boolean isFilled() {
-        return             accountId != null &&
-            forbids != null &&
+        return             forbids != null &&
             ledgerKey != null 
         ;
     }

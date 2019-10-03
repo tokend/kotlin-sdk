@@ -20,15 +20,19 @@ import org.tokend.sdk.api.base.model.*;
 public class SetFeeOpResource extends BaseOperationDetailsResource {
     
     @JsonProperty("account_address")
+    @Nullable
     private String accountAddress;
     
+    @Nullable
     public String getAccountAddress() {
         return accountAddress;
     }
     
     @JsonProperty("account_role")
+    @Nullable
     private Long accountRole;
     
+    @Nullable
     public Long getAccountRole() {
         return accountRole;
     }
@@ -91,9 +95,7 @@ public class SetFeeOpResource extends BaseOperationDetailsResource {
     
     @Override
     public boolean isFilled() {
-        return             accountAddress != null &&
-            accountRole != null &&
-            assetCode != null &&
+        return             assetCode != null &&
             feeType != null &&
             fixedFee != null &&
             isDelete != null &&

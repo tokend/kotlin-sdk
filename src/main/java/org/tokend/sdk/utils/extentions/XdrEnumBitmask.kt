@@ -8,7 +8,7 @@ import org.tokend.sdk.api.generated.inner.Mask
  * false otherwise
  */
 fun Mask.has(value: Int): Boolean {
-    return (this.value and value) == value
+    return ((this.value ?: 0) and value) == value
 }
 
 /**

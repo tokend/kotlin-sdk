@@ -21,8 +21,10 @@ public class VoteData {
     }
     
     @JsonProperty("single_choice")
+    @Nullable
     private Long singleChoice;
     
+    @Nullable
     public Long getSingleChoice() {
         return singleChoice;
     }

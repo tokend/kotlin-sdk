@@ -27,16 +27,17 @@ public class ManageCreatePollRequestOpResource extends BaseOperationDetailsResou
     }
     
     @JsonProperty("create")
+    @Nullable
     private CreatePollRequestOp create;
     
+    @Nullable
     public CreatePollRequestOp getCreate() {
         return create;
     }
     
     @Override
     public boolean isFilled() {
-        return             action != null &&
-            create != null 
+        return             action != null 
             && super.isFilled()
         ;
     }

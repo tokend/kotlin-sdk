@@ -88,9 +88,9 @@ public class SaleResource extends BaseResource {
     }
     
     @Relationship("default_quote_asset")
-    private AssetResource defaultQuoteAsset;
+    private SaleQuoteAssetResource defaultQuoteAsset;
     
-    public AssetResource getDefaultQuoteAsset() {
+    public SaleQuoteAssetResource getDefaultQuoteAsset() {
         return defaultQuoteAsset;
     }
     
@@ -102,9 +102,9 @@ public class SaleResource extends BaseResource {
     }
     
     @Relationship("quote_assets")
-    private List<AssetResource> quoteAssets;
+    private List<SaleQuoteAssetResource> quoteAssets;
     
-    public List<? extends AssetResource> getQuoteAssets() {
+    public List<? extends SaleQuoteAssetResource> getQuoteAssets() {
         return quoteAssets;
     }
 }

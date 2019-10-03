@@ -20,8 +20,10 @@ import org.tokend.sdk.api.base.model.*;
 public class AccountResource extends BaseResource {
     
     @JsonProperty("kyc_recovery_status")
+    @Nullable
     private Enum kycRecoveryStatus;
     
+    @Nullable
     public Enum getKycRecoveryStatus() {
         return kycRecoveryStatus;
     }

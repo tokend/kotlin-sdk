@@ -55,8 +55,10 @@ public class SwapResource extends BaseResource {
     }
     
     @JsonProperty("secret")
+    @Nullable
     private String secret;
     
+    @Nullable
     public String getSecret() {
         return secret;
     }
@@ -89,7 +91,6 @@ public class SwapResource extends BaseResource {
             destinationFee != null &&
             details != null &&
             lockTime != null &&
-            secret != null &&
             secretHash != null &&
             sourceFee != null &&
             state != null 

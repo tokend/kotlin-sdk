@@ -55,8 +55,10 @@ public class ReviewableRequestResource extends BaseResource {
     }
     
     @JsonProperty("reference")
+    @Nullable
     private String reference;
     
+    @Nullable
     public String getReference() {
         return reference;
     }
@@ -103,7 +105,6 @@ public class ReviewableRequestResource extends BaseResource {
             externalDetails != null &&
             hash != null &&
             pendingTasks != null &&
-            reference != null &&
             rejectReason != null &&
             state != null &&
             stateI != null &&

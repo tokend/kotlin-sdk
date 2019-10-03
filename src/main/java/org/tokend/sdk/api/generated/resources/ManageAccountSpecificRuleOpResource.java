@@ -27,16 +27,17 @@ public class ManageAccountSpecificRuleOpResource extends BaseOperationDetailsRes
     }
     
     @JsonProperty("create_data")
+    @Nullable
     private CreateAccountSpecificRuleData createData;
     
+    @Nullable
     public CreateAccountSpecificRuleData getCreateData() {
         return createData;
     }
     
     @Override
     public boolean isFilled() {
-        return             action != null &&
-            createData != null 
+        return             action != null 
             && super.isFilled()
         ;
     }

@@ -21,8 +21,10 @@ public class ExternalSystemDataEntry {
     }
     
     @JsonProperty("payload")
+    @Nullable
     private String payload;
     
+    @Nullable
     public String getPayload() {
         return payload;
     }

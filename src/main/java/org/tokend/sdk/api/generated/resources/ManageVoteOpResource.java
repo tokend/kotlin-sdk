@@ -27,24 +27,26 @@ public class ManageVoteOpResource extends BaseOperationDetailsResource {
     }
     
     @JsonProperty("create")
+    @Nullable
     private CreateVoteOp create;
     
+    @Nullable
     public CreateVoteOp getCreate() {
         return create;
     }
     
     @JsonProperty("remove")
+    @Nullable
     private RemoveVoteOp remove;
     
+    @Nullable
     public RemoveVoteOp getRemove() {
         return remove;
     }
     
     @Override
     public boolean isFilled() {
-        return             action != null &&
-            create != null &&
-            remove != null 
+        return             action != null 
             && super.isFilled()
         ;
     }

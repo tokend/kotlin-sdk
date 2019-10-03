@@ -55,9 +55,9 @@ public class PollResource extends BaseResource {
     }
     
     @JsonProperty("poll_state")
-    private Integer pollState;
+    private Enum pollState;
     
-    public Integer getPollState() {
+    public Enum getPollState() {
         return pollState;
     }
     

@@ -14,15 +14,19 @@ import org.jetbrains.annotations.Nullable;
 public class Mask {
     
     @JsonProperty("flags")
+    @Nullable
     private List<Enum> flags;
     
+    @Nullable
     public List<? extends Enum> getFlags() {
         return flags;
     }
     
     @JsonProperty("value")
+    @Nullable
     private Integer value;
     
+    @Nullable
     public Integer getValue() {
         return value;
     }

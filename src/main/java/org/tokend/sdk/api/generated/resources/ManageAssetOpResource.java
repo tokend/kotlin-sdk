@@ -48,8 +48,10 @@ public class ManageAssetOpResource extends BaseOperationDetailsResource {
     }
     
     @JsonProperty("policies")
+    @Nullable
     private Mask policies;
     
+    @Nullable
     public Mask getPolicies() {
         return policies;
     }
@@ -67,7 +69,6 @@ public class ManageAssetOpResource extends BaseOperationDetailsResource {
             assetCode != null &&
             creatorDetails != null &&
             maxIssuanceAmount != null &&
-            policies != null &&
             preIssuanceSigner != null 
             && super.isFilled()
         ;

@@ -41,8 +41,10 @@ public class QuoteAssetResource extends BaseResource {
     }
     
     @JsonProperty("soft_cap")
+    @Nullable
     private BigDecimal softCap;
     
+    @Nullable
     public BigDecimal getSoftCap() {
         return softCap;
     }
@@ -59,7 +61,6 @@ public class QuoteAssetResource extends BaseResource {
         return             currentCap != null &&
             hardCap != null &&
             price != null &&
-            softCap != null &&
             totalCurrentCap != null 
         ;
     }

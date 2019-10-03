@@ -14,8 +14,10 @@ import org.jetbrains.annotations.Nullable;
 public class CreateAccountSpecificRuleData {
     
     @JsonProperty("account_id")
+    @Nullable
     private String accountId;
     
+    @Nullable
     public String getAccountId() {
         return accountId;
     }

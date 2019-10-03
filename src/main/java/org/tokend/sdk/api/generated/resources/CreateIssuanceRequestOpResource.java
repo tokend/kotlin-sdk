@@ -15,9 +15,18 @@ import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
 
 
-@Type("operations-create-preissuance-request")
+@Type("operations-create-issuance-request")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CreatePreIssuanceRequestOpResource extends BaseResource {
+public class CreateIssuanceRequestOpResource extends BaseOperationDetailsResource {
+    
+    @JsonProperty("all_tasks")
+    @Nullable
+    private Long allTasks;
+    
+    @Nullable
+    public Long getAllTasks() {
+        return allTasks;
+    }
     
     @JsonProperty("amount")
     private BigDecimal amount;
@@ -27,17 +36,33 @@ public class CreatePreIssuanceRequestOpResource extends BaseResource {
     }
     
     @JsonProperty("creator_details")
-    @Nullable
     private JsonNode creatorDetails;
     
-    @Nullable
     public JsonNode getCreatorDetails() {
         return creatorDetails;
     }
     
+    @JsonProperty("fee")
+    private Fee fee;
+    
+    public Fee getFee() {
+        return fee;
+    }
+    
+    @JsonProperty("reference")
+    private String reference;
+    
+    public String getReference() {
+        return reference;
+    }
+    
     @Override
     public boolean isFilled() {
-        return             amount != null 
+        return             amount != null &&
+            creatorDetails != null &&
+            fee != null &&
+            reference != null 
+            && super.isFilled()
         ;
     }
     
@@ -46,6 +71,20 @@ public class CreatePreIssuanceRequestOpResource extends BaseResource {
     
     public AssetResource getAsset() {
         return asset;
+    }
+    
+    @Relationship("receiver_account")
+    private AccountResource receiverAccount;
+    
+    public AccountResource getReceiverAccount() {
+        return receiverAccount;
+    }
+    
+    @Relationship("receiver_balance")
+    private BalanceResource receiverBalance;
+    
+    public BalanceResource getReceiverBalance() {
+        return receiverBalance;
     }
     
     @Relationship("request")

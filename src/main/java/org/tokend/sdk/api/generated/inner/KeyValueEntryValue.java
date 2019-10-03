@@ -15,10 +15,10 @@ public class KeyValueEntryValue {
     
     @JsonProperty("str")
     @Nullable
-    private Str str;
+    private String str;
     
     @Nullable
-    public Str getStr() {
+    public String getStr() {
         return str;
     }
     
@@ -31,19 +31,19 @@ public class KeyValueEntryValue {
     
     @JsonProperty("u32")
     @Nullable
-    private U32 u32;
+    private Long u32;
     
     @Nullable
-    public U32 getU32() {
+    public Long getU32() {
         return u32;
     }
     
     @JsonProperty("u64")
     @Nullable
-    private U64 u64;
+    private Long u64;
     
     @Nullable
-    public U64 getU64() {
+    public Long getU64() {
         return u64;
     }
 }
