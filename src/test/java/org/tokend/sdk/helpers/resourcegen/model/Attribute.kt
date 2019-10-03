@@ -4,10 +4,10 @@ import com.fasterxml.jackson.databind.JsonNode
 import org.tokend.sdk.helpers.resourcegen.YAML
 
 class Attribute(var name: String,
-                val type: String?,
+                var type: String?,
                 val format: String?,
                 val description: String?,
-                val reference: String?,
+                var reference: String?,
                 val isNullable: Boolean,
                 val isArray: Boolean) {
     private class TypeAttributes(
@@ -75,29 +75,11 @@ class Attribute(var name: String,
         }
 
         private fun getTypeAttributes(schema: JsonNode): TypeAttributes {
-            var type: String? = schema["type"]?.asText()
-            var reference: String? = YAML.getComponentReference(schema)
-                    ?: schema["allOf"]?.get(0)?.let(YAML::getComponentReference)
-
-            when (reference) {
-                "Str" -> {
-                    type = "string"
-                    reference = null
-                }
-                "U32" -> {
-                    type = "uint32"
-                    reference = null
-                }
-                "U64" -> {
-                    type = "uint64"
-                    reference = null
-                }
-            }
-
             return TypeAttributes(
-                    type = type,
+                    type = schema["type"]?.asText(),
                     format = schema["format"]?.asText(),
-                    reference = reference
+                    reference = YAML.getComponentReference(schema)
+                            ?: schema["allOf"]?.get(0)?.let(YAML::getComponentReference)
             )
         }
     }

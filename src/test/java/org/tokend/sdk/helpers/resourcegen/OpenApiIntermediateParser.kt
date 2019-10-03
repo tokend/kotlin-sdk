@@ -62,6 +62,8 @@ class OpenApiIntermediateParser {
                 }
                 .toMap()
 
+        performPostProcessing(resourcesMap, keysMap, innersMap)
+
         // Unused inners are unwanted
         val usedInners = mutableSetOf<String>()
         resourcesMap.values.forEach { res ->
@@ -69,8 +71,6 @@ class OpenApiIntermediateParser {
         }
         innersMap = innersMap
                 .filterKeys(usedInners::contains)
-
-        performResourcesPostProcessing(resourcesMap)
 
         reportProblems(resourcesMap, keysMap, innersMap)
 
@@ -91,7 +91,9 @@ class OpenApiIntermediateParser {
         }
     }
 
-    private fun performResourcesPostProcessing(resourcesMap: Map<String, Resource>) {
+    private fun performPostProcessing(resourcesMap: Map<String, Resource>,
+                                      keysMap: Map<String, ResourceKey>,
+                                      innersMap: Map<String, InnerEntity>) {
         // Custom transformations can be applied here.
 
         // Resolve 'asset' duplication in CreateAssetRequest.
@@ -100,6 +102,28 @@ class OpenApiIntermediateParser {
                 ?.find { it.name == "asset" }
                 ?.also { assetAttribute ->
                     assetAttribute.name = "assetCode"
+                }
+
+        // KeyValueEntryValue tricky 'oneOf' workaround.
+        innersMap["KeyValueEntryValue"]
+                ?.attributes
+                ?.forEach {
+                    it.apply {
+                        when (reference) {
+                            "Str" -> {
+                                type = "string"
+                                reference = null
+                            }
+                            "U32" -> {
+                                type = "uint32"
+                                reference = null
+                            }
+                            "U64" -> {
+                                type = "uint64"
+                                reference = null
+                            }
+                        }
+                    }
                 }
     }
 
