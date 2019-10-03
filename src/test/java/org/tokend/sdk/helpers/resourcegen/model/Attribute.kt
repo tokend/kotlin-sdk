@@ -34,6 +34,11 @@ class Attribute(var name: String,
 
     companion object {
         fun getFromComponentSchema(schema: JsonNode): List<Attribute> {
+            val required = schema["required"]
+                    ?.map { it.asText() }
+                    ?.toHashSet()
+                    ?: emptySet<String>()
+
             val attributeEntries =
                     schema["properties"]
                             ?.fields()
@@ -44,12 +49,14 @@ class Attribute(var name: String,
             return attributeEntries.map { attributeEntry ->
                 fromSchema(
                         name = attributeEntry.key,
-                        schema = attributeEntry.value
+                        schema = attributeEntry.value,
+                        required = required
                 )
             }
         }
 
-        private fun fromSchema(name: String, schema: JsonNode): Attribute {
+        private fun fromSchema(name: String, schema: JsonNode,
+                               required: Collection<String>): Attribute {
             val isArray = schema["type"]?.asText() == "array"
 
             val typeAttributes =
@@ -58,14 +65,10 @@ class Attribute(var name: String,
                     else
                         getTypeAttributes(schema)
 
-            val selfNullable = schema["nullable"]
-            val isNullable = (selfNullable != null && selfNullable.asBoolean())
-                    || schema["allOf"]?.any { it["nullable"]?.asBoolean() == true } ?: false
-
             return Attribute(
                     name = name,
                     description = schema["description"]?.asText(),
-                    isNullable = isNullable,
+                    isNullable = !required.contains(name),
                     isArray = isArray,
                     typeAttributes = typeAttributes
             )
