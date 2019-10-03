@@ -72,11 +72,29 @@ class Attribute(var name: String,
         }
 
         private fun getTypeAttributes(schema: JsonNode): TypeAttributes {
+            var type: String? = schema["type"]?.asText()
+            var reference: String? = YAML.getComponentReference(schema)
+                    ?: schema["allOf"]?.get(0)?.let(YAML::getComponentReference)
+
+            when (reference) {
+                "Str" -> {
+                    type = "string"
+                    reference = null
+                }
+                "U32" -> {
+                    type = "uint32"
+                    reference = null
+                }
+                "U64" -> {
+                    type = "uint64"
+                    reference = null
+                }
+            }
+
             return TypeAttributes(
-                    type = schema["type"]?.asText(),
+                    type = type,
                     format = schema["format"]?.asText(),
-                    reference = YAML.getComponentReference(schema)
-                            ?: schema["allOf"]?.get(0)?.let(YAML::getComponentReference)
+                    reference = reference
             )
         }
     }
