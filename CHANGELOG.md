@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [3.0.0] 2019-10-04
+
+### Changed
+- We have updated the way of resources generation
+so Horizon resources (`api/generated`) are now match
+[OpenAPI specs](https://docs.tokend.io/horizon).
+Some resources were renamed so code changes
+may be required during the update.
+
 ## [2.9.0] 2019-09-24
 
 ### Added
@@ -207,4 +216,5 @@ with `addExtraResources` method
 [2.8.1]: https://github.com/tokend/kotlin-sdk/compare/2.8.0...2.8.1
 [2.8.2]: https://github.com/tokend/kotlin-sdk/compare/2.8.1...2.8.2
 [2.9.0]: https://github.com/tokend/kotlin-sdk/compare/2.8.2...2.9.0
-[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/2.9.0...HEAD
+[3.0.0]: https://github.com/tokend/kotlin-sdk/compare/2.9.0...3.0.0
+[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/3.0.0...HEAD
