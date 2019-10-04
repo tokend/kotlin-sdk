@@ -14,9 +14,9 @@ import org.jetbrains.annotations.Nullable;
 public class VoteData {
     
     @JsonProperty("poll_type")
-    private XdrEnumValue pollType;
+    private Enum pollType;
     
-    public XdrEnumValue getPollType() {
+    public Enum getPollType() {
         return pollType;
     }
     

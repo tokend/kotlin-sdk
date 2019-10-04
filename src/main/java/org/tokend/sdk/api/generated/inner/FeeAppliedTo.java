@@ -20,13 +20,6 @@ public class FeeAppliedTo {
         return asset;
     }
     
-    @JsonProperty("subtype")
-    private Long subtype;
-    
-    public Long getSubtype() {
-        return subtype;
-    }
-    
     @JsonProperty("fee_type")
     private Integer feeType;
     
@@ -35,9 +28,9 @@ public class FeeAppliedTo {
     }
     
     @JsonProperty("fee_type_extended")
-    private XdrEnumValue feeTypeExtended;
+    private Enum feeTypeExtended;
     
-    public XdrEnumValue getFeeTypeExtended() {
+    public Enum getFeeTypeExtended() {
         return feeTypeExtended;
     }
     
@@ -46,6 +39,13 @@ public class FeeAppliedTo {
     
     public BigDecimal getLowerBound() {
         return lowerBound;
+    }
+    
+    @JsonProperty("subtype")
+    private Long subtype;
+    
+    public Long getSubtype() {
+        return subtype;
     }
     
     @JsonProperty("upper_bound")

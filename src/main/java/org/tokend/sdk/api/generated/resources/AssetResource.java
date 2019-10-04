@@ -9,6 +9,7 @@ import com.github.jasminb.jsonapi.annotations.*;
 import org.tokend.sdk.api.generated.*;
 import org.tokend.sdk.api.generated.resources.*;
 import org.tokend.sdk.api.generated.inner.*;
+import org.tokend.sdk.api.generated.inner.Enum;
 import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
@@ -18,11 +19,11 @@ import org.tokend.sdk.api.base.model.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AssetResource extends BaseResource {
     
-    @JsonProperty("pre_issuance_asset_signer")
-    private String preIssuanceAssetSigner;
+    @JsonProperty("available_for_issuance")
+    private BigDecimal availableForIssuance;
     
-    public String getPreIssuanceAssetSigner() {
-        return preIssuanceAssetSigner;
+    public BigDecimal getAvailableForIssuance() {
+        return availableForIssuance;
     }
     
     @JsonProperty("details")
@@ -32,25 +33,18 @@ public class AssetResource extends BaseResource {
         return details;
     }
     
-    @JsonProperty("max_issuance_amount")
-    private BigDecimal maxIssuanceAmount;
-    
-    public BigDecimal getMaxIssuanceAmount() {
-        return maxIssuanceAmount;
-    }
-    
-    @JsonProperty("available_for_issuance")
-    private BigDecimal availableForIssuance;
-    
-    public BigDecimal getAvailableForIssuance() {
-        return availableForIssuance;
-    }
-    
     @JsonProperty("issued")
     private BigDecimal issued;
     
     public BigDecimal getIssued() {
         return issued;
+    }
+    
+    @JsonProperty("max_issuance_amount")
+    private BigDecimal maxIssuanceAmount;
+    
+    public BigDecimal getMaxIssuanceAmount() {
+        return maxIssuanceAmount;
     }
     
     @JsonProperty("pending_issuance")
@@ -61,10 +55,17 @@ public class AssetResource extends BaseResource {
     }
     
     @JsonProperty("policies")
-    private XdrEnumBitmask policies;
+    private Mask policies;
     
-    public XdrEnumBitmask getPolicies() {
+    public Mask getPolicies() {
         return policies;
+    }
+    
+    @JsonProperty("pre_issuance_asset_signer")
+    private String preIssuanceAssetSigner;
+    
+    public String getPreIssuanceAssetSigner() {
+        return preIssuanceAssetSigner;
     }
     
     @JsonProperty("trailing_digits")
@@ -83,13 +84,13 @@ public class AssetResource extends BaseResource {
     
     @Override
     public boolean isFilled() {
-        return             preIssuanceAssetSigner != null &&
+        return             availableForIssuance != null &&
             details != null &&
-            maxIssuanceAmount != null &&
-            availableForIssuance != null &&
             issued != null &&
+            maxIssuanceAmount != null &&
             pendingIssuance != null &&
             policies != null &&
+            preIssuanceAssetSigner != null &&
             trailingDigits != null &&
             type != null 
         ;

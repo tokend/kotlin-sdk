@@ -9,6 +9,7 @@ import com.github.jasminb.jsonapi.annotations.*;
 import org.tokend.sdk.api.generated.*;
 import org.tokend.sdk.api.generated.resources.*;
 import org.tokend.sdk.api.generated.inner.*;
+import org.tokend.sdk.api.generated.inner.Enum;
 import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
@@ -17,13 +18,6 @@ import org.tokend.sdk.api.base.model.*;
 @Type("sale-quote-assets")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SaleQuoteAssetResource extends BaseResource {
-    
-    @JsonProperty("price")
-    private BigDecimal price;
-    
-    public BigDecimal getPrice() {
-        return price;
-    }
     
     @JsonProperty("current_cap")
     private BigDecimal currentCap;
@@ -37,6 +31,13 @@ public class SaleQuoteAssetResource extends BaseResource {
     
     public BigDecimal getHardCap() {
         return hardCap;
+    }
+    
+    @JsonProperty("price")
+    private BigDecimal price;
+    
+    public BigDecimal getPrice() {
+        return price;
     }
     
     @JsonProperty("soft_cap")
@@ -55,9 +56,9 @@ public class SaleQuoteAssetResource extends BaseResource {
     
     @Override
     public boolean isFilled() {
-        return             price != null &&
-            currentCap != null &&
+        return             currentCap != null &&
             hardCap != null &&
+            price != null &&
             softCap != null &&
             totalCurrentCap != null 
         ;

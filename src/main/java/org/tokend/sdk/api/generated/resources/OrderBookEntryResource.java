@@ -9,6 +9,7 @@ import com.github.jasminb.jsonapi.annotations.*;
 import org.tokend.sdk.api.generated.*;
 import org.tokend.sdk.api.generated.resources.*;
 import org.tokend.sdk.api.generated.inner.*;
+import org.tokend.sdk.api.generated.inner.Enum;
 import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
@@ -18,20 +19,6 @@ import org.tokend.sdk.api.base.model.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OrderBookEntryResource extends BaseResource {
     
-    @JsonProperty("is_buy")
-    private Boolean isBuy;
-    
-    public Boolean isBuy() {
-        return isBuy;
-    }
-    
-    @JsonProperty("price")
-    private BigDecimal price;
-    
-    public BigDecimal getPrice() {
-        return price;
-    }
-    
     @JsonProperty("base_amount")
     private BigDecimal baseAmount;
     
@@ -39,11 +26,11 @@ public class OrderBookEntryResource extends BaseResource {
         return baseAmount;
     }
     
-    @JsonProperty("quote_amount")
-    private BigDecimal quoteAmount;
+    @JsonProperty("created_at")
+    private Date createdAt;
     
-    public BigDecimal getQuoteAmount() {
-        return quoteAmount;
+    public Date getCreatedAt() {
+        return createdAt;
     }
     
     @JsonProperty("cumulative_base_amount")
@@ -60,22 +47,36 @@ public class OrderBookEntryResource extends BaseResource {
         return cumulativeQuoteAmount;
     }
     
-    @JsonProperty("created_at")
-    private Date createdAt;
+    @JsonProperty("is_buy")
+    private Boolean isBuy;
     
-    public Date getCreatedAt() {
-        return createdAt;
+    public Boolean isBuy() {
+        return isBuy;
+    }
+    
+    @JsonProperty("price")
+    private BigDecimal price;
+    
+    public BigDecimal getPrice() {
+        return price;
+    }
+    
+    @JsonProperty("quote_amount")
+    private BigDecimal quoteAmount;
+    
+    public BigDecimal getQuoteAmount() {
+        return quoteAmount;
     }
     
     @Override
     public boolean isFilled() {
-        return             isBuy != null &&
-            price != null &&
-            baseAmount != null &&
-            quoteAmount != null &&
+        return             baseAmount != null &&
+            createdAt != null &&
             cumulativeBaseAmount != null &&
             cumulativeQuoteAmount != null &&
-            createdAt != null 
+            isBuy != null &&
+            price != null &&
+            quoteAmount != null 
         ;
     }
     

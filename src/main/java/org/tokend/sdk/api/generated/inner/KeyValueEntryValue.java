@@ -13,10 +13,19 @@ import org.jetbrains.annotations.Nullable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class KeyValueEntryValue {
     
-    @JsonProperty("type")
-    private XdrEnumValue type;
+    @JsonProperty("str")
+    @Nullable
+    private String str;
     
-    public XdrEnumValue getType() {
+    @Nullable
+    public String getStr() {
+        return str;
+    }
+    
+    @JsonProperty("type")
+    private Enum type;
+    
+    public Enum getType() {
         return type;
     }
     
@@ -36,14 +45,5 @@ public class KeyValueEntryValue {
     @Nullable
     public Long getU64() {
         return u64;
-    }
-    
-    @JsonProperty("str")
-    @Nullable
-    private String str;
-    
-    @Nullable
-    public String getStr() {
-        return str;
     }
 }

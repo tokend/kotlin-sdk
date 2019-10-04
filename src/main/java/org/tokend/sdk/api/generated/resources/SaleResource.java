@@ -9,6 +9,7 @@ import com.github.jasminb.jsonapi.annotations.*;
 import org.tokend.sdk.api.generated.*;
 import org.tokend.sdk.api.generated.resources.*;
 import org.tokend.sdk.api.generated.inner.*;
+import org.tokend.sdk.api.generated.inner.Enum;
 import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
@@ -18,38 +19,10 @@ import org.tokend.sdk.api.base.model.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SaleResource extends BaseResource {
     
-    @JsonProperty("start_time")
-    private Date startTime;
-    
-    public Date getStartTime() {
-        return startTime;
-    }
-    
-    @JsonProperty("end_time")
-    private Date endTime;
-    
-    public Date getEndTime() {
-        return endTime;
-    }
-    
-    @JsonProperty("sale_type")
-    private XdrEnumValue saleType;
-    
-    public XdrEnumValue getSaleType() {
-        return saleType;
-    }
-    
-    @JsonProperty("sale_state")
-    private XdrEnumValue saleState;
-    
-    public XdrEnumValue getSaleState() {
-        return saleState;
-    }
-    
     @JsonProperty("access_definition_type")
-    private XdrEnumValue accessDefinitionType;
+    private String accessDefinitionType;
     
-    public XdrEnumValue getAccessDefinitionType() {
+    public String getAccessDefinitionType() {
         return accessDefinitionType;
     }
     
@@ -67,23 +40,44 @@ public class SaleResource extends BaseResource {
         return details;
     }
     
-    @Override
-    public boolean isFilled() {
-        return             startTime != null &&
-            endTime != null &&
-            saleType != null &&
-            saleState != null &&
-            accessDefinitionType != null &&
-            baseHardCap != null &&
-            details != null 
-        ;
+    @JsonProperty("end_time")
+    private Date endTime;
+    
+    public Date getEndTime() {
+        return endTime;
     }
     
-    @Relationship("owner")
-    private AccountResource owner;
+    @JsonProperty("sale_state")
+    private Enum saleState;
     
-    public AccountResource getOwner() {
-        return owner;
+    public Enum getSaleState() {
+        return saleState;
+    }
+    
+    @JsonProperty("sale_type")
+    private Enum saleType;
+    
+    public Enum getSaleType() {
+        return saleType;
+    }
+    
+    @JsonProperty("start_time")
+    private Date startTime;
+    
+    public Date getStartTime() {
+        return startTime;
+    }
+    
+    @Override
+    public boolean isFilled() {
+        return             accessDefinitionType != null &&
+            baseHardCap != null &&
+            details != null &&
+            endTime != null &&
+            saleState != null &&
+            saleType != null &&
+            startTime != null 
+        ;
     }
     
     @Relationship("base_asset")
@@ -93,17 +87,24 @@ public class SaleResource extends BaseResource {
         return baseAsset;
     }
     
-    @Relationship("quote_assets")
-    private List<SaleQuoteAssetResource> quoteAssets;
-    
-    public List<? extends SaleQuoteAssetResource> getQuoteAssets() {
-        return quoteAssets;
-    }
-    
     @Relationship("default_quote_asset")
     private SaleQuoteAssetResource defaultQuoteAsset;
     
     public SaleQuoteAssetResource getDefaultQuoteAsset() {
         return defaultQuoteAsset;
+    }
+    
+    @Relationship("owner")
+    private AccountResource owner;
+    
+    public AccountResource getOwner() {
+        return owner;
+    }
+    
+    @Relationship("quote_assets")
+    private List<SaleQuoteAssetResource> quoteAssets;
+    
+    public List<? extends SaleQuoteAssetResource> getQuoteAssets() {
+        return quoteAssets;
     }
 }

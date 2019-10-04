@@ -9,6 +9,7 @@ import com.github.jasminb.jsonapi.annotations.*;
 import org.tokend.sdk.api.generated.*;
 import org.tokend.sdk.api.generated.resources.*;
 import org.tokend.sdk.api.generated.inner.*;
+import org.tokend.sdk.api.generated.inner.Enum;
 import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
@@ -18,27 +19,6 @@ import org.tokend.sdk.api.base.model.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OfferResource extends BaseResource {
     
-    @JsonProperty("is_buy")
-    private Boolean isBuy;
-    
-    public Boolean isBuy() {
-        return isBuy;
-    }
-    
-    @JsonProperty("order_book_id")
-    private String orderBookId;
-    
-    public String getOrderBookId() {
-        return orderBookId;
-    }
-    
-    @JsonProperty("created_at")
-    private String createdAt;
-    
-    public String getCreatedAt() {
-        return createdAt;
-    }
-    
     @JsonProperty("base_amount")
     private BigDecimal baseAmount;
     
@@ -46,18 +26,11 @@ public class OfferResource extends BaseResource {
         return baseAmount;
     }
     
-    @JsonProperty("quote_amount")
-    private BigDecimal quoteAmount;
+    @JsonProperty("created_at")
+    private Date createdAt;
     
-    public BigDecimal getQuoteAmount() {
-        return quoteAmount;
-    }
-    
-    @JsonProperty("price")
-    private BigDecimal price;
-    
-    public BigDecimal getPrice() {
-        return price;
+    public Date getCreatedAt() {
+        return createdAt;
     }
     
     @JsonProperty("fee")
@@ -67,23 +40,44 @@ public class OfferResource extends BaseResource {
         return fee;
     }
     
-    @Override
-    public boolean isFilled() {
-        return             isBuy != null &&
-            orderBookId != null &&
-            createdAt != null &&
-            baseAmount != null &&
-            quoteAmount != null &&
-            price != null &&
-            fee != null 
-        ;
+    @JsonProperty("is_buy")
+    private Boolean isBuy;
+    
+    public Boolean isBuy() {
+        return isBuy;
     }
     
-    @Relationship("owner")
-    private AccountResource owner;
+    @JsonProperty("order_book_id")
+    private Long orderBookId;
     
-    public AccountResource getOwner() {
-        return owner;
+    public Long getOrderBookId() {
+        return orderBookId;
+    }
+    
+    @JsonProperty("price")
+    private BigDecimal price;
+    
+    public BigDecimal getPrice() {
+        return price;
+    }
+    
+    @JsonProperty("quote_amount")
+    private BigDecimal quoteAmount;
+    
+    public BigDecimal getQuoteAmount() {
+        return quoteAmount;
+    }
+    
+    @Override
+    public boolean isFilled() {
+        return             baseAmount != null &&
+            createdAt != null &&
+            fee != null &&
+            isBuy != null &&
+            orderBookId != null &&
+            price != null &&
+            quoteAmount != null 
+        ;
     }
     
     @Relationship("base_asset")
@@ -98,6 +92,13 @@ public class OfferResource extends BaseResource {
     
     public BalanceResource getBaseBalance() {
         return baseBalance;
+    }
+    
+    @Relationship("owner")
+    private AccountResource owner;
+    
+    public AccountResource getOwner() {
+        return owner;
     }
     
     @Relationship("quote_asset")
