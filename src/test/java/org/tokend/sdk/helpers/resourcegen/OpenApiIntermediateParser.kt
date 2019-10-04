@@ -33,6 +33,7 @@ class OpenApiIntermediateParser {
                     )
                 }
                 .toMap()
+                .toMutableMap()
 
         val resourceSchemaMap = componentsMap
                 .filterValues(Resource.SCHEMA_PREDICATE)
@@ -47,8 +48,9 @@ class OpenApiIntermediateParser {
                     )
                 }
                 .toMap()
+                .toMutableMap()
 
-        var innersMap = componentsMap
+        val innersMap = componentsMap
                 .filterKeys(InnerEntity.NAME_PREDICATE)
                 .filterKeys {
                     !resourcesMap.keys.contains(it) && !keysMap.keys.contains(it)
@@ -61,6 +63,7 @@ class OpenApiIntermediateParser {
                     )
                 }
                 .toMap()
+                .toMutableMap()
 
         performPostProcessing(resourcesMap, keysMap, innersMap)
 
@@ -69,8 +72,11 @@ class OpenApiIntermediateParser {
         resourcesMap.values.forEach { res ->
             markUsedInners(res.attributes, innersMap, usedInners)
         }
-        innersMap = innersMap
-                .filterKeys(usedInners::contains)
+        innersMap.keys.toList().forEach { key ->
+            if (!usedInners.contains(key)) {
+                innersMap.remove(key)
+            }
+        }
 
         reportProblems(resourcesMap, keysMap, innersMap)
 
@@ -91,9 +97,9 @@ class OpenApiIntermediateParser {
         }
     }
 
-    private fun performPostProcessing(resourcesMap: Map<String, Resource>,
-                                      keysMap: Map<String, ResourceKey>,
-                                      innersMap: Map<String, InnerEntity>) {
+    private fun performPostProcessing(resourcesMap: MutableMap<String, Resource>,
+                                      keysMap: MutableMap<String, ResourceKey>,
+                                      innersMap: MutableMap<String, InnerEntity>) {
         // Custom transformations can be applied here.
 
         // Resolve 'asset' duplication in CreateAssetRequest.
