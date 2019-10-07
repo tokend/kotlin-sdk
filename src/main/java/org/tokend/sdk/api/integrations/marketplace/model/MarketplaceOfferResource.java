@@ -9,7 +9,7 @@ import org.tokend.sdk.api.base.model.BaseResource;
 import java.math.BigDecimal;
 import java.util.List;
 
-@Type("offer")
+@Type("marketplace-offer")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MarketplaceOfferResource extends BaseResource {
     private MarketplaceOfferResource() { }
