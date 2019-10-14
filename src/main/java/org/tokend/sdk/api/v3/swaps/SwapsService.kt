@@ -14,6 +14,6 @@ interface SwapsService {
 
     @GET("v3/swaps/{id}")
     @JvmSuppressWildcards
-    fun getSwap(@Path("id") accountId: String,
+    fun getSwap(@Path("id") id: String,
                 @QueryMap query: Map<String, Any>): Call<JSONAPIDocument<SwapResource>>
 }
