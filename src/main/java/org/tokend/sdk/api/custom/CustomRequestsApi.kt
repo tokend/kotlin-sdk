@@ -180,7 +180,7 @@ open class CustomRequestsApi(
                         queryMap: Map<String, Any>? = null,
                         headersMap: Map<String, Any>? = null): ApiRequest<T> {
         return MappedRetrofitApiRequest(
-                doGet(url, queryMap, headersMap),
+                doDelete(url, queryMap, headersMap),
                 { mapResponseByType<T>(it, responseType) }
         )
     }
@@ -191,7 +191,7 @@ open class CustomRequestsApi(
                         queryMap: Map<String, Any>? = null,
                         headersMap: Map<String, Any>? = null): ApiRequest<T> {
         return MappedRetrofitApiRequest(
-                doGet(url, queryMap, headersMap),
+                doDelete(url, queryMap, headersMap),
                 { mapResponseByClass(it, responseClass) }
         )
     }
