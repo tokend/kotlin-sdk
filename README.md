@@ -21,11 +21,44 @@ dependencies {
 ```
 
 ## Usage
+
+### Setting up and making requests
 ```kotlin
 const val TOKEND_URL = "https://api.testnet.tokend.org"
 
+// Use TokenDApi facade members to access particular endpoints.
 val api = TokenDApi(TOKEND_URL)
+val assetsPage = api.v3.assets.get().execute().get()
+val systemInfo = api.general.getSystemInfo().execute().get()
+
+// Use KeyServer instance to work with key server.
 val keyServer = KeyServer(api.wallets)
+val walletInfo = keyServer.getWalletInfo(email, password).execute().get()
+```
+
+### Making custom requests
+If there is an useful new endpoint which is not yet defined
+in one of `TokenDApi` inner APIs you can work with it by making
+custom requests from `TokenDApi.customRequests`:
+
+```kotlin
+val api = TokenDApi(TOKEND_URL)
+
+// Use Class to get data with simple type.
+val response = api
+        .customRequests
+        .get("/extra_endpoint", ResponseData::class.java)
+        .execute()
+        .get()
+
+// Use Type obtained by TypeToken to get
+// data with generic type.
+val collectionType = object : TypeToken<List<ResponseData>>() {}.type
+val collection = api
+        .customRequests
+        .get("/some_collection", collectionType)
+        .execute()
+        .get()
 ```
 
 ### RxJava integration
@@ -61,6 +94,6 @@ For correct ProGuard processing add following lines to your project's `proguard-
 ```
 
 ## Documentation
-Visit our [Knowledge base](https://tokend.gitbook.io/knowledge-base/) and [API documentation](https://tokend.gitlab.io/docs) to get information on working with TokenD.
+Visit our [Docs](https://docs.tokend.io/) to get information on working with TokenD.
 
 Also take a look at [Wiki](https://github.com/tokend/kotlin-sdk/wiki) to learn how to use SDK in your projects.

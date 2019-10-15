@@ -1,6 +1,8 @@
 package org.tokend.sdk.api.custom
 
 import com.github.jasminb.jsonapi.JSONAPIDocument
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import okhttp3.ResponseBody
 import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.MappedRetrofitApiRequest
@@ -20,13 +22,26 @@ open class CustomRequestsApi(
     protected open val jsonApiResourceConverter = JsonApiToolsProvider.getResourceConverter()
 
     // region GET
-    private fun doGet(url: String, queryMap: Map<String, Any>?, headersMap: Map<String, Any>?): Call<ResponseBody> =
+    protected open fun doGet(url: String, queryMap: Map<String, Any>?, headersMap: Map<String, Any>?): Call<ResponseBody> =
             customRequestsService.get(
                     url = url,
                     query = queryMap ?: emptyMap(),
                     headers = headersMap ?: emptyMap()
             )
 
+    /**
+     * Performs GET HTTP request.
+     * [Type]-based variant is used if [T] is a generic.
+     *
+     * @return Response of type [T]
+     *
+     * @param url Relative endpoint URL
+     * @param responseType [Type] that matches [T]
+     * @param queryMap Map of query params
+     * @param headersMap Map of headers
+     *
+     * @see TypeToken
+     */
     @JvmOverloads
     open fun <T> get(url: String,
                      responseType: Type,
@@ -38,6 +53,16 @@ open class CustomRequestsApi(
         )
     }
 
+    /**
+     * Performs GET HTTP request.
+     *
+     * @return Response of type [T]
+     *
+     * @param url Relative endpoint URL
+     * @param responseClass [Class] that matches [T]
+     * @param queryMap Map of query params
+     * @param headersMap Map of headers
+     */
     @JvmOverloads
     open fun <T> get(url: String,
                      responseClass: Class<out T>,
@@ -49,6 +74,16 @@ open class CustomRequestsApi(
         )
     }
 
+    /**
+     * Performs GET HTTP request.
+     *
+     * @return [DataPage] with items of type [T]
+     *
+     * @param url Relative endpoint URL
+     * @param pageItemClass [Class] that matches [T]
+     * @param queryMap Map of query params
+     * @param headersMap Map of headers
+     */
     @JvmOverloads
     open fun <T> getPage(url: String,
                          pageItemClass: Class<out T>,
@@ -62,7 +97,7 @@ open class CustomRequestsApi(
     // endregion
 
     // region POST
-    private fun doPost(url: String, body: Any?, queryMap: Map<String, Any>?,
+    protected open fun doPost(url: String, body: Any?, queryMap: Map<String, Any>?,
                        headersMap: Map<String, Any>?): Call<ResponseBody> =
             customRequestsService.post(
                     url = url,
@@ -71,6 +106,17 @@ open class CustomRequestsApi(
                     headers = headersMap ?: emptyMap()
             )
 
+    /**
+     * Performs POST HTTP request.
+     *
+     * @return Response of type [T]
+     *
+     * @param url Relative endpoint URL
+     * @param body Request body, will be serialized to JSON with [Gson]
+     * @param responseClass [Class] that matches [T]
+     * @param queryMap Map of query params
+     * @param headersMap Map of headers
+     */
     @JvmOverloads
     open fun <T> post(url: String,
                       body: Any,
@@ -83,6 +129,19 @@ open class CustomRequestsApi(
         )
     }
 
+    /**
+     * Performs POST HTTP request.
+     *
+     * [Type]-based variant is used if [T] is a generic.
+     *
+     * @return Response of type [T]
+     *
+     * @param url Relative endpoint URL
+     * @param body Request body, will be serialized to JSON with [Gson]
+     * @param responseType [Type] that matches [T]
+     * @param queryMap Map of query params
+     * @param headersMap Map of headers
+     */
     @JvmOverloads
     open fun <T> post(url: String,
                       body: Any,
@@ -97,7 +156,7 @@ open class CustomRequestsApi(
     // endregion
 
     // region PUT
-    private fun doPut(url: String, body: Any?, queryMap: Map<String, Any>?,
+    protected open fun doPut(url: String, body: Any?, queryMap: Map<String, Any>?,
                       headersMap: Map<String, Any>?): Call<ResponseBody> =
             customRequestsService.put(
                     url = url,
@@ -106,6 +165,17 @@ open class CustomRequestsApi(
                     headers = headersMap ?: emptyMap()
             )
 
+    /**
+     * Performs PUT HTTP request.
+     *
+     * @return Response of type [T]
+     *
+     * @param url Relative endpoint URL
+     * @param body Request body, will be serialized to JSON with [Gson]
+     * @param responseClass [Class] that matches [T]
+     * @param queryMap Map of query params
+     * @param headersMap Map of headers
+     */
     @JvmOverloads
     open fun <T> put(url: String,
                      body: Any,
@@ -118,6 +188,19 @@ open class CustomRequestsApi(
         )
     }
 
+    /**
+     * Performs PUT HTTP request.
+     *
+     * [Type]-based variant is used if [T] is a generic.
+     *
+     * @return Response of type [T]
+     *
+     * @param url Relative endpoint URL
+     * @param body Request body, will be serialized to JSON with [Gson]
+     * @param responseType [Type] that matches [T]
+     * @param queryMap Map of query params
+     * @param headersMap Map of headers
+     */
     @JvmOverloads
     open fun <T> put(url: String,
                      body: Any,
@@ -132,7 +215,7 @@ open class CustomRequestsApi(
     // endregion
 
     // region PATCH
-    private fun doPatch(url: String, body: Any?, queryMap: Map<String, Any>?,
+    protected open fun doPatch(url: String, body: Any?, queryMap: Map<String, Any>?,
                         headersMap: Map<String, Any>?): Call<ResponseBody> =
             customRequestsService.patch(
                     url = url,
@@ -141,6 +224,17 @@ open class CustomRequestsApi(
                     headers = headersMap ?: emptyMap()
             )
 
+    /**
+     * Performs PATCH HTTP request.
+     *
+     * @return Response of type [T]
+     *
+     * @param url Relative endpoint URL
+     * @param body Request body, will be serialized to JSON with [Gson]
+     * @param responseClass [Class] that matches [T]
+     * @param queryMap Map of query params
+     * @param headersMap Map of headers
+     */
     @JvmOverloads
     open fun <T> patch(url: String,
                        body: Any,
@@ -153,6 +247,19 @@ open class CustomRequestsApi(
         )
     }
 
+    /**
+     * Performs PATCH HTTP request.
+     *
+     * [Type]-based variant is used if [T] is a generic.
+     *
+     * @return Response of type [T]
+     *
+     * @param url Relative endpoint URL
+     * @param body Request body, will be serialized to JSON with [Gson]
+     * @param responseType [Type] that matches [T]
+     * @param queryMap Map of query params
+     * @param headersMap Map of headers
+     */
     @JvmOverloads
     open fun <T> patch(url: String,
                        body: Any,
@@ -167,13 +274,25 @@ open class CustomRequestsApi(
     // endregion
 
     // region DELETE
-    private fun doDelete(url: String, queryMap: Map<String, Any>?, headersMap: Map<String, Any>?): Call<ResponseBody> =
+    protected open fun doDelete(url: String, queryMap: Map<String, Any>?, headersMap: Map<String, Any>?): Call<ResponseBody> =
             customRequestsService.delete(
                     url = url,
                     query = queryMap ?: emptyMap(),
                     headers = headersMap ?: emptyMap()
             )
 
+    /**
+     * Performs DELETE HTTP request.
+     *
+     * [Type]-based variant is used if [T] is a generic.
+     *
+     * @return Response of type [T]
+     *
+     * @param url Relative endpoint URL
+     * @param responseType [Type] that matches [T]
+     * @param queryMap Map of query params
+     * @param headersMap Map of headers
+     */
     @JvmOverloads
     open fun <T> delete(url: String,
                         responseType: Type,
@@ -185,6 +304,16 @@ open class CustomRequestsApi(
         )
     }
 
+    /**
+     * Performs DELETE HTTP request.
+     *
+     * @return Response of type [T]
+     *
+     * @param url Relative endpoint URL
+     * @param responseClass [Class] that matches [T]
+     * @param queryMap Map of query params
+     * @param headersMap Map of headers
+     */
     @JvmOverloads
     open fun <T> delete(url: String,
                         responseClass: Class<out T>,
@@ -197,7 +326,7 @@ open class CustomRequestsApi(
     }
     // endregion
 
-    private fun <T> mapResponseByClass(responseBody: ResponseBody,
+    protected open fun <T> mapResponseByClass(responseBody: ResponseBody,
                                        responseClass: Class<out T>): T {
         return if (BaseResource::class.java.isAssignableFrom(responseClass)) {
             jsonApiResourceConverter.readDocument(
@@ -209,12 +338,12 @@ open class CustomRequestsApi(
         }
     }
 
-    private fun <T> mapResponseByType(responseBody: ResponseBody,
+    protected open fun <T> mapResponseByType(responseBody: ResponseBody,
                                       responseType: Type): T {
         return gson.fromJson<T>(responseBody.charStream(), responseType)
     }
 
-    private fun <T> mapPageResponseByClass(responseBody: ResponseBody,
+    protected open  fun <T> mapPageResponseByClass(responseBody: ResponseBody,
                                            pageItemClass: Class<out T>): DataPage<T> {
         return if (BaseResource::class.java.isAssignableFrom(pageItemClass)) {
             val document = jsonApiResourceConverter.readDocumentCollection(
