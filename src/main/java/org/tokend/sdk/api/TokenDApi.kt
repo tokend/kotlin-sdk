@@ -9,6 +9,8 @@ import org.tokend.sdk.api.authenticator.AuthResultsService
 import org.tokend.sdk.api.base.BaseApi
 import org.tokend.sdk.api.blobs.BlobsApi
 import org.tokend.sdk.api.blobs.BlobsService
+import org.tokend.sdk.api.custom.CustomRequestsApi
+import org.tokend.sdk.api.custom.CustomRequestsService
 import org.tokend.sdk.api.documents.DocumentsApi
 import org.tokend.sdk.api.documents.DocumentsService
 import org.tokend.sdk.api.fees.FeesApi
@@ -136,6 +138,10 @@ constructor(
 
     open val identities: IdentitiesApi by lazy {
         IdentitiesApi(getService(IdentitiesService::class.java))
+    }
+
+    open val customRequests: CustomRequestsApi by lazy {
+        CustomRequestsApi(getService(CustomRequestsService::class.java))
     }
 
     /**
