@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [3.1.0] 2019-10-16
+
+### Added
+- Get swap by ID method
+- Ability to make custom requests,
+ see Readme and `TokenDApi.customRequests`
+
+### Changed
+- Actualized marketplace integration API resources
+
+### Fixed
+- Naming mismatch in external system id resource file
+
 ## [3.0.0] 2019-10-04
 
 ### Changed
@@ -217,4 +230,5 @@ with `addExtraResources` method
 [2.8.2]: https://github.com/tokend/kotlin-sdk/compare/2.8.1...2.8.2
 [2.9.0]: https://github.com/tokend/kotlin-sdk/compare/2.8.2...2.9.0
 [3.0.0]: https://github.com/tokend/kotlin-sdk/compare/2.9.0...3.0.0
-[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/3.0.0...HEAD
+[3.1.0]: https://github.com/tokend/kotlin-sdk/compare/3.0.0...3.1.0
+[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/3.1.0...HEAD
