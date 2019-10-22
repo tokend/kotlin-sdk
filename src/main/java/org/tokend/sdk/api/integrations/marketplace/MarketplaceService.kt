@@ -5,6 +5,7 @@ import org.tokend.sdk.api.base.model.AttributesEntity
 import org.tokend.sdk.api.base.model.DataEntity
 import org.tokend.sdk.api.integrations.marketplace.model.MarketplaceBuyRequestAttributes
 import org.tokend.sdk.api.integrations.marketplace.model.MarketplaceInvoiceAttributes
+import org.tokend.sdk.api.integrations.marketplace.model.MarketplaceOfferPrice
 import org.tokend.sdk.api.integrations.marketplace.model.MarketplaceOfferResource
 import retrofit2.Call
 import retrofit2.http.*
@@ -23,4 +24,12 @@ interface MarketplaceService {
     @JvmSuppressWildcards
     fun getOffer(@Path("id") id: String,
                  @QueryMap query: Map<String, Any>): Call<JSONAPIDocument<MarketplaceOfferResource>>
+
+    @GET("integrations/marketplace/calculate-price")
+    @JvmSuppressWildcards
+    fun getCalculatedPrice(@Query("offer") offerId: String,
+                           @Query("amount") amount: String,
+                           @Query("payment-method") paymentMethodId: String,
+                           @Query("promocode") promocode: String?
+    ): Call<DataEntity<AttributesEntity<MarketplaceOfferPrice>>>
 }

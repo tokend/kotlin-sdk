@@ -13,7 +13,9 @@ class MarketplaceBuyRequestAttributes(
         @SerializedName("sender_account_id")
         val senderAccountId: String?,
         @SerializedName("sender_email")
-        val senderEmail: String?
+        val senderEmail: String?,
+        @SerializedName("promocode")
+        val promocode: String?
 ) {
     init {
         if (senderAccountId == null && senderEmail == null) {
