@@ -8,5 +8,5 @@ class WalletResourceBody(
         val data: WalletData
 ) {
     @SerializedName("included")
-    val included = data.relationships.values.map { it.data }
+    val included: Collection<Any> = data.getFlatterRelationships()
 }

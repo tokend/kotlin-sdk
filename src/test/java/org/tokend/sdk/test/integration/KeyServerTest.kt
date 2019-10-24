@@ -4,10 +4,12 @@ import org.junit.Assert
 import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runners.MethodSorters
+import org.tokend.sdk.api.TokenDApi
 import org.tokend.sdk.api.tfa.model.TfaFactor
 import org.tokend.sdk.api.wallets.model.EmailAlreadyTakenException
 import org.tokend.sdk.api.wallets.model.InvalidCredentialsException
 import org.tokend.sdk.keyserver.KeyServer
+import org.tokend.sdk.keyserver.models.SignerData
 import org.tokend.sdk.keyserver.models.WalletCreateResult
 import org.tokend.sdk.test.Util
 import org.tokend.sdk.tfa.NeedTfaException
@@ -33,15 +35,15 @@ class KeyServerTest {
 
         System.out.println("Attempt to sign up $email ${password.joinToString("")}")
 
-        val result = keyServer.createAndSaveWallet(email, password).execute().get()
+        val result = keyServer.createAndSaveWallet(email, password, api.v3.keyValue).execute().get()
 
         System.out.println("Account ID is ${result.rootAccount.accountId}")
 
-        checkSignUpResult(email, password, result, keyServer)
+        checkSignUpResult(email, password, result, api)
     }
 
     @Test
-    fun bSignUpWithAccounts() {
+    fun bSignUpWithAccount() {
         val email = "signUpWithAccountsTest" + Random.nextInt().absoluteValue + "@mail.com"
         val password = "qwe123".toCharArray()
 
@@ -53,7 +55,7 @@ class KeyServerTest {
 
         System.out.println("Attempt to sign up $email ${password.joinToString("")}")
 
-        val result = keyServer.createAndSaveWallet(email, password, rootAccount)
+        val result = keyServer.createAndSaveWallet(email, password, api.v3.keyValue, rootAccount)
                 .execute().get()
 
         System.out.println("Account ID is ${result.rootAccount.accountId}")
@@ -64,17 +66,74 @@ class KeyServerTest {
                 result.rootAccount.secretSeed
         )
 
-        checkSignUpResult(email, password, result, keyServer)
+        checkSignUpResult(email, password, result, api)
+    }
+
+    @Test
+    fun bSignUpWithSigners() {
+        val email = "signUpWithAccountsTest" + Random.nextInt().absoluteValue + "@mail.com"
+        val password = "qwe123".toCharArray()
+
+        val api = Util.getApi()
+        val keyServer = KeyServer(api.wallets)
+
+        val rootAccount = Account.random()
+        val signerRole = api.v3.keyValue
+                .getById(KeyServer.DEFAULT_SIGNER_ROLE_KEY_VALUE_KEY)
+                .map { it.value.u32!! }
+                .execute()
+                .get()
+
+        val signerAccounts = mutableListOf(rootAccount, *(0..3).map { Account.random() }.toTypedArray())
+        val signers = signerAccounts.map {
+            SignerData(
+                    id = it.accountId,
+                    roleId = signerRole
+            )
+        }
+
+        System.out.println("Attempt to sign up $email ${password.joinToString("")}")
+
+        val result = keyServer.createAndSaveWallet(email, password, rootAccount, signers)
+                .execute().get()
+
+        System.out.println("Account ID is ${result.rootAccount.accountId}")
+
+        Assert.assertArrayEquals(
+                "Result account must be equal to the provided one",
+                rootAccount.secretSeed,
+                result.rootAccount.secretSeed
+        )
+
+        checkSignUpResult(email, password, result, api)
+
+        val actualSigners = api.v3
+                .signers.get(result.walletData.attributes.accountId)
+                .execute()
+                .get()
+
+        Assert.assertTrue(
+                "All signers must have specified role $signerRole",
+                actualSigners.all { it.role.id == signerRole.toString() }
+        )
+        Assert.assertTrue(
+                "All specified signers must be created",
+                actualSigners
+                        .map { signer -> signers.any { it.id == signer.id } }
+                        .all { it }
+        )
     }
 
     private fun checkSignUpResult(email: String,
                                   password: CharArray,
                                   result: WalletCreateResult,
-                                  keyServer: KeyServer) {
+                                  api: TokenDApi) {
+        val keyServer = KeyServer(api.wallets)
+
         Assert.assertEquals(
                 "Account ID in wallet data must be equal to the root account ID",
                 result.rootAccount.accountId,
-                result.walletData.attributes?.accountId
+                result.walletData.attributes.accountId
         )
 
         Assert.assertFalse(
@@ -84,7 +143,7 @@ class KeyServerTest {
 
         Assert.assertTrue(
                 "Email in wallet data must be lowercased",
-                email.toLowerCase() == result.walletData.attributes?.email
+                email.toLowerCase() == result.walletData.attributes.email
         )
 
         val walletInfo = try {
@@ -116,6 +175,16 @@ class KeyServerTest {
                 result.rootAccount.accountId,
                 recoveryWalletInfo.accountId
         )
+
+        val walletSigners = api.v3.signers
+                .get(walletInfo.accountId)
+                .execute()
+                .get()
+
+        Assert.assertTrue(
+                "There must be a signer for wallet root account",
+                walletSigners.any { it.id == walletInfo.accountId }
+        )
     }
 
     @Test
@@ -130,8 +199,8 @@ class KeyServerTest {
         System.out.println("Attempt to sign up $email ${password.joinToString("")}")
 
         val (wallet, rootAccount)
-                = keyServer.createAndSaveWallet(email, password).execute().get()
-        email = wallet.attributes!!.email
+                = keyServer.createAndSaveWallet(email, password, api.v3.keyValue).execute().get()
+        email = wallet.attributes.email
 
         val currentWalletInfo = keyServer.getWalletInfo(email, password).execute().get()
 
@@ -242,10 +311,10 @@ class KeyServerTest {
 
         System.out.println("Attempt to sign up $email ${password.joinToString("")}")
 
-        keyServer.createAndSaveWallet(email, password).execute().get()
+        keyServer.createAndSaveWallet(email, password, api.v3.keyValue).execute().get()
 
         try {
-            keyServer.createAndSaveWallet(email, password).execute().get()
+            keyServer.createAndSaveWallet(email, password, api.v3.keyValue).execute().get()
 
             Assert.fail("${EmailAlreadyTakenException::class.java.name} expected")
         } catch (e: Exception) {
@@ -267,7 +336,7 @@ class KeyServerTest {
 
         System.out.println("Attempt to sign up $email ${password.joinToString("")}")
 
-        val (_, rootAccount) = keyServer.createAndSaveWallet(email, password).execute().get()
+        val (_, rootAccount) = keyServer.createAndSaveWallet(email, password, api.v3.keyValue).execute().get()
 
         val walletInfo = keyServer.getWalletInfo(email, password).execute().get()
 
@@ -288,7 +357,7 @@ class KeyServerTest {
 
         System.out.println("Attempt to sign up $email ${password.joinToString("")}")
 
-        keyServer.createAndSaveWallet(email, charArrayOf()).execute().get()
+        keyServer.createAndSaveWallet(email, charArrayOf(), api.v3.keyValue).execute().get()
 
         try {
             keyServer.getWalletInfo(email, "qweqwe".toCharArray()).execute().get()
