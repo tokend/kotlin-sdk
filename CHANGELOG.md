@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [3.2.0] 2019-10-24
+
+### Added
+- Ability to set custom signers while creating a wallet
+
+### Changed
+- Wallet creation methods in `KeyServer` now require a default
+signer role value or a KeyValue API instance to obtain it
+- Actualized marketplace integration API
+
 ## [3.1.0] 2019-10-16
 
 ### Added
@@ -231,4 +241,5 @@ with `addExtraResources` method
 [2.9.0]: https://github.com/tokend/kotlin-sdk/compare/2.8.2...2.9.0
 [3.0.0]: https://github.com/tokend/kotlin-sdk/compare/2.9.0...3.0.0
 [3.1.0]: https://github.com/tokend/kotlin-sdk/compare/3.0.0...3.1.0
+[3.2.0]: https://github.com/tokend/kotlin-sdk/compare/3.1.0...3.2.0
 [Unreleased]: https://github.com/tokend/kotlin-sdk/compare/3.1.0...HEAD
