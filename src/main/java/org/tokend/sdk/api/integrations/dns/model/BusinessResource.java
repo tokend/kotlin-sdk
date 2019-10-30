@@ -30,6 +30,15 @@ public class BusinessResource extends BaseResource {
     @JsonProperty("stats_quote_asset")
     private String statsQuoteAsset;
 
+    @JsonProperty("description")
+    private String description;
+
+    @JsonProperty("bravo")
+    private String bannerJson;
+
+    @JsonProperty("status")
+    private String status;
+
     public String getName() {
         return name;
     }
@@ -50,9 +59,22 @@ public class BusinessResource extends BaseResource {
         return statsQuoteAsset;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public String getBannerJson() {
+        return bannerJson;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
     @Override
     public boolean isFilled() {
         return name != null && accountId != null && logoJson != null && industry != null
-                && statsQuoteAsset != null;
+                && statsQuoteAsset != null && description != null && bannerJson != null
+                && status != null;
     }
 }
