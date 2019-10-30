@@ -16,7 +16,10 @@ open class MappedCallableApiRequest<CallType, ResultType>(
         protected val responseMapper: (CallType) -> ResultType,
         protected val errorMapper: ((Throwable) -> Throwable)? = null
 ) : ApiRequest<ResultType> {
-    protected val executorService = Executors.newSingleThreadExecutor()
+    protected val executorService = Executors.newSingleThreadExecutor {
+        Thread(it).apply { name = "AsyncRequestExecutionThread" }
+    }
+
     protected var asyncCallback: ApiCallback<ResultType>? = null
 
     override fun execute(): ApiResponse<ResultType> {
@@ -45,7 +48,7 @@ open class MappedCallableApiRequest<CallType, ResultType>(
 
             asyncCallback = callback
 
-            executorService.submit {
+            executorService.execute {
                 // No mapping required, done in .execute()
                 try {
                     val result = execute()
