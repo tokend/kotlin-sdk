@@ -1,6 +1,7 @@
 package org.tokend.sdk.api.accounts
 
 import org.tokend.sdk.api.accounts.model.Account
+import org.tokend.sdk.api.accounts.model.CreateAccountRequestBody
 import org.tokend.sdk.api.accounts.model.SimpleBalanceDetails
 import org.tokend.sdk.api.accounts.model.UnifiedOperationRecord
 import org.tokend.sdk.api.accounts.model.limits.Limits
@@ -14,6 +15,7 @@ import org.tokend.sdk.api.base.model.operations.TransferOperation
 import org.tokend.sdk.api.base.model.operations.converter.DefaultUnifiedOperationRecordConverter
 import org.tokend.sdk.api.base.model.operations.converter.UnifiedOperationRecordConverter
 import org.tokend.sdk.api.trades.model.Offer
+import org.tokend.sdk.keyserver.models.SignerData
 
 open class AccountsApi(
         protected open val accountsService: AccountsService
@@ -162,6 +164,16 @@ open class AccountsApi(
         return MappedRetrofitApiRequest(
                 accountsService.getLimits(accountId),
                 { Limits(it.entries ?: emptyList()) }
+        )
+    }
+
+    /**
+     * Creates an account with specified signers.
+     */
+    open fun createAccount(accountId: String,
+                           signers: Collection<SignerData>): ApiRequest<Void> {
+        return SimpleRetrofitApiRequest(
+                accountsService.createAccount(CreateAccountRequestBody(accountId, signers))
         )
     }
 }

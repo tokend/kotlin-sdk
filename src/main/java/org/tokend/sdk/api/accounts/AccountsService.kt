@@ -39,4 +39,7 @@ interface AccountsService {
 
     @GET("accounts/{accountId}/limits")
     fun getLimits(@Path("accountId") accountId: String): Call<LimitsResponse>
+
+    @POST("accounts")
+    fun createAccount(@Body body: CreateAccountRequestBody): Call<Void>
 }
