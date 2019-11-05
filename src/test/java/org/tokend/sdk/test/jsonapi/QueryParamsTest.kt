@@ -13,6 +13,7 @@ import org.tokend.sdk.api.requests.model.base.RequestState
 import org.tokend.sdk.api.sales.model.SaleState
 import org.tokend.sdk.api.v3.assetpairs.params.AssetPairParams
 import org.tokend.sdk.api.v3.assetpairs.params.AssetPairsPageParams
+import org.tokend.sdk.api.v3.assets.model.AssetState
 import org.tokend.sdk.api.v3.assets.params.AssetParams
 import org.tokend.sdk.api.v3.assets.params.AssetsPageParams
 import org.tokend.sdk.api.v3.atomicswap.params.AtomicSwapAskParams
@@ -71,16 +72,20 @@ class QueryParamsTest {
 
     @Test
     fun assetsParams() {
-        val expected = "{filter[policy]=2, include=owner, order=desc, page[order]=desc}"
+        val expected = "{filter[owner]=$accountId, filter[policy]=2, filter[state]=0, include=owner, order=desc, page[order]=desc}"
 
         val params = AssetsPageParams(
+                owner = accountId,
                 policies = listOf(AssetPolicy.BASE_ASSET),
+                state = AssetState.ACTIVE,
                 include = listOf(AssetParams.Includes.OWNER),
                 pagingParams = PagingParamsV2(PagingOrder.DESC)
         )
 
         val builtParams = AssetsPageParams.Builder()
+                .withOwner(accountId)
                 .withPolicies(AssetPolicy.BASE_ASSET)
+                .withState(AssetState.ACTIVE)
                 .withInclude(AssetParams.Includes.OWNER)
                 .withPagingParams(PagingParamsV2(PagingOrder.DESC))
                 .build()

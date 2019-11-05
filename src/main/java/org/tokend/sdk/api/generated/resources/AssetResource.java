@@ -68,6 +68,13 @@ public class AssetResource extends BaseResource {
         return preIssuanceAssetSigner;
     }
     
+    @JsonProperty("state")
+    private Enum state;
+    
+    public Enum getState() {
+        return state;
+    }
+    
     @JsonProperty("trailing_digits")
     private Long trailingDigits;
     
@@ -91,6 +98,7 @@ public class AssetResource extends BaseResource {
             pendingIssuance != null &&
             policies != null &&
             preIssuanceAssetSigner != null &&
+            state != null &&
             trailingDigits != null &&
             type != null 
         ;

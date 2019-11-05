@@ -1,6 +1,7 @@
 package org.tokend.sdk.api.v3.assets.params
 
 import org.tokend.sdk.api.base.params.PagingParamsV2
+import org.tokend.sdk.api.v3.assets.model.AssetState
 import org.tokend.sdk.api.v3.base.PageQueryParams
 import org.tokend.sdk.utils.extentions.bitmask
 import org.tokend.wallet.xdr.AssetPolicy
@@ -11,6 +12,7 @@ import org.tokend.wallet.xdr.AssetPolicy
 open class AssetsPageParams(
         val policies: Collection<AssetPolicy>? = null,
         val owner: String? = null,
+        val state: AssetState? = null,
         include: Collection<String>? = null,
         pagingParams: PagingParamsV2? = null
 ) : PageQueryParams(pagingParams, include) {
@@ -21,18 +23,22 @@ open class AssetsPageParams(
                 putFilter("policy", policies.map { it.value.toLong() }.bitmask())
             }
             owner?.also { putFilter("owner", it) }
+            state?.also { putFilter("state", it.value) }
         }
     }
 
     class Builder : PageQueryParams.Builder() {
         private var policies: Collection<AssetPolicy>? = null
         private var owner: String? = null
+        private var state: AssetState? = null
 
         fun withPolicies(policies: Collection<AssetPolicy>) = also { this.policies = policies }
 
         fun withPolicies(vararg policies: AssetPolicy) = also { this.policies = policies.toList() }
 
         fun withOwner(owner: String) = also { this.owner = owner }
+
+        fun withState(state: AssetState) = also { this.state = state }
 
         override fun withPagingParams(pagingParams: PagingParamsV2) = also {
             super.withPagingParams(pagingParams)
@@ -47,7 +53,7 @@ open class AssetsPageParams(
         }
 
         override fun build(): AssetsPageParams {
-            return AssetsPageParams(policies, owner, include, pagingParams)
+            return AssetsPageParams(policies, owner, state, include, pagingParams)
         }
     }
 }
