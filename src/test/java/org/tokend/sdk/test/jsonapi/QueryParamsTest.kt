@@ -21,6 +21,8 @@ import org.tokend.sdk.api.v3.atomicswap.params.AtomicSwapAsksPageParams
 import org.tokend.sdk.api.v3.balances.params.BalanceParams
 import org.tokend.sdk.api.v3.balances.params.BalancesPageParams
 import org.tokend.sdk.api.v3.fees.params.FeesPageParamsV3
+import org.tokend.sdk.api.v3.history.params.OperationParams
+import org.tokend.sdk.api.v3.history.params.OperationsPageParams
 import org.tokend.sdk.api.v3.history.params.ParticipantEffectsPageParams
 import org.tokend.sdk.api.v3.history.params.ParticipantEffectsParams
 import org.tokend.sdk.api.v3.offers.params.OfferParamsV3
@@ -605,6 +607,34 @@ class QueryParamsTest {
                 ))
                 .withInclude(SwapParams.Includes.ASSET, SwapParams.Includes.DESTINATION_BALANCE,
                         SwapParams.Includes.SOURCE_BALANCE)
+                .build()
+
+        Assert.assertEquals(expected, params.map().toSortedMap().toString())
+        Assert.assertEquals(expected, builtParams.map().toSortedMap().toString())
+    }
+
+    @Test
+    fun operationsPageParams() {
+        val expected = "{cursor=8, filter[types]=20,11, include=operation.details, limit=10, order=desc, page=8, page[cursor]=8, page[limit]=10, page[number]=8, page[order]=desc}"
+
+        val params = OperationsPageParams(
+                types = listOf(OperationType.CHECK_SALE_STATE, OperationType.MANAGE_ASSET),
+                include = listOf(OperationParams.Includes.OPERATION_DETAILS),
+                pagingParams = PagingParamsV2(
+                        order = PagingOrder.DESC,
+                        limit = 10,
+                        page = "8"
+                )
+        )
+
+        val builtParams = OperationsPageParams.Builder()
+                .withTypes(OperationType.CHECK_SALE_STATE, OperationType.MANAGE_ASSET)
+                .withInclude(OperationParams.Includes.OPERATION_DETAILS)
+                .withPagingParams(PagingParamsV2(
+                        order = PagingOrder.DESC,
+                        limit = 10,
+                        page = "8"
+                ))
                 .build()
 
         Assert.assertEquals(expected, params.map().toSortedMap().toString())
