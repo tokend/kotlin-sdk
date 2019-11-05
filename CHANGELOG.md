@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [3.3.0] 2019-11-05
+
+### Added
+- Account creation endpoint to `AccountsApi`
+- Identity settings endpoints to `IdentitiesApi`
+- Get operations endpoint to `HistoryApi`
+
+### Changed
+- Updated wallet module version to `3.6.0`
+- Actualized assets API
+- Actualized DNS integration API resources
+
 ## [3.2.0] 2019-10-24
 
 ### Added
@@ -242,4 +254,5 @@ with `addExtraResources` method
 [3.0.0]: https://github.com/tokend/kotlin-sdk/compare/2.9.0...3.0.0
 [3.1.0]: https://github.com/tokend/kotlin-sdk/compare/3.0.0...3.1.0
 [3.2.0]: https://github.com/tokend/kotlin-sdk/compare/3.1.0...3.2.0
-[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/3.1.0...HEAD
+[3.3.0]: https://github.com/tokend/kotlin-sdk/compare/3.2.0...3.3.0
+[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/3.3.0...HEAD
