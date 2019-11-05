@@ -7,12 +7,14 @@ import org.tokend.sdk.api.base.SimpleRetrofitApiRequest
 import org.tokend.sdk.api.base.model.AttributesEntity
 import org.tokend.sdk.api.base.model.DataEntity
 import org.tokend.sdk.api.base.model.DataPage
+import org.tokend.sdk.api.base.params.PagingParamsV2
 import org.tokend.sdk.api.base.params.map
 import org.tokend.sdk.api.identity.model.IdentityResource
 import org.tokend.sdk.api.identity.model.MassEmailAccountKey
 import org.tokend.sdk.api.identity.model.SetPhoneRequestAttributes
 import org.tokend.sdk.api.identity.model.SetTelegramRequestAttributes
 import org.tokend.sdk.api.identity.params.IdentitiesPageParams
+import org.tokend.sdk.api.identity.model.IdentitySettingsResource
 
 open class IdentitiesApi(
         protected open val identitesService: IdentitiesService
@@ -64,6 +66,43 @@ open class IdentitiesApi(
                         accountId,
                         DataEntity(AttributesEntity(SetTelegramRequestAttributes(username)))
                 )
+        )
+    }
+
+    @JvmOverloads
+    open fun getSettings(accountId: String,
+                         pagingParams: PagingParamsV2? = null): ApiRequest<DataPage<IdentitySettingsResource>> {
+        return MappedRetrofitApiRequest(
+                identitesService.getSettings(
+                        accountId,
+                        pagingParams.map()
+                ),
+                DataPage.Companion::fromPageDocument
+        )
+    }
+
+    open fun getSettingsItemByKey(accountId: String,
+                                  key: String): ApiRequest<IdentitySettingsResource> {
+        return MappedRetrofitApiRequest(
+                identitesService.getSettingsItemByKey(accountId, key),
+                JSONAPIDocument<IdentitySettingsResource>::get
+        )
+    }
+
+
+    /**
+     * @param value - will be serialzied with Gson
+     */
+    open fun setSettingsItem(accountId: String,
+                             key: String,
+                             value: Any): ApiRequest<Void> {
+        val data = DataEntity(AttributesEntity(mapOf(
+                "key" to key,
+                "value" to value
+        )))
+
+        return SimpleRetrofitApiRequest(
+                identitesService.setSettingsItem(accountId, data)
         )
     }
 }

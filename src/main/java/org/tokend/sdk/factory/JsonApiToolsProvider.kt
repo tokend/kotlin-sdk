@@ -9,6 +9,7 @@ import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory
 import org.tokend.sdk.api.base.model.BaseResource
 import org.tokend.sdk.api.generated.resources.AllResources
 import org.tokend.sdk.api.identity.model.IdentityResource
+import org.tokend.sdk.api.identity.model.IdentitySettingsResource
 import org.tokend.sdk.api.integrations.dns.model.BusinessResource
 import org.tokend.sdk.api.integrations.dns.model.ClientBalanceResource
 import org.tokend.sdk.api.integrations.dns.model.ClientResource
@@ -35,7 +36,8 @@ object JsonApiToolsProvider {
             ClientBalanceResource::class.java,
             PaymentAccountResource::class.java,
             MarketplaceOfferResource::class.java,
-            MarketplacePaymentMethodResource::class.java
+            MarketplacePaymentMethodResource::class.java,
+            IdentitySettingsResource::class.java
     )
 
     /**
