@@ -354,6 +354,11 @@ class KeyServer constructor(
                 signers = emptyList()
         )
 
+        recoveryWallet.walletData.addRelation(
+                "signer",
+                WalletRelation.signer(SignerData(recoveryWallet.walletData.attributes.accountId, 0))
+        )
+
         newLoginParams.kdfAttributes.encodedSalt = recoveryWallet.walletData.attributes.salt
 
         val newWalletId = recoveryWallet.walletData.id
