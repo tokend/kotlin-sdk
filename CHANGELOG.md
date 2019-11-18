@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [3.3.1] 2019-11-18
+
+### Changed
+- Actualized company clients page query params
+- Actualized `SaleResource`
+- Base64 string extensions are now tolerant to missing paddings
+- Actualized client redirect payload types
+
+### Fixed
+- Missing signer relation for wallet password recovery
+- Invalid query params for client businesses request
+
 ## [3.3.0] 2019-11-05
 
 ### Added
@@ -255,4 +267,5 @@ with `addExtraResources` method
 [3.1.0]: https://github.com/tokend/kotlin-sdk/compare/3.0.0...3.1.0
 [3.2.0]: https://github.com/tokend/kotlin-sdk/compare/3.1.0...3.2.0
 [3.3.0]: https://github.com/tokend/kotlin-sdk/compare/3.2.0...3.3.0
-[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/3.3.0...HEAD
+[3.3.1]: https://github.com/tokend/kotlin-sdk/compare/3.3.0...3.3.1
+[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/3.3.1...HEAD
