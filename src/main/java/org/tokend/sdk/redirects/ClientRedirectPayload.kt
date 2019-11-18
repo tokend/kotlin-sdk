@@ -12,12 +12,12 @@ import org.tokend.sdk.utils.extentions.decodeBase64
  */
 class ClientRedirectPayload(
         @SerializedName("type")
-        val typeI: Int,
+        val typeName: String,
         @SerializedName("meta")
         val meta: JsonObject
 ) {
     val type: ClientRedirectType
-        get() = ClientRedirectType.fromValue(typeI)
+        get() = ClientRedirectType.fromName(typeName)
 
     companion object {
         private const val REDIRECT_PATH_SEGMENT = "r"
