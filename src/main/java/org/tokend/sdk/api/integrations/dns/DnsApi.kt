@@ -28,7 +28,7 @@ open class DnsApi(
 
     @JvmOverloads
     open fun getClientBusinesses(clientId: String,
-                                 params: ClientsPageParams? = null): ApiRequest<DataPage<BusinessResource>> {
+                                 params: PageQueryParams? = null): ApiRequest<DataPage<BusinessResource>> {
         return MappedRetrofitApiRequest(
                 dnsService.getClientBusinesses(
                         clientId,
