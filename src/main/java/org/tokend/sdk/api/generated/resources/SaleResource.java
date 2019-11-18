@@ -20,9 +20,9 @@ import org.tokend.sdk.api.base.model.*;
 public class SaleResource extends BaseResource {
     
     @JsonProperty("access_definition_type")
-    private String accessDefinitionType;
+    private Enum accessDefinitionType;
     
-    public String getAccessDefinitionType() {
+    public Enum getAccessDefinitionType() {
         return accessDefinitionType;
     }
     
