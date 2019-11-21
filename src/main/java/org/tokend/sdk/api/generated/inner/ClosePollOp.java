@@ -28,9 +28,9 @@ public class ClosePollOp {
     }
     
     @JsonProperty("poll_result")
-    private Enum pollResult;
+    private org.tokend.sdk.api.generated.inner.Enum pollResult;
     
-    public Enum getPollResult() {
+    public org.tokend.sdk.api.generated.inner.Enum getPollResult() {
         return pollResult;
     }
 }

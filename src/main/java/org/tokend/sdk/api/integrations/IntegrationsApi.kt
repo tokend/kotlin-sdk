@@ -1,6 +1,8 @@
 package org.tokend.sdk.api.integrations
 
 import org.tokend.sdk.api.base.BaseApi
+import org.tokend.sdk.api.integrations.booking.BookingApi
+import org.tokend.sdk.api.integrations.booking.BookingService
 import org.tokend.sdk.api.integrations.dns.DnsApi
 import org.tokend.sdk.api.integrations.dns.DnsService
 import org.tokend.sdk.api.integrations.fiat.FiatApi
@@ -44,5 +46,9 @@ open class IntegrationsApi(
 
     open val locator: LocatorApi by lazy {
         LocatorApi(getService(LocatorService::class.java))
+    }
+
+    open val booking: BookingApi by lazy {
+        BookingApi(getService(BookingService::class.java))
     }
 }

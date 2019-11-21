@@ -28,9 +28,9 @@ public class FeeAppliedTo {
     }
     
     @JsonProperty("fee_type_extended")
-    private Enum feeTypeExtended;
+    private org.tokend.sdk.api.generated.inner.Enum feeTypeExtended;
     
-    public Enum getFeeTypeExtended() {
+    public org.tokend.sdk.api.generated.inner.Enum getFeeTypeExtended() {
         return feeTypeExtended;
     }
     

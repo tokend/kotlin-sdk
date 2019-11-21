@@ -14,9 +14,9 @@ import org.jetbrains.annotations.Nullable;
 public class PollData {
     
     @JsonProperty("type")
-    private Enum type;
+    private org.tokend.sdk.api.generated.inner.Enum type;
     
-    public Enum getType() {
+    public org.tokend.sdk.api.generated.inner.Enum getType() {
         return type;
     }
 }

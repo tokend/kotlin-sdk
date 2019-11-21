@@ -65,9 +65,9 @@ public class ManageLimitsCreationOp {
     }
     
     @JsonProperty("stats_op_type")
-    private Enum statsOpType;
+    private org.tokend.sdk.api.generated.inner.Enum statsOpType;
     
-    public Enum getStatsOpType() {
+    public org.tokend.sdk.api.generated.inner.Enum getStatsOpType() {
         return statsOpType;
     }
     

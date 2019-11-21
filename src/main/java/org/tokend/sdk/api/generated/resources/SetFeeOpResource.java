@@ -9,7 +9,6 @@ import com.github.jasminb.jsonapi.annotations.*;
 import org.tokend.sdk.api.generated.*;
 import org.tokend.sdk.api.generated.resources.*;
 import org.tokend.sdk.api.generated.inner.*;
-import org.tokend.sdk.api.generated.inner.Enum;
 import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
@@ -45,9 +44,9 @@ public class SetFeeOpResource extends BaseOperationDetailsResource {
     }
     
     @JsonProperty("fee_type")
-    private Enum feeType;
+    private org.tokend.sdk.api.generated.inner.Enum feeType;
     
-    public Enum getFeeType() {
+    public org.tokend.sdk.api.generated.inner.Enum getFeeType() {
         return feeType;
     }
     
