@@ -2,57 +2,60 @@
 
 package org.tokend.sdk.api.integrations.booking.model.generated.resources;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.github.jasminb.jsonapi.annotations.Relationship;
-import com.github.jasminb.jsonapi.annotations.Type;
-import org.tokend.sdk.api.base.model.BaseResource;
+import java.math.*;
+import java.util.*;
+import com.fasterxml.jackson.annotation.*;
+import com.github.jasminb.jsonapi.annotations.*;
+import org.tokend.sdk.api.integrations.booking.model.generated.resources.*;
+import org.tokend.sdk.api.integrations.booking.model.generated.inner.*;
+import com.fasterxml.jackson.databind.*;
+import org.jetbrains.annotations.Nullable;
+import org.tokend.sdk.api.base.model.*;
 
 
 @Type("events")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class EventResource extends BaseResource {
-
+    
     @JsonProperty("details")
     private JsonNode details;
-
+    
     public JsonNode getDetails() {
         return details;
     }
-
+    
     @JsonProperty("end_time")
-    private String endTime;
-
-    public String getEndTime() {
+    private Date endTime;
+    
+    public Date getEndTime() {
         return endTime;
     }
-
+    
     @JsonProperty("start_time")
-    private String startTime;
-
-    public String getStartTime() {
+    private Date startTime;
+    
+    public Date getStartTime() {
         return startTime;
     }
-
+    
     @Override
     public boolean isFilled() {
-        return details != null &&
-                endTime != null &&
-                startTime != null
-                ;
+        return             details != null &&
+            endTime != null &&
+            startTime != null 
+        ;
     }
-
+    
     @Relationship("calendar")
     private BaseResource calendar;
-
+    
     public BaseResource getCalendar() {
         return calendar;
     }
-
+    
     @Relationship("holder")
     private BaseResource holder;
-
+    
     public BaseResource getHolder() {
         return holder;
     }

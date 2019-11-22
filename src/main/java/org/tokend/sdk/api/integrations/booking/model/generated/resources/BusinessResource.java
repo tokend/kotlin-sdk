@@ -3,14 +3,17 @@
 package org.tokend.sdk.api.integrations.booking.model.generated.resources;
 
 import java.math.*;
-
+import java.util.*;
 import com.fasterxml.jackson.annotation.*;
 import com.github.jasminb.jsonapi.annotations.*;
+import org.tokend.sdk.api.integrations.booking.model.generated.resources.*;
+import org.tokend.sdk.api.integrations.booking.model.generated.inner.*;
+import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
 
 
-@Type("businesses")
+@Type("booking-businesses")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BusinessResource extends BaseResource {
     
@@ -32,6 +35,13 @@ public class BusinessResource extends BaseResource {
         return availableTill;
     }
     
+    @JsonProperty("booking_details")
+    private BookingDetails bookingDetails;
+    
+    public BookingDetails getBookingDetails() {
+        return bookingDetails;
+    }
+    
     @JsonProperty("cancel_till")
     @Nullable
     private String cancelTill;
@@ -41,16 +51,18 @@ public class BusinessResource extends BaseResource {
         return cancelTill;
     }
     
-    @JsonProperty("refund")
-    private BigDecimal refund;
+    @JsonProperty("details")
+    @Nullable
+    private JsonNode details;
     
-    public BigDecimal getRefund() {
-        return refund;
+    @Nullable
+    public JsonNode getDetails() {
+        return details;
     }
     
     @Override
     public boolean isFilled() {
-        return             refund != null 
+        return             bookingDetails != null 
         ;
     }
     

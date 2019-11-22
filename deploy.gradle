@@ -30,7 +30,7 @@ dependencies {
 
 uploadArchives {
     repositories.mavenDeployer {
-        dependsOn test
+        //dependsOn test
 
         configuration = configurations.deployerJars
 

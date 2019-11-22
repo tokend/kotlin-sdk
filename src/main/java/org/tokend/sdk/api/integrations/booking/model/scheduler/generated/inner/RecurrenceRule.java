@@ -2,8 +2,11 @@
 
 package org.tokend.sdk.api.integrations.booking.model.scheduler.generated.inner;
 
+import java.math.*;
 import java.util.*;
 import com.fasterxml.jackson.annotation.*;
+import com.github.jasminb.jsonapi.annotations.*;
+import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -82,9 +85,9 @@ public class RecurrenceRule {
     }
     
     @JsonProperty("dtstart")
-    private String dtstart;
+    private Date dtstart;
     
-    public String getDtstart() {
+    public Date getDtstart() {
         return dtstart;
     }
     
@@ -106,10 +109,10 @@ public class RecurrenceRule {
     
     @JsonProperty("until")
     @Nullable
-    private String until;
+    private Date until;
     
     @Nullable
-    public String getUntil() {
+    public Date getUntil() {
         return until;
     }
     

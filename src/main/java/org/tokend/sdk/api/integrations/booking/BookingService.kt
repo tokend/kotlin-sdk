@@ -1,6 +1,8 @@
 package org.tokend.sdk.api.integrations.booking
 
 import com.github.jasminb.jsonapi.JSONAPIDocument
+import org.tokend.sdk.api.base.model.BaseResource
+import org.tokend.sdk.api.base.model.DataEntity
 import org.tokend.sdk.api.integrations.booking.model.CreateBookingRequestAttributes
 import org.tokend.sdk.api.integrations.booking.model.generated.resources.BookingResource
 import org.tokend.sdk.api.integrations.booking.model.generated.resources.BusinessResource
@@ -18,13 +20,20 @@ interface BookingService {
 
     @GET("integrations/booking/businesses/{businessId}/bookings")
     @JvmSuppressWildcards
-    fun getBookings(@Path("businessId") businessId: String,
-                    @QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<BookingResource>>>
+    fun getBusinessBookings(@Path("businessId") businessId: String,
+                            @QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<BookingResource>>>
+
+    @GET("integrations/booking/bookings")
+    @JvmSuppressWildcards
+    fun getBookings(@QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<BookingResource>>>
+
+    @GET("integrations/booking/address")
+    fun getPaymentAccount(): Call<JSONAPIDocument<BaseResource>>
 
     @POST("integrations/booking/businesses/{businessId}/bookings")
     @JvmSuppressWildcards
     fun createBooking(@Path("businessId") businessId: String,
-                      @Body body: CreateBookingRequestAttributes): Call<JSONAPIDocument<BookingResource>>
+                      @Body body: DataEntity<CreateBookingRequestAttributes>): Call<JSONAPIDocument<BookingResource>>
 
     @GET("integrations/booking/businesses/{businessId}/bookings/{id}")
     @JvmSuppressWildcards

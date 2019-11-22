@@ -2,8 +2,12 @@
 
 package org.tokend.sdk.api.integrations.booking.model.scheduler.generated.resources;
 
+import java.math.*;
+import java.util.*;
 import com.fasterxml.jackson.annotation.*;
 import com.github.jasminb.jsonapi.annotations.*;
+import org.tokend.sdk.api.integrations.booking.model.scheduler.generated.resources.*;
+import org.tokend.sdk.api.integrations.booking.model.scheduler.generated.inner.*;
 import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
@@ -22,19 +26,19 @@ public class EventResource extends BaseResource {
     
     @JsonProperty("end_time")
     @Nullable
-    private String endTime;
+    private Date endTime;
     
     @Nullable
-    public String getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
     
     @JsonProperty("lock_time")
     @Nullable
-    private String lockTime;
+    private Date lockTime;
     
     @Nullable
-    public String getLockTime() {
+    public Date getLockTime() {
         return lockTime;
     }
     
@@ -60,9 +64,9 @@ public class EventResource extends BaseResource {
     }
     
     @JsonProperty("start_time")
-    private String startTime;
+    private Date startTime;
     
-    public String getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
     

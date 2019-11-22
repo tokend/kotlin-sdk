@@ -3,9 +3,12 @@
 package org.tokend.sdk.api.integrations.booking.model.generated.resources;
 
 import java.math.*;
-
+import java.util.*;
 import com.fasterxml.jackson.annotation.*;
 import com.github.jasminb.jsonapi.annotations.*;
+import org.tokend.sdk.api.integrations.booking.model.generated.resources.*;
+import org.tokend.sdk.api.integrations.booking.model.generated.inner.*;
+import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
 
@@ -22,46 +25,53 @@ public class BookingResource extends BaseResource {
     }
     
     @JsonProperty("cancel_till")
-    private String cancelTill;
+    private Date cancelTill;
     
-    public String getCancelTill() {
+    public Date getCancelTill() {
         return cancelTill;
     }
     
     @JsonProperty("confirmation_type")
-    private Integer confirmationType;
+    private org.tokend.sdk.api.integrations.booking.model.generated.inner.Enum confirmationType;
     
-    public Integer getConfirmationType() {
+    public org.tokend.sdk.api.integrations.booking.model.generated.inner.Enum getConfirmationType() {
         return confirmationType;
     }
     
     @JsonProperty("end_time")
-    private String endTime;
+    private Date endTime;
     
-    public String getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
     
     @JsonProperty("lock_time")
     @Nullable
-    private String lockTime;
+    private Date lockTime;
     
     @Nullable
-    public String getLockTime() {
+    public Date getLockTime() {
         return lockTime;
     }
     
-    @JsonProperty("start_time")
-    private String startTime;
+    @JsonProperty("participants")
+    private Integer participants;
     
-    public String getStartTime() {
+    public Integer getParticipants() {
+        return participants;
+    }
+    
+    @JsonProperty("start_time")
+    private Date startTime;
+    
+    public Date getStartTime() {
         return startTime;
     }
     
     @JsonProperty("state")
-    private Integer state;
+    private org.tokend.sdk.api.integrations.booking.model.generated.inner.Enum state;
     
-    public Integer getState() {
+    public org.tokend.sdk.api.integrations.booking.model.generated.inner.Enum getState() {
         return state;
     }
     
@@ -71,6 +81,7 @@ public class BookingResource extends BaseResource {
             cancelTill != null &&
             confirmationType != null &&
             endTime != null &&
+            participants != null &&
             startTime != null &&
             state != null 
         ;
@@ -90,10 +101,10 @@ public class BookingResource extends BaseResource {
         return event;
     }
     
-    @Relationship("participant")
-    private BaseResource participant;
+    @Relationship("owner")
+    private BaseResource owner;
     
-    public BaseResource getParticipant() {
-        return participant;
+    public BaseResource getOwner() {
+        return owner;
     }
 }

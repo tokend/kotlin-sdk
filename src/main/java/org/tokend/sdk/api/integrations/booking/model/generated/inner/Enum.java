@@ -1,6 +1,6 @@
 // Auto-generated code. Do not edit.
 
-package org.tokend.sdk.api.generated.inner;
+package org.tokend.sdk.api.integrations.booking.model.generated.inner;
 
 import java.math.*;
 import java.util.*;
@@ -10,12 +10,19 @@ import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ManageLimitsRemovalOp {
+public class Enum {
     
-    @JsonProperty("limits_id")
-    private Long limitsId;
+    @JsonProperty("name")
+    private String name;
     
-    public Long getLimitsId() {
-        return limitsId;
+    public String getName() {
+        return name;
+    }
+    
+    @JsonProperty("value")
+    private Integer value;
+    
+    public Integer getValue() {
+        return value;
     }
 }

@@ -4,6 +4,7 @@ import com.github.jasminb.jsonapi.JSONAPIDocument
 import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.base.SimpleRetrofitApiRequest
+import org.tokend.sdk.api.base.model.DataEntity
 import org.tokend.sdk.api.base.model.DataPage
 import org.tokend.sdk.api.base.params.map
 import org.tokend.sdk.api.integrations.booking.model.CreateBookingRequestAttributes
@@ -31,14 +32,31 @@ open class BookingApi(
     }
 
     @JvmOverloads
-    open fun getBookings(businessId: String,
-                         params: BookingsPageParams? = null): ApiRequest<DataPage<BookingResource>> {
+    open fun getBusinessBookings(businessId: String,
+                                 params: BookingsPageParams? = null): ApiRequest<DataPage<BookingResource>> {
         return MappedRetrofitApiRequest(
-                bookingService.getBookings(
+                bookingService.getBusinessBookings(
                         businessId,
                         params.map()
                 ),
                 DataPage.Companion::fromPageDocument
+        )
+    }
+
+    @JvmOverloads
+    open fun getBookings(params: BookingsPageParams? = null): ApiRequest<DataPage<BookingResource>> {
+        return MappedRetrofitApiRequest(
+                bookingService.getBookings(
+                        params.map()
+                ),
+                DataPage.Companion::fromPageDocument
+        )
+    }
+
+    open fun getPaymentAccountId(): ApiRequest<String> {
+        return MappedRetrofitApiRequest(
+                bookingService.getPaymentAccount(),
+                { it.get().id }
         )
     }
 
@@ -47,7 +65,7 @@ open class BookingApi(
         return MappedRetrofitApiRequest(
                 bookingService.createBooking(
                         businessId,
-                        attributes
+                        DataEntity(attributes)
                 ),
                 JSONAPIDocument<BookingResource>::get
         )

@@ -2,26 +2,29 @@
 
 package org.tokend.sdk.api.integrations.booking.model.scheduler.generated.inner;
 
+import java.math.*;
 import java.util.*;
 import com.fasterxml.jackson.annotation.*;
+import com.github.jasminb.jsonapi.annotations.*;
+import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Recurrence {
     
     @JsonProperty("dtstart")
-    private String dtstart;
+    private Date dtstart;
     
-    public String getDtstart() {
+    public Date getDtstart() {
         return dtstart;
     }
     
     @JsonProperty("ex_dates")
     @Nullable
-    private List<String> exDates;
+    private List<Date> exDates;
     
     @Nullable
-    public List<? extends String> getExDates() {
+    public List<? extends Date> getExDates() {
         return exDates;
     }
     
@@ -36,10 +39,10 @@ public class Recurrence {
     
     @JsonProperty("r_dates")
     @Nullable
-    private List<String> rDates;
+    private List<Date> rDates;
     
     @Nullable
-    public List<? extends String> getRDates() {
+    public List<? extends Date> getRDates() {
         return rDates;
     }
     

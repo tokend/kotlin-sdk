@@ -243,7 +243,8 @@ class YamlSpecsGenerator(openApi: OpenApi) {
             ref == "Details" -> "Object"
             ref != null -> ref
             format == "Amount" -> "Amount"
-            format == "date-time" -> "Date"
+            format == "date-time"
+                    || format == "time.Time"-> "Date"
             lowercaseFormat.contains("uint32") -> "UInt32"
             lowercaseFormat.contains("uint64") -> "UInt64"
             lowercaseFormat.contains("int64") -> "Int64"
