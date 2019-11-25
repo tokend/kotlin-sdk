@@ -61,6 +61,13 @@ public class BookingResource extends BaseResource {
         return participants;
     }
     
+    @JsonProperty("payload")
+    private String payload;
+    
+    public String getPayload() {
+        return payload;
+    }
+    
     @JsonProperty("start_time")
     private Date startTime;
     
@@ -82,6 +89,7 @@ public class BookingResource extends BaseResource {
             confirmationType != null &&
             endTime != null &&
             participants != null &&
+            payload != null &&
             startTime != null &&
             state != null 
         ;

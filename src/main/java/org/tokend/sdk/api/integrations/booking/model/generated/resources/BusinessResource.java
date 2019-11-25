@@ -52,17 +52,16 @@ public class BusinessResource extends BaseResource {
     }
     
     @JsonProperty("details")
-    @Nullable
     private JsonNode details;
     
-    @Nullable
     public JsonNode getDetails() {
         return details;
     }
     
     @Override
     public boolean isFilled() {
-        return             bookingDetails != null 
+        return             bookingDetails != null &&
+            details != null 
         ;
     }
     

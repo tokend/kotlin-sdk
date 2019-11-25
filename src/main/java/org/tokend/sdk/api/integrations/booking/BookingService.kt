@@ -39,4 +39,9 @@ interface BookingService {
     @JvmSuppressWildcards
     fun cancelBooking(@Path("businessId") businessId: String,
                       @Path("id") bookingId: String): Call<Void>
+
+    @GET("integrations/scheduler/calendars/{calendarId}/free")
+    @JvmSuppressWildcards
+    fun getFreeRooms(@Path("calendarId") calendarId: String,
+                     @QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<BaseResource>>>
 }

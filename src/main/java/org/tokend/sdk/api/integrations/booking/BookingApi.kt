@@ -4,6 +4,7 @@ import com.github.jasminb.jsonapi.JSONAPIDocument
 import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.base.SimpleRetrofitApiRequest
+import org.tokend.sdk.api.base.model.BaseResource
 import org.tokend.sdk.api.base.model.DataEntity
 import org.tokend.sdk.api.base.model.DataPage
 import org.tokend.sdk.api.base.params.map
@@ -12,6 +13,7 @@ import org.tokend.sdk.api.integrations.booking.model.generated.resources.Booking
 import org.tokend.sdk.api.integrations.booking.model.generated.resources.BusinessResource
 import org.tokend.sdk.api.integrations.booking.params.BookingsPageParams
 import org.tokend.sdk.api.integrations.booking.params.BusinessesPageParams
+import org.tokend.sdk.api.integrations.booking.params.FreeRoomsParams
 
 open class BookingApi(
         protected open val bookingService: BookingService
@@ -75,6 +77,17 @@ open class BookingApi(
                            bookingId: String): ApiRequest<Void> {
         return SimpleRetrofitApiRequest(
                 bookingService.cancelBooking(businessId, bookingId)
+        )
+    }
+
+    open fun getFreeRooms(calendarId: String,
+                          params: FreeRoomsParams): ApiRequest<List<String>> {
+        return MappedRetrofitApiRequest(
+                bookingService.getFreeRooms(
+                        calendarId,
+                        params.map()
+                ),
+                { it.get().map(BaseResource::getId) }
         )
     }
 }
