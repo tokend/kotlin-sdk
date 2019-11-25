@@ -1,6 +1,6 @@
 package org.tokend.sdk.api.integrations.booking.params
 
-import org.tokend.sdk.api.v3.base.JsonApiQueryParams
+import org.tokend.sdk.api.base.params.QueryParams
 import org.tokend.sdk.utils.ApiDateUtil
 import java.util.*
 
@@ -9,13 +9,13 @@ class FreeRoomsParams(
         private val endTime: Date,
         private val participantsCount: Int,
         private val roomIds: Collection<String>
-) : JsonApiQueryParams(emptyList()) {
+) : QueryParams {
     override fun map(): Map<String, Any> {
-        return super.map().toMutableMap().apply {
-            putFilter("start-time", ApiDateUtil.formatDateForRequest(startTime))
-            putFilter("end-time", ApiDateUtil.formatDateForRequest(endTime))
-            putFilter("participants", participantsCount)
-            putFilter("payloads", roomIds.joinToString(","))
+        return mutableMapOf<String, Any>().apply {
+            put("start-time", startTime.time / 1000L)
+            put("end-time", endTime.time / 1000L)
+            put("participants", participantsCount)
+            put("payloads", roomIds.joinToString(","))
         }
     }
 }

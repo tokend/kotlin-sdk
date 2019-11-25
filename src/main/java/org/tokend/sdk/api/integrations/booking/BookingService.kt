@@ -1,11 +1,12 @@
 package org.tokend.sdk.api.integrations.booking
 
 import com.github.jasminb.jsonapi.JSONAPIDocument
-import org.tokend.sdk.api.base.model.BaseResource
 import org.tokend.sdk.api.base.model.DataEntity
+import org.tokend.sdk.api.generated.resources.AccountResource
 import org.tokend.sdk.api.integrations.booking.model.CreateBookingRequestAttributes
 import org.tokend.sdk.api.integrations.booking.model.generated.resources.BookingResource
 import org.tokend.sdk.api.integrations.booking.model.generated.resources.BusinessResource
+import org.tokend.sdk.api.integrations.booking.model.scheduler.SchedulerPayloadResource
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -28,7 +29,7 @@ interface BookingService {
     fun getBookings(@QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<BookingResource>>>
 
     @GET("integrations/booking/address")
-    fun getPaymentAccount(): Call<JSONAPIDocument<BaseResource>>
+    fun getPaymentAccount(): Call<JSONAPIDocument<AccountResource>>
 
     @POST("integrations/booking/businesses/{businessId}/bookings")
     @JvmSuppressWildcards
@@ -43,5 +44,5 @@ interface BookingService {
     @GET("integrations/scheduler/calendars/{calendarId}/free")
     @JvmSuppressWildcards
     fun getFreeRooms(@Path("calendarId") calendarId: String,
-                     @QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<BaseResource>>>
+                     @QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<SchedulerPayloadResource>>>
 }
