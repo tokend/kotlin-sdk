@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.jasminb.jsonapi.annotations.Type;
 import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.BaseResource;
+import org.tokend.sdk.api.generated.inner.Enum;
 
 @Type("payment-method")
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -19,6 +20,9 @@ public class MarketplacePaymentMethodResource extends BaseResource {
     @Nullable
     private String destination;
 
+    @JsonProperty("type")
+    private Enum type;
+
     public String getAsset() {
         return asset;
     }
@@ -28,8 +32,12 @@ public class MarketplacePaymentMethodResource extends BaseResource {
         return destination;
     }
 
+    public Enum getType() {
+        return type;
+    }
+
     @Override
     public boolean isFilled() {
-        return asset != null;
+        return asset != null && type != null;
     }
 }
