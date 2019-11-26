@@ -23,4 +23,13 @@ sealed class MarketplaceInvoiceData {
             const val TYPE = "redirect"
         }
     }
+
+    class Internal(
+            @SerializedName("tx")
+            val transactionEnvelope: String
+    ): MarketplaceInvoiceData() {
+        companion object {
+            const val TYPE = "internal"
+        }
+    }
 }

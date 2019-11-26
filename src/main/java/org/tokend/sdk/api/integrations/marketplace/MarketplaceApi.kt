@@ -64,12 +64,13 @@ open class MarketplaceApi(
     protected open fun getInvoiceData(attributes: MarketplaceInvoiceAttributes): MarketplaceInvoiceData {
         val gson = GsonFactory().getBaseGson()
 
-        return when (attributes.type) {
-            MarketplaceInvoiceData.Crypto.TYPE ->
-                gson.fromJson(attributes.data, MarketplaceInvoiceData.Crypto::class.java)
-            MarketplaceInvoiceData.Redirect.TYPE ->
-                gson.fromJson(attributes.data, MarketplaceInvoiceData.Redirect::class.java)
+        val clazz = when (attributes.type) {
+            MarketplaceInvoiceData.Crypto.TYPE -> MarketplaceInvoiceData.Crypto::class.java
+            MarketplaceInvoiceData.Redirect.TYPE -> MarketplaceInvoiceData.Redirect::class.java
+            MarketplaceInvoiceData.Internal.TYPE -> MarketplaceInvoiceData.Internal::class.java
             else -> throw IllegalArgumentException("Unknown marketplace invoice data type '${attributes.type}'")
         }
+
+        return gson.fromJson(attributes.data, clazz)
     }
 }
