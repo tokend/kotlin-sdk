@@ -7,7 +7,7 @@ import org.tokend.sdk.api.v3.base.PageQueryParams
  * @see BookingParams.Includes
  */
 class BookingsPageParams(
-        val participant: String? = null,
+        val owner: String? = null,
         val state: Int? = null,
         val type: Int? = null,
         pagingParams: PagingParamsV2? = null,
@@ -15,7 +15,7 @@ class BookingsPageParams(
 ) : PageQueryParams(pagingParams, include) {
     override fun map(): Map<String, Any> {
         return super.map().toMutableMap().apply {
-            participant?.also { putFilter("participant", it) }
+            owner?.also { putFilter("owner", it) }
             state?.also { putFilter("state", it) }
             type?.also { putFilter("type", it) }
         }
