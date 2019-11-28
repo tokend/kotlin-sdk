@@ -68,11 +68,9 @@ public class BookingDetails {
     }
     
     @JsonProperty("specific_details")
-    @Nullable
-    private SpecificDetails specificDetails;
+    private Map<String, PayloadDetails> specificDetails;
     
-    @Nullable
-    public SpecificDetails getSpecificDetails() {
+    public Map<String, ? extends PayloadDetails> getSpecificDetails() {
         return specificDetails;
     }
 }

@@ -7,10 +7,12 @@ import org.tokend.sdk.api.base.model.AttributesEntity
 import org.tokend.sdk.api.base.model.DataEntity
 import org.tokend.sdk.api.base.model.DataPage
 import org.tokend.sdk.api.base.params.map
-import org.tokend.sdk.api.integrations.marketplace.model.*
+import org.tokend.sdk.api.integrations.marketplace.model.MarketplaceBuyRequestAttributes
+import org.tokend.sdk.api.integrations.marketplace.model.MarketplaceInvoiceData
+import org.tokend.sdk.api.integrations.marketplace.model.MarketplaceOfferPrice
+import org.tokend.sdk.api.integrations.marketplace.model.MarketplaceOfferResource
 import org.tokend.sdk.api.integrations.marketplace.params.MarketplaceOfferParams
 import org.tokend.sdk.api.integrations.marketplace.params.MarketplaceOffersPageParams
-import org.tokend.sdk.factory.GsonFactory
 import org.tokend.sdk.utils.BigDecimalUtil
 import java.math.BigDecimal
 
@@ -20,7 +22,7 @@ open class MarketplaceApi(
     open fun submitBuyRequest(request: MarketplaceBuyRequestAttributes): ApiRequest<MarketplaceInvoiceData> {
         return MappedRetrofitApiRequest(
                 marketplaceService.submitBuyRequest(DataEntity(AttributesEntity(request))),
-                { getInvoiceData(it.data.attributes) }
+                { MarketplaceInvoiceData.fromInvoiceAttributes(it.data.attributes) }
         )
     }
 
@@ -59,18 +61,5 @@ open class MarketplaceApi(
                 ),
                 { it.data.attributes }
         )
-    }
-
-    protected open fun getInvoiceData(attributes: MarketplaceInvoiceAttributes): MarketplaceInvoiceData {
-        val gson = GsonFactory().getBaseGson()
-
-        val clazz = when (attributes.type) {
-            MarketplaceInvoiceData.Crypto.TYPE -> MarketplaceInvoiceData.Crypto::class.java
-            MarketplaceInvoiceData.Redirect.TYPE -> MarketplaceInvoiceData.Redirect::class.java
-            MarketplaceInvoiceData.Internal.TYPE -> MarketplaceInvoiceData.Internal::class.java
-            else -> throw IllegalArgumentException("Unknown marketplace invoice data type '${attributes.type}'")
-        }
-
-        return gson.fromJson(attributes.data, clazz)
     }
 }

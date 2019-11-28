@@ -5,6 +5,8 @@ import org.tokend.sdk.api.integrations.booking.BookingApi
 import org.tokend.sdk.api.integrations.booking.BookingService
 import org.tokend.sdk.api.integrations.dns.DnsApi
 import org.tokend.sdk.api.integrations.dns.DnsService
+import org.tokend.sdk.api.integrations.escrow.EscrowApi
+import org.tokend.sdk.api.integrations.escrow.EscrowService
 import org.tokend.sdk.api.integrations.fiat.FiatApi
 import org.tokend.sdk.api.integrations.fiat.FiatService
 import org.tokend.sdk.api.integrations.locator.LocatorApi
@@ -50,5 +52,9 @@ open class IntegrationsApi(
 
     open val booking: BookingApi by lazy {
         BookingApi(getService(BookingService::class.java))
+    }
+
+    open val escrow: EscrowApi by lazy {
+        EscrowApi(getService(EscrowService::class.java))
     }
 }

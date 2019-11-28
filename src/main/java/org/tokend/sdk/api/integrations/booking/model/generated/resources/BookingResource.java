@@ -68,6 +68,13 @@ public class BookingResource extends BaseResource {
         return payload;
     }
     
+    @JsonProperty("reference")
+    private String reference;
+    
+    public String getReference() {
+        return reference;
+    }
+    
     @JsonProperty("start_time")
     private Date startTime;
     
@@ -90,6 +97,7 @@ public class BookingResource extends BaseResource {
             endTime != null &&
             participants != null &&
             payload != null &&
+            reference != null &&
             startTime != null &&
             state != null 
         ;

@@ -10,26 +10,28 @@ import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SpecificDetails {
+public class PayloadDetails {
     
     @JsonProperty("capacity")
-    private JsonNode capacity;
+    private Integer capacity;
     
-    public JsonNode getCapacity() {
+    public Integer getCapacity() {
         return capacity;
     }
     
-    @JsonProperty("payloads")
-    private List<String> payloads;
+    @JsonProperty("price")
+    private PriceDetails price;
     
-    public List<? extends String> getPayloads() {
-        return payloads;
+    public PriceDetails getPrice() {
+        return price;
     }
     
-    @JsonProperty("prices")
-    private JsonNode prices;
+    @JsonProperty("work_days")
+    @Nullable
+    private Map<String, WorkHours> workDays;
     
-    public JsonNode getPrices() {
-        return prices;
+    @Nullable
+    public Map<String, ? extends WorkHours> getWorkDays() {
+        return workDays;
     }
 }
