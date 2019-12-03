@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [3.3.2] 2019-12-03
+
+### Added
+- Booking integration APIs
+
+### Changed
+- Actualized marketplace integration API
+
 ## [3.3.1] 2019-11-18
 
 ### Changed
@@ -268,4 +276,5 @@ with `addExtraResources` method
 [3.2.0]: https://github.com/tokend/kotlin-sdk/compare/3.1.0...3.2.0
 [3.3.0]: https://github.com/tokend/kotlin-sdk/compare/3.2.0...3.3.0
 [3.3.1]: https://github.com/tokend/kotlin-sdk/compare/3.3.0...3.3.1
-[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/3.3.1...HEAD
+[3.3.2]: https://github.com/tokend/kotlin-sdk/compare/3.3.1...3.3.2
+[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/3.3.2...HEAD
