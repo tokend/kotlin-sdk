@@ -6,10 +6,8 @@ import java.math.*;
 import java.util.*;
 import com.fasterxml.jackson.annotation.*;
 import com.github.jasminb.jsonapi.annotations.*;
-import org.tokend.sdk.api.generated.*;
 import org.tokend.sdk.api.generated.resources.*;
 import org.tokend.sdk.api.generated.inner.*;
-import org.tokend.sdk.api.generated.inner.Enum;
 import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
@@ -20,9 +18,9 @@ import org.tokend.sdk.api.base.model.*;
 public class SaleResource extends BaseResource {
     
     @JsonProperty("access_definition_type")
-    private Enum accessDefinitionType;
+    private org.tokend.sdk.api.generated.inner.Enum accessDefinitionType;
     
-    public Enum getAccessDefinitionType() {
+    public org.tokend.sdk.api.generated.inner.Enum getAccessDefinitionType() {
         return accessDefinitionType;
     }
     
@@ -48,16 +46,16 @@ public class SaleResource extends BaseResource {
     }
     
     @JsonProperty("sale_state")
-    private Enum saleState;
+    private org.tokend.sdk.api.generated.inner.Enum saleState;
     
-    public Enum getSaleState() {
+    public org.tokend.sdk.api.generated.inner.Enum getSaleState() {
         return saleState;
     }
     
     @JsonProperty("sale_type")
-    private Enum saleType;
+    private org.tokend.sdk.api.generated.inner.Enum saleType;
     
-    public Enum getSaleType() {
+    public org.tokend.sdk.api.generated.inner.Enum getSaleType() {
         return saleType;
     }
     

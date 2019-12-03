@@ -6,10 +6,8 @@ import java.math.*;
 import java.util.*;
 import com.fasterxml.jackson.annotation.*;
 import com.github.jasminb.jsonapi.annotations.*;
-import org.tokend.sdk.api.generated.*;
 import org.tokend.sdk.api.generated.resources.*;
 import org.tokend.sdk.api.generated.inner.*;
-import org.tokend.sdk.api.generated.inner.Enum;
 import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
@@ -20,16 +18,16 @@ import org.tokend.sdk.api.base.model.*;
 public class LedgerEntryChangeResource extends BaseResource {
     
     @JsonProperty("change_type")
-    private Enum changeType;
+    private org.tokend.sdk.api.generated.inner.Enum changeType;
     
-    public Enum getChangeType() {
+    public org.tokend.sdk.api.generated.inner.Enum getChangeType() {
         return changeType;
     }
     
     @JsonProperty("entry_type")
-    private Enum entryType;
+    private org.tokend.sdk.api.generated.inner.Enum entryType;
     
-    public Enum getEntryType() {
+    public org.tokend.sdk.api.generated.inner.Enum getEntryType() {
         return entryType;
     }
     

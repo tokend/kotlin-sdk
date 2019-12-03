@@ -6,7 +6,6 @@ import java.math.*;
 import java.util.*;
 import com.fasterxml.jackson.annotation.*;
 import com.github.jasminb.jsonapi.annotations.*;
-import org.tokend.sdk.api.generated.*;
 import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,9 +27,9 @@ public class ClosePollOp {
     }
     
     @JsonProperty("poll_result")
-    private Enum pollResult;
+    private org.tokend.sdk.api.generated.inner.Enum pollResult;
     
-    public Enum getPollResult() {
+    public org.tokend.sdk.api.generated.inner.Enum getPollResult() {
         return pollResult;
     }
 }

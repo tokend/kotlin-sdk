@@ -10,6 +10,7 @@ import org.tokend.sdk.api.base.model.BaseResource
 import org.tokend.sdk.api.generated.resources.AllResources
 import org.tokend.sdk.api.identity.model.IdentityResource
 import org.tokend.sdk.api.identity.model.IdentitySettingsResource
+import org.tokend.sdk.api.integrations.booking.model.scheduler.SchedulerPayloadResource
 import org.tokend.sdk.api.integrations.dns.model.BusinessResource
 import org.tokend.sdk.api.integrations.dns.model.ClientBalanceResource
 import org.tokend.sdk.api.integrations.dns.model.ClientResource
@@ -37,7 +38,8 @@ object JsonApiToolsProvider {
             PaymentAccountResource::class.java,
             MarketplaceOfferResource::class.java,
             MarketplacePaymentMethodResource::class.java,
-            IdentitySettingsResource::class.java
+            IdentitySettingsResource::class.java,
+            SchedulerPayloadResource::class.java
     )
 
     /**
@@ -66,6 +68,8 @@ object JsonApiToolsProvider {
         return resourceConverter
                 ?: ResourceConverter(getObjectMapper(),
                         *AllResources.ARRAY,
+                        *org.tokend.sdk.api.integrations.booking.model.generated.resources.AllResources.ARRAY,
+                        *org.tokend.sdk.api.integrations.booking.model.scheduler.generated.resources.AllResources.ARRAY,
                         *extraResources.toTypedArray()
                 )
                         .also { resourceConverter = it }

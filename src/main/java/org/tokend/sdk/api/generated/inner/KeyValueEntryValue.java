@@ -6,7 +6,6 @@ import java.math.*;
 import java.util.*;
 import com.fasterxml.jackson.annotation.*;
 import com.github.jasminb.jsonapi.annotations.*;
-import org.tokend.sdk.api.generated.*;
 import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,9 +22,9 @@ public class KeyValueEntryValue {
     }
     
     @JsonProperty("type")
-    private Enum type;
+    private org.tokend.sdk.api.generated.inner.Enum type;
     
-    public Enum getType() {
+    public org.tokend.sdk.api.generated.inner.Enum getType() {
         return type;
     }
     

@@ -209,6 +209,7 @@ class YamlSpecsGenerator(openApi: OpenApi) {
                                      base: String?,
                                      attributes: List<Attribute>,
                                      relationships: List<ResourceRelation>): String {
+        println(name)
         val attributesPart = generateAttributesSpecPart(attributes)
 
         val relationsPart =
@@ -243,7 +244,8 @@ class YamlSpecsGenerator(openApi: OpenApi) {
             ref == "Details" -> "Object"
             ref != null -> ref
             format == "Amount" -> "Amount"
-            format == "date-time" -> "Date"
+            format == "date-time"
+                    || format == "time.Time"-> "Date"
             lowercaseFormat.contains("uint32") -> "UInt32"
             lowercaseFormat.contains("uint64") -> "UInt64"
             lowercaseFormat.contains("int64") -> "Int64"
@@ -252,7 +254,7 @@ class YamlSpecsGenerator(openApi: OpenApi) {
                     || type?.contains("int") == true -> "Int32"
             type == "boolean" -> "Bool"
             type == "string" -> "String"
-            else -> throw IllegalStateException("Unknown type-format-reference combination:" +
+            else -> throw IllegalStateException("'${attribute.name}' has unknown type-format-reference combination:" +
                     " $type $format $ref")
         }
     }
@@ -301,6 +303,7 @@ class YamlSpecsGenerator(openApi: OpenApi) {
                                 |    type: ${getAttributeType(attr)}
                                 |    optional: ${attr.isNullable}
                                 |    is_collection: ${attr.isArray}
+                                |    is_string_map: ${attr.isStringMap}
                             """.trimMargin()
 
                     if (!attr.description.isNullOrBlank()) {

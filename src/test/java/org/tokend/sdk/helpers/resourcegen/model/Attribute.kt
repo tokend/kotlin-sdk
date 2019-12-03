@@ -9,7 +9,8 @@ class Attribute(var name: String,
                 val description: String?,
                 var reference: String?,
                 val isNullable: Boolean,
-                val isArray: Boolean) {
+                val isArray: Boolean,
+                val isStringMap: Boolean) {
     private class TypeAttributes(
             val type: String?,
             val format: String?,
@@ -20,6 +21,7 @@ class Attribute(var name: String,
                         description: String?,
                         isNullable: Boolean,
                         isArray: Boolean,
+                        isStringMap: Boolean,
                         typeAttributes: TypeAttributes) : this(
             name = name,
             type = typeAttributes.type,
@@ -27,7 +29,8 @@ class Attribute(var name: String,
             description = description,
             reference = typeAttributes.reference,
             isNullable = isNullable,
-            isArray = isArray
+            isArray = isArray,
+            isStringMap = isStringMap
     )
 
     var jsonName: String = name
@@ -59,10 +62,23 @@ class Attribute(var name: String,
                                required: Collection<String>): Attribute {
             val isArray = schema["type"]?.asText() == "array"
 
+            val additionalProperties = schema["additionalProperties"]
+            val isStringMap = additionalProperties != null
+
             val typeAttributes =
                     if (isArray)
                         getTypeAttributes(schema["items"])
-                    else
+                    else if (isStringMap) {
+                        val obtainedTypeAttributes = getTypeAttributes(additionalProperties)
+                        if (obtainedTypeAttributes.type != null || obtainedTypeAttributes.reference != null)
+                            obtainedTypeAttributes
+                        else
+                            TypeAttributes(
+                                    type = null,
+                                    format = null,
+                                    reference = "Details"
+                            )
+                    } else
                         getTypeAttributes(schema)
 
             return Attribute(
@@ -70,6 +86,7 @@ class Attribute(var name: String,
                     description = schema["description"]?.asText(),
                     isNullable = !required.contains(name),
                     isArray = isArray,
+                    isStringMap = isStringMap,
                     typeAttributes = typeAttributes
             )
         }

@@ -6,7 +6,6 @@ import java.math.*;
 import java.util.*;
 import com.fasterxml.jackson.annotation.*;
 import com.github.jasminb.jsonapi.annotations.*;
-import org.tokend.sdk.api.generated.*;
 import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,9 +27,9 @@ public class FeeAppliedTo {
     }
     
     @JsonProperty("fee_type_extended")
-    private Enum feeTypeExtended;
+    private org.tokend.sdk.api.generated.inner.Enum feeTypeExtended;
     
-    public Enum getFeeTypeExtended() {
+    public org.tokend.sdk.api.generated.inner.Enum getFeeTypeExtended() {
         return feeTypeExtended;
     }
     

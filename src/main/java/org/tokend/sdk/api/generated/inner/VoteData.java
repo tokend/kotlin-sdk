@@ -6,7 +6,6 @@ import java.math.*;
 import java.util.*;
 import com.fasterxml.jackson.annotation.*;
 import com.github.jasminb.jsonapi.annotations.*;
-import org.tokend.sdk.api.generated.*;
 import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,9 +13,9 @@ import org.jetbrains.annotations.Nullable;
 public class VoteData {
     
     @JsonProperty("poll_type")
-    private Enum pollType;
+    private org.tokend.sdk.api.generated.inner.Enum pollType;
     
-    public Enum getPollType() {
+    public org.tokend.sdk.api.generated.inner.Enum getPollType() {
         return pollType;
     }
     

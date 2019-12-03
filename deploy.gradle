@@ -30,8 +30,6 @@ dependencies {
 
 uploadArchives {
     repositories.mavenDeployer {
-        dependsOn test
-
         configuration = configurations.deployerJars
 
         beforeDeployment {

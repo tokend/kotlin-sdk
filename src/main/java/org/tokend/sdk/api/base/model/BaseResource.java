@@ -3,11 +3,13 @@ package org.tokend.sdk.api.base.model;
 import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Links;
 
+import com.github.jasminb.jsonapi.annotations.Type;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents base JSONAPI resource object
  */
+@Type("base-resource")
 public abstract class BaseResource {
     @Links
     private com.github.jasminb.jsonapi.Links links;

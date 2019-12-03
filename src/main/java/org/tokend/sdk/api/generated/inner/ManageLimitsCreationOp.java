@@ -6,7 +6,6 @@ import java.math.*;
 import java.util.*;
 import com.fasterxml.jackson.annotation.*;
 import com.github.jasminb.jsonapi.annotations.*;
-import org.tokend.sdk.api.generated.*;
 import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 
@@ -65,9 +64,9 @@ public class ManageLimitsCreationOp {
     }
     
     @JsonProperty("stats_op_type")
-    private Enum statsOpType;
+    private org.tokend.sdk.api.generated.inner.Enum statsOpType;
     
-    public Enum getStatsOpType() {
+    public org.tokend.sdk.api.generated.inner.Enum getStatsOpType() {
         return statsOpType;
     }
     
