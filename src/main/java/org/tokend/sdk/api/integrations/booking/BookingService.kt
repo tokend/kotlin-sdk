@@ -24,7 +24,7 @@ interface BookingService {
     fun getBusinessBookings(@Path("businessId") businessId: String,
                             @QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<BookingResource>>>
 
-    @GET("integrations/booking/bookings")
+    @GET("integrations/booking")
     @JvmSuppressWildcards
     fun getBookings(@QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<BookingResource>>>
 
