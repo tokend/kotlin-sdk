@@ -4,18 +4,22 @@ import com.google.gson.JsonObject
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
-open class SubmitTransactionResponse constructor(@SerializedName("extras")
-                                                 val extras: Extras?,
-                                                 @SerializedName("ledger")
-                                                 val ledger: Long?,
-                                                 @SerializedName("created_at")
-                                                 val createdAt: Date?,
-                                                 @SerializedName("hash")
-                                                 val hash: String?,
-                                                 @SerializedName("envelope_xdr")
-                                                 private val envelopeXdr: String,
-                                                 @SerializedName("result_xdr")
-                                                 private val resultXdr: String) {
+open class SubmitTransactionResponse constructor(
+        @SerializedName("extras")
+        val extras: Extras?,
+        @SerializedName("ledger")
+        val ledger: Long?,
+        @SerializedName("created_at")
+        val createdAt: Date?,
+        @SerializedName("hash")
+        val hash: String?,
+        @SerializedName("envelope_xdr")
+        private val envelopeXdr: String,
+        @SerializedName("result_xdr")
+        private val resultXdr: String,
+        @SerializedName("result_meta_xdr")
+        val resultMetaXdr: String?
+) {
 
     val isSuccess: Boolean
         get() = ledger != null

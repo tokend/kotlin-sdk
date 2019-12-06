@@ -74,6 +74,7 @@ open class TransactionsApiV3(
                     SubmitTransactionResponse(
                             extras = null,
                             resultXdr = transaction.resultXdr,
+                            resultMetaXdr = transaction.resultMetaXdr,
                             envelopeXdr = transaction.envelopeXdr,
                             hash = transaction.hash,
                             ledger = transaction.ledgerSequence.toLong(),
@@ -121,7 +122,8 @@ open class TransactionsApiV3(
                     createdAt = null,
                     hash = null,
                     envelopeXdr = extras.envelopeXdr,
-                    resultXdr = extras.resultXdr
+                    resultXdr = extras.resultXdr,
+                    resultMetaXdr = null
             )
         } catch (e: Exception) {
             e.printStackTrace()

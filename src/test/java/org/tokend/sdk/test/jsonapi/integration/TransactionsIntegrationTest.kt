@@ -91,6 +91,7 @@ class TransactionsIntegrationTest {
 
         Assert.assertTrue("Transaction must be successful", result.isSuccess)
         Assert.assertNotNull("Envelope XDR can't be null", result.getEnvelopeXdr())
+        Assert.assertNotNull("Result meta XDR can't be null", result.resultMetaXdr)
         Assert.assertEquals("Transaction hash must be equal to the local one",
                 tx.getHash().encodeHexString(), result.hash)
     }
