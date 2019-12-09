@@ -90,4 +90,11 @@ open class BookingApi(
                 { it.get().map(BaseResource::getId) }
         )
     }
+
+    open fun getBookingByReference(reference: String): ApiRequest<BookingResource> {
+        return MappedRetrofitApiRequest(
+                bookingService.getBookingByReference(reference),
+                JSONAPIDocument<BookingResource>::get
+        )
+    }
 }

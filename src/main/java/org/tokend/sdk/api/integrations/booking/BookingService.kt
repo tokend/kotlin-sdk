@@ -45,4 +45,8 @@ interface BookingService {
     @JvmSuppressWildcards
     fun getFreeRooms(@Path("calendarId") calendarId: String,
                      @QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<SchedulerPayloadResource>>>
+
+    @GET("integrations/booking/references/{reference}")
+    @JvmSuppressWildcards
+    fun getBookingByReference(@Path("reference") reference: String): Call<JSONAPIDocument<BookingResource>>
 }
