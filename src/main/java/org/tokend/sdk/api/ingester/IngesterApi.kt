@@ -12,6 +12,7 @@ import org.tokend.sdk.api.ingester.requests.IngesterRequestsApi
 import org.tokend.sdk.api.ingester.roles.IngesterRolesApi
 import org.tokend.sdk.api.ingester.rules.IngesterRulesApi
 import org.tokend.sdk.api.ingester.transactions.IngesterTransactionsApi
+import org.tokend.sdk.api.ingester.transactions.IngesterTransactionsService
 import org.tokend.sdk.signing.RequestSigner
 import org.tokend.sdk.tfa.TfaCallback
 import org.tokend.sdk.utils.CookieJarProvider
@@ -29,7 +30,7 @@ open class IngesterApi(
     }
 
     open val transactions: IngesterTransactionsApi by lazy {
-        IngesterTransactionsApi(customRequests)
+        IngesterTransactionsApi(customRequests, getService(IngesterTransactionsService::class.java))
     }
 
     open val requests: IngesterRequestsApi by lazy {

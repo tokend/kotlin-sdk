@@ -40,7 +40,7 @@ class TransactionsIntegrationTest {
             api.v3.transactions.submit(tx, false).execute().get()
         } catch (e: TransactionFailedException) {
             Assert.assertEquals(TransactionFailedException.TX_FAILED, e.transactionResultCode)
-            Assert.assertEquals(TransactionFailedException.OP_NO_ENTRY, e.firstOperationResultCode)
+            Assert.assertEquals(TransactionFailedException.OP_NO_ENTRY, e.firstFailedOperationResultCode)
             return
         } catch (e: Exception) {
             Assert.fail("Got $e but TransactionFailedException is expected")

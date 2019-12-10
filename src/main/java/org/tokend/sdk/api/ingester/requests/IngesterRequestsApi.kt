@@ -5,6 +5,7 @@ import org.tokend.sdk.api.base.model.BaseResource
 import org.tokend.sdk.api.base.model.DataPage
 import org.tokend.sdk.api.base.params.map
 import org.tokend.sdk.api.custom.CustomRequestsApi
+import org.tokend.sdk.api.ingester.generated.resources.ReviewableRequestResource
 import org.tokend.sdk.api.v3.base.JsonApiQueryParams
 import org.tokend.sdk.api.v3.base.PageQueryParams
 
@@ -12,20 +13,20 @@ open class IngesterRequestsApi(
         protected val requests: CustomRequestsApi
 ) {
     @JvmOverloads
-    open fun getPage(params: PageQueryParams? = null): ApiRequest<DataPage<BaseResource>> {
+    open fun getPage(params: PageQueryParams? = null): ApiRequest<DataPage<ReviewableRequestResource>> {
         return requests.getPage(
                 url = "requests",
-                pageItemClass = BaseResource::class.java,
+                pageItemClass = ReviewableRequestResource::class.java,
                 queryMap = params.map()
         )
     }
 
     @JvmOverloads
     open fun getById(id: String,
-                     params: JsonApiQueryParams? = null): ApiRequest<BaseResource> {
+                     params: JsonApiQueryParams? = null): ApiRequest<ReviewableRequestResource> {
         return requests.get(
                 url = "requests/$id",
-                responseClass = BaseResource::class.java,
+                responseClass = ReviewableRequestResource::class.java,
                 queryMap = params.map()
         )
     }
@@ -33,10 +34,10 @@ open class IngesterRequestsApi(
     @JvmOverloads
     open fun getAccountRequestById(accountId: String,
                                    requestId: String,
-                                   params: JsonApiQueryParams? = null): ApiRequest<BaseResource> {
+                                   params: JsonApiQueryParams? = null): ApiRequest<ReviewableRequestResource> {
         return requests.get(
                 url = "accounts/$accountId/requests/$requestId",
-                responseClass = BaseResource::class.java,
+                responseClass = ReviewableRequestResource::class.java,
                 queryMap = params.map()
         )
     }

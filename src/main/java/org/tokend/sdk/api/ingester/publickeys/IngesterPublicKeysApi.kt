@@ -4,6 +4,7 @@ import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.model.BaseResource
 import org.tokend.sdk.api.base.params.map
 import org.tokend.sdk.api.custom.CustomRequestsApi
+import org.tokend.sdk.api.ingester.generated.resources.PublicKeyEntryResource
 import org.tokend.sdk.api.v3.base.JsonApiQueryParams
 
 open class IngesterPublicKeysApi(
@@ -11,10 +12,10 @@ open class IngesterPublicKeysApi(
 ) {
     @JvmOverloads
     open fun getById(id: String,
-                     params: JsonApiQueryParams? = null): ApiRequest<BaseResource> {
+                     params: JsonApiQueryParams? = null): ApiRequest<PublicKeyEntryResource> {
         return requests.get(
                 url = "public_keys/$id",
-                responseClass = BaseResource::class.java,
+                responseClass = PublicKeyEntryResource::class.java,
                 queryMap = params.map()
         )
     }

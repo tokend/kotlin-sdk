@@ -1,11 +1,17 @@
 package org.tokend.sdk.api.transactions.model
 
-class TransactionFailedException(val submitResponse: SubmitTransactionResponse) : Exception() {
-    val transactionResultCode: String
-        get() = submitResponse.extras!!.resultCodes.transactionResultCode
-    val operationResultCodes: Collection<String>
-        get() = submitResponse.extras!!.resultCodes.operationsResultCodes
-    val firstOperationResultCode: String?
+class TransactionFailedException(
+        val transactionResultCode: String,
+        val operationResultCodes: Collection<String>,
+        message: String?
+) : Exception(message) {
+    constructor(submitResponse: SubmitTransactionResponse): this(
+            transactionResultCode = submitResponse.extras!!.resultCodes.transactionResultCode,
+            operationResultCodes = submitResponse.extras.resultCodes.operationsResultCodes,
+            message = "Transaction failed"
+    )
+
+    val firstFailedOperationResultCode: String?
         get() = operationResultCodes.firstOrNull {
             it != "op_success"
         }

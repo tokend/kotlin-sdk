@@ -19,6 +19,7 @@ import org.tokend.sdk.api.general.GeneralApi
 import org.tokend.sdk.api.general.GeneralService
 import org.tokend.sdk.api.identity.IdentitiesApi
 import org.tokend.sdk.api.identity.IdentitiesService
+import org.tokend.sdk.api.ingester.IngesterApi
 import org.tokend.sdk.api.integrations.IntegrationsApi
 import org.tokend.sdk.api.keyvaluestorage.KeyValueStorageApi
 import org.tokend.sdk.api.keyvaluestorage.KeyValueStorageService
@@ -65,6 +66,10 @@ constructor(
 ) : BaseApi(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent, withLogs) {
     open val v3: TokenDApiV3 by lazy {
         TokenDApiV3(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent, withLogs)
+    }
+
+    open val ingester: IngesterApi by lazy {
+        IngesterApi(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent, withLogs)
     }
 
     /**
