@@ -70,6 +70,7 @@ object JsonApiToolsProvider {
                         *AllResources.ARRAY,
                         *org.tokend.sdk.api.integrations.booking.model.generated.resources.AllResources.ARRAY,
                         *org.tokend.sdk.api.integrations.booking.model.scheduler.generated.resources.AllResources.ARRAY,
+                        *org.tokend.sdk.api.ingester.generated.resources.AllResources.ARRAY,
                         *extraResources.toTypedArray()
                 )
                         .also { resourceConverter = it }
