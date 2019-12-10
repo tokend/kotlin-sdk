@@ -43,9 +43,26 @@ class PageQueryParamsBuilderGenerator(
         val optionalPropertiesSetters = optionalProperties
                 .map {
                     val name = it.name
-                    "    open fun with${name?.capitalize()}" +
-                            "($name: ${it.type.toString().trimEnd('?')}) = " +
+                    val typeString = it.type.toString()
+                    val isCollection = typeString.startsWith("kotlin.collections.Collection<")
+
+                    val generalSetter = "    open fun with${name?.capitalize()}" +
+                            "($name: ${typeString.trimEnd('?')}) = " +
                             "also { this.$name = $name }"
+
+                    if (isCollection) {
+                        val collectionType = typeString
+                                .substringAfter('<')
+                                .substringBefore('>')
+
+                        val varargSetter = "    open fun with${name?.capitalize()}" +
+                                "(vararg $name: $collectionType) = " +
+                                "also { this.$name = $name.asList() }"
+
+                        generalSetter + "\n\n" + varargSetter
+                    } else {
+                        generalSetter
+                    }
                 }
                 .joinToString("\n\n")
 
