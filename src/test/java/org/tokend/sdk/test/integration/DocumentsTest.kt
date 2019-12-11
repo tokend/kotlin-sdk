@@ -28,7 +28,7 @@ class DocumentsTest {
 
         val currentWalletInfo = keyServer.getWalletInfo(email, password).execute().get()
 
-        val signedApi = Util.getSignedApi(rootAccount, api.rootUrl)
+        val signedApi = Util.getSignedApi(rootAccount, currentWalletInfo.accountId, api.rootUrl)
 
         val document = "Hello World".toByteArray()
         val contentType = "text/plain"

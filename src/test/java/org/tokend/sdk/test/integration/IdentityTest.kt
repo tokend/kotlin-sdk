@@ -46,7 +46,7 @@ class IdentityTest {
                 }
             }
         }
-        val signedApi = Util.getSignedApi(rootAccount, api.rootUrl, tfaCallback)
+        val signedApi = Util.getSignedApi(rootAccount, currentWalletInfo.accountId, api.rootUrl, tfaCallback)
 
         val number = Random.nextInt(0, 999999999).toString()
         val phoneNumber = "+380${number.padEnd(9 - number.length, '0')}"
@@ -97,7 +97,7 @@ class IdentityTest {
 
         val currentWalletInfo = keyServer.getWalletInfo(email, password).execute().get()
 
-        val signedApi = Util.getSignedApi(rootAccount, api.rootUrl)
+        val signedApi = Util.getSignedApi(rootAccount, currentWalletInfo.accountId, api.rootUrl)
 
         signedApi
                 .identities

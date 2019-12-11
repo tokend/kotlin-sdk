@@ -37,6 +37,7 @@ internal open class SignInterceptor(
         )
 
         return chain.request().newBuilder()
+                .addHeader(ACCOUNT_HEADER, requestSigner.accountId)
                 .addHeader(AUTH_HEADER, authHeaderContent)
                 .addHeader(DATE_HEADER, dateHeaderContent)
                 .build()
@@ -52,7 +53,7 @@ internal open class SignInterceptor(
         val hashToSign = Hashing.sha256(contentToSign)
 
         val signatureBase64 = requestSigner.signToBase64(hashToSign)
-        val keyId = requestSigner.accountId
+        val keyId = requestSigner.keyId
         val headersString = headerContents.joinToString(" ") { it.first.toLowerCase() }
 
         return "keyId=\"$keyId\",algorithm=\"$AUTH_ALGORITHM\"" +
@@ -80,6 +81,7 @@ internal open class SignInterceptor(
         const val REQUEST_TARGET_HEADER = "(request-target)"
         const val DATE_HEADER = "Date"
         const val AUTH_HEADER = "Authorization"
+        const val ACCOUNT_HEADER = "Account"
         const val AUTH_ALGORITHM = "ed25519-sha256"
         @JvmStatic
         val SIGNATURE_STRING_CHARSET = Charsets.UTF_8

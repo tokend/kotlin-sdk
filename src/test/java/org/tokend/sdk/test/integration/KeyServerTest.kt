@@ -215,7 +215,8 @@ class KeyServerTest {
             }
         }
 
-        val signedApi = Util.getSignedApi(rootAccount, api.rootUrl, tfaCallback = tfaCallback)
+        val signedApi = Util.getSignedApi(rootAccount, currentWalletInfo.accountId,
+                api.rootUrl, tfaCallback = tfaCallback)
 
         val netParams = api
                 .ingester

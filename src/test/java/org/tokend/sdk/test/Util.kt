@@ -20,9 +20,10 @@ object Util {
     }
 
     fun getSignedApi(account: Account = Config.ADMIN_ACCOUNT,
+                     accountId: String = account.accountId,
                      url: String = Config.API_URL,
                      tfaCallback: TfaCallback? = null): TokenDApi {
-        return TokenDApi(url, AccountRequestSigner(account), tfaCallback)
+        return TokenDApi(url, AccountRequestSigner(accountId, account), tfaCallback)
     }
 
     /**

@@ -26,6 +26,20 @@ public class ParticipantsEffectResource extends BaseResource {
         return account;
     }
     
+    @Relationship("asset")
+    private AssetResource asset;
+    
+    public AssetResource getAsset() {
+        return asset;
+    }
+    
+    @Relationship("balance")
+    private BalanceResource balance;
+    
+    public BalanceResource getBalance() {
+        return balance;
+    }
+    
     @Relationship("effect")
     private BaseEffectResource effect;
     

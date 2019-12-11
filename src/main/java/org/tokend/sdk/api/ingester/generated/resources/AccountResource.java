@@ -32,6 +32,13 @@ public class AccountResource extends BaseResource {
         ;
     }
     
+    @Relationship("balances")
+    private List<BalanceResource> balances;
+    
+    public List<? extends BalanceResource> getBalances() {
+        return balances;
+    }
+    
     @Relationship("kyc_data")
     private AccountKYCResource kycData;
     

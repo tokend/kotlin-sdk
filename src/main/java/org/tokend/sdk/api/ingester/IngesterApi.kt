@@ -5,6 +5,8 @@ import org.tokend.sdk.api.custom.CustomRequestsApi
 import org.tokend.sdk.api.custom.CustomRequestsService
 import org.tokend.sdk.api.ingester.accounts.IngesterAccountsApi
 import org.tokend.sdk.api.ingester.accounts.IngesterAccountsService
+import org.tokend.sdk.api.ingester.assets.IngesterAssetsApi
+import org.tokend.sdk.api.ingester.balances.IngesterBalancesApi
 import org.tokend.sdk.api.ingester.history.IngesterHistoryApi
 import org.tokend.sdk.api.ingester.info.IngesterInfoApi
 import org.tokend.sdk.api.ingester.keyvalue.IngesterKeyValueApi
@@ -26,7 +28,7 @@ open class IngesterApi(
         userAgent: String?, withLogs: Boolean
 ) : BaseApi(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent, withLogs) {
 
-    protected val customRequests: CustomRequestsApi by lazy {
+    protected open val customRequests: CustomRequestsApi by lazy {
         CustomRequestsApi(getService(CustomRequestsService::class.java))
     }
 
@@ -64,5 +66,13 @@ open class IngesterApi(
 
     open val rules: IngesterRulesApi by lazy {
         IngesterRulesApi(customRequests)
+    }
+
+    open val assets: IngesterAssetsApi by lazy {
+        IngesterAssetsApi(customRequests)
+    }
+
+    open val balances: IngesterBalancesApi by lazy {
+        IngesterBalancesApi(customRequests)
     }
 }

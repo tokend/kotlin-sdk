@@ -27,7 +27,7 @@ class BlobsTest {
 
         val currentWalletInfo = keyServer.getWalletInfo(email, password).execute().get()
 
-        val signedApi = Util.getSignedApi(rootAccount, api.rootUrl)
+        val signedApi = Util.getSignedApi(rootAccount, currentWalletInfo.accountId, api.rootUrl)
 
         val content = "Hello World"
 

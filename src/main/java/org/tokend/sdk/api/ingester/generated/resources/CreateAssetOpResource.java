@@ -18,10 +18,8 @@ import org.tokend.sdk.api.base.model.*;
 public class CreateAssetOpResource extends BaseOperationDetailsResource {
     
     @JsonProperty("code")
-    @Nullable
     private String code;
     
-    @Nullable
     public String getCode() {
         return code;
     }
@@ -56,7 +54,8 @@ public class CreateAssetOpResource extends BaseOperationDetailsResource {
     
     @Override
     public boolean isFilled() {
-        return             creatorDetails != null &&
+        return             code != null &&
+            creatorDetails != null &&
             maxIssuanceAmount != null &&
             securityType != null &&
             trailingDigitsCount != null 

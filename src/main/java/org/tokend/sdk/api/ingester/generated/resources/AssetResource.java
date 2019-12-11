@@ -53,9 +53,9 @@ public class AssetResource extends BaseResource {
     }
     
     @JsonProperty("state")
-    private org.tokend.sdk.api.ingester.generated.inner.Enum state;
+    private Long state;
     
-    public org.tokend.sdk.api.ingester.generated.inner.Enum getState() {
+    public Long getState() {
         return state;
     }
     

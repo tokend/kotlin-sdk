@@ -15,6 +15,9 @@ open class IngesterAccountParams(
             const val ROLE = "role"
             const val ROLE_RULES = "role.rules"
             const val KYC_DATA = "kyc_data"
+            const val BALANCES = "balances"
+            const val BALANCE_ASSETS = "balances.asset"
+            const val BALANCE_STATES = "balances.state"
         }
     }
 }
