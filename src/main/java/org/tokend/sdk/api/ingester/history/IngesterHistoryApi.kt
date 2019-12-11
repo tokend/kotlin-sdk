@@ -7,6 +7,7 @@ import org.tokend.sdk.api.custom.CustomRequestsApi
 import org.tokend.sdk.api.ingester.generated.resources.OperationResource
 import org.tokend.sdk.api.ingester.generated.resources.ParticipantsEffectResource
 import org.tokend.sdk.api.ingester.history.params.IngesterHistoryPageParams
+import org.tokend.sdk.api.ingester.history.params.IngesterMovementsPageParams
 import org.tokend.sdk.api.ingester.history.params.IngesterOperationsPageParams
 
 open class IngesterHistoryApi(
@@ -28,6 +29,16 @@ open class IngesterHistoryApi(
         return requests.getPage(
                 url = "horizon/operations",
                 pageItemClass = OperationResource::class.java,
+                queryMap = params.map()
+        )
+    }
+
+    @JvmOverloads
+    fun getMovementsPage(params: IngesterMovementsPageParams? = null)
+            : ApiRequest<DataPage<ParticipantsEffectResource>> {
+        return requests.getPage(
+                url = "horizon/movements",
+                pageItemClass = ParticipantsEffectResource::class.java,
                 queryMap = params.map()
         )
     }
