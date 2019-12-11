@@ -1,6 +1,7 @@
 package org.tokend.sdk.api.ingester.history.params
 
 import org.tokend.sdk.api.base.params.PagingParamsV2
+import org.tokend.sdk.api.ingester.history.params.IngesterHistoryPageParams.Includes
 import org.tokend.sdk.api.v3.base.PageQueryParams
 
 /**
@@ -17,7 +18,7 @@ open class IngesterHistoryPageParams(
         effectType?.also { putFilter("effect_type", it) }
     }
 
-    open class Builder: PageQueryParams.Builder() {
+    open class Builder : PageQueryParams.Builder() {
         protected open var account: kotlin.String? = null
         protected open var effectType: kotlin.String? = null
 
@@ -35,11 +36,9 @@ open class IngesterHistoryPageParams(
                 IngesterHistoryPageParams(account, effectType, pagingParams, include)
     }
 
-    class Includes {
-        companion object {
-            const val OPERATION = "operation"
-            const val OPERATION_DETAILS = "operation.details"
-            const val EFFECT = "effect"
-        }
+    companion object Includes {
+        const val OPERATION = "operation"
+        const val OPERATION_DETAILS = "operation.details"
+        const val EFFECT = "effect"
     }
 }

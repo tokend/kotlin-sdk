@@ -12,11 +12,11 @@ open class IngesterOperationsPageParams(
         pagingParams: PagingParamsV2? = null,
         include: Collection<String>? = null
 ) : PageQueryParams(pagingParams, include) {
-    override fun map(): Map<String, Any>  = super.map().toMutableMap().apply {
+    override fun map(): Map<String, Any> = super.map().toMutableMap().apply {
         types?.also { putFilter("types", it.joinToString(",")) }
     }
 
-    open class Builder: PageQueryParams.Builder() {
+    open class Builder : PageQueryParams.Builder() {
         protected open var types: kotlin.collections.Collection<kotlin.Int>? = null
 
         open fun withTypes(types: kotlin.collections.Collection<kotlin.Int>) = also { this.types = types }
@@ -33,9 +33,7 @@ open class IngesterOperationsPageParams(
                 IngesterOperationsPageParams(types, pagingParams, include)
     }
 
-    class Includes {
-        companion object {
-            const val OPERATION_DETAILS = "operation.details"
-        }
+    companion object Includes {
+        const val OPERATION_DETAILS = "operation.details"
     }
 }

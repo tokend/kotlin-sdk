@@ -1,5 +1,6 @@
 package org.tokend.sdk.api.ingester.assets.params
 
+import org.tokend.sdk.api.ingester.assets.params.IngesterAssetParams.Includes
 import org.tokend.sdk.api.v3.base.JsonApiQueryParams
 
 /**
@@ -8,9 +9,7 @@ import org.tokend.sdk.api.v3.base.JsonApiQueryParams
 open class IngesterAssetParams(
         include: Collection<String>? = null
 ) : JsonApiQueryParams(include) {
-    class Includes {
-        companion object {
-            const val OWNER = "owner"
-        }
+    companion object Includes {
+        const val OWNER = "owner"
     }
 }

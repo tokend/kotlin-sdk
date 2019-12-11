@@ -12,7 +12,7 @@ open class IngesterAccountSignersPageParams(
         include: Collection<String>? = null
 ) : PageQueryParams(pagingParams, include) {
 
-    open class Builder: PageQueryParams.Builder() {
+    open class Builder : PageQueryParams.Builder() {
         override fun withInclude(include: Collection<String>?) = also { super.withInclude(include) }
 
         override fun withInclude(vararg include: String) = also { super.withInclude(*include) }
@@ -23,10 +23,8 @@ open class IngesterAccountSignersPageParams(
                 IngesterAccountSignersPageParams(pagingParams, include)
     }
 
-    class Includes {
-        companion object {
-            const val ROLE = "role"
-            const val ROLE_RULES = "role.rules"
-        }
+    companion object Includes {
+        const val ROLE = "role"
+        const val ROLE_RULES = "role.rules"
     }
 }

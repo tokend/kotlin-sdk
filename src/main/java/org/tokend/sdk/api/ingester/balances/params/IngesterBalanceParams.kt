@@ -9,10 +9,8 @@ import org.tokend.sdk.api.v3.base.JsonApiQueryParams
 open class IngesterBalanceParams(
         include: Collection<String>? = null
 ) : JsonApiQueryParams(include) {
-    class Includes {
-        companion object {
-            const val ASSET = "asset"
-            const val STATE = "state"
-        }
+    companion object Includes {
+        const val ASSET = "asset"
+        const val STATE = "state"
     }
 }
