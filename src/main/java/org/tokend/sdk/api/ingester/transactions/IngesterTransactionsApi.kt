@@ -26,7 +26,7 @@ open class IngesterTransactionsApi(
     @JvmOverloads
     open fun getPage(params: PageQueryParams? = null): ApiRequest<DataPage<TransactionResource>> {
         return requests.getPage(
-                url = "transactions",
+                url = "horizon/transactions",
                 pageItemClass = TransactionResource::class.java,
                 queryMap = params.map()
         )
@@ -36,7 +36,7 @@ open class IngesterTransactionsApi(
     open fun getById(id: String,
                      params: JsonApiQueryParams? = null): ApiRequest<TransactionResource> {
         return requests.get(
-                url = "transactions/$id",
+                url = "horizon/transactions/$id",
                 responseClass = TransactionResource::class.java,
                 queryMap = params.map()
         )

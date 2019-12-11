@@ -5,7 +5,6 @@ import org.tokend.sdk.api.sales.model.SaleState
 import org.tokend.sdk.api.v3.base.PageQueryParams
 import org.tokend.sdk.utils.ApiDateUtil
 import org.tokend.sdk.utils.BigDecimalUtil
-import org.tokend.wallet.xdr.SaleType
 import java.math.BigDecimal
 import java.util.*
 
@@ -26,7 +25,7 @@ class SalesPageParamsV3(
         val minSoftCap: BigDecimal? = null,
         val minHardCap: BigDecimal? = null,
         val baseAsset: String? = null,
-        val saleType: SaleType? = null,
+        val saleType: Int? = null,
         includes: Collection<String>? = null,
         pagingParams: PagingParamsV2? = null
 ) : PageQueryParams(pagingParams, includes) {
@@ -45,7 +44,7 @@ class SalesPageParamsV3(
             minHardCap?.also { putFilter("min_hard_cap", BigDecimalUtil.toPlainString(it)) }
             maxSoftCap?.also { putFilter("max_soft_cap", BigDecimalUtil.toPlainString(it)) }
             baseAsset?.also { putFilter("base_asset", it) }
-            saleType?.also { putFilter("sale_type", it.value) }
+            saleType?.also { putFilter("sale_type", it) }
         }
     }
 
@@ -61,7 +60,7 @@ class SalesPageParamsV3(
         private var minSoftCap: BigDecimal? = null
         private var minHardCap: BigDecimal? = null
         private var baseAsset: String? = null
-        private var saleType: SaleType? = null
+        private var saleType: Int? = null
 
         fun withOwner(owner: String) = also { this.owner = owner }
 
@@ -85,7 +84,7 @@ class SalesPageParamsV3(
 
         fun withBaseAsset(baseAsset: String) = also { this.baseAsset = baseAsset }
 
-        fun withSaleType(saleType: SaleType) = also { this.saleType = saleType }
+        fun withSaleType(saleType: Int) = also { this.saleType = saleType }
 
         override fun withPagingParams(pagingParams: PagingParamsV2) = also {
             super.withPagingParams(pagingParams)

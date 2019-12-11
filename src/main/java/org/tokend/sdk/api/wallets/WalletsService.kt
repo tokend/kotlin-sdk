@@ -10,29 +10,29 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface WalletsService {
-    @POST("wallets/{walletId}/verification")
+    @POST("api/wallets/{walletId}/verification")
     fun requestVerification(@Path("walletId") walletId: String): Call<Void>
 
-    @PUT("wallets/{walletId}/verification")
+    @PUT("api/wallets/{walletId}/verification")
     @JvmSuppressWildcards
     fun verify(@Path("walletId") walletId: String,
                @Body data: DataEntity<AttributesEntity<VerifyWalletRequestBody>>):
             Call<Void>
 
-    @GET("wallets/kdf")
+    @GET("api/wallets/kdf")
     fun getLoginParams(@Query("email") login: String? = "",
                        @Query("is_recovery") isRecovery: Boolean = false)
             : Call<DataEntity<LoginParams>>
 
-    @GET("wallets/{walletId}")
+    @GET("api/wallets/{walletId}")
     fun getById(@Path("walletId") walletId: String): Call<DataEntity<WalletData>>
 
-    @PUT("wallets/{walletId}")
+    @PUT("api/wallets/{walletId}")
     @JvmSuppressWildcards
     fun update(@Path("walletId") walletId: String,
                @Body wallet: WalletResourceBody): Call<Void>
 
-    @POST("wallets")
+    @POST("api/wallets")
     @JvmSuppressWildcards
     fun create(@Body wallet: WalletResourceBody): Call<DataEntity<WalletData>>
 }

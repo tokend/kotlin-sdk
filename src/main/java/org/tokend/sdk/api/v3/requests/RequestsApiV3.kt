@@ -7,7 +7,6 @@ import org.tokend.sdk.api.base.model.DataPage
 import org.tokend.sdk.api.base.params.map
 import org.tokend.sdk.api.generated.resources.ReviewableRequestResource
 import org.tokend.sdk.api.v3.requests.params.AssetRequestPageParams
-import org.tokend.sdk.api.v3.requests.params.ChangeRoleRequestPageParams
 import org.tokend.sdk.api.v3.requests.params.RequestParamsV3
 import org.tokend.sdk.api.v3.requests.params.RequestsPageParamsV3
 
@@ -56,18 +55,6 @@ open class RequestsApiV3(
                         params.map()
                 ),
                 JSONAPIDocument<ReviewableRequestResource>::get
-        )
-    }
-
-    /**
-     * Will return change role requests list page
-     */
-    @JvmOverloads
-    open fun getChangeRoleRequests(params: ChangeRoleRequestPageParams? = null)
-            : ApiRequest<DataPage<ReviewableRequestResource>> {
-        return MappedRetrofitApiRequest(
-                requestsService.getChangeRoleRequests(params.map()),
-                DataPage.Companion::fromPageDocument
         )
     }
 

@@ -17,8 +17,8 @@ class SignerData(
         val identity: Uint32,
         @SerializedName("weight")
         val weight: Uint32,
-        @SerializedName("role_id")
-        val roleId: Uint64,
+        @SerializedName("role_ids")
+        val roleIds: Array<Uint64>,
         @SerializedName("details")
         val detailsJson: String?
 ) {
@@ -27,16 +27,28 @@ class SignerData(
                 objectMapper: ObjectMapper = JsonApiToolsProvider.getObjectMapper()) : this(
             identity = source.identity.toInt(),
             weight = source.weight.toInt(),
-            roleId = source.role.id.toLong(),
+            roleIds = arrayOf(source.role.id.toLong()),
             detailsJson = source.details?.let {
                 objectMapper.writeValueAsString(it)
             },
             id = source.id
     )
 
-    constructor(id: String, roleId: Uint64): this(
+    @JvmOverloads
+    constructor(source: org.tokend.sdk.api.ingester.generated.resources.SignerResource,
+                objectMapper: ObjectMapper = JsonApiToolsProvider.getObjectMapper()) : this(
+            identity = source.identity.toInt(),
+            weight = source.weight.toInt(),
+            roleIds = source.roles.mapNotNull { it.id.toLongOrNull() }.toTypedArray(),
+            detailsJson = source.details?.let {
+                objectMapper.writeValueAsString(it)
+            },
+            id = source.id
+    )
+
+    constructor(id: String, vararg roleIds: Uint64) : this(
             id = id,
-            roleId = roleId,
+            roleIds = roleIds.toTypedArray(),
             identity = DEFAULT_SIGNER_IDENTITY,
             weight = DEFAULT_SIGNER_WEIGHT,
             detailsJson = null

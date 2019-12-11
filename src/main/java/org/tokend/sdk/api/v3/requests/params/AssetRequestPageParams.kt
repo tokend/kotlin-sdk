@@ -1,8 +1,6 @@
 package org.tokend.sdk.api.v3.requests.params
 
 import org.tokend.sdk.api.base.params.PagingParamsV2
-import org.tokend.sdk.api.requests.model.base.RequestState
-import org.tokend.wallet.xdr.ReviewableRequestType
 
 /**
  * @see AssetRequestPageParams.Includes
@@ -10,8 +8,8 @@ import org.tokend.wallet.xdr.ReviewableRequestType
 open class AssetRequestPageParams(
         reviewer: String? = null,
         requestor: String? = null,
-        state: RequestState? = null,
-        type: ReviewableRequestType? = null,
+        state: Int? = null,
+        type: Int? = null,
         pendingTasks: Long? = null,
         pendingTasksNotSet: Long? = null,
         pendingTasksAnyOf: Long? = null,
@@ -38,9 +36,9 @@ open class AssetRequestPageParams(
 
         override fun withRequestor(requestor: String) = also { super.withRequestor(requestor) }
 
-        override fun withState(state: RequestState) = also { super.withState(state) }
+        override fun withState(state: Int) = also { super.withState(state) }
 
-        override fun withType(type: ReviewableRequestType) = also { super.withType(type) }
+        override fun withType(type: Int) = also { super.withType(type) }
 
         override fun withPendingTasks(pendingTasks: Long) = also { super.withPendingTasks(pendingTasks) }
 

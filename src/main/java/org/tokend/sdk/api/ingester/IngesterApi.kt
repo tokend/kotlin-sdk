@@ -4,6 +4,7 @@ import org.tokend.sdk.api.base.BaseApi
 import org.tokend.sdk.api.custom.CustomRequestsApi
 import org.tokend.sdk.api.custom.CustomRequestsService
 import org.tokend.sdk.api.ingester.accounts.IngesterAccountsApi
+import org.tokend.sdk.api.ingester.accounts.IngesterAccountsService
 import org.tokend.sdk.api.ingester.history.IngesterHistoryApi
 import org.tokend.sdk.api.ingester.info.IngesterInfoApi
 import org.tokend.sdk.api.ingester.keyvalue.IngesterKeyValueApi
@@ -38,7 +39,7 @@ open class IngesterApi(
     }
 
     open val accounts: IngesterAccountsApi by lazy {
-        IngesterAccountsApi(customRequests)
+        IngesterAccountsApi(customRequests, getService(IngesterAccountsService::class.java))
     }
 
     open val history: IngesterHistoryApi by lazy {

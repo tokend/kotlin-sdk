@@ -3,7 +3,6 @@ package org.tokend.sdk.api.v3.fees.params
 import org.tokend.sdk.api.base.params.PagingParamsV2
 import org.tokend.sdk.api.v3.base.PageQueryParams
 import org.tokend.sdk.utils.BigDecimalUtil
-import org.tokend.wallet.xdr.FeeType
 import java.math.BigDecimal
 
 /**
@@ -11,7 +10,7 @@ import java.math.BigDecimal
  */
 open class FeesPageParamsV3(
         val asset: String? = null,
-        val type: FeeType? = null,
+        val type: Int? = null,
         val subtype: Int? = null,
         val account: String? = null,
         val accountRole: Long? = null,
@@ -24,7 +23,7 @@ open class FeesPageParamsV3(
     override fun map(): Map<String, Any> {
         return super.map().toMutableMap().apply {
             asset?.also { putFilter("asset", it) }
-            type?.also { putFilter("fee_type", it.value) }
+            type?.also { putFilter("fee_type", it) }
             subtype?.also { putFilter("subtype", it) }
             account?.also { putFilter("account", it) }
             accountRole?.also { putFilter("account_role", it) }
@@ -35,7 +34,7 @@ open class FeesPageParamsV3(
 
     class Builder : PageQueryParams.Builder() {
         private var asset: String? = null
-        private var type: FeeType? = null
+        private var type: Int? = null
         private var subtype: Int? = null
         private var account: String? = null
         private var accountRole: Long? = null
@@ -44,7 +43,7 @@ open class FeesPageParamsV3(
 
         fun withAsset(asset: String) = also { this.asset = asset }
 
-        fun withType(type: FeeType) = also { this.type = type }
+        fun withType(type: Int) = also { this.type = type }
 
         fun withSubtype(subtype: Int) = also { this.subtype = subtype }
 

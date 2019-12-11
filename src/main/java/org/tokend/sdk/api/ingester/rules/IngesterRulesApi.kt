@@ -15,7 +15,7 @@ open class IngesterRulesApi(
     @JvmOverloads
     open fun getPage(params: PageQueryParams? = null): ApiRequest<DataPage<RuleResource>> {
         return requests.getPage(
-                url = "rules",
+                url = "horizon/rules",
                 pageItemClass = RuleResource::class.java,
                 queryMap = params.map()
         )
@@ -25,7 +25,7 @@ open class IngesterRulesApi(
     open fun getById(id: String,
                      params: JsonApiQueryParams? = null): ApiRequest<RuleResource> {
         return requests.get(
-                url = "rules/$id",
+                url = "horizon/rules/$id",
                 responseClass = RuleResource::class.java,
                 queryMap = params.map()
         )

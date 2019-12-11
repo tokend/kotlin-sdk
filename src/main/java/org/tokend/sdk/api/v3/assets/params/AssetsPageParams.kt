@@ -4,13 +4,12 @@ import org.tokend.sdk.api.base.params.PagingParamsV2
 import org.tokend.sdk.api.v3.assets.model.AssetState
 import org.tokend.sdk.api.v3.base.PageQueryParams
 import org.tokend.sdk.utils.extentions.bitmask
-import org.tokend.wallet.xdr.AssetPolicy
 
 /**
  * @see AssetParams.Includes
  */
 open class AssetsPageParams(
-        val policies: Collection<AssetPolicy>? = null,
+        val policies: Collection<Long>? = null,
         val owner: String? = null,
         val state: AssetState? = null,
         include: Collection<String>? = null,
@@ -20,7 +19,7 @@ open class AssetsPageParams(
     override fun map(): Map<String, Any> {
         return super.map().toMutableMap().apply {
             policies?.also {
-                putFilter("policy", policies.map { it.value.toLong() }.bitmask())
+                putFilter("policy", policies.bitmask())
             }
             owner?.also { putFilter("owner", it) }
             state?.also { putFilter("state", it.value) }
@@ -28,13 +27,13 @@ open class AssetsPageParams(
     }
 
     class Builder : PageQueryParams.Builder() {
-        private var policies: Collection<AssetPolicy>? = null
+        private var policies: Collection<Long>? = null
         private var owner: String? = null
         private var state: AssetState? = null
 
-        fun withPolicies(policies: Collection<AssetPolicy>) = also { this.policies = policies }
+        fun withPolicies(policies: Collection<Long>) = also { this.policies = policies }
 
-        fun withPolicies(vararg policies: AssetPolicy) = also { this.policies = policies.toList() }
+        fun withPolicies(vararg policies: Long) = also { this.policies = policies.asList() }
 
         fun withOwner(owner: String) = also { this.owner = owner }
 

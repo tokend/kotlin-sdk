@@ -9,7 +9,6 @@ import org.tokend.sdk.api.blobs.params.BlobPageParams
 import org.tokend.sdk.api.identity.params.IdentitiesPageParams
 import org.tokend.sdk.api.integrations.marketplace.params.MarketplaceOfferParams
 import org.tokend.sdk.api.integrations.marketplace.params.MarketplaceOffersPageParams
-import org.tokend.sdk.api.requests.model.base.RequestState
 import org.tokend.sdk.api.sales.model.SaleState
 import org.tokend.sdk.api.v3.assetpairs.params.AssetPairParams
 import org.tokend.sdk.api.v3.assetpairs.params.AssetPairsPageParams
@@ -41,7 +40,7 @@ import org.tokend.sdk.api.v3.swaps.params.SwapParams
 import org.tokend.sdk.api.v3.swaps.params.SwapsPageParams
 import org.tokend.sdk.api.v3.transactions.params.TransactionsPageParams
 import org.tokend.sdk.test.Config
-import org.tokend.wallet.xdr.*
+import org.tokend.wallet.xdr.OperationType
 import java.math.BigDecimal
 import java.util.*
 
@@ -50,10 +49,10 @@ class QueryParamsTest {
 
     @Test
     fun assetPairsParams() {
-        val expected = "{filter[base_asset]=BTC, filter[policy]=4, filter[quote_asset]=ETH, include=base_asset, order=desc, page[order]=desc}"
+        val expected = "{filter[base_asset]=BTC, filter[policy]=30, filter[quote_asset]=ETH, include=base_asset, order=desc, page[order]=desc}"
 
         val params = AssetPairsPageParams(
-                policies = listOf(AssetPairPolicy.CURRENT_PRICE_RESTRICTION),
+                policies = listOf(2, 4, 8, 16),
                 baseAsset = "BTC",
                 quoteAsset = "ETH",
                 include = listOf(AssetPairParams.Includes.BASE_ASSET),
@@ -61,7 +60,7 @@ class QueryParamsTest {
         )
 
         val buildParams = AssetPairsPageParams.Builder()
-                .withPolicies(AssetPairPolicy.CURRENT_PRICE_RESTRICTION)
+                .withPolicies(2, 4, 8, 16)
                 .withBaseAsset("BTC")
                 .withQuoteAsset("ETH")
                 .withInclude(AssetPairParams.Includes.BASE_ASSET)
@@ -74,11 +73,11 @@ class QueryParamsTest {
 
     @Test
     fun assetsParams() {
-        val expected = "{filter[owner]=$accountId, filter[policy]=2, filter[state]=0, include=owner, order=desc, page[order]=desc}"
+        val expected = "{filter[owner]=$accountId, filter[policy]=14, filter[state]=0, include=owner, order=desc, page[order]=desc}"
 
         val params = AssetsPageParams(
                 owner = accountId,
-                policies = listOf(AssetPolicy.BASE_ASSET),
+                policies = listOf(2, 4, 8),
                 state = AssetState.ACTIVE,
                 include = listOf(AssetParams.Includes.OWNER),
                 pagingParams = PagingParamsV2(PagingOrder.DESC)
@@ -86,7 +85,7 @@ class QueryParamsTest {
 
         val builtParams = AssetsPageParams.Builder()
                 .withOwner(accountId)
-                .withPolicies(AssetPolicy.BASE_ASSET)
+                .withPolicies(2, 4, 8)
                 .withState(AssetState.ACTIVE)
                 .withInclude(AssetParams.Includes.OWNER)
                 .withPagingParams(PagingParamsV2(PagingOrder.DESC))
@@ -126,7 +125,7 @@ class QueryParamsTest {
 
         val params = FeesPageParamsV3(
                 asset = "ETH",
-                type = FeeType.PAYMENT_FEE,
+                type = 0,
                 subtype = 1,
                 account = accountId,
                 accountRole = 1,
@@ -138,7 +137,7 @@ class QueryParamsTest {
 
         val builtParams = FeesPageParamsV3.Builder()
                 .withAsset("ETH")
-                .withType(FeeType.PAYMENT_FEE)
+                .withType(0)
                 .withSubtype(1)
                 .withAccount(accountId)
                 .withAccountRole(1)
@@ -191,8 +190,8 @@ class QueryParamsTest {
         val params = RequestsPageParamsV3(
                 reviewer = accountId,
                 requestor = accountId,
-                state = RequestState.APPROVED,
-                type = ReviewableRequestType.CREATE_ASSET,
+                state = 3,
+                type = 10,
                 missingPendingTasks = 1,
                 pendingTasks = 2,
                 pendingTasksAnyOf = 3,
@@ -204,8 +203,8 @@ class QueryParamsTest {
         val builtParams = RequestsPageParamsV3.Builder()
                 .withReviewer(accountId)
                 .withRequestor(accountId)
-                .withState(RequestState.APPROVED)
-                .withType(ReviewableRequestType.CREATE_ASSET)
+                .withState(3)
+                .withType(10)
                 .withMissingPendingTasks(1)
                 .withPendingTasks(2)
                 .withPendingTasksAnyOf(3)
@@ -230,7 +229,7 @@ class QueryParamsTest {
                 maxStartTime = Date(1549618120 * 1000L),
                 maxHardCap = BigDecimal.ONE,
                 minSoftCap = BigDecimal.TEN,
-                saleType = SaleType.CROWD_FUNDING,
+                saleType = 2,
                 includes = listOf(SaleParamsV3.Includes.BASE_ASSET),
                 pagingParams = PagingParamsV2(PagingOrder.DESC)
         )
@@ -243,7 +242,7 @@ class QueryParamsTest {
                 .withMaxStartTime(Date(1549618120 * 1000L))
                 .withMaxHardCap(BigDecimal.ONE)
                 .withMinSoftCap(BigDecimal.TEN)
-                .withSaleType(SaleType.CROWD_FUNDING)
+                .withSaleType(2)
                 .withInclude(SaleParamsV3.Includes.BASE_ASSET)
                 .withPagingParams(PagingParamsV2(PagingOrder.DESC))
                 .build()
@@ -453,7 +452,7 @@ class QueryParamsTest {
         val params = PollsPageParams(
                 owner = accountId,
                 permissionType = 0,
-                pollType = PollType.SINGLE_CHOICE,
+                pollType = 0,
                 voteConfirmation = true,
                 minStartTime = Date(1549618720 * 1000L),
                 minEndTime = Date(1649618720 * 1000L),
@@ -474,7 +473,7 @@ class QueryParamsTest {
         val builtParams = PollsPageParams.Builder()
                 .withOwner(accountId)
                 .withPermissionType(0)
-                .withPollType(PollType.SINGLE_CHOICE)
+                .withPollType(0)
                 .withVoteConfirmation(true)
                 .withMinStartTime(Date(1549618720 * 1000L))
                 .withMinEndTime(Date(1649618720 * 1000L))
@@ -615,10 +614,10 @@ class QueryParamsTest {
 
     @Test
     fun operationsPageParams() {
-        val expected = "{cursor=8, filter[types]=20,11, include=operation.details, limit=10, order=desc, page=8, page[cursor]=8, page[limit]=10, page[number]=8, page[order]=desc}"
+        val expected = "{cursor=8, filter[types]=1,11, include=operation.details, limit=10, order=desc, page=8, page[cursor]=8, page[limit]=10, page[number]=8, page[order]=desc}"
 
         val params = OperationsPageParams(
-                types = listOf(OperationType.CHECK_SALE_STATE, OperationType.MANAGE_ASSET),
+                types = listOf(OperationType.CREATE_ACCOUNT, OperationType.CREATE_ASSET),
                 include = listOf(OperationParams.Includes.OPERATION_DETAILS),
                 pagingParams = PagingParamsV2(
                         order = PagingOrder.DESC,
@@ -628,7 +627,7 @@ class QueryParamsTest {
         )
 
         val builtParams = OperationsPageParams.Builder()
-                .withTypes(OperationType.CHECK_SALE_STATE, OperationType.MANAGE_ASSET)
+                .withTypes(OperationType.CREATE_ACCOUNT, OperationType.CREATE_ASSET)
                 .withInclude(OperationParams.Includes.OPERATION_DETAILS)
                 .withPagingParams(PagingParamsV2(
                         order = PagingOrder.DESC,

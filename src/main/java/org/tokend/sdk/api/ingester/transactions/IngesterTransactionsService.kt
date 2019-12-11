@@ -8,7 +8,7 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface IngesterTransactionsService {
-    @POST("v3/transactions")
+    @POST("horizon/transactions")
     @JvmSuppressWildcards
     fun submit(@Body body: SubmitTransactionRequestBody): Call<JSONAPIDocument<TransactionResource>>
 }

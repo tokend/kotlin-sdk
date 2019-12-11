@@ -1,35 +1,40 @@
 package org.tokend.sdk.api.ingester.accounts
 
+import com.github.jasminb.jsonapi.JSONAPIDocument
 import org.tokend.sdk.api.base.ApiRequest
-import org.tokend.sdk.api.base.model.BaseResource
-import org.tokend.sdk.api.base.model.DataPage
+import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.base.params.map
 import org.tokend.sdk.api.custom.CustomRequestsApi
+import org.tokend.sdk.api.ingester.accounts.params.IngesterAccountParams
+import org.tokend.sdk.api.ingester.accounts.params.IngesterAccountSignersPageParams
 import org.tokend.sdk.api.ingester.generated.resources.AccountResource
 import org.tokend.sdk.api.ingester.generated.resources.SignerResource
-import org.tokend.sdk.api.v3.base.JsonApiQueryParams
-import org.tokend.sdk.api.v3.base.PageQueryParams
 
 open class IngesterAccountsApi(
-        protected val requests: CustomRequestsApi
+        protected val requests: CustomRequestsApi,
+        protected val accountsService: IngesterAccountsService
 ) {
     @JvmOverloads
     open fun getById(id: String,
-                     params: JsonApiQueryParams? = null): ApiRequest<AccountResource> {
+                     params: IngesterAccountParams? = null)
+            : ApiRequest<AccountResource> {
         return requests.get(
-                url = "accounts/$id",
+                url = "horizon/accounts/$id",
                 responseClass = AccountResource::class.java,
                 queryMap = params.map()
         )
     }
 
     @JvmOverloads
-    open fun getAccountSignersPage(accountId: String,
-                                   params: PageQueryParams? = null): ApiRequest<DataPage<SignerResource>> {
-        return requests.getPage(
-                url = "accounts/$accountId/signers",
-                pageItemClass = SignerResource::class.java,
-                queryMap = params.map()
+    open fun getAccountSigners(accountId: String,
+                               params: IngesterAccountSignersPageParams? = null)
+            : ApiRequest<List<SignerResource>> {
+        return MappedRetrofitApiRequest(
+                accountsService.getAccountSigners(
+                        accountId,
+                        params.map()
+                ),
+                JSONAPIDocument<List<SignerResource>>::get
         )
     }
 }

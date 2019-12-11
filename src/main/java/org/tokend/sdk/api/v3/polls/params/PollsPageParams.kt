@@ -4,13 +4,12 @@ import org.tokend.sdk.api.base.params.PagingParamsV2
 import org.tokend.sdk.api.v3.base.PageQueryParams
 import org.tokend.sdk.api.v3.polls.model.PollState
 import org.tokend.sdk.utils.ApiDateUtil
-import org.tokend.wallet.xdr.PollType
 import java.util.*
 
 open class PollsPageParams(
         val owner: String? = null,
         val permissionType: Long? = null,
-        val pollType: PollType? = null,
+        val pollType: Int? = null,
         val voteConfirmation: Boolean? = null,
         val minStartTime: Date? = null,
         val minEndTime: Date? = null,
@@ -25,7 +24,7 @@ open class PollsPageParams(
         return super.map().toMutableMap().apply {
             owner?.also { putFilter("owner", it) }
             permissionType?.also { putFilter("permission_type", it) }
-            pollType?.also { putFilter("poll_type", it.value) }
+            pollType?.also { putFilter("poll_type", it) }
             voteConfirmation?.also { putFilter("vote_confirmation", it) }
             minStartTime?.also { putFilter("min_start_time", ApiDateUtil.formatDateForRequest(it)) }
             minEndTime?.also { putFilter("min_end_time", ApiDateUtil.formatDateForRequest(it)) }
@@ -38,7 +37,7 @@ open class PollsPageParams(
     class Builder : PageQueryParams.Builder() {
         private var owner: String? = null
         private var permissionType: Long? = null
-        private var pollType: PollType? = null
+        private var pollType: Int? = null
         private var voteConfirmation: Boolean? = null
         private var minStartTime: Date? = null
         private var minEndTime: Date? = null
@@ -50,7 +49,7 @@ open class PollsPageParams(
 
         fun withPermissionType(permissionType: Long) = apply { this.permissionType = permissionType }
 
-        fun withPollType(pollType: PollType) = apply { this.pollType = pollType }
+        fun withPollType(pollType: Int) = apply { this.pollType = pollType }
 
         fun withVoteConfirmation(voteConfirmation: Boolean) = apply { this.voteConfirmation = voteConfirmation }
 

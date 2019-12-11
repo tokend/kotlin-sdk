@@ -15,7 +15,7 @@ open class IngesterRolesApi(
     @JvmOverloads
     open fun getPage(params: PageQueryParams? = null): ApiRequest<DataPage<RoleResource>> {
         return requests.getPage(
-                url = "roles",
+                url = "horizon/roles",
                 pageItemClass = RoleResource::class.java,
                 queryMap = params.map()
         )
@@ -25,7 +25,7 @@ open class IngesterRolesApi(
     open fun getById(id: String,
                      params: JsonApiQueryParams? = null): ApiRequest<RoleResource> {
         return requests.get(
-                url = "roles/$id",
+                url = "horizon/roles/$id",
                 responseClass = RoleResource::class.java,
                 queryMap = params.map()
         )

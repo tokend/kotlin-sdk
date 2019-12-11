@@ -10,7 +10,7 @@ open class IngesterInfoApi(
 ) {
     open fun get(): ApiRequest<IngesterStateResource> {
         return requests.get(
-                url = "info",
+                url = "horizon/info",
                 responseClass = IngesterStateResource::class.java
         )
     }
