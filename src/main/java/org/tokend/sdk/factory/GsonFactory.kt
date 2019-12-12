@@ -1,7 +1,6 @@
 package org.tokend.sdk.factory
 
 import com.google.gson.*
-import org.tokend.sdk.api.sales.model.SocialLinks
 import org.tokend.sdk.utils.ApiDateUtil
 import org.tokend.sdk.utils.BigDecimalUtil
 import retrofit2.converter.gson.GsonConverterFactory
@@ -16,7 +15,6 @@ class GsonFactory {
     fun getBaseGson(): Gson {
         return baseGson ?: GsonBuilder()
                 .serializeNulls()
-                .registerTypeAdapter(SocialLinks::class.java, SocialLinks.SocialLinksDeserializer())
                 .registerTypeAdapter(Date::class.java, getGsonDateSerializer())
                 .registerTypeAdapter(Date::class.java, getGsonDateDeserializer())
                 .registerTypeAdapter(BigDecimal::class.java, getGsonBigDecimalSerializer())

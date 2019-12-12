@@ -13,24 +13,14 @@ import org.tokend.sdk.api.custom.CustomRequestsApi
 import org.tokend.sdk.api.custom.CustomRequestsService
 import org.tokend.sdk.api.documents.DocumentsApi
 import org.tokend.sdk.api.documents.DocumentsService
-import org.tokend.sdk.api.fees.FeesApi
-import org.tokend.sdk.api.fees.FeesService
 import org.tokend.sdk.api.general.GeneralApi
 import org.tokend.sdk.api.general.GeneralService
 import org.tokend.sdk.api.identity.IdentitiesApi
 import org.tokend.sdk.api.identity.IdentitiesService
 import org.tokend.sdk.api.ingester.IngesterApi
 import org.tokend.sdk.api.integrations.IntegrationsApi
-import org.tokend.sdk.api.keyvaluestorage.KeyValueStorageApi
-import org.tokend.sdk.api.keyvaluestorage.KeyValueStorageService
-import org.tokend.sdk.api.sales.SalesApi
-import org.tokend.sdk.api.sales.SalesService
 import org.tokend.sdk.api.tfa.TfaApi
 import org.tokend.sdk.api.tfa.TfaService
-import org.tokend.sdk.api.trades.TradesApi
-import org.tokend.sdk.api.trades.TradesService
-import org.tokend.sdk.api.transactions.TransactionsApi
-import org.tokend.sdk.api.transactions.TransactionsService
 import org.tokend.sdk.api.v3.TokenDApiV3
 import org.tokend.sdk.api.wallets.WalletsApi
 import org.tokend.sdk.api.wallets.WalletsService
@@ -82,22 +72,8 @@ constructor(
         AccountsApi(getService(AccountsService::class.java))
     }
 
-    @Deprecated("Use v3 instead")
-    open val transactions: TransactionsApi by lazy {
-        TransactionsApi(getService(TransactionsService::class.java))
-    }
-
-    @Deprecated("Use v3 instead")
-    open val sales: SalesApi by lazy {
-        SalesApi(getService(SalesService::class.java))
-    }
-
     open val blobs: BlobsApi by lazy {
         BlobsApi(getService(BlobsService::class.java))
-    }
-
-    open val fees: FeesApi by lazy {
-        FeesApi(getService(FeesService::class.java))
     }
 
     open val tfa: TfaApi by lazy {
@@ -108,22 +84,12 @@ constructor(
         GeneralApi(getService(GeneralService::class.java))
     }
 
-    @Deprecated("Use v3 instead")
-    open val trades: TradesApi by lazy {
-        TradesApi(getService(TradesService::class.java))
-    }
-
     open val assets: AssetsApi by lazy {
         AssetsApi(getService(AssetsService::class.java))
     }
 
     open val wallets: WalletsApi by lazy {
         WalletsApi(getService(WalletsService::class.java))
-    }
-
-    @Deprecated("Use v3 instead")
-    open val keyValueEntries: KeyValueStorageApi by lazy {
-        KeyValueStorageApi(getService(KeyValueStorageService::class.java))
     }
 
     open val documents: DocumentsApi by lazy {

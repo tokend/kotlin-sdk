@@ -3,7 +3,7 @@ package org.tokend.sdk.api.integrations.fiat
 import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.integrations.fiat.model.FiatInvoiceAttributes
-import org.tokend.sdk.api.v3.transactions.model.SubmitTransactionRequestBody
+import org.tokend.sdk.api.ingester.transactions.model.SubmitTransactionRequestBody
 import org.tokend.wallet.Transaction
 
 open class FiatApi(

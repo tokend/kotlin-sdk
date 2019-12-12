@@ -2,8 +2,7 @@ package org.tokend.sdk.test.jsonapi.integration
 
 import org.junit.Assert
 import org.junit.Test
-import org.tokend.sdk.api.transactions.model.TransactionFailedException
-import org.tokend.sdk.keyserver.KeyServer
+import org.tokend.sdk.api.ingester.transactions.model.TransactionFailedException
 import org.tokend.sdk.test.Config
 import org.tokend.sdk.test.Util
 import org.tokend.sdk.utils.extentions.encodeHexString

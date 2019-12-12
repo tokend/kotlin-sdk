@@ -8,10 +8,10 @@ import org.tokend.sdk.api.base.model.ErrorBody
 import org.tokend.sdk.api.base.params.map
 import org.tokend.sdk.api.custom.CustomRequestsApi
 import org.tokend.sdk.api.ingester.generated.resources.TransactionResource
-import org.tokend.sdk.api.transactions.model.TransactionFailedException
+import org.tokend.sdk.api.ingester.transactions.model.TransactionFailedException
 import org.tokend.sdk.api.v3.base.JsonApiQueryParams
 import org.tokend.sdk.api.v3.base.PageQueryParams
-import org.tokend.sdk.api.v3.transactions.model.SubmitTransactionRequestBody
+import org.tokend.sdk.api.ingester.transactions.model.SubmitTransactionRequestBody
 import org.tokend.sdk.factory.GsonFactory
 import org.tokend.sdk.utils.extentions.isBadRequest
 import org.tokend.wallet.Transaction
