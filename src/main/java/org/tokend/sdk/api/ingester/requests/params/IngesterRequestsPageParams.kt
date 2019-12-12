@@ -1,6 +1,7 @@
 package org.tokend.sdk.api.ingester.requests.params
 
 import org.tokend.sdk.api.base.params.PagingParamsV2
+import org.tokend.sdk.api.ingester.requests.model.RequestState
 import org.tokend.sdk.api.v3.base.PageQueryParams
 
 /**
@@ -9,7 +10,7 @@ import org.tokend.sdk.api.v3.base.PageQueryParams
 open class IngesterRequestsPageParams(
         val requestor: String? = null,
         val reviewer: String? = null,
-        val state: Int? = null,
+        val state: RequestState? = null,
         val type: Int? = null,
         val pendingTasks: Long? = null,
         val pendingTasksNotSet: Long? = null,
@@ -20,7 +21,7 @@ open class IngesterRequestsPageParams(
     override fun map(): Map<String, Any> = super.map().toMutableMap().apply {
         requestor?.also { putFilter("requestor", it) }
         reviewer?.also { putFilter("reviewer", it) }
-        state?.also { putFilter("state", it) }
+        state?.also { putFilter("state", it.value) }
         type?.also { putFilter("type", it) }
         pendingTasks?.also { putFilter("pending_tasks", it) }
         pendingTasksNotSet?.also { putFilter("pending_tasks_not_set", it) }
@@ -30,7 +31,7 @@ open class IngesterRequestsPageParams(
     open class Builder: PageQueryParams.Builder() {
         protected open var requestor: kotlin.String? = null
         protected open var reviewer: kotlin.String? = null
-        protected open var state: kotlin.Int? = null
+        protected open var state: RequestState? = null
         protected open var type: kotlin.Int? = null
         protected open var pendingTasks: kotlin.Long? = null
         protected open var pendingTasksNotSet: kotlin.Long? = null
@@ -40,7 +41,7 @@ open class IngesterRequestsPageParams(
 
         open fun withReviewer(reviewer: kotlin.String) = also { this.reviewer = reviewer }
 
-        open fun withState(state: kotlin.Int) = also { this.state = state }
+        open fun withState(state: RequestState) = also { this.state = state }
 
         open fun withType(type: kotlin.Int) = also { this.type = type }
 
