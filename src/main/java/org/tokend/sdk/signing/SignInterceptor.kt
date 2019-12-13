@@ -33,12 +33,14 @@ internal open class SignInterceptor(
         val authHeaderContent = buildHttpAuthHeader(
                 requestSigner,
                 DATE_HEADER to dateHeaderContent,
-                REQUEST_TARGET_HEADER to requestTarget
+                REAL_REQUEST_TARGET_HEADER to requestTarget,
+                ACCOUNT_HEADER to requestSigner.accountId
         )
 
         return chain.request().newBuilder()
                 .addHeader(ACCOUNT_HEADER, requestSigner.accountId)
                 .addHeader(AUTH_HEADER, authHeaderContent)
+                .addHeader(REAL_REQUEST_TARGET_HEADER, requestTarget)
                 .addHeader(DATE_HEADER, dateHeaderContent)
                 .build()
     }
@@ -80,8 +82,9 @@ internal open class SignInterceptor(
     companion object {
         const val REQUEST_TARGET_HEADER = "(request-target)"
         const val DATE_HEADER = "Date"
-        const val AUTH_HEADER = "Authorization"
+        const val AUTH_HEADER = "Signature"
         const val ACCOUNT_HEADER = "Account"
+        const val REAL_REQUEST_TARGET_HEADER = "Real-Request-Target"
         const val AUTH_ALGORITHM = "ed25519-sha256"
         @JvmStatic
         val SIGNATURE_STRING_CHARSET = Charsets.UTF_8
