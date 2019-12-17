@@ -9,19 +9,19 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface TfaService {
-    @GET("wallets/{walletId}/factors")
+    @GET("api/wallets/{walletId}/factors")
     fun getFactors(@Path("walletId") walletId: String?): Call<DataEntity<List<TfaFactor>>>
 
-    @POST("wallets/{walletId}/factors")
+    @POST("api/wallets/{walletId}/factors")
     @JvmSuppressWildcards
     fun createFactor(@Path("walletId") walletId: String?,
                      @Body data: DataEntity<CreateTfaRequestBody>): Call<DataEntity<JsonObject>>
 
-    @DELETE("wallets/{walletId}/factors/{id}")
+    @DELETE("api/wallets/{walletId}/factors/{id}")
     fun deleteFactor(@Path("walletId") walletId: String?,
                      @Path("id") factorId: Long?): Call<Void>
 
-    @PATCH("wallets/{walletId}/factors/{id}")
+    @PATCH("api/wallets/{walletId}/factors/{id}")
     @JvmSuppressWildcards
     fun updateFactor(@Path("walletId") walletId: String?,
                      @Path("id") factorId: Long?,
