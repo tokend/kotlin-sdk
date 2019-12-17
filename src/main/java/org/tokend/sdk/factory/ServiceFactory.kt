@@ -2,7 +2,7 @@ package org.tokend.sdk.factory
 
 import okhttp3.OkHttpClient
 import org.tokend.sdk.signing.RequestSigner
-import org.tokend.sdk.signing.SignInterceptor
+import org.tokend.sdk.signing.RequestSigningInterceptor
 import org.tokend.sdk.tfa.TfaCallback
 import org.tokend.sdk.tfa.TfaInterceptor
 import org.tokend.sdk.tfa.TfaVerificationService
@@ -51,7 +51,7 @@ class ServiceFactory(private val url: String,
                             if (requestSigner != null) {
                                 interceptors().add(
                                         0,
-                                        SignInterceptor(
+                                        RequestSigningInterceptor(
                                                 url,
                                                 requestSigner
                                         )
