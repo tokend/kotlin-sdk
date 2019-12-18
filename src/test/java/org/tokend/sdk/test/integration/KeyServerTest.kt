@@ -82,7 +82,7 @@ class KeyServerTest {
         val rootAccount = Account.random()
         val signerRole = api.ingester.keyValue
                 .getById(KeyServer.DEFAULT_SIGNER_ROLE_KEY_VALUE_KEY)
-                .map { it.value.u32!! }
+                .map { it.value.u64!! }
                 .execute()
                 .get()
 

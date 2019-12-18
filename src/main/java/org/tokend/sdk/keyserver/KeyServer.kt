@@ -587,7 +587,7 @@ class KeyServer constructor(
                         .execute()
                         .get()
                         .value
-                        .u32!!
+                        .u64!!
             } catch (e: Exception) {
                 throw IllegalStateException("Unable to obtain default role for signer " +
                         "by key $DEFAULT_SIGNER_ROLE_KEY_VALUE_KEY", e)
