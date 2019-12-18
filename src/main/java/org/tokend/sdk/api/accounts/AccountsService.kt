@@ -6,6 +6,6 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface AccountsService {
-    @POST("accounts")
+    @POST("api/accounts")
     fun createAccount(@Body body: CreateAccountRequestBody): Call<Void>
 }
