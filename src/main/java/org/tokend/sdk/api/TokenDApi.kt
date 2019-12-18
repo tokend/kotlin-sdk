@@ -13,8 +13,6 @@ import org.tokend.sdk.api.custom.CustomRequestsApi
 import org.tokend.sdk.api.custom.CustomRequestsService
 import org.tokend.sdk.api.documents.DocumentsApi
 import org.tokend.sdk.api.documents.DocumentsService
-import org.tokend.sdk.api.general.GeneralApi
-import org.tokend.sdk.api.general.GeneralService
 import org.tokend.sdk.api.identity.IdentitiesApi
 import org.tokend.sdk.api.identity.IdentitiesService
 import org.tokend.sdk.api.ingester.IngesterApi
@@ -78,10 +76,6 @@ constructor(
 
     open val tfa: TfaApi by lazy {
         TfaApi(getService(TfaService::class.java))
-    }
-
-    open val general: GeneralApi by lazy {
-        GeneralApi(getService(GeneralService::class.java))
     }
 
     open val assets: AssetsApi by lazy {

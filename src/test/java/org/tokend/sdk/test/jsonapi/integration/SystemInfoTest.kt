@@ -4,7 +4,6 @@ import org.junit.Assert
 import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runners.MethodSorters
-import org.tokend.sdk.api.general.model.SystemInfo
 import org.tokend.sdk.test.Util
 import org.tokend.wallet.Base32Check
 
@@ -19,7 +18,7 @@ class SystemInfoTest {
         val coreLedgerState = systemInfo.core
 
         if (coreLedgerState == null) {
-            Assert.fail("Ledger state '${SystemInfo.LEDGER_CORE}' is null")
+            Assert.fail("Core ledger state is null")
             return
         }
 

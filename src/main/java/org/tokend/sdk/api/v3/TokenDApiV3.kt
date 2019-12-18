@@ -1,14 +1,10 @@
 package org.tokend.sdk.api.v3
 
 import org.tokend.sdk.api.base.BaseApi
-import org.tokend.sdk.api.v3.accounts.AccountsApiV3
-import org.tokend.sdk.api.v3.accounts.AccountsServiceV3
 import org.tokend.sdk.api.v3.assetpairs.AssetPairsApi
 import org.tokend.sdk.api.v3.assetpairs.AssetPairsService
 import org.tokend.sdk.api.v3.atomicswap.AtomicSwapsApi
 import org.tokend.sdk.api.v3.atomicswap.AtomicSwapsService
-import org.tokend.sdk.api.v3.balances.BalancesApi
-import org.tokend.sdk.api.v3.balances.BalancesService
 import org.tokend.sdk.api.v3.fees.FeesApiV3
 import org.tokend.sdk.api.v3.fees.FeesServiceV3
 import org.tokend.sdk.api.v3.offers.OffersApiV3
@@ -35,16 +31,8 @@ open class TokenDApiV3(rootUrl: String,
         rootUrl, requestSigner, tfaCallback, cookieJarProvider,
         userAgent, withLogs
 ) {
-    open val accounts: AccountsApiV3 by lazy {
-        AccountsApiV3(getService(AccountsServiceV3::class.java))
-    }
-
     open val assetPairs: AssetPairsApi by lazy {
         AssetPairsApi(getService(AssetPairsService::class.java))
-    }
-
-    open val balances: BalancesApi by lazy {
-        BalancesApi(getService(BalancesService::class.java))
     }
 
     open val fees: FeesApiV3 by lazy {
