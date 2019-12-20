@@ -6,16 +6,16 @@ package org.tokend.sdk.api.base.params
 class PagingParamsV2
 @JvmOverloads
 constructor(
-        order: PagingOrder? = null,
-        limit: Int? = null,
-        page: String? = null
-) : PagingParams(order, limit, page) {
+        override val order: PagingOrder? = null,
+        override val limit: Int? = null,
+        private val page: String? = null
+) : QueryParams, PagingParamsHolder {
+    override val cursor: String?
+        get() = page
+
     override fun map(): Map<String, Any> {
-        return super.map()
-                .toMutableMap()
-                .apply {
+        return mutableMapOf<String, Any>().apply {
                     cursor?.also {
-                        put("page", it)
                         put(QUERY_PARAM_PAGE_NUMBER, it)
                         put(QUERY_PARAM_PAGE_CURSOR, it)
                     }

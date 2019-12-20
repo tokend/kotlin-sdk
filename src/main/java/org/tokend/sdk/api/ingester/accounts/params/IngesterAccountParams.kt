@@ -11,7 +11,7 @@ open class IngesterAccountParams(
 ) : JsonApiQueryParams(include) {
     companion object Includes {
         const val REFERRER = "referrer"
-        const val ROLE = "role"
+        const val ROLES = "roles"
         const val ROLE_RULES = "role.rules"
         const val KYC_DATA = "kyc_data"
         const val BALANCES = "balances"
