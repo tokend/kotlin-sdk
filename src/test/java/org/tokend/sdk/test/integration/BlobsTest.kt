@@ -5,6 +5,7 @@ import org.junit.Test
 import org.tokend.sdk.api.blobs.model.Blob
 import org.tokend.sdk.api.blobs.model.BlobType
 import org.tokend.sdk.keyserver.KeyServer
+import org.tokend.sdk.test.Config
 import org.tokend.sdk.test.Util
 import kotlin.math.absoluteValue
 import kotlin.random.Random
@@ -35,7 +36,7 @@ class BlobsTest {
                 .blobs
                 .create(
                         ownerAccountId = currentWalletInfo.accountId,
-                        blob = Blob(BlobType.ALPHA, content)
+                        blob = Blob(BlobType.KYC_FORM, content)
                 )
                 .execute()
                 .get()
