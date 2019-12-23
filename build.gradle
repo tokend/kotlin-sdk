@@ -33,7 +33,7 @@ dependencies {
 
     compile 'org.tokend:crypto-cipher:1.0.2'
     compile 'org.tokend:crypto-kdf:1.0.4'
-    compile 'org.tokend:wallet:4.0.0-x.3'
+    compile 'org.tokend:wallet:4.0.0-x.4'
 }
 repositories {
     mavenCentral()
