@@ -156,7 +156,7 @@ class IdentityTest {
         val api = Util.getApi()
 
         val createdAccountId = api.identities.create(email).execute().get().address
-        val horizonAccountId = api.v3.accounts.getById(createdAccountId).execute().get().id
+        val horizonAccountId = api.ingester.accounts.getById(createdAccountId).execute().get().id
 
         Assert.assertEquals(createdAccountId, horizonAccountId)
     }
