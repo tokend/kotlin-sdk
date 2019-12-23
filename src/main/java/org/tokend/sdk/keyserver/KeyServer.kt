@@ -374,7 +374,8 @@ class KeyServer constructor(
     }
 
     companion object {
-        const val RECOVERY_SIGNER_ROLE_ID = 1L
+        // TODO: Figure out what to do with seed recovery
+        const val RECOVERY_SIGNER_ROLE_ID = -1L
         const val DEFAULT_SIGNER_ROLE_KEY_VALUE_KEY = "signer_role:default"
 
         /**
