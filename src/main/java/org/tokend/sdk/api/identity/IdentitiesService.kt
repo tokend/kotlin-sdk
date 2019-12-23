@@ -16,6 +16,10 @@ interface IdentitiesService {
     @JvmSuppressWildcards
     fun get(@QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<IdentityResource>>>
 
+    @POST("identities")
+    @JvmSuppressWildcards
+    fun create(@Body body: DataEntity<AttributesEntity<Any>>): Call<JSONAPIDocument<IdentityResource>>
+
     @POST("identities/mass-emails")
     @JvmSuppressWildcards
     fun getByAccountIds(@Body body: DataEntity<List<MassEmailAccountKey>>):

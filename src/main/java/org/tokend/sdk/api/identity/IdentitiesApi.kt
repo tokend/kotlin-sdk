@@ -9,12 +9,8 @@ import org.tokend.sdk.api.base.model.DataEntity
 import org.tokend.sdk.api.base.model.DataPage
 import org.tokend.sdk.api.base.params.PagingParamsV2
 import org.tokend.sdk.api.base.params.map
-import org.tokend.sdk.api.identity.model.IdentityResource
-import org.tokend.sdk.api.identity.model.MassEmailAccountKey
-import org.tokend.sdk.api.identity.model.SetPhoneRequestAttributes
-import org.tokend.sdk.api.identity.model.SetTelegramRequestAttributes
+import org.tokend.sdk.api.identity.model.*
 import org.tokend.sdk.api.identity.params.IdentitiesPageParams
-import org.tokend.sdk.api.identity.model.IdentitySettingsResource
 
 open class IdentitiesApi(
         protected open val identitesService: IdentitiesService
@@ -27,6 +23,18 @@ open class IdentitiesApi(
         return MappedRetrofitApiRequest(
                 identitesService.get(params.map()),
                 DataPage.Companion::fromPageDocument
+        )
+    }
+
+    /**
+     * Creates account for given email
+     */
+    open fun create(email: String): ApiRequest<IdentityResource> {
+        return MappedRetrofitApiRequest(
+                identitesService.create(DataEntity(AttributesEntity(mapOf(
+                        "email" to email
+                )))),
+                JSONAPIDocument<IdentityResource>::get
         )
     }
 
