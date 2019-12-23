@@ -37,4 +37,11 @@ public class CreateReviewableRequestOpResource extends BaseOperationDetailsResou
     public List<? extends BaseOperationDetailsResource> getOperations() {
         return operations;
     }
+    
+    @Relationship("request")
+    private ReviewableRequestResource request;
+    
+    public ReviewableRequestResource getRequest() {
+        return request;
+    }
 }

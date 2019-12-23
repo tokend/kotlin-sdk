@@ -86,4 +86,11 @@ public class ReviewRequestOpResource extends BaseOperationDetailsResource {
             && super.isFilled()
         ;
     }
+    
+    @Relationship("request")
+    private ReviewableRequestResource request;
+    
+    public ReviewableRequestResource getRequest() {
+        return request;
+    }
 }

@@ -31,6 +31,13 @@ public class ReviewableRequestResource extends BaseResource {
         return createdAt;
     }
     
+    @JsonProperty("creator_details")
+    private JsonNode creatorDetails;
+    
+    public JsonNode getCreatorDetails() {
+        return creatorDetails;
+    }
+    
     @JsonProperty("external_details")
     private JsonNode externalDetails;
     
@@ -66,18 +73,18 @@ public class ReviewableRequestResource extends BaseResource {
         return securityType;
     }
     
-    @JsonProperty("state")
-    private String state;
+    @JsonProperty("sequence_number")
+    private Long sequenceNumber;
     
-    public String getState() {
-        return state;
+    public Long getSequenceNumber() {
+        return sequenceNumber;
     }
     
-    @JsonProperty("state_i")
-    private Integer stateI;
+    @JsonProperty("state")
+    private org.tokend.sdk.api.ingester.generated.inner.Enum state;
     
-    public Integer getStateI() {
-        return stateI;
+    public org.tokend.sdk.api.ingester.generated.inner.Enum getState() {
+        return state;
     }
     
     @JsonProperty("updated_at")
@@ -91,22 +98,23 @@ public class ReviewableRequestResource extends BaseResource {
     public boolean isFilled() {
         return             allTasks != null &&
             createdAt != null &&
+            creatorDetails != null &&
             externalDetails != null &&
             hash != null &&
             pendingTasks != null &&
             rejectReason != null &&
             securityType != null &&
+            sequenceNumber != null &&
             state != null &&
-            stateI != null &&
             updatedAt != null 
         ;
     }
     
-    @Relationship("request_details")
-    private ReviewableRequestDetailsResource requestDetails;
+    @Relationship("operations")
+    private List<BaseResource> operations;
     
-    public ReviewableRequestDetailsResource getRequestDetails() {
-        return requestDetails;
+    public List<? extends BaseResource> getOperations() {
+        return operations;
     }
     
     @Relationship("requestor")

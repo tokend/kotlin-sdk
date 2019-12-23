@@ -31,10 +31,18 @@ public class EffectBalanceChangeResource extends BaseEffectResource {
         return fee;
     }
     
+    @JsonProperty("modifier")
+    private Long modifier;
+    
+    public Long getModifier() {
+        return modifier;
+    }
+    
     @Override
     public boolean isFilled() {
         return             amount != null &&
-            fee != null 
+            fee != null &&
+            modifier != null 
             && super.isFilled()
         ;
     }

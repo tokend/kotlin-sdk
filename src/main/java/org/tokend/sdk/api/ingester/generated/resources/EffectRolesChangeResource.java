@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
 
 
-@Type("effects-roles-changed")
+@Type("base-effect-roles-change")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class EffectRolesChangeResource extends BaseEffectResource {
     
@@ -31,6 +31,13 @@ public class EffectRolesChangeResource extends BaseEffectResource {
         return details;
     }
     
+    @JsonProperty("modifier")
+    private Long modifier;
+    
+    public Long getModifier() {
+        return modifier;
+    }
+    
     @JsonProperty("removed_roles")
     private List<Long> removedRoles;
     
@@ -42,6 +49,7 @@ public class EffectRolesChangeResource extends BaseEffectResource {
     public boolean isFilled() {
         return             addedRoles != null &&
             details != null &&
+            modifier != null &&
             removedRoles != null 
             && super.isFilled()
         ;

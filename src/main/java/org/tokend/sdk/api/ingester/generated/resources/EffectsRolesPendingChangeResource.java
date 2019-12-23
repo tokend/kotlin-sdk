@@ -13,9 +13,9 @@ import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
 
 
-@Type("effects-withdrawn")
+@Type("effects-roles-pending-change")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class EffectsWithdrawnResource extends EffectBalanceChangeResource {
+public class EffectsRolesPendingChangeResource extends EffectRolesChangeResource {
     @Override
     public boolean isFilled() { return super.isFilled(); }
 }
