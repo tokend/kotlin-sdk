@@ -3,11 +3,7 @@ package org.tokend.sdk.api.identity
 import com.github.jasminb.jsonapi.JSONAPIDocument
 import org.tokend.sdk.api.base.model.AttributesEntity
 import org.tokend.sdk.api.base.model.DataEntity
-import org.tokend.sdk.api.identity.model.IdentityResource
-import org.tokend.sdk.api.identity.model.MassEmailAccountKey
-import org.tokend.sdk.api.identity.model.SetPhoneRequestAttributes
-import org.tokend.sdk.api.identity.model.SetTelegramRequestAttributes
-import org.tokend.sdk.api.identity.model.IdentitySettingsResource
+import org.tokend.sdk.api.identity.model.*
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -16,7 +12,11 @@ interface IdentitiesService {
     @JvmSuppressWildcards
     fun get(@QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<IdentityResource>>>
 
-    @POST("api/identities/mass-emails")
+    @POST("identities")
+    @JvmSuppressWildcards
+    fun create(@Body body: DataEntity<AttributesEntity<Any>>): Call<JSONAPIDocument<IdentityResource>>
+
+    @POST("identities/mass-emails")
     @JvmSuppressWildcards
     fun getByAccountIds(@Body body: DataEntity<List<MassEmailAccountKey>>):
             Call<JSONAPIDocument<List<IdentityResource>>>
