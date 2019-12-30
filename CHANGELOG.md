@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## Unreleased
+
+### Added
+- New Horizon (Ingester) APIs
+
+### Changed
+- `RequestSigner` now requires original account ID (not signer public key).
+This affected `AccountRequestSigner`
+
+### Removed
+- V1 Legacy Horizon APIs and models
+- V3 Horizon APIs and models
+- `PagingParams`
+
 ## [3.3.2] 2019-12-03
 
 ### Added
