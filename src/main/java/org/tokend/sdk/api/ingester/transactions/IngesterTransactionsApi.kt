@@ -1,6 +1,7 @@
 package org.tokend.sdk.api.ingester.transactions
 
 import com.github.jasminb.jsonapi.JSONAPIDocument
+import com.google.gson.JsonElement
 import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.base.model.DataPage
@@ -8,10 +9,10 @@ import org.tokend.sdk.api.base.model.ErrorBody
 import org.tokend.sdk.api.base.params.map
 import org.tokend.sdk.api.custom.CustomRequestsApi
 import org.tokend.sdk.api.ingester.generated.resources.TransactionResource
+import org.tokend.sdk.api.ingester.transactions.model.SubmitTransactionRequestBody
 import org.tokend.sdk.api.ingester.transactions.model.TransactionFailedException
 import org.tokend.sdk.api.v3.base.JsonApiQueryParams
 import org.tokend.sdk.api.v3.base.PageQueryParams
-import org.tokend.sdk.api.ingester.transactions.model.SubmitTransactionRequestBody
 import org.tokend.sdk.factory.GsonFactory
 import org.tokend.sdk.utils.extentions.isBadRequest
 import org.tokend.wallet.Transaction
@@ -92,10 +93,12 @@ open class IngesterTransactionsApi(
                     ?: return null
 
             val message = resultCodes["messages"]
-                    ?.takeIf { it.isJsonArray }
+                    ?.takeIf(JsonElement::isJsonArray)
                     ?.asJsonArray
-                    ?.mapNotNull { it.asString }
+                    ?.mapNotNull(JsonElement::getAsString)
                     ?.joinToString()
+                    ?.takeIf(String::isNotEmpty)
+                    ?: "Tx is invalid and got rejected"
 
             return TransactionFailedException(transactionResult, operationResultCodes, message)
         } catch (e: Exception) {

@@ -10,6 +10,6 @@ open class IngesterRequestParams(
         include: Collection<String>? = null
 ) : JsonApiQueryParams(include) {
     companion object Includes {
-        const val REQUEST_DETAILS = "request_details"
+        const val OPERATIONS = "operations"
     }
 }
