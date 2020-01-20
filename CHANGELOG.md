@@ -14,7 +14,7 @@ for further information about branching and tagging conventions.
 - Identity creation endpoint (`IdentitiesApi.create`)
 
 ### Changed
-- Updated wallet module version to `3.6.0`
+- Updated wallet module version to `3.6.3`
 - Actualized booking integration API
 
 ## [3.3.2] 2019-12-03
