@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [3.3.3] 2020-01-20
+
+### Added
+- Result meta XDR attribute to `SubmitTransactionResponse`
+- Identity creation endpoint (`IdentitiesApi.create`)
+
+### Changed
+- Updated wallet module version to `3.6.0`
+- Actualized booking integration API
+
 ## [3.3.2] 2019-12-03
 
 ### Added
