@@ -32,9 +32,9 @@ public class AtomicSwapAskResource extends BaseResource {
     }
     
     @JsonProperty("details")
-    private String details;
+    private JsonNode details;
     
-    public String getDetails() {
+    public JsonNode getDetails() {
         return details;
     }
     
