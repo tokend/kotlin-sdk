@@ -19,6 +19,7 @@ open class AccountParamsV3(
             const val EXTERNAL_SYSTEM_IDS = "external_system_ids"
             const val ROLE = "role"
             const val ROLE_RULES = "role.rules"
+            const val KYC_DATA = "kyc_data"
         }
     }
 }
