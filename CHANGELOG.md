@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [3.3.4] 2020-03-19
+
+### Added
+- `CANCELLED` poll state
+- `KYC_DATA` include for account endpoint
+
+### Changed
+- Actualized generated resources
+- Updated Kotlin version to `1.3.31`
+
 ## [3.3.3] 2020-01-20
 
 ### Added
@@ -287,4 +297,6 @@ with `addExtraResources` method
 [3.3.0]: https://github.com/tokend/kotlin-sdk/compare/3.2.0...3.3.0
 [3.3.1]: https://github.com/tokend/kotlin-sdk/compare/3.3.0...3.3.1
 [3.3.2]: https://github.com/tokend/kotlin-sdk/compare/3.3.1...3.3.2
-[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/3.3.2...HEAD
+[3.3.3]: https://github.com/tokend/kotlin-sdk/compare/3.3.2...3.3.3
+[3.3.4]: https://github.com/tokend/kotlin-sdk/compare/3.3.3...3.3.4
+[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/3.3.4...HEAD
