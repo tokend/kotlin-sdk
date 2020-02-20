@@ -13,7 +13,7 @@ import kotlin.random.Random
 class DocumentsTest {
     @Test
     fun aUploadDocument() {
-        var email = "documentUploadTest" + Random.nextInt().absoluteValue + "@mail.com"
+        val email = "documentUploadTest" + Random.nextInt().absoluteValue + "@mail.com"
         val password = "qwe123".toCharArray()
 
         val api = Util.getApi()
@@ -24,9 +24,6 @@ class DocumentsTest {
 
         val (wallet, rootAccount)
                 = keyServer.createAndSaveWallet(email, password, api.v3.keyValue).execute().get()
-        email = wallet.attributes.email
-
-        val currentWalletInfo = keyServer.getWalletInfo(email, password).execute().get()
 
         val signedApi = Util.getSignedApi(rootAccount, api.rootUrl)
 
@@ -36,14 +33,14 @@ class DocumentsTest {
         val uploadPolicy = signedApi
                 .documents
                 .requestUpload(
-                        accountId = currentWalletInfo.accountId,
+                        accountId = wallet.attributes.accountId,
                         documentType = DocumentType.GENERAL_PRIVATE,
                         contentType = contentType
                 )
                 .execute()
                 .get()
 
-        signedApi
+        api
                 .documents
                 .upload(
                         policy = uploadPolicy,
