@@ -173,6 +173,7 @@ constructor(
         private var cookieJarProvider: CookieJarProvider? = null
         private var userAgent: String? = null
         private var withLogs: Boolean = true
+        protected var asyncCallbackExecutor: Executor = DEFAULT_ASYNC_CALLBACK_EXECUTOR
 
         /**
          * Required to perform requests with signature check.
@@ -216,13 +217,25 @@ constructor(
             return this
         }
 
+        /**
+         * [Executor] that performs [ApiRequest.executeAsync] callback.
+         * By default it is [DEFAULT_ASYNC_CALLBACK_EXECUTOR], you may
+         * want to use Android main thread executor for this.
+         */
+        fun setAsyncCallbackExecutor(asyncCallbackExecutor: Executor): Builder {
+            this.asyncCallbackExecutor = asyncCallbackExecutor
+            return this
+        }
+
         fun build() = TokenDApi(
                 rootUrl,
                 requestSigner,
                 tfaCallback,
                 cookieJarProvider,
                 userAgent,
-                withLogs)
+                withLogs,
+                asyncCallbackExecutor
+        )
     }
 
 }
