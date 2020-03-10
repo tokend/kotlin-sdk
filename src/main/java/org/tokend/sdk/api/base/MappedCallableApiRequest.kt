@@ -94,4 +94,12 @@ open class MappedCallableApiRequest<CallType, ResultType>(
         else
             responseMapper(response)
     }
+
+    override fun clone(): MappedCallableApiRequest<CallType, ResultType> {
+        return MappedCallableApiRequest(
+                callable,
+                responseMapper,
+                errorMapper
+        )
+    }
 }

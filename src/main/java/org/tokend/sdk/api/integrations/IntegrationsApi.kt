@@ -18,6 +18,7 @@ import org.tokend.sdk.api.integrations.paymentproxy.PaymentProxyService
 import org.tokend.sdk.signing.RequestSigner
 import org.tokend.sdk.tfa.TfaCallback
 import org.tokend.sdk.utils.CookieJarProvider
+import java.util.concurrent.Executor
 
 open class IntegrationsApi(
         rootUrl: String,
@@ -25,10 +26,11 @@ open class IntegrationsApi(
         tfaCallback: TfaCallback?,
         cookieJarProvider: CookieJarProvider?,
         userAgent: String?,
-        withLogs: Boolean
+        withLogs: Boolean,
+        asyncCallbackExecutor: Executor
 ) : BaseApi(
         rootUrl, requestSigner, tfaCallback, cookieJarProvider,
-        userAgent, withLogs
+        userAgent, asyncCallbackExecutor, withLogs
 ) {
     open val dns: DnsApi by lazy {
         DnsApi(getService(DnsService::class.java))

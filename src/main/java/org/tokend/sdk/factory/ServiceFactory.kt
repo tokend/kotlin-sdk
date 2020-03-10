@@ -9,13 +9,17 @@ import org.tokend.sdk.tfa.TfaVerificationService
 import org.tokend.sdk.utils.CookieJarProvider
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import java.util.concurrent.Executor
 
 /**
  * Constructs API services from Retrofit interfaces.
  */
 class ServiceFactory(private val url: String,
-                     private val userAgent: String? = null,
-                     private val withLogs: Boolean) {
+                     private val withLogs: Boolean,
+                     private val asyncCallbackExecutor: Executor,
+                     private val userAgent: String? = null
+
+) {
     fun getTfaVerificationService(): TfaVerificationService {
         return getCustomService(TfaVerificationService::class.java,
                 HttpClientFactory().getBaseHttpClientBuilder(
@@ -83,6 +87,7 @@ class ServiceFactory(private val url: String,
                 .addConverterFactory(GsonFactory().getBaseGsonConverterFactory())
                 .baseUrl(url)
                 .client(httpClient)
+                .callbackExecutor(asyncCallbackExecutor)
     }
 
     private fun getDefaultHeaders(userAgent: String?): Map<String, String?> {

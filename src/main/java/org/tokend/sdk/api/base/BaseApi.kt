@@ -4,6 +4,8 @@ import org.tokend.sdk.factory.ServiceFactory
 import org.tokend.sdk.signing.RequestSigner
 import org.tokend.sdk.tfa.TfaCallback
 import org.tokend.sdk.utils.CookieJarProvider
+import java.util.concurrent.Executor
+import java.util.concurrent.Executors
 
 /**
  * Represent a base TokenD API.
@@ -14,10 +16,12 @@ abstract class BaseApi
         protected val requestSigner: RequestSigner? = null,
         protected val tfaCallback: TfaCallback? = null,
         protected val cookieJarProvider: CookieJarProvider? = null,
-        protected val userAgent: String? = null,
-        protected val withLogs: Boolean
+        userAgent: String? = null,
+        asyncCallbackExecutor: Executor = DEFAULT_ASYNC_CALLBACK_EXECUTOR,
+        withLogs: Boolean
 ) {
-    protected val serviceFactory = ServiceFactory(rootUrl, userAgent, withLogs)
+    protected val serviceFactory = ServiceFactory(rootUrl, withLogs,
+            asyncCallbackExecutor, userAgent)
 
     open val isSigned: Boolean
         get() = requestSigner != null
@@ -32,5 +36,12 @@ abstract class BaseApi
                 tfaCallback,
                 cookieJarProvider
         )
+    }
+
+    companion object {
+        const val ASYNC_CALLBACK_EXECUTION_THREAD_NAME = "AsyncCallbackExecutionThread"
+        val DEFAULT_ASYNC_CALLBACK_EXECUTOR: Executor = Executors.newCachedThreadPool {
+            Thread(it).apply { name = ASYNC_CALLBACK_EXECUTION_THREAD_NAME }
+        }
     }
 }

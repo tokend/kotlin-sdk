@@ -106,4 +106,12 @@ open class MappedRetrofitApiRequest<CallType, ResponseType>(
 
         return MappedRetrofitApiRequest(call, newMapper, errorMapper)
     }
+
+    override fun clone(): MappedRetrofitApiRequest<CallType, ResponseType> {
+        return MappedRetrofitApiRequest(
+                call.clone(),
+                responseMapper,
+                errorMapper
+        )
+    }
 }

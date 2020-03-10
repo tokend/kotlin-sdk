@@ -48,4 +48,6 @@ interface ApiRequest<T> {
      * @param mapper transformation function, will be invoked on execution
      */
     fun <R> map(mapper: (T) -> R): ApiRequest<R>
+
+    fun clone(): ApiRequest<T>
 }

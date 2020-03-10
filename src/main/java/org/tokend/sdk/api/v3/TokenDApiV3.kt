@@ -36,16 +36,18 @@ import org.tokend.sdk.api.v3.transactions.TransactionsServiceV3
 import org.tokend.sdk.signing.RequestSigner
 import org.tokend.sdk.tfa.TfaCallback
 import org.tokend.sdk.utils.CookieJarProvider
+import java.util.concurrent.Executor
 
 open class TokenDApiV3(rootUrl: String,
                        requestSigner: RequestSigner?,
                        tfaCallback: TfaCallback?,
                        cookieJarProvider: CookieJarProvider?,
                        userAgent: String?,
-                       withLogs: Boolean
+                       withLogs: Boolean,
+                       asyncCallbackExecutor: Executor
 ) : BaseApi(
         rootUrl, requestSigner, tfaCallback, cookieJarProvider,
-        userAgent, withLogs
+        userAgent, asyncCallbackExecutor, withLogs
 ) {
     open val accounts: AccountsApiV3 by lazy {
         AccountsApiV3(getService(AccountsServiceV3::class.java))

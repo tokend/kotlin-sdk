@@ -6,6 +6,7 @@ import org.tokend.sdk.api.assets.AssetsApi
 import org.tokend.sdk.api.assets.AssetsService
 import org.tokend.sdk.api.authenticator.AuthResultsApi
 import org.tokend.sdk.api.authenticator.AuthResultsService
+import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.BaseApi
 import org.tokend.sdk.api.blobs.BlobsApi
 import org.tokend.sdk.api.blobs.BlobsService
@@ -39,6 +40,7 @@ import org.tokend.sdk.signing.AccountRequestSigner
 import org.tokend.sdk.signing.RequestSigner
 import org.tokend.sdk.tfa.TfaCallback
 import org.tokend.sdk.utils.CookieJarProvider
+import java.util.concurrent.Executor
 
 open class TokenDApi
 /**
@@ -51,6 +53,9 @@ open class TokenDApi
  * @param cookieJarProvider if set will be used to store cookies
  * @param userAgent overrides default user agent
  * @param withLogs enable/disable HTTP Logs. True by default.
+ * @param asyncCallbackExecutor [Executor] that performs [ApiRequest.executeAsync] callback.
+ * By default it is [DEFAULT_ASYNC_CALLBACK_EXECUTOR], you may
+ * want to use Android main thread executor for this.
  *
  * @see [AccountRequestSigner]
  */
@@ -61,18 +66,21 @@ constructor(
         tfaCallback: TfaCallback? = null,
         cookieJarProvider: CookieJarProvider? = null,
         userAgent: String? = null,
-        withLogs: Boolean = true
-) : BaseApi(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent, withLogs) {
+        withLogs: Boolean = true,
+        asyncCallbackExecutor: Executor = DEFAULT_ASYNC_CALLBACK_EXECUTOR
+) : BaseApi(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent,
+        asyncCallbackExecutor, withLogs) {
     open val v3: TokenDApiV3 by lazy {
-        TokenDApiV3(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent, withLogs)
+        TokenDApiV3(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent, withLogs,
+                asyncCallbackExecutor)
     }
 
     /**
-     * 🚨 Experimental unpredictable mysterious APIs.
-     * Do not try to understand, do not try to use
+     * 🚨 Integration modules APIs. Backward compatibility is not guaranteed.
      */
     open val integrations: IntegrationsApi by lazy {
-        IntegrationsApi(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent, withLogs)
+        IntegrationsApi(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent, withLogs,
+                asyncCallbackExecutor)
     }
 
     open val accounts: AccountsApi by lazy {
