@@ -1,5 +1,6 @@
 package org.tokend.sdk.api
 
+import com.google.gson.Gson
 import org.tokend.sdk.api.accounts.AccountsApi
 import org.tokend.sdk.api.accounts.AccountsService
 import org.tokend.sdk.api.assets.AssetsApi
@@ -8,6 +9,7 @@ import org.tokend.sdk.api.authenticator.AuthResultsApi
 import org.tokend.sdk.api.authenticator.AuthResultsService
 import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.BaseApi
+import org.tokend.sdk.api.base.model.BaseResource
 import org.tokend.sdk.api.blobs.BlobsApi
 import org.tokend.sdk.api.blobs.BlobsService
 import org.tokend.sdk.api.custom.CustomRequestsApi
@@ -36,6 +38,7 @@ import org.tokend.sdk.api.transactions.TransactionsService
 import org.tokend.sdk.api.v3.TokenDApiV3
 import org.tokend.sdk.api.wallets.WalletsApi
 import org.tokend.sdk.api.wallets.WalletsService
+import org.tokend.sdk.factory.JsonApiToolsProvider
 import org.tokend.sdk.signing.AccountRequestSigner
 import org.tokend.sdk.signing.RequestSigner
 import org.tokend.sdk.tfa.TfaCallback
@@ -148,6 +151,14 @@ constructor(
         IdentitiesApi(getService(IdentitiesService::class.java))
     }
 
+    /**
+     * Allows to make custom HTTP requests with response body mapping.
+     *
+     * If response class extends [BaseResource], then [JsonApiToolsProvider] will be used for mapping.
+     * If response class is [String] or [ByteArray] or primitive Java byte array,
+     * then no mapping will be performed.
+     * Otherwise [Gson] will be used for mapping.
+     */
     open val customRequests: CustomRequestsApi by lazy {
         CustomRequestsApi(getService(CustomRequestsService::class.java))
     }

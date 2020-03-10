@@ -15,6 +15,14 @@ import retrofit2.Call
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
+/**
+ * Allows to make custom HTTP requests with response body mapping.
+ *
+ * If response class extends [BaseResource], then [JsonApiToolsProvider] will be used for mapping.
+ * If response class is [String] or [ByteArray] or primitive Java byte array,
+ * then no mapping will be performed.
+ * Otherwise [Gson] will be used for mapping.
+ */
 open class CustomRequestsApi(
         protected open val customRequestsService: CustomRequestsService
 ) {
@@ -98,7 +106,7 @@ open class CustomRequestsApi(
 
     // region POST
     protected open fun doPost(url: String, body: Any?, queryMap: Map<String, Any>?,
-                       headersMap: Map<String, Any>?): Call<ResponseBody> =
+                              headersMap: Map<String, Any>?): Call<ResponseBody> =
             customRequestsService.post(
                     url = url,
                     body = body,
@@ -157,7 +165,7 @@ open class CustomRequestsApi(
 
     // region PUT
     protected open fun doPut(url: String, body: Any?, queryMap: Map<String, Any>?,
-                      headersMap: Map<String, Any>?): Call<ResponseBody> =
+                             headersMap: Map<String, Any>?): Call<ResponseBody> =
             customRequestsService.put(
                     url = url,
                     body = body,
@@ -216,7 +224,7 @@ open class CustomRequestsApi(
 
     // region PATCH
     protected open fun doPatch(url: String, body: Any?, queryMap: Map<String, Any>?,
-                        headersMap: Map<String, Any>?): Call<ResponseBody> =
+                               headersMap: Map<String, Any>?): Call<ResponseBody> =
             customRequestsService.patch(
                     url = url,
                     body = body,
@@ -327,24 +335,30 @@ open class CustomRequestsApi(
     // endregion
 
     protected open fun <T> mapResponseByClass(responseBody: ResponseBody,
-                                       responseClass: Class<out T>): T {
-        return if (BaseResource::class.java.isAssignableFrom(responseClass)) {
-            jsonApiResourceConverter.readDocument(
-                    responseBody.byteStream(),
-                    responseClass
-            ).get()
-        } else {
-            gson.fromJson<T>(responseBody.charStream(), responseClass)
+                                              responseClass: Class<out T>): T {
+        return when {
+            BaseResource::class.java.isAssignableFrom(responseClass) ->
+                jsonApiResourceConverter.readDocument(
+                        responseBody.byteStream(),
+                        responseClass
+                ).get()
+            responseClass.name == "java.lang.String" ->
+                responseBody.string() as T
+            responseClass.name == "[B" ->
+                responseBody.bytes() as T
+            else ->
+                gson.fromJson<T>(responseBody.charStream(), responseClass)
+
         }
     }
 
     protected open fun <T> mapResponseByType(responseBody: ResponseBody,
-                                      responseType: Type): T {
+                                             responseType: Type): T {
         return gson.fromJson<T>(responseBody.charStream(), responseType)
     }
 
-    protected open  fun <T> mapPageResponseByClass(responseBody: ResponseBody,
-                                           pageItemClass: Class<out T>): DataPage<T> {
+    protected open fun <T> mapPageResponseByClass(responseBody: ResponseBody,
+                                                  pageItemClass: Class<out T>): DataPage<T> {
         return if (BaseResource::class.java.isAssignableFrom(pageItemClass)) {
             val document = jsonApiResourceConverter.readDocumentCollection(
                     responseBody.byteStream(),

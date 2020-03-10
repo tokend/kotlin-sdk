@@ -402,4 +402,24 @@ class CustomRequestsTest {
         Assert.assertEquals(defaultHeadersString, lastRequestHeadersString)
         Assert.assertFalse(response.hasValue())
     }
+
+    @Test
+    fun getString() {
+        val response = getApi()
+                .get("/dummy", String::class.java)
+                .execute()
+                .get()
+
+        Assert.assertTrue(response.isNotEmpty())
+    }
+
+    @Test
+    fun getByteArray() {
+        val response = getApi()
+                .get("/dummy", ByteArray::class.java)
+                .execute()
+                .get()
+
+        Assert.assertTrue(response.isNotEmpty())
+    }
 }
