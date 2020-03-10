@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+
+### Added
+- Ability to clone `ApiRequest`
+- Ability to specify executor for `ApiCallback` in `BaseApi` and so 
+in `TokenDApi`
+- Ability to get custom request response as a `String` or `ByteArray`
+
 ## [3.3.4] 2020-03-19
 
 ### Added
