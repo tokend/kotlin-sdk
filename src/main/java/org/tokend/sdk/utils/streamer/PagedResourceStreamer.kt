@@ -10,7 +10,7 @@ import java.util.concurrent.Future
 /***
  * Allow to stream new items of a paged resource.
  *
- * Note that streaming only works if items are in chronological order
+ * Note that streaming only makes sense if items are in chronological order
  */
 abstract class PagedResourceStreamer<T> {
     protected open val streamingExecutor: ExecutorService =
@@ -56,7 +56,7 @@ abstract class PagedResourceStreamer<T> {
     }
 
     protected open fun enqueueNextPageProcessing(withRetryDelay: Boolean = false) {
-        streamingExecutor.submit {
+        val future = streamingExecutor.submit {
             if (currentPageIsLast && !withRetryDelay) {
                 Thread.sleep(pollIntervalMs)
             } else if (withRetryDelay) {
@@ -96,10 +96,9 @@ abstract class PagedResourceStreamer<T> {
 
             enqueueNextPageProcessing()
         }
-                .also { future ->
-                    enqueuedFutures.push(future)
-                    cleanUpFuturesList()
-                }
+
+        enqueuedFutures.push(future)
+        cleanUpFuturesList()
     }
 
     protected open fun cleanUpFuturesList() {
