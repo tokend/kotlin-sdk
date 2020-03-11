@@ -6,6 +6,7 @@ import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
+import java.util.concurrent.atomic.AtomicBoolean
 
 /***
  * Allow to stream new items of a paged resource.
@@ -23,13 +24,22 @@ abstract class PagedResourceStreamer<T> {
     protected open val pollIntervalMs: Long = DEFAULT_POLL_INTERVAL_MS
     protected open val retryTimeoutMs: Long = DEFAULT_RETRY_TIMEOUT_MS
 
-    var isStreaming: Boolean = false
-        private set
+    protected val atomicIsStreaming = AtomicBoolean()
+
+    var isStreaming: Boolean
+        get() = atomicIsStreaming.get()
+        private set(value) {
+            atomicIsStreaming.set(value)
+        }
 
     /**
      * Starts streaming from the very first page
      */
     fun startStreaming() {
+        if (isStreaming) {
+            return
+        }
+
         nextCursor = null
         currentPageIsLast = false
         isStreaming = true
@@ -40,6 +50,10 @@ abstract class PagedResourceStreamer<T> {
      * Resumes streaming from the page on which it was stopped
      */
     fun resumeStreaming() {
+        if (isStreaming) {
+            return
+        }
+
         currentPageIsLast = false
         isStreaming = true
         enqueueNextPageProcessing()
@@ -88,13 +102,13 @@ abstract class PagedResourceStreamer<T> {
 
             currentPageIsLast = page.isLast
 
-            if (page.items.isNotEmpty()) {
-                if (isStreaming) {
+            if (isStreaming) {
+                if (page.items.isNotEmpty()) {
                     onNewItems(page.items)
                 }
-            }
 
-            enqueueNextPageProcessing()
+                enqueueNextPageProcessing()
+            }
         }
 
         enqueuedFutures.push(future)
