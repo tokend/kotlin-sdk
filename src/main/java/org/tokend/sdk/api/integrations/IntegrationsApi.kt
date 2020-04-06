@@ -1,6 +1,8 @@
 package org.tokend.sdk.api.integrations
 
 import org.tokend.sdk.api.base.BaseApi
+import org.tokend.sdk.api.custom.CustomRequestsApi
+import org.tokend.sdk.api.custom.CustomRequestsService
 import org.tokend.sdk.api.integrations.booking.BookingApi
 import org.tokend.sdk.api.integrations.booking.BookingService
 import org.tokend.sdk.api.integrations.dns.DnsApi
@@ -15,6 +17,7 @@ import org.tokend.sdk.api.integrations.marketplace.MarketplaceApi
 import org.tokend.sdk.api.integrations.marketplace.MarketplaceService
 import org.tokend.sdk.api.integrations.paymentproxy.PaymentProxyApi
 import org.tokend.sdk.api.integrations.paymentproxy.PaymentProxyService
+import org.tokend.sdk.api.integrations.recpayments.RecurringPaymentsApi
 import org.tokend.sdk.signing.RequestSigner
 import org.tokend.sdk.tfa.TfaCallback
 import org.tokend.sdk.utils.CookieJarProvider
@@ -32,6 +35,10 @@ open class IntegrationsApi(
         rootUrl, requestSigner, tfaCallback, cookieJarProvider,
         userAgent, asyncCallbackExecutor, withLogs
 ) {
+    protected open val customRequests: CustomRequestsApi by lazy {
+        CustomRequestsApi(getService(CustomRequestsService::class.java))
+    }
+
     open val dns: DnsApi by lazy {
         DnsApi(getService(DnsService::class.java))
     }
@@ -58,5 +65,9 @@ open class IntegrationsApi(
 
     open val escrow: EscrowApi by lazy {
         EscrowApi(getService(EscrowService::class.java))
+    }
+
+    open val recurringPayments: RecurringPaymentsApi by lazy {
+        RecurringPaymentsApi(customRequests)
     }
 }
