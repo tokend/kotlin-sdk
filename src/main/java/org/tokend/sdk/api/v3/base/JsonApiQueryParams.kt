@@ -24,10 +24,13 @@ open class JsonApiQueryParams(
     }
 
     /**
-     * Will put given [value] with key "`filter[key]`", i.e. "`filter[price]`"
+     * Will put given [value] with key "`filter[key]`", i.e. "`filter[price]`" if it is not null
      */
-    protected fun MutableMap<String, Any>.putFilter(key: String, value: Any) =
+    protected fun MutableMap<String, Any>.putFilter(key: String, value: Any?) {
+        if (value != null) {
             this.putQueryParam("filter", key, value)
+        }
+    }
 
     /**
      * Will put given [value] with key "`type[key]`", i.e. "`filter[price]`"

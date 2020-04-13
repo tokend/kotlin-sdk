@@ -17,6 +17,7 @@ import org.tokend.sdk.api.integrations.dns.model.ClientResource
 import org.tokend.sdk.api.integrations.marketplace.model.MarketplaceOfferResource
 import org.tokend.sdk.api.integrations.marketplace.model.MarketplacePaymentMethodResource
 import org.tokend.sdk.api.integrations.paymentproxy.model.PaymentAccountResource
+import org.tokend.sdk.api.integrations.recpayments.model.generated.resources.ScheduledPaymentRecordResource
 import org.tokend.sdk.utils.ApiDateUtil
 import org.tokend.sdk.utils.BigDecimalUtil
 import retrofit2.Converter
@@ -39,7 +40,8 @@ object JsonApiToolsProvider {
             MarketplaceOfferResource::class.java,
             MarketplacePaymentMethodResource::class.java,
             IdentitySettingsResource::class.java,
-            SchedulerPayloadResource::class.java
+            SchedulerPayloadResource::class.java,
+            ScheduledPaymentRecordResource::class.java
     )
 
     /**
@@ -70,6 +72,7 @@ object JsonApiToolsProvider {
                         *AllResources.ARRAY,
                         *org.tokend.sdk.api.integrations.booking.model.generated.resources.AllResources.ARRAY,
                         *org.tokend.sdk.api.integrations.booking.model.scheduler.generated.resources.AllResources.ARRAY,
+                        *org.tokend.sdk.api.integrations.invoices.model.generated.resources.AllResources.ARRAY,
                         *extraResources.toTypedArray()
                 )
                         .also { resourceConverter = it }
