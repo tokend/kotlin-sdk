@@ -18,9 +18,9 @@ import org.tokend.sdk.api.base.model.*;
 public class InvoiceResource extends BaseResource {
     
     @JsonProperty("amount")
-    private String amount;
+    private BigDecimal amount;
     
-    public String getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
     
