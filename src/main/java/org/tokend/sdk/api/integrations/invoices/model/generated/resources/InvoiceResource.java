@@ -49,13 +49,6 @@ public class InvoiceResource extends BaseResource {
         return createdAt;
     }
     
-    @JsonProperty("destination")
-    private String destination;
-    
-    public String getDestination() {
-        return destination;
-    }
-    
     @JsonProperty("reference")
     private String reference;
     
@@ -80,9 +73,9 @@ public class InvoiceResource extends BaseResource {
     }
     
     @JsonProperty("subject")
-    private JsonNode subject;
+    private String subject;
     
-    public JsonNode getSubject() {
+    public String getSubject() {
         return subject;
     }
     
@@ -90,7 +83,6 @@ public class InvoiceResource extends BaseResource {
     public boolean isFilled() {
         return             amount != null &&
             createdAt != null &&
-            destination != null &&
             reference != null &&
             state != null &&
             subject != null 
@@ -109,6 +101,13 @@ public class InvoiceResource extends BaseResource {
     
     public DataResource getData() {
         return data;
+    }
+    
+    @Relationship("destination_balance")
+    private BaseResource destinationBalance;
+    
+    public BaseResource getDestinationBalance() {
+        return destinationBalance;
     }
     
     @Relationship("requestor")
