@@ -1,6 +1,7 @@
 package org.tokend.sdk.api.integrations.recpayments
 
 import org.tokend.sdk.api.base.ApiRequest
+import org.tokend.sdk.api.base.model.DataEntity
 import org.tokend.sdk.api.base.model.DataPage
 import org.tokend.sdk.api.base.params.map
 import org.tokend.sdk.api.custom.CustomRequestsApi
@@ -30,7 +31,7 @@ open class RecurringPaymentsApi(
     open fun schedulePayment(request: SchedulePaymentRequest): ApiRequest<ScheduledPaymentRecordResource> {
         return customRequestsApi.post(
                 url = "integrations/rpayments/schedule",
-                body = request,
+                body = DataEntity(request),
                 responseClass = ScheduledPaymentRecordResource::class.java
         )
     }

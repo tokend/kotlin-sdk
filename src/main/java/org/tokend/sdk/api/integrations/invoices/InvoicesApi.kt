@@ -32,7 +32,7 @@ open class InvoicesApi(
     open fun createInvoice(request: CreateInvoiceRequest) =
             customRequestsApi.post(
                     url = "integrations/invoices",
-                    body = request,
+                    body = DataEntity(request),
                     responseClass = InvoiceResource::class.java
             )
 
@@ -41,7 +41,7 @@ open class InvoicesApi(
             customRequestsApi.patch(
                     url = "integrations/invoices/$id",
                     body = DataEntity(AttributesEntity(mapOf(
-                            "state" to NameValue(newState.name, newState.value)
+                            "state" to NameValue(newState.name.toLowerCase(), newState.value)
                     ))),
                     responseClass = Void::class.java
             )
