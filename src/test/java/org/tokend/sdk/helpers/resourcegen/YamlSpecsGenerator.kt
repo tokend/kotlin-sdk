@@ -253,7 +253,8 @@ class YamlSpecsGenerator(openApi: OpenApi) {
             lowercaseFormat.contains("int32")
                     || type == "number"
                     || type?.contains("int") == true -> "Int32"
-            type == "boolean" -> "Bool"
+            type == "boolean"
+                    || type =="bool" -> "Bool"
             type == "string" -> "String"
             else -> throw IllegalStateException("'${attribute.name}' has unknown type-format-reference combination:" +
                     " $type $format $ref")
