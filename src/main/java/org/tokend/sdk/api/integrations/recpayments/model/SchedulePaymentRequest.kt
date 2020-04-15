@@ -4,9 +4,10 @@ import com.google.gson.annotations.SerializedName
 import org.tokend.sdk.api.base.model.DataEntity
 import java.math.BigDecimal
 
-class SchedulePaymentRequest(
-        destinationAccountId: String,
-        destinationBalanceId: String,
+class SchedulePaymentRequest
+private constructor(
+        destinationAccountId: String?,
+        destinationBalanceId: String?,
         destinationType: Int,
         amount: BigDecimal,
         recurrenceRule: String
@@ -28,4 +29,22 @@ class SchedulePaymentRequest(
             "destination_account" to DataEntity(mapOf("id" to destinationAccountId)),
             "destination_balance" to DataEntity(mapOf("id" to destinationBalanceId))
     )
+
+    companion object {
+        @JvmStatic
+        fun toAccount(destinationAccountId: String,
+                      amount: BigDecimal,
+                      recurrenceRule: String): SchedulePaymentRequest {
+            return SchedulePaymentRequest(destinationAccountId, null,
+                    0, amount, recurrenceRule)
+        }
+
+        @JvmStatic
+        fun toBalance(destinationBalanceId: String,
+                      amount: BigDecimal,
+                      recurrenceRule: String): SchedulePaymentRequest {
+            return SchedulePaymentRequest(null, destinationBalanceId,
+                    1, amount, recurrenceRule)
+        }
+    }
 }

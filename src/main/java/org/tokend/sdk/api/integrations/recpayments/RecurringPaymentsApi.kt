@@ -6,6 +6,7 @@ import org.tokend.sdk.api.base.model.DataPage
 import org.tokend.sdk.api.base.params.map
 import org.tokend.sdk.api.custom.CustomRequestsApi
 import org.tokend.sdk.api.integrations.recpayments.model.SchedulePaymentRequest
+import org.tokend.sdk.api.integrations.recpayments.model.generated.resources.InfoResource
 import org.tokend.sdk.api.integrations.recpayments.model.generated.resources.ScheduledPaymentRecordResource
 import org.tokend.sdk.api.integrations.recpayments.params.ScheduledPaymentsPageParams
 
@@ -40,6 +41,13 @@ open class RecurringPaymentsApi(
         return customRequestsApi.delete(
                 url = "integrations/rpayments/schedule/$id",
                 responseClass = Void::class.java
+        )
+    }
+
+    open fun getInfo(): ApiRequest<InfoResource> {
+        return customRequestsApi.get(
+                url = "integrations/rpayments/info",
+                responseClass = InfoResource::class.java
         )
     }
 }

@@ -12,9 +12,9 @@ import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
 
 
-@Type("scheduled-payment-record")
+@Type("schedule-payments-request")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ScheduledPaymentRecordResource extends BaseResource {
+public class SchedulePaymentResource extends BaseResource {
     
     @JsonProperty("amount")
     private BigDecimal amount;
@@ -23,18 +23,25 @@ public class ScheduledPaymentRecordResource extends BaseResource {
         return amount;
     }
     
-    @JsonProperty("last_payment")
-    @Nullable
-    private Date lastPayment;
+    @JsonProperty("destination_type")
+    private Integer destinationType;
     
-    @Nullable
-    public Date getLastPayment() {
-        return lastPayment;
+    public Integer getDestinationType() {
+        return destinationType;
+    }
+    
+    @JsonProperty("r_rule")
+    private String rRule;
+    
+    public String getRRule() {
+        return rRule;
     }
     
     @Override
     public boolean isFilled() {
-        return             amount != null 
+        return             amount != null &&
+            destinationType != null &&
+            rRule != null 
         ;
     }
     
