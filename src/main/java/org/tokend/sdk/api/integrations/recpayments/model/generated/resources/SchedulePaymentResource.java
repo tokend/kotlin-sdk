@@ -7,6 +7,7 @@ import java.util.*;
 import com.fasterxml.jackson.annotation.*;
 import com.github.jasminb.jsonapi.annotations.*;
 import org.tokend.sdk.api.integrations.recpayments.model.generated.resources.*;
+import org.tokend.sdk.api.integrations.recpayments.model.generated.inner.*;
 import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
@@ -24,9 +25,9 @@ public class SchedulePaymentResource extends BaseResource {
     }
     
     @JsonProperty("destination_type")
-    private Integer destinationType;
+    private org.tokend.sdk.api.integrations.recpayments.model.generated.inner.Enum destinationType;
     
-    public Integer getDestinationType() {
+    public org.tokend.sdk.api.integrations.recpayments.model.generated.inner.Enum getDestinationType() {
         return destinationType;
     }
     
@@ -37,11 +38,19 @@ public class SchedulePaymentResource extends BaseResource {
         return rRule;
     }
     
+    @JsonProperty("send_immediately")
+    private Boolean sendImmediately;
+    
+    public Boolean sendImmediately() {
+        return sendImmediately;
+    }
+    
     @Override
     public boolean isFilled() {
         return             amount != null &&
             destinationType != null &&
-            rRule != null 
+            rRule != null &&
+            sendImmediately != null 
         ;
     }
     

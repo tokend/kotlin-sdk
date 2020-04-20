@@ -7,6 +7,7 @@ import java.util.*;
 import com.fasterxml.jackson.annotation.*;
 import com.github.jasminb.jsonapi.annotations.*;
 import org.tokend.sdk.api.integrations.recpayments.model.generated.resources.*;
+import org.tokend.sdk.api.integrations.recpayments.model.generated.inner.*;
 import com.fasterxml.jackson.databind.*;
 import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
@@ -36,6 +37,13 @@ public class ScheduledPaymentRecordResource extends BaseResource {
     public boolean isFilled() {
         return             amount != null 
         ;
+    }
+    
+    @Relationship("description")
+    private ScheduledPaymentRecordDescriptionResource description;
+    
+    public ScheduledPaymentRecordDescriptionResource getDescription() {
+        return description;
     }
     
     @Relationship("destination_account")
