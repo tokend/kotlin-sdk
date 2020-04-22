@@ -433,8 +433,14 @@ class KeyServer constructor(
             wallet.addArrayRelation("signers", signers.map(WalletRelation.Companion::signer))
 
             return WalletCreateResult(
-                    wallet,
-                    rootAccount
+                    walletData = wallet,
+                    rootAccount = rootAccount,
+                    walletId = walletId,
+                    loginParams = LoginParams(
+                            id = kdfVersion,
+                            type = "kdf",
+                            kdfAttributes = kdfAttributesWithSalt
+                    )
             )
         }
 
