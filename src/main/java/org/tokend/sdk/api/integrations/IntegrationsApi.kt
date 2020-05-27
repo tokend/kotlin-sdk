@@ -5,6 +5,7 @@ import org.tokend.sdk.api.custom.CustomRequestsApi
 import org.tokend.sdk.api.custom.CustomRequestsService
 import org.tokend.sdk.api.integrations.booking.BookingApi
 import org.tokend.sdk.api.integrations.booking.BookingService
+import org.tokend.sdk.api.integrations.cards.CardsApi
 import org.tokend.sdk.api.integrations.dns.DnsApi
 import org.tokend.sdk.api.integrations.dns.DnsService
 import org.tokend.sdk.api.integrations.escrow.EscrowApi
@@ -74,5 +75,9 @@ open class IntegrationsApi(
 
     open val invoices: InvoicesApi by lazy {
         InvoicesApi(customRequests)
+    }
+
+    open val cards: CardsApi by lazy {
+        CardsApi(customRequests)
     }
 }
