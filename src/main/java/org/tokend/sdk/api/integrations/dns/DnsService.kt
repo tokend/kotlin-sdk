@@ -1,8 +1,10 @@
 package org.tokend.sdk.api.integrations.dns
 
 import com.github.jasminb.jsonapi.JSONAPIDocument
+import org.tokend.sdk.api.base.model.DataEntity
 import org.tokend.sdk.api.integrations.dns.model.BusinessResource
 import org.tokend.sdk.api.integrations.dns.model.ClientResource
+import org.tokend.sdk.api.integrations.dns.model.UserInfoResource
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -34,4 +36,8 @@ interface DnsService {
     @GET("integrations/dns/businesses")
     @JvmSuppressWildcards
     fun getBusinesses(@QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<BusinessResource>>>
+
+    @POST("integrations/dns/clients")
+    @JvmSuppressWildcards
+    fun getManyUsers(@Body body: DataEntity<Any>): Call<JSONAPIDocument<List<UserInfoResource>>>
 }

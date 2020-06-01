@@ -14,6 +14,7 @@ import org.tokend.sdk.api.integrations.booking.model.scheduler.SchedulerPayloadR
 import org.tokend.sdk.api.integrations.dns.model.BusinessResource
 import org.tokend.sdk.api.integrations.dns.model.ClientBalanceResource
 import org.tokend.sdk.api.integrations.dns.model.ClientResource
+import org.tokend.sdk.api.integrations.dns.model.UserInfoResource
 import org.tokend.sdk.api.integrations.marketplace.model.MarketplaceOfferResource
 import org.tokend.sdk.api.integrations.marketplace.model.MarketplacePaymentMethodResource
 import org.tokend.sdk.api.integrations.paymentproxy.model.PaymentAccountResource
@@ -35,6 +36,7 @@ object JsonApiToolsProvider {
             BusinessResource::class.java,
             ClientResource::class.java,
             ClientBalanceResource::class.java,
+            UserInfoResource::class.java,
             PaymentAccountResource::class.java,
             MarketplaceOfferResource::class.java,
             MarketplacePaymentMethodResource::class.java,

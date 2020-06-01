@@ -4,10 +4,12 @@ import com.github.jasminb.jsonapi.JSONAPIDocument
 import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.base.SimpleRetrofitApiRequest
+import org.tokend.sdk.api.base.model.DataEntity
 import org.tokend.sdk.api.base.model.DataPage
 import org.tokend.sdk.api.base.params.map
 import org.tokend.sdk.api.integrations.dns.model.BusinessResource
 import org.tokend.sdk.api.integrations.dns.model.ClientResource
+import org.tokend.sdk.api.integrations.dns.model.UserInfoResource
 import org.tokend.sdk.api.integrations.dns.params.ClientsPageParams
 import org.tokend.sdk.api.v3.base.PageQueryParams
 
@@ -69,6 +71,17 @@ open class DnsApi(
         return MappedRetrofitApiRequest(
                 dnsService.getBusinesses(params.map()),
                 DataPage.Companion::fromPageDocument
+        )
+    }
+
+    open fun getManyUsers(accounts: Collection<String>): ApiRequest<List<UserInfoResource>> {
+        return MappedRetrofitApiRequest(
+                dnsService.getManyUsers(DataEntity(mapOf(
+                        "relationships" to mapOf(
+                                "users" to DataEntity(accounts.map { mapOf("id" to it) })
+                        )
+                ))),
+                JSONAPIDocument<List<UserInfoResource>>::get
         )
     }
 }

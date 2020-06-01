@@ -36,6 +36,7 @@ open class FriendsApi(
     }
 
     open fun addRecentPayment(sourceAccountId: String,
+                              destinationAccountId: String,
                               destinationCardNumber: String,
                               createdAtUnix: Long = System.currentTimeMillis() / 1000): ApiRequest<Void> {
         return customRequestsApi.post(
@@ -44,6 +45,7 @@ open class FriendsApi(
                         "attributes" to mapOf("created_at" to createdAtUnix),
                         "relationships" to mapOf(
                                 "source" to DataEntity(mapOf("id" to sourceAccountId)),
+                                "destination" to DataEntity(mapOf("id" to destinationAccountId)),
                                 "destination_card" to DataEntity(mapOf("id" to destinationCardNumber))
                         )
                 )),

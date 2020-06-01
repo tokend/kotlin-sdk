@@ -14,6 +14,13 @@ public class RecentPaymentResource extends BaseResource {
     @Override
     public boolean isFilled() { return true; }
     
+    @Relationship("destination")
+    private BaseResource destination;
+    
+    public BaseResource getDestination() {
+        return destination;
+    }
+    
     @Relationship("destination_card")
     private BaseResource destinationCard;
     
