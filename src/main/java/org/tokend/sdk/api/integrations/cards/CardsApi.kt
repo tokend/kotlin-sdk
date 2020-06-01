@@ -8,6 +8,7 @@ import org.tokend.sdk.api.custom.CustomRequestsApi
 import org.tokend.sdk.api.integrations.cards.model.CardState
 import org.tokend.sdk.api.integrations.cards.model.CreateCardRequest
 import org.tokend.sdk.api.integrations.cards.model.generated.resources.CardResource
+import org.tokend.sdk.api.integrations.cards.params.CardParams
 import org.tokend.sdk.api.integrations.cards.params.CardsPageParams
 import org.tokend.sdk.api.v3.base.JsonApiQueryParams
 
@@ -36,7 +37,7 @@ open class CardsApi(
             )
 
     open fun getCard(number: String,
-                     params: JsonApiQueryParams? = null) = customRequestsApi.get(
+                     params: CardParams? = null) = customRequestsApi.get(
             url = "integrations/cards/$number",
             queryMap = params.map(),
             responseClass = CardResource::class.java
