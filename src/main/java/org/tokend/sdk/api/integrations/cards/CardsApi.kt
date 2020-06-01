@@ -1,5 +1,7 @@
 package org.tokend.sdk.api.integrations.cards
 
+import com.google.gson.reflect.TypeToken
+import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.model.AttributesEntity
 import org.tokend.sdk.api.base.model.DataEntity
 import org.tokend.sdk.api.base.model.NameValue
@@ -10,7 +12,6 @@ import org.tokend.sdk.api.integrations.cards.model.CreateCardRequest
 import org.tokend.sdk.api.integrations.cards.model.generated.resources.CardResource
 import org.tokend.sdk.api.integrations.cards.params.CardParams
 import org.tokend.sdk.api.integrations.cards.params.CardsPageParams
-import org.tokend.sdk.api.v3.base.JsonApiQueryParams
 
 open class CardsApi(
         protected open val customRequestsApi: CustomRequestsApi
@@ -22,7 +23,7 @@ open class CardsApi(
                     responseClass = CardResource::class.java
             )
 
-    open fun getCards(params: CardsPageParams? = null) =
+    open fun getOwnCards(params: CardsPageParams? = null) =
             customRequestsApi.getPage(
                     url = "integrations/cards",
                     queryMap = params.map(),
@@ -34,6 +35,15 @@ open class CardsApi(
                     url = "integrations/cards/foreign",
                     queryMap = params.map(),
                     pageItemClass = CardResource::class.java
+            )
+
+    open fun getManyPublicCards(owners: Collection<String>): ApiRequest<List<CardResource>> =
+            customRequestsApi.post(
+                    url = "integrations/cards/public",
+                    body = DataEntity(mapOf("relationships" to mapOf(
+                            "owners" to DataEntity(owners.map { "id" to it })
+                    ))),
+                    responseType = object : TypeToken<List<CardResource>>() {}.type
             )
 
     open fun getCard(number: String,

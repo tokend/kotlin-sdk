@@ -51,4 +51,11 @@ public class CardResource extends BaseResource {
     public BaseResource getOwner() {
         return owner;
     }
+    
+    @Relationship("security_details")
+    private CardSecurityDetailsResource securityDetails;
+    
+    public CardSecurityDetailsResource getSecurityDetails() {
+        return securityDetails;
+    }
 }

@@ -5,8 +5,7 @@ package org.tokend.sdk.api.integrations.cards.model.generated.resources;
 
 public class AllResources {
     public static final Class<?>[] ARRAY = {
-        UpdateCardResource.class,
-        CreateCardResource.class,
+        CardSecurityDetailsResource.class,
         CardBalanceResource.class,
         CardResource.class
     };

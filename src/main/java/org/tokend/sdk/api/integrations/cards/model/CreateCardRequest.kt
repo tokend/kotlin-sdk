@@ -6,11 +6,13 @@ import org.tokend.sdk.api.base.model.DataEntity
 class CreateCardRequest(
         number: String,
         ownerAccountId: String,
+        details: Any?,
         balances: Collection<String>
 ) {
     @SerializedName("attributes")
     val attributes = mapOf(
-            "card_number" to number
+            "card_number" to number,
+            "details" to details
     )
 
     @SerializedName("relationships")
