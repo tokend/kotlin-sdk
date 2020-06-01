@@ -73,6 +73,7 @@ object JsonApiToolsProvider {
                         *org.tokend.sdk.api.integrations.invoices.model.generated.resources.AllResources.ARRAY,
                         *org.tokend.sdk.api.integrations.recpayments.model.generated.resources.AllResources.ARRAY,
                         *org.tokend.sdk.api.integrations.cards.model.generated.resources.AllResources.ARRAY,
+                        *org.tokend.sdk.api.integrations.friends.model.generated.resources.AllResources.ARRAY,
                         *extraResources.toTypedArray()
                 )
                         .also { resourceConverter = it }
