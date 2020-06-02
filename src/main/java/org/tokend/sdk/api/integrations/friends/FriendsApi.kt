@@ -19,7 +19,7 @@ open class FriendsApi(
                 url = "integrations/friends",
                 body = DataEntity(mapOf("relationships" to mapOf(
                         "identities" to DataEntity(identifiers.map {
-                            "id" to it
+                            mapOf("id" to it)
                         })
                 ))),
                 responseType = object : TypeToken<List<UserResource>>() {}.type

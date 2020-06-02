@@ -19,7 +19,18 @@ open class CardsApi(
     open fun createCard(request: CreateCardRequest) =
             customRequestsApi.post(
                     url = "integrations/cards",
-                    body = DataEntity(request),
+                    body = mapOf(
+                            "data" to request,
+                            "included" to listOf(mapOf(
+                                    "id" to "1",
+                                    "type" to "cards-security-details",
+                                    "relationships" to mapOf(
+                                            "card" to DataEntity(mapOf(
+                                                    "id" to request.number
+                                            ))
+                                    )
+                            ))
+                    ),
                     responseClass = CardResource::class.java
             )
 

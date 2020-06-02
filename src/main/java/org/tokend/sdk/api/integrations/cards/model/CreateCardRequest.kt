@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import org.tokend.sdk.api.base.model.DataEntity
 
 class CreateCardRequest(
-        number: String,
+        val number: String,
         ownerAccountId: String,
         details: Any?,
         balances: Collection<String>
@@ -20,6 +20,7 @@ class CreateCardRequest(
             "owner" to DataEntity(mapOf("id" to ownerAccountId)),
             "balances" to DataEntity(balances.map {
                 mapOf("id" to it)
-            })
+            }),
+            "security_details" to DataEntity(mapOf("id" to "1", "type" to "cards-security-details"))
     )
 }
