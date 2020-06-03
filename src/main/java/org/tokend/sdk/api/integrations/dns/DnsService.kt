@@ -37,6 +37,10 @@ interface DnsService {
     @JvmSuppressWildcards
     fun getBusinesses(@QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<BusinessResource>>>
 
+    @GET("integrations/dns/clients/{accountId}")
+    @JvmSuppressWildcards
+    fun getUser(@Path("accountId") accountId: String): Call<JSONAPIDocument<UserInfoResource>>
+
     @POST("integrations/dns/clients")
     @JvmSuppressWildcards
     fun getManyUsers(@Body body: DataEntity<Any>): Call<JSONAPIDocument<List<UserInfoResource>>>

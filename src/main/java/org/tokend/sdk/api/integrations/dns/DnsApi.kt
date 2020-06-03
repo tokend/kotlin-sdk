@@ -74,6 +74,13 @@ open class DnsApi(
         )
     }
 
+    open fun getUser(accountId: String): ApiRequest<UserInfoResource> {
+        return MappedRetrofitApiRequest(
+                dnsService.getUser(accountId),
+                JSONAPIDocument<UserInfoResource>::get
+        )
+    }
+
     open fun getManyUsers(accounts: Collection<String>): ApiRequest<List<UserInfoResource>> {
         return MappedRetrofitApiRequest(
                 dnsService.getManyUsers(DataEntity(mapOf(
