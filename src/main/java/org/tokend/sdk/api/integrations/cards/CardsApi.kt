@@ -1,6 +1,5 @@
 package org.tokend.sdk.api.integrations.cards
 
-import com.google.gson.reflect.TypeToken
 import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.model.AttributesEntity
 import org.tokend.sdk.api.base.model.DataEntity
@@ -12,6 +11,7 @@ import org.tokend.sdk.api.integrations.cards.model.CreateCardRequest
 import org.tokend.sdk.api.integrations.cards.model.generated.resources.CardResource
 import org.tokend.sdk.api.integrations.cards.params.CardParams
 import org.tokend.sdk.api.integrations.cards.params.CardsPageParams
+import org.tokend.sdk.factory.JsonApiToolsProvider
 
 open class CardsApi(
         protected open val customRequestsApi: CustomRequestsApi
@@ -52,10 +52,15 @@ open class CardsApi(
             customRequestsApi.post(
                     url = "integrations/cards/public",
                     body = DataEntity(mapOf("relationships" to mapOf(
-                            "owners" to DataEntity(owners.map { "id" to it })
+                            "owners" to DataEntity(owners.map { mapOf("id" to it) })
                     ))),
-                    responseType = object : TypeToken<List<CardResource>>() {}.type
+                    responseClass = ByteArray::class.java
             )
+                    .map {
+                        JsonApiToolsProvider.getResourceConverter()
+                                .readDocumentCollection(it, CardResource::class.java)
+                                .get()
+                    }
 
     open fun getCard(number: String,
                      params: CardParams? = null) = customRequestsApi.get(
