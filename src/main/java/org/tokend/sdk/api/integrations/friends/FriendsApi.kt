@@ -1,6 +1,5 @@
 package org.tokend.sdk.api.integrations.friends
 
-import com.google.gson.reflect.TypeToken
 import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.model.DataEntity
 import org.tokend.sdk.api.base.model.DataPage
@@ -14,15 +13,27 @@ import org.tokend.sdk.api.integrations.friends.params.RecentPaymentsPageParams
 open class FriendsApi(
         protected open val customRequestsApi: CustomRequestsApi
 ) {
-    open fun addFriends(identifiers: Collection<String>): ApiRequest<List<UserResource>> {
+    open fun addFriends(selfAccountId: String,
+                        identifiers: Collection<String>): ApiRequest<Void> {
         return customRequestsApi.post(
-                url = "integrations/friends",
+                url = "integrations/friends/$selfAccountId/multi",
                 body = DataEntity(mapOf("relationships" to mapOf(
-                        "identities" to DataEntity(identifiers.map {
+                        "new_friends" to DataEntity(identifiers.map {
                             mapOf("id" to it)
                         })
                 ))),
-                responseType = object : TypeToken<List<UserResource>>() {}.type
+                responseType = Void::class.java
+        )
+    }
+
+    open fun addFriend(selfAccountId: String,
+                       friendAccountId: String): ApiRequest<Void> {
+        return customRequestsApi.post(
+                url = "integrations/friends/$selfAccountId",
+                body = DataEntity(mapOf("relationships" to mapOf(
+                        "new_friend" to DataEntity(mapOf("id" to friendAccountId))
+                ))),
+                responseClass = Void::class.java
         )
     }
 
