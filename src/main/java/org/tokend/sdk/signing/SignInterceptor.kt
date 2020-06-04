@@ -20,60 +20,24 @@ internal open class SignInterceptor(
         val method = chain.request().method()
 
         val url = chain.request().url().url()
-        var urlPartToSign = url.toString().substringAfter(baseUrl,
-                "${url.path}?${url.query}")
-        if (!urlPartToSign.startsWith("/")) {
-            urlPartToSign = "/$urlPartToSign"
+        var relativeUrl = url.toString().substringAfter(baseUrl, "${url.path}?${url.query}")
+        if (!relativeUrl.startsWith("/")) {
+            relativeUrl = "/$relativeUrl"
         }
 
-        val requestTarget = "${method.toLowerCase()} $urlPartToSign"
-
-        val dateHeaderContent = HttpDate.format(Date())
-
-        val authHeaderContent = buildHttpAuthHeader(
+        val headers = getSignatureHeaders(
                 requestSigner,
-                DATE_HEADER to dateHeaderContent,
-                REQUEST_TARGET_HEADER to requestTarget
+                method,
+                relativeUrl
         )
 
-        return chain.request().newBuilder()
-                .addHeader(AUTH_HEADER, authHeaderContent)
-                .addHeader(DATE_HEADER, dateHeaderContent)
-                .build()
-    }
-
-    /**
-     * @return auth header content according to the signing requirements
-     * @see <a href="https://tokend.gitbook.io/knowledge-base/technical-details/security#rest-api">Requests signing on Knowledge base</a>
-     */
-    private fun buildHttpAuthHeader(requestSigner: RequestSigner,
-                                    vararg headerContents: Pair<String, String?>): String {
-        val contentToSign = buildHttpSignatureContent(headerContents)
-        val hashToSign = Hashing.sha256(contentToSign)
-
-        val signatureBase64 = requestSigner.signToBase64(hashToSign)
-        val keyId = requestSigner.accountId
-        val headersString = headerContents.joinToString(" ") { it.first.toLowerCase() }
-
-        return "keyId=\"$keyId\",algorithm=\"$AUTH_ALGORITHM\"" +
-                ",signature=\"$signatureBase64\",headers=\"$headersString\""
-    }
-
-    /**
-     * @return string where each row contains header name in lower case and it's content
-     */
-    private fun buildHttpSignatureContent(headerContents: Array<out Pair<String, String?>>)
-            : ByteArray {
-        val string = buildString {
-            headerContents.forEachIndexed { i, headerPair ->
-                append("${headerPair.first.toLowerCase()}: ${headerPair.second}")
-                if (i != headerContents.size - 1) {
-                    append('\n')
+        return chain.request()
+                .newBuilder().apply {
+                    headers.entries.forEach { (header, content) ->
+                        addHeader(header, content)
+                    }
                 }
-            }
-        }
-
-        return string.toByteArray(SIGNATURE_STRING_CHARSET)
+                .build()
     }
 
     companion object {
@@ -83,5 +47,62 @@ internal open class SignInterceptor(
         const val AUTH_ALGORITHM = "ed25519-sha256"
         @JvmStatic
         val SIGNATURE_STRING_CHARSET = Charsets.UTF_8
+
+        /**
+         * @param relativeUrl relative endpoint url started with '/'
+         * @param method HTTP method name
+         *
+         * @return map of headers required for the request to be signed
+         */
+        fun getSignatureHeaders(signer: RequestSigner,
+                                method: String,
+                                relativeUrl: String,
+                                dateString: String = HttpDate.format(Date())): Map<String, String> {
+            val requestTarget = "${method.toLowerCase()} $relativeUrl"
+            val authHeaderContent = buildHttpAuthHeader(
+                    signer,
+                    DATE_HEADER to dateString,
+                    REQUEST_TARGET_HEADER to requestTarget
+            )
+
+            return mapOf(
+                    AUTH_HEADER to authHeaderContent,
+                    DATE_HEADER to dateString
+            )
+        }
+
+        /**
+         * @return string where each row contains header name in lower case and it's content
+         */
+        private fun buildHttpSignatureContent(headerContents: Array<out Pair<String, String?>>)
+                : ByteArray {
+            val string = buildString {
+                headerContents.forEachIndexed { i, headerPair ->
+                    append("${headerPair.first.toLowerCase()}: ${headerPair.second}")
+                    if (i != headerContents.size - 1) {
+                        append('\n')
+                    }
+                }
+            }
+
+            return string.toByteArray(SIGNATURE_STRING_CHARSET)
+        }
+
+        /**
+         * @return auth header content according to the signing requirements
+         * @see <a href="https://tokend.gitbook.io/knowledge-base/technical-details/security#rest-api">Requests signing on Knowledge base</a>
+         */
+        private fun buildHttpAuthHeader(requestSigner: RequestSigner,
+                                        vararg headerContents: Pair<String, String?>): String {
+            val contentToSign = buildHttpSignatureContent(headerContents)
+            val hashToSign = Hashing.sha256(contentToSign)
+
+            val signatureBase64 = requestSigner.signToBase64(hashToSign)
+            val keyId = requestSigner.accountId
+            val headersString = headerContents.joinToString(" ") { it.first.toLowerCase() }
+
+            return "keyId=\"$keyId\",algorithm=\"$AUTH_ALGORITHM\"" +
+                    ",signature=\"$signatureBase64\",headers=\"$headersString\""
+        }
     }
 }
