@@ -1,9 +1,12 @@
 package org.tokend.sdk.api.integrations.cards.model
 
-enum class CardState(val value: Int) {
-    ACTIVE(0),
-    FREEZED(1),
-    BLOCKED(2);
+enum class CardState {
+    ACTIVE,
+    FREEZED,
+    BLOCKED;
+
+    val value: Int
+        get() = ordinal + 1
 
     companion object {
         @JvmStatic
@@ -12,7 +15,7 @@ enum class CardState(val value: Int) {
                 ACTIVE.value -> ACTIVE
                 FREEZED.value -> FREEZED
                 BLOCKED.value -> BLOCKED
-                else -> throw IllegalArgumentException("There is no card with value '$value'")
+                else -> throw IllegalArgumentException("There is no card state with value '$value'")
             }
         }
 
@@ -22,7 +25,7 @@ enum class CardState(val value: Int) {
                 ACTIVE.name -> ACTIVE
                 FREEZED.name -> FREEZED
                 BLOCKED.name -> BLOCKED
-                else -> throw IllegalArgumentException("There is no card with name '$name'")
+                else -> throw IllegalArgumentException("There is no card state with name '$name'")
             }
         }
     }
