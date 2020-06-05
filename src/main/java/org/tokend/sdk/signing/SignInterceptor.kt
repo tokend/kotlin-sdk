@@ -7,7 +7,7 @@ import okhttp3.internal.http.HttpDate
 import org.tokend.wallet.utils.Hashing
 import java.util.*
 
-internal open class SignInterceptor(
+open class SignInterceptor(
         private val baseUrl: String,
         private val requestSigner: RequestSigner
 ) : Interceptor {
