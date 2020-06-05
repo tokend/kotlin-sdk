@@ -48,12 +48,14 @@ open class CardsApi(
                     pageItemClass = CardResource::class.java
             )
 
-    open fun getManyPublicCards(owners: Collection<String>): ApiRequest<List<CardResource>> =
+    open fun getManyPublicCards(owners: Collection<String>,
+                                params: CardParams? = null): ApiRequest<List<CardResource>> =
             customRequestsApi.post(
                     url = "integrations/cards/public",
                     body = DataEntity(mapOf("relationships" to mapOf(
                             "owners" to DataEntity(owners.map { mapOf("id" to it) })
                     ))),
+                    queryMap = params.map(),
                     responseClass = ByteArray::class.java
             )
                     .map {
