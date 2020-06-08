@@ -51,7 +51,7 @@ open class FriendsApi(
                               destinationCardNumber: String,
                               createdAtUnix: Long = System.currentTimeMillis() / 1000): ApiRequest<Void> {
         return customRequestsApi.post(
-                url = "integrations/friends/recent_payments",
+                url = "integrations/friends/$sourceAccountId/recent_payments",
                 body = DataEntity(mapOf(
                         "attributes" to mapOf("created_at" to createdAtUnix),
                         "relationships" to mapOf(
@@ -67,7 +67,7 @@ open class FriendsApi(
     open fun getRecentPayments(sourceAccountId: String,
                                params: RecentPaymentsPageParams? = null): ApiRequest<DataPage<RecentPaymentResource>> {
         return customRequestsApi.getPage(
-                url = "integrations/friends/recent_payments/$sourceAccountId",
+                url = "integrations/friends/$sourceAccountId/recent_payments",
                 queryMap = params.map(),
                 pageItemClass = RecentPaymentResource::class.java
         )
