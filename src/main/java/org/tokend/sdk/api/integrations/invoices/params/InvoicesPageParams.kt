@@ -9,6 +9,7 @@ class InvoicesPageParams(
         val requestor: String? = null,
         val target: String? = null,
         val asset: String? = null,
+        val card: String? = null,
         pagingParams: PagingParamsV2? = null,
         include: Collection<String>? = null
 ) : PageQueryParams(pagingParams, include) {
@@ -17,5 +18,6 @@ class InvoicesPageParams(
         putFilter("requestor", requestor)
         putFilter("target", target)
         putFilter("asset", asset)
+        putFilter("card", card)
     }
 }

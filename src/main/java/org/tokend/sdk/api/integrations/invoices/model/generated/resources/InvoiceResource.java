@@ -103,11 +103,11 @@ public class InvoiceResource extends BaseResource {
         return data;
     }
     
-    @Relationship("destination_balance")
-    private BaseResource destinationBalance;
+    @Relationship("destination_card")
+    private BaseResource destinationCard;
     
-    public BaseResource getDestinationBalance() {
-        return destinationBalance;
+    public BaseResource getDestinationCard() {
+        return destinationCard;
     }
     
     @Relationship("requestor")

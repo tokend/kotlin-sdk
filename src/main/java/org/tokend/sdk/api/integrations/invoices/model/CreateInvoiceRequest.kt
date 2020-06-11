@@ -7,7 +7,7 @@ import java.math.BigDecimal
 class CreateInvoiceRequest(
         amount: BigDecimal,
         assetCode: String,
-        destinationBalanceId: String,
+        destinationCardNumber: String,
         targetAccountId: String,
         selfAccountId: String,
         subject: String
@@ -27,6 +27,6 @@ class CreateInvoiceRequest(
             "asset" to DataEntity(mapOf("id" to assetCode)),
             "target" to DataEntity(mapOf("id" to targetAccountId)),
             "requestor" to DataEntity(mapOf("id" to selfAccountId)),
-            "destination_balance" to DataEntity(mapOf("id" to destinationBalanceId))
+            "destination_card" to DataEntity(mapOf("id" to destinationCardNumber))
     )
 }
