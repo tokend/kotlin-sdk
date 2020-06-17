@@ -3,17 +3,24 @@ package org.tokend.sdk.api.integrations.recpayments.model
 import com.google.gson.annotations.SerializedName
 import org.tokend.sdk.api.base.model.DataEntity
 import org.tokend.sdk.api.base.model.NameValue
+import org.tokend.sdk.api.integrations.recpayments.model.SchedulePaymentRequest.Companion.toBalance
+import org.tokend.sdk.api.integrations.recpayments.model.SchedulePaymentRequest.Companion.toCard
 import java.math.BigDecimal
 
+/**
+ * @see toBalance
+ * @see toCard
+ */
 class SchedulePaymentRequest
 private constructor(
-        destinationAccountId: String?,
-        destinationBalanceId: String?,
+        destinationBalanceId: String,
+        destinationCardNumber: String?,
         destinationType: Int,
         amount: BigDecimal,
         recurrenceRule: String,
         sourceAccountId: String,
         sourceBalanceId: String,
+        sourceCardNumber: String,
         sendImmediately: Boolean
 ) {
     class Attributes(
@@ -33,47 +40,53 @@ private constructor(
 
     @SerializedName("relationships")
     val relationships = mapOf(
-            "destination_account" to DataEntity(mapOf("id" to destinationAccountId)),
             "destination_balance" to DataEntity(mapOf("id" to destinationBalanceId)),
+            "destination_card" to DataEntity(mapOf("id" to destinationCardNumber)),
             "source_account" to DataEntity(mapOf("id" to sourceAccountId)),
-            "source_balance" to DataEntity(mapOf("id" to sourceBalanceId))
+            "source_balance" to DataEntity(mapOf("id" to sourceBalanceId)),
+            "source_card" to DataEntity(mapOf("id" to sourceCardNumber))
     )
 
     companion object {
-        @JvmStatic
-        fun toAccount(destinationAccountId: String,
-                      amount: BigDecimal,
-                      recurrenceRule: String,
-                      sourceAccountId: String,
-                      sourceBalanceId: String,
-                      sendImmediately: Boolean): SchedulePaymentRequest {
-            return SchedulePaymentRequest(
-                    destinationAccountId = destinationAccountId,
-                    destinationBalanceId = null,
-                    destinationType = 0,
-                    amount = amount,
-                    recurrenceRule = recurrenceRule,
-                    sourceAccountId = sourceAccountId,
-                    sourceBalanceId = sourceBalanceId,
-                    sendImmediately = sendImmediately
-            )
-        }
-
         @JvmStatic
         fun toBalance(destinationBalanceId: String,
                       amount: BigDecimal,
                       recurrenceRule: String,
                       sourceAccountId: String,
                       sourceBalanceId: String,
+                      sourceCardNumber: String,
                       sendImmediately: Boolean): SchedulePaymentRequest {
             return SchedulePaymentRequest(
-                    destinationAccountId = null,
                     destinationBalanceId = destinationBalanceId,
-                    destinationType = 0,
+                    destinationCardNumber = null,
+                    destinationType = 1,
                     amount = amount,
                     recurrenceRule = recurrenceRule,
                     sourceAccountId = sourceAccountId,
                     sourceBalanceId = sourceBalanceId,
+                    sourceCardNumber = sourceCardNumber,
+                    sendImmediately = sendImmediately
+            )
+        }
+
+        @JvmStatic
+        fun toCard(destinationBalanceId: String,
+                   destinationCardNumber: String,
+                   amount: BigDecimal,
+                   recurrenceRule: String,
+                   sourceAccountId: String,
+                   sourceBalanceId: String,
+                   sourceCardNumber: String,
+                   sendImmediately: Boolean): SchedulePaymentRequest {
+            return SchedulePaymentRequest(
+                    destinationBalanceId = destinationBalanceId,
+                    destinationCardNumber = destinationCardNumber,
+                    destinationType = 2,
+                    amount = amount,
+                    recurrenceRule = recurrenceRule,
+                    sourceAccountId = sourceAccountId,
+                    sourceBalanceId = sourceBalanceId,
+                    sourceCardNumber = sourceCardNumber,
                     sendImmediately = sendImmediately
             )
         }

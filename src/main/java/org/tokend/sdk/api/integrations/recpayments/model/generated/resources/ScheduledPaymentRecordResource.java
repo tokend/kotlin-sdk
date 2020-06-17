@@ -60,6 +60,13 @@ public class ScheduledPaymentRecordResource extends BaseResource {
         return destinationBalance;
     }
     
+    @Relationship("destination_card")
+    private BaseResource destinationCard;
+    
+    public BaseResource getDestinationCard() {
+        return destinationCard;
+    }
+    
     @Relationship("source_account")
     private BaseResource sourceAccount;
     
@@ -72,5 +79,12 @@ public class ScheduledPaymentRecordResource extends BaseResource {
     
     public BaseResource getSourceBalance() {
         return sourceBalance;
+    }
+    
+    @Relationship("source_card")
+    private BaseResource sourceCard;
+    
+    public BaseResource getSourceCard() {
+        return sourceCard;
     }
 }

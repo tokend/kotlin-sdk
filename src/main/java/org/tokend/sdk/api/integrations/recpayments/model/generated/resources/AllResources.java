@@ -7,7 +7,6 @@ public class AllResources {
     public static final Class<?>[] ARRAY = {
         InfoResource.class,
         ScheduledPaymentRecordDescriptionResource.class,
-        SchedulePaymentResource.class,
         ScheduledPaymentRecordResource.class
     };
 }
