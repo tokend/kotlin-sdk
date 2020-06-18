@@ -3,9 +3,7 @@ package org.tokend.sdk.signing
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
-import okhttp3.internal.http.HttpDate
 import org.tokend.wallet.utils.Hashing
-import java.util.*
 
 open class SignInterceptor(
         private val baseUrl: String,
@@ -56,18 +54,15 @@ open class SignInterceptor(
          */
         fun getSignatureHeaders(signer: RequestSigner,
                                 method: String,
-                                relativeUrl: String,
-                                dateString: String = HttpDate.format(Date())): Map<String, String> {
+                                relativeUrl: String): Map<String, String> {
             val requestTarget = "${method.toLowerCase()} $relativeUrl"
             val authHeaderContent = buildHttpAuthHeader(
                     signer,
-                    DATE_HEADER to dateString,
                     REQUEST_TARGET_HEADER to requestTarget
             )
 
             return mapOf(
-                    AUTH_HEADER to authHeaderContent,
-                    DATE_HEADER to dateString
+                    AUTH_HEADER to authHeaderContent
             )
         }
 
