@@ -8,9 +8,9 @@ import java.util.regex.Pattern
 /**
  * Light-weight version of the [Page].
  */
-class DataPage<T>(val nextCursor: String?,
-                  val items: List<T>,
-                  val isLast: Boolean = false) {
+open class DataPage<T>(open val nextCursor: String?,
+                       open val items: List<T>,
+                       open val isLast: Boolean = false) {
     /**
      * @return a copy of the [DataPage] with items transformed
      * by [transform]
@@ -27,7 +27,7 @@ class DataPage<T>(val nextCursor: String?,
      * @return a copy of the [DataPage] with only the non-null results of
      * [transform] applied on it's items
      */
-    inline fun <R: Any> mapItemsNotNull(transform: (T) -> R?): DataPage<R> {
+    inline fun <R : Any> mapItemsNotNull(transform: (T) -> R?): DataPage<R> {
         return DataPage(
                 nextCursor,
                 items.mapNotNull(transform),
@@ -42,7 +42,7 @@ class DataPage<T>(val nextCursor: String?,
                     ?: getNumberParamFromLink(nextLink, "page")
         }
 
-        private fun getNumberParamFromLink(link: String, param: String): String? {
+        fun getNumberParamFromLink(link: String, param: String): String? {
             return "${Pattern.quote(param)}=(\\d+)"
                     .toRegex()
                     .find(link)
