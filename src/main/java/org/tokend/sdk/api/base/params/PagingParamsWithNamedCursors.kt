@@ -12,7 +12,7 @@ class PagingParamsWithNamedCursors
 constructor(
         val order: PagingOrder? = null,
         val limit: Int? = null,
-        cursorsByNames: Map<String, String?>? = null
+        val cursorsByNames: Map<String, String?>? = null
 ) : QueryParams {
     private val cursorsQueryParams = cursorsByNames
             ?.filterValues { !it.isNullOrBlank() }
