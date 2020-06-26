@@ -18,6 +18,7 @@ import org.tokend.sdk.api.integrations.locator.LocatorApi
 import org.tokend.sdk.api.integrations.locator.LocatorService
 import org.tokend.sdk.api.integrations.marketplace.MarketplaceApi
 import org.tokend.sdk.api.integrations.marketplace.MarketplaceService
+import org.tokend.sdk.api.integrations.mergedhistory.MergedHistoryApi
 import org.tokend.sdk.api.integrations.paymentproxy.PaymentProxyApi
 import org.tokend.sdk.api.integrations.paymentproxy.PaymentProxyService
 import org.tokend.sdk.api.integrations.recpayments.RecurringPaymentsApi
@@ -84,5 +85,9 @@ open class IntegrationsApi(
 
     open val friends: FriendsApi by lazy {
         FriendsApi(customRequests)
+    }
+
+    open val mergedHistory: MergedHistoryApi by lazy {
+        MergedHistoryApi(customRequests)
     }
 }

@@ -241,7 +241,9 @@ class YamlSpecsGenerator(openApi: OpenApi) {
         val type = attribute.type
 
         return when {
-            ref == "Details" -> "Object"
+            type == "object"
+                    || ref == "Details"
+                    || format == "json.RawMessage" -> "Object"
             ref != null -> ref
             format == "Amount"
                     || format == "regources.Amount" -> "Amount"
@@ -254,7 +256,7 @@ class YamlSpecsGenerator(openApi: OpenApi) {
                     || type == "number"
                     || type?.contains("int") == true -> "Int32"
             type == "boolean"
-                    || type =="bool" -> "Bool"
+                    || type == "bool" -> "Bool"
             type == "string" -> "String"
             else -> throw IllegalStateException("'${attribute.name}' has unknown type-format-reference combination:" +
                     " $type $format $ref")
