@@ -13,11 +13,32 @@ import java.net.URLDecoder
  */
 class DataPageWithNamedCursors<T>(
         val nextCursors: Map<String, String>,
-        items: List<T>,
-        isLast: Boolean
-) : DataPage<T>(null, items, isLast) {
-    override val nextCursor: String?
-        get() = throw IllegalStateException("You can't use DataPageWithNamedCursors for regular pagination")
+        val items: List<T>,
+        val isLast: Boolean
+) {
+    /**
+     * @return a copy of the [DataPageWithNamedCursors] with items transformed
+     * by [transform]
+     */
+    inline fun <R> mapItems(transform: (T) -> R): DataPageWithNamedCursors<R> {
+        return DataPageWithNamedCursors(
+                nextCursors,
+                items.map(transform),
+                isLast
+        )
+    }
+
+    /**
+     * @return a copy of the [DataPageWithNamedCursors] with only the non-null results of
+     * [transform] applied on it's items
+     */
+    inline fun <R : Any> mapItemsNotNull(transform: (T) -> R?): DataPageWithNamedCursors<R> {
+        return DataPageWithNamedCursors(
+                nextCursors,
+                items.mapNotNull(transform),
+                isLast
+        )
+    }
 
     companion object {
         /**
@@ -35,7 +56,7 @@ class DataPageWithNamedCursors<T>(
                     else
                         PagingParamsWithNamedCursors.getCursorsFromUrl(nextLink)
 
-            val limit = getNumberParamFromLink(selfLink, PagingParamsV2.QUERY_PARAM_LIMIT)
+            val limit = DataPage.getNumberParamFromLink(selfLink, PagingParamsV2.QUERY_PARAM_LIMIT)
                     ?.toIntOrNull()
                     ?: 0
 

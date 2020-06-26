@@ -8,6 +8,7 @@ import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.base.model.BaseResource
 import org.tokend.sdk.api.base.model.DataPage
+import org.tokend.sdk.api.base.model.DataPageWithNamedCursors
 import org.tokend.sdk.api.base.model.Page
 import org.tokend.sdk.factory.GsonFactory
 import org.tokend.sdk.factory.JsonApiToolsProvider
@@ -100,6 +101,28 @@ open class CustomRequestsApi(
         return MappedRetrofitApiRequest(
                 doGet(url, queryMap, headersMap),
                 { mapPageResponseByClass(it, pageItemClass) }
+        )
+    }
+
+    /**
+     * Performs GET HTTP request.
+     *
+     * @return [DataPageWithNamedCursors] with items of type [T] which is a subtype of [BaseResource]
+     *
+     * @param url Relative endpoint URL
+     * @param pageItemClass [Class] that matches [T]
+     * @param queryMap Map of query params
+     * @param headersMap Map of headers
+     */
+    @JvmOverloads
+    open fun <T : BaseResource> getPageWithNamedCursors(url: String,
+                                                        pageItemClass: Class<out T>,
+                                                        queryMap: Map<String, Any>? = null,
+                                                        headersMap: Map<String, Any>? = null
+    ): ApiRequest<DataPageWithNamedCursors<T>> {
+        return MappedRetrofitApiRequest(
+                doGet(url, queryMap, headersMap),
+                { mapPageWithNamedCursorsResponseByClass(it, pageItemClass) }
         )
     }
     // endregion
@@ -381,5 +404,14 @@ open class CustomRequestsApi(
             val page = gson.fromJson<T>(responseBody.charStream(), type) as Page<T>
             DataPage.fromPage(page)
         }
+    }
+
+    protected open fun <T> mapPageWithNamedCursorsResponseByClass(responseBody: ResponseBody,
+                                                                  pageItemClass: Class<out T>): DataPageWithNamedCursors<T> {
+        val document = jsonApiResourceConverter.readDocumentCollection(
+                responseBody.byteStream(),
+                pageItemClass
+        ) as JSONAPIDocument<List<T>>
+        return DataPageWithNamedCursors.fromPageDocument(document)
     }
 }
