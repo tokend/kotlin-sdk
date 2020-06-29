@@ -13,14 +13,18 @@ import java.util.*
  * with type adapters for SDK models.
  */
 class GsonFactory {
-    fun getBaseGson(): Gson {
-        return baseGson ?: GsonBuilder()
+    fun getNewBaseGsonBuilder(): GsonBuilder {
+        return GsonBuilder()
                 .serializeNulls()
                 .registerTypeAdapter(SocialLinks::class.java, SocialLinks.SocialLinksDeserializer())
                 .registerTypeAdapter(Date::class.java, getGsonDateSerializer())
                 .registerTypeAdapter(Date::class.java, getGsonDateDeserializer())
                 .registerTypeAdapter(BigDecimal::class.java, getGsonBigDecimalSerializer())
                 .registerTypeAdapter(BigDecimal::class.java, getGsonBigDecimalDeserializer())
+    }
+
+    fun getBaseGson(): Gson {
+        return baseGson ?: getNewBaseGsonBuilder()
                 .create()
                 .also { baseGson = it }
     }
