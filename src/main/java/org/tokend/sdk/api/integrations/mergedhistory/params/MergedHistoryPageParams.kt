@@ -17,7 +17,7 @@ constructor(
         putAll(pagingParams.map())
         putFilter("collections", collections?.joinToString(separator = ","))
         putFilter("participants", participants?.joinToString(separator = ","))
-        dimensionFilters?.forEach { dimensionFilterKey, dimensionFilterValue ->
+        dimensionFilters?.forEach { (dimensionFilterKey, dimensionFilterValue) ->
             putFilter(dimensionFilterKey, dimensionFilterValue)
         }
     }
