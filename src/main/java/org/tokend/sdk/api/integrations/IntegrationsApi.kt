@@ -13,6 +13,7 @@ import org.tokend.sdk.api.integrations.escrow.EscrowService
 import org.tokend.sdk.api.integrations.fiat.FiatApi
 import org.tokend.sdk.api.integrations.fiat.FiatService
 import org.tokend.sdk.api.integrations.friends.FriendsApi
+import org.tokend.sdk.api.integrations.invitations.InvitationsApi
 import org.tokend.sdk.api.integrations.invoices.InvoicesApi
 import org.tokend.sdk.api.integrations.locator.LocatorApi
 import org.tokend.sdk.api.integrations.locator.LocatorService
@@ -89,5 +90,9 @@ open class IntegrationsApi(
 
     open val mergedHistory: MergedHistoryApi by lazy {
         MergedHistoryApi(customRequests)
+    }
+
+    open val invitations: InvitationsApi by lazy {
+        InvitationsApi(customRequests)
     }
 }

@@ -12,7 +12,7 @@ class CreateInvoiceRequest(
         selfAccountId: String,
         subject: String
 ) {
-    class Attributes(
+    private class Attributes(
             @SerializedName("amount")
             val amount: BigDecimal,
             @SerializedName("subject")
@@ -20,10 +20,10 @@ class CreateInvoiceRequest(
     )
 
     @SerializedName("attributes")
-    val attributes = Attributes(amount, subject)
+    private val attributes = Attributes(amount, subject)
 
     @SerializedName("relationships")
-    val relationships = mapOf(
+    private val relationships = mapOf(
             "asset" to DataEntity(mapOf("id" to assetCode)),
             "target" to DataEntity(mapOf("id" to targetAccountId)),
             "requestor" to DataEntity(mapOf("id" to selfAccountId)),
