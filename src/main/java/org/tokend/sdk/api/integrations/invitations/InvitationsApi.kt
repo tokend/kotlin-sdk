@@ -10,6 +10,8 @@ import org.tokend.sdk.api.integrations.invitations.model.generated.resources.Inf
 import org.tokend.sdk.api.integrations.invitations.model.generated.resources.InvitationResource
 import org.tokend.sdk.api.integrations.invitations.params.SortedInvitationsPageParams
 import org.tokend.sdk.api.integrations.invoices.params.InvoicesPageParams
+import org.tokend.sdk.signing.RequestSigner
+import org.tokend.sdk.signing.SignInterceptor
 
 open class InvitationsApi(
         protected open val customRequestsApi: CustomRequestsApi
@@ -84,6 +86,17 @@ open class InvitationsApi(
                 body = Any(),
                 responseClass = Void::class.java
         )
+    }
+
+    fun getRedemptionSignature(id: String,
+                               requestSigner: RequestSigner): String {
+        val relativeUrl = "/integrations/invitations/$id/redeem"
+        val signatureHeaders = SignInterceptor.getSignatureHeaders(
+                signer = requestSigner,
+                method = "PATCH",
+                relativeUrl = relativeUrl
+        )
+        return signatureHeaders.getValue(SignInterceptor.AUTH_HEADER)
     }
 
     fun waitInvitation(id: String): ApiRequest<Void> {
