@@ -13,7 +13,7 @@ import java.util.concurrent.Executors
 abstract class BaseApi
 @JvmOverloads constructor(
         val rootUrl: String,
-        protected val requestSigner: RequestSigner? = null,
+        val requestSigner: RequestSigner? = null,
         protected val tfaCallback: TfaCallback? = null,
         protected val cookieJarProvider: CookieJarProvider? = null,
         userAgent: String? = null,
