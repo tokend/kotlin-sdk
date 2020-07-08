@@ -8,6 +8,7 @@ import org.tokend.sdk.api.custom.CustomRequestsApi
 import org.tokend.sdk.api.integrations.invitations.model.CreateInvitationRequest
 import org.tokend.sdk.api.integrations.invitations.model.generated.resources.InfoResource
 import org.tokend.sdk.api.integrations.invitations.model.generated.resources.InvitationResource
+import org.tokend.sdk.api.integrations.invitations.params.InvitationsPageParams
 import org.tokend.sdk.api.integrations.invitations.params.SortedInvitationsPageParams
 import org.tokend.sdk.api.integrations.invoices.params.InvoicesPageParams
 import org.tokend.sdk.signing.RequestSigner
@@ -31,7 +32,7 @@ open class InvitationsApi(
     }
 
     @JvmOverloads
-    fun getPage(params: InvoicesPageParams? = null): ApiRequest<DataPage<InvitationResource>> {
+    fun getPage(params: InvitationsPageParams? = null): ApiRequest<DataPage<InvitationResource>> {
         return customRequestsApi.getPage(
                 url = "integrations/invitations",
                 pageItemClass = InvitationResource::class.java,

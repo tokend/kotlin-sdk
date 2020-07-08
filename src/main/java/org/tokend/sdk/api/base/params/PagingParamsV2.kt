@@ -3,7 +3,7 @@ package org.tokend.sdk.api.base.params
 /**
  * Backward-compatible pagination params for API V2.
  */
-class PagingParamsV2
+open class PagingParamsV2
 @JvmOverloads
 constructor(
         order: PagingOrder? = null,

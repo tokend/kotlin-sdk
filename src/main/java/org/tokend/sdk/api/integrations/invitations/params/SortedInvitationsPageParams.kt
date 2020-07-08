@@ -1,6 +1,6 @@
 package org.tokend.sdk.api.integrations.invitations.params
 
-import org.tokend.sdk.api.base.params.PagingParamsV2
+import org.tokend.sdk.api.base.params.PagingParamsV3
 import org.tokend.sdk.api.integrations.invitations.model.InvitationState
 
 /**
@@ -13,7 +13,7 @@ class SortedInvitationsPageParams(
         host: String? = null,
         guest: String? = null,
         placeAsset: String? = null,
-        pagingParams: PagingParamsV2? = null,
+        pagingParams: PagingParamsV3? = null,
         include: Collection<String>? = null
 ) : InvitationsPageParams(states, host, guest, placeAsset, pagingParams, include) {
     override fun map(): Map<String, Any> = super.map().toMutableMap().apply {
