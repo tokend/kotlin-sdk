@@ -124,7 +124,7 @@ class ResourceGenerator(
         println("Generating classes from specs '$specsDirectoryPath' to '$outputDirectoryPath'...\n")
 
         Runtime.getRuntime()
-                .exec("ruby $resourcegenPath" +
+                .exec("ruby $resourcegenPath " +
                         "--specs $specsDirectoryPath --out $outputDirectoryPath --namespace $namespace")
                 .apply {
                     inputStream.use { inputStream ->
