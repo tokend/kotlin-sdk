@@ -10,7 +10,6 @@ import org.tokend.sdk.api.integrations.invitations.model.generated.resources.Inf
 import org.tokend.sdk.api.integrations.invitations.model.generated.resources.InvitationResource
 import org.tokend.sdk.api.integrations.invitations.params.InvitationsPageParams
 import org.tokend.sdk.api.integrations.invitations.params.SortedInvitationsPageParams
-import org.tokend.sdk.api.integrations.invoices.params.InvoicesPageParams
 import org.tokend.sdk.signing.RequestSigner
 import org.tokend.sdk.signing.SignInterceptor
 
@@ -26,7 +25,7 @@ open class InvitationsApi(
 
     fun getInvitation(id: String): ApiRequest<InvitationResource> {
         return customRequestsApi.get(
-                url = "integrations/invoices/$id",
+                url = "integrations/invitations/$id",
                 responseClass = InvitationResource::class.java
         )
     }
@@ -60,14 +59,14 @@ open class InvitationsApi(
 
     fun deleteInvitation(id: String): ApiRequest<Void> {
         return customRequestsApi.delete(
-                url = "integrations/invoices/$id",
+                url = "integrations/invitations/$id",
                 responseClass = Void::class.java
         )
     }
 
     fun acceptInvitation(id: String): ApiRequest<Void> {
         return customRequestsApi.patch(
-                url = "integrations/invoices/$id/accept",
+                url = "integrations/invitations/$id/accept",
                 body = Any(),
                 responseClass = Void::class.java
         )
@@ -75,7 +74,7 @@ open class InvitationsApi(
 
     fun cancelInvitation(id: String): ApiRequest<Void> {
         return customRequestsApi.patch(
-                url = "integrations/invoices/$id/cancel",
+                url = "integrations/invitations/$id/cancel",
                 body = Any(),
                 responseClass = Void::class.java
         )
@@ -83,8 +82,18 @@ open class InvitationsApi(
 
     fun redeemInvitation(id: String): ApiRequest<Void> {
         return customRequestsApi.patch(
-                url = "integrations/invoices/$id/redeem",
+                url = "integrations/invitations/$id/redeem",
                 body = Any(),
+                responseClass = Void::class.java
+        )
+    }
+
+    fun redeemNotOwnedInvitation(id: String,
+                                 signature: String): ApiRequest<Void> {
+        return customRequestsApi.patch(
+                url = "integrations/invitations/$id/redeem",
+                body = Any(),
+                headersMap = mapOf(SignInterceptor.AUTH_HEADER to signature),
                 responseClass = Void::class.java
         )
     }
@@ -102,7 +111,7 @@ open class InvitationsApi(
 
     fun waitInvitation(id: String): ApiRequest<Void> {
         return customRequestsApi.patch(
-                url = "integrations/invoices/$id/wait",
+                url = "integrations/invitations/$id/wait",
                 body = Any(),
                 responseClass = Void::class.java
         )
