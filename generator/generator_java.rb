@@ -332,7 +332,7 @@ $resource_configs.each do |key, info|
   add_line 'import com.fasterxml.jackson.annotation.*;'
   add_line 'import com.github.jasminb.jsonapi.annotations.*;'
   add_line "import #{$namespace}.resources.*;"
-  add_line "import #{$namespace}.inner.*;"
+  add_line "import #{$namespace}.inner.*;" unless $inner_configs.empty?
   add_line 'import com.fasterxml.jackson.databind.*;'
   add_line 'import org.jetbrains.annotations.Nullable;'
   add_line 'import org.tokend.sdk.api.base.model.*;'

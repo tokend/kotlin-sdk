@@ -1,0 +1,30 @@
+definitions:
+  attribute:
+    type: object
+    properties:
+      type: {type: string}
+      name: {type: string}
+      description: {type: string}
+      json_name: {type: string}
+      optional: {type: boolean, default: false}
+      is_collection: {type: boolean, default: false}
+    required:
+      - type
+      - name
+
+description: Inner object included in the resource.
+type: object
+properties:
+  name:
+    type: string
+    pattern: '^[A-Z].*'
+  description:
+    type: string
+  attributes:
+    type: array
+    items:
+      $ref: '#/definitions/attribute'
+required:
+  - name
+  - attributes
+additionalProperties: false

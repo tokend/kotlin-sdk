@@ -1,0 +1,72 @@
+definitions:
+
+  resourcetype:
+    type: string
+    description: Resource type identifier.
+
+  attribute:
+    type: object
+    description: Resource attribute.
+    properties:
+      type: {type: string}
+      name: {type: string}
+      json_name: {type: string}
+      description: {type: string}
+      optional: {type: boolean, default: false}
+      is_collection: {type: boolean, default: false}
+      is_string_map: {type: boolean, default: false}
+    required:
+      - type
+      - name
+
+  relation:
+    type: object
+    description: Link to the other resource.
+    properties:
+      name: {type: string}
+      description: {type: string}
+      resource: {$ref: '#/definitions/resourcetype'}
+      is_collection: {type: boolean}
+    required:
+      - name
+      - resource
+      - is_collection
+
+  tag:
+    type: string
+    description: Collection of values to tag anything.
+    enum:
+      - balance
+
+description: TokenD JSONAPI resource
+type: object
+properties:
+  key:
+    $ref: '#/definitions/resourcetype'
+    description: Resource key i.e. 'assets', 'balances', etc.
+  name:
+    type: string
+    pattern: '^[A-Z].*'
+    description: Human-readable resource name i.e. 'Asset', 'Balance', etc.
+  base:
+    $ref: '#/definitions/resourcetype'
+    description: Optional key of a base resource.
+  tags:
+    type: array
+    description: Array of tags.
+    items:
+      $ref: '#/definitions/tag'
+  attributes:
+    type: array
+    description: Array of resource attributes.
+    items:
+      $ref: '#/definitions/attribute'
+  relations:
+    type: array
+    description: Array of resource relations.
+    items:
+      $ref: '#/definitions/relation'
+required:
+  - key
+  - name
+additionalProperties: false
