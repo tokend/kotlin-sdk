@@ -10,6 +10,7 @@ import org.tokend.sdk.api.integrations.dns.DnsApi
 import org.tokend.sdk.api.integrations.dns.DnsService
 import org.tokend.sdk.api.integrations.escrow.EscrowApi
 import org.tokend.sdk.api.integrations.escrow.EscrowService
+import org.tokend.sdk.api.integrations.exchange.ExchangeApi
 import org.tokend.sdk.api.integrations.fiat.FiatApi
 import org.tokend.sdk.api.integrations.fiat.FiatService
 import org.tokend.sdk.api.integrations.friends.FriendsApi
@@ -94,5 +95,9 @@ open class IntegrationsApi(
 
     open val invitations: InvitationsApi by lazy {
         InvitationsApi(customRequests)
+    }
+
+    open val exchange: ExchangeApi by lazy {
+        ExchangeApi(customRequests)
     }
 }
