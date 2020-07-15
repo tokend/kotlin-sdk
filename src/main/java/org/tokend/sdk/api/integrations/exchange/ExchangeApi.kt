@@ -14,7 +14,7 @@ open class ExchangeApi(
     open fun getRate(baseAsset: String,
                      quoteAsset: String): ApiRequest<ExchangeRateResource> {
         return customRequestsApi.get(
-                url = "integrations/exchange",
+                url = "integrations/exchange/rate",
                 queryMap = mapOf(
                         "base" to baseAsset,
                         "quote" to quoteAsset
@@ -25,7 +25,7 @@ open class ExchangeApi(
 
     open fun createExchange(request: CreateExchangeRequest): ApiRequest<ConversionResource> {
         return customRequestsApi.post(
-                url = "integrations/exchange",
+                url = "integrations/exchange/convert",
                 body = DataEntity(AttributesEntity(request)),
                 responseClass = ConversionResource::class.java
         )
