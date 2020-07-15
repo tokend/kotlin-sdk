@@ -7,6 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [3.5.0] 2020-07-15
+
+### Added
+- Recurring payments integration API
+- Invoices integration API
+- Bank cards integration API
+- Friends list integration API
+- Merged history integration API
+- Invitations integration API
+- Exchange integration API
+- Ability to use locator integration API with bank cards
+- Params, page model, `CustomRequestsApi` method and resource loader for pagination
+ with multiple named cursors: `PagingParamsWithNamedCursors`, 
+ `DataPageWithNamedCursors`, `SimpleNamedCursorsPagedResourceLoader`
+- Ability to get `GsonBuilder` from `GsonFactory`
+
+### Changed
+- Updated wallet module version to `3.6.4`
+- `KeyServer` wallet creation methods now return more info
+- Actualized DNS integration API endpoints
+- `SignInterceptor` is now public and allows 
+auth headers creation for custom request data
+
+### Removed
+- `Date` header from request signing
+
+### Internal
+- Added resource generation related code to Git: 
+ `ResourceGenerator`, `/generator`
+
 ## [3.4.0] 2020-03-11
 
 ### Added
@@ -317,4 +347,5 @@ with `addExtraResources` method
 [3.3.4]: https://github.com/tokend/kotlin-sdk/compare/3.3.3...3.3.4
 [3.3.5]: https://github.com/tokend/kotlin-sdk/compare/3.3.4...3.3.5
 [3.4.0]: https://github.com/tokend/kotlin-sdk/compare/3.3.5...3.4.0
-[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/3.4.0...HEAD
+[3.5.0]: https://github.com/tokend/kotlin-sdk/compare/3.4.0...3.5.0
+[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/3.5.0...HEAD
