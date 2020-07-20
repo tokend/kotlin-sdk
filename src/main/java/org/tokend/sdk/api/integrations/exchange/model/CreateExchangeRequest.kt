@@ -19,5 +19,7 @@ class CreateExchangeRequest(
         @SerializedName("quote")
         val quoteAsset: String,
         @SerializedName("subject")
-        val subject: String? = null
+        val subject: String? = null,
+        @SerializedName("reference")
+        val reference: String? = null
 )
