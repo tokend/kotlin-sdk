@@ -66,13 +66,33 @@ object WalletEncryption {
         seedJsonCharBuffer.get(seedJsonChars).clear()
 
         val seedStartKey = "\"seed\"".toCharArray()
-        var seedStartIndex = seedJsonChars.foldIndexed(-1) { index, found, _ ->
+        val seedArrayStartKey = "\"seeds\"".toCharArray()
+        var seedStartIndex = getSeedStartIndex(seedJsonChars = seedJsonChars, seedStartKey = seedStartKey)
+        if (seedStartIndex < 0) {
+            seedStartIndex = getSeedStartIndex(seedJsonChars = seedJsonChars, seedStartKey = seedArrayStartKey)
+            seedJsonChars.fill('0', 0, seedStartIndex + seedArrayStartKey.size)
+        }else {
+            seedJsonChars.fill('0', 0, seedStartIndex + seedStartKey.size)
+        }
+        seedStartIndex = seedJsonChars.indexOf('"')
+        seedJsonChars[seedStartIndex] = '0'
+
+        seedStartIndex++
+        val seedEndIndex = seedJsonChars.indexOf('"')
+        val seed = seedJsonChars.copyOfRange(seedStartIndex, seedEndIndex)
+        seedJsonChars.fill('0')
+
+        return seed
+    }
+
+    private fun getSeedStartIndex(seedJsonChars: CharArray, seedStartKey: CharArray): Int {
+        return seedJsonChars.foldIndexed(-1) { index, found, _ ->
             if (found >= 0) {
                 return@foldIndexed found
             }
 
             var match = true
-            for (i in 0 until seedStartKey.size) {
+            for (i in seedStartKey.indices) {
                 if (i + index == seedJsonChars.size) {
                     return@foldIndexed -1
                 }
@@ -83,16 +103,6 @@ object WalletEncryption {
             }
             return@foldIndexed if (match) index else -1
         }
-        seedJsonChars.fill('0', 0, seedStartIndex + seedStartKey.size)
-        seedStartIndex = seedJsonChars.indexOf('"')
-        seedJsonChars[seedStartIndex] = '0'
-
-        seedStartIndex++
-        val seedEndIndex = seedJsonChars.indexOf('"')
-        val seed = seedJsonChars.copyOfRange(seedStartIndex, seedEndIndex)
-        seedJsonChars.fill('0')
-
-        return seed
     }
 
     /**
