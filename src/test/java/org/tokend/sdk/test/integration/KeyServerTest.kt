@@ -388,4 +388,82 @@ class KeyServerTest {
             }
         }
     }
+
+    @Test
+    fun gSignUpManyAccounts() {
+        val accounts = (1..3).map { Account.random() }
+
+        val email = "signUpInvalidCredentialsTest" + Random.nextInt().absoluteValue + "@mail.com"
+        val password = "qwe123".toCharArray()
+
+        val api = Util.getApi()
+
+        val keyServer = KeyServer(api.wallets)
+
+        System.out.println("Attempt to sign up $email ${password.joinToString("")}")
+
+        val signerRole = api.v3.keyValue
+                .getById(KeyServer.DEFAULT_SIGNER_ROLE_KEY_VALUE_KEY)
+                .map { it.value.u32!! }
+                .execute()
+                .get()
+
+        val signers = accounts.map {
+            SignerData(it.accountId, roleId = signerRole)
+        }
+
+        val result = keyServer.createAndSaveWallet(
+                email = email,
+                password = password,
+                accounts = accounts,
+                signers = signers
+        )
+                .execute()
+                .get()
+
+        System.out.println("Account ID is ${result.rootAccount.accountId}")
+
+        Assert.assertArrayEquals(
+                "Root account must be equal to the first one",
+                accounts.first().secretSeed,
+                result.rootAccount.secretSeed
+        )
+        accounts.forEachIndexed { i, account ->
+            Assert.assertEquals(
+                    "Result wallet secret seed #$i must be equal to the local one",
+                    account.accountId,
+                    result.accounts[i].accountId
+            )
+        }
+
+        checkSignUpResult(email, password, result, api)
+
+        val actualSigners = api.v3
+                .signers.get(result.walletData.attributes.accountId)
+                .execute()
+                .get()
+
+        Assert.assertTrue(
+                "All signers must have specified role $signerRole",
+                actualSigners.all { it.role.id == signerRole.toString() }
+        )
+        Assert.assertTrue(
+                "All specified signers must be created",
+                actualSigners
+                        .map { signer -> signers.any { it.id == signer.id } }
+                        .all { it }
+        )
+
+        val walletInfo = keyServer.getWalletInfo(email, password)
+                .execute()
+                .get()
+
+        accounts.forEachIndexed { i, account ->
+            Assert.assertArrayEquals(
+                    "Remote wallet secret seed #$i must be equal to the local one",
+                    account.secretSeed,
+                    walletInfo.secretSeeds[i]
+            )
+        }
+    }
 }

@@ -1,40 +1,60 @@
 package org.tokend.sdk.keyserver.models
 
 import com.google.gson.annotations.SerializedName
-import java.util.*
 
-data class WalletInfo(
+class WalletInfo(
         @SerializedName("accountId")
         var accountId: String,
         @SerializedName("email")
         var email: String,
         @SerializedName("walletIdHex")
         var walletIdHex: String,
-        @SerializedName("secretSeed")
-        var secretSeed: CharArray,
+        @SerializedName("secretSeeds")
+        private var mSecretSeeds: List<CharArray>?,
         @SerializedName("loginParams")
-        var loginParams: LoginParams) {
-        override fun equals(other: Any?): Boolean {
-                if (this === other) return true
-                if (javaClass != other?.javaClass) return false
+        var loginParams: LoginParams
+) {
+    @SerializedName("secretSeed")
+    private val legacySingleSecretSeed: CharArray? = null
 
-                other as WalletInfo
-
-                if (accountId != other.accountId) return false
-                if (email != other.email) return false
-                if (walletIdHex != other.walletIdHex) return false
-                if (!Arrays.equals(secretSeed, other.secretSeed)) return false
-                if (loginParams != other.loginParams) return false
-
-                return true
+    var secretSeeds: List<CharArray>
+        get() = mSecretSeeds
+                ?: legacySingleSecretSeed?.let { listOf(it) }
+                ?: throw IllegalStateException("No secret seeds found")
+        set(value) {
+            mSecretSeeds = value
         }
 
-        override fun hashCode(): Int {
-                var result = accountId.hashCode()
-                result = 31 * result + email.hashCode()
-                result = 31 * result + walletIdHex.hashCode()
-                result = 31 * result + Arrays.hashCode(secretSeed)
-                result = 31 * result + loginParams.hashCode()
-                return result
+    var secretSeed: CharArray
+        get() = secretSeeds.first()
+        set(value) {
+            secretSeeds = listOf(value)
         }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is WalletInfo) return false
+
+        if (accountId != other.accountId) return false
+        if (email != other.email) return false
+        if (walletIdHex != other.walletIdHex) return false
+        val otherSeeds = other.secretSeeds
+        secretSeeds.forEachIndexed { i, seed ->
+            if (!otherSeeds[i].contentEquals(seed)) {
+                return false
+            }
+        }
+        if (loginParams != other.loginParams) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = accountId.hashCode()
+        result = 31 * result + email.hashCode()
+        result = 31 * result + walletIdHex.hashCode()
+        result = 31 * result + secretSeeds.hashCode()
+        result = 31 * result + loginParams.hashCode()
+        return result
+    }
 }

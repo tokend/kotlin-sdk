@@ -188,11 +188,51 @@ object WalletEncryption {
                        account: Account,
                        walletEncryptionKey: ByteArray,
                        keyDerivationSalt: ByteArray): EncryptedWalletAccount {
-        val seed = account.secretSeed
-                ?: throw IllegalArgumentException("Provided account has no secret seed")
+        return encryptAccounts(email, listOf(account), walletEncryptionKey, keyDerivationSalt)
+    }
 
-        return this.encryptAccount(email, seed, account.accountId,
-                walletEncryptionKey, keyDerivationSalt)
+    /**
+     * Encrypts given account assuming that first account is the root one
+     *
+     * @param email wallet email
+     * @param accounts accounts to encrypt in specified order
+     * @param walletEncryptionKey 32 bytes encryption key
+     * @param keyDerivationSalt KDF salt used for [walletEncryptionKey] derivation
+     *
+     * @see WalletKeyDerivation.deriveWalletEncryptionKey
+     * @see Aes256GCM
+     */
+    @JvmStatic
+    fun encryptAccounts(email: String,
+                        accounts: List<Account>,
+                        walletEncryptionKey: ByteArray,
+                        keyDerivationSalt: ByteArray
+    ): EncryptedWalletAccount {
+        val iv = SecureRandom.getSeed(IV_LENGTH)
+
+        val seeds = accounts.map {
+            requireNotNull(it.secretSeed) {
+                "Account $it has no secret seed"
+            }
+        }
+        val mainAccount = requireNotNull(accounts.firstOrNull()) {
+            "There must be at least one account"
+        }
+
+        val encryptedSeedsKeychainData = encryptSecretSeeds(
+                seeds = seeds,
+                iv = iv,
+                walletEncryptionKey = walletEncryptionKey
+        )
+
+        seeds.forEach(CharArray::erase)
+
+        return EncryptedWalletAccount(
+                accountId = mainAccount.accountId,
+                keychainData = encryptedSeedsKeychainData,
+                salt = keyDerivationSalt,
+                email = email
+        )
     }
 
     private const val IV_LENGTH = 12
