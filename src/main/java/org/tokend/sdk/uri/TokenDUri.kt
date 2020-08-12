@@ -66,11 +66,12 @@ private constructor(
 
             val host = uri.host
 
-            val queryMap = uri.query
+            val queryMap = uri.rawQuery
                     .splitToSequence("&")
                     .associate { queryPair ->
-                        val splitted = queryPair.split("=")
-                        splitted[0] to URLDecoder.decode(splitted[1], URLENCODE_CHARSET)
+                        queryPair.split("=").let {
+                            it[0] to it[1]
+                        }
                     }
 
             return TokenDUri(host, queryMap)
