@@ -1,12 +1,14 @@
 package org.tokend.sdk.keyserver
 
 import org.tokend.crypto.cipher.Aes256GCM
+import org.tokend.crypto.ecdsa.erase
 import org.tokend.sdk.keyserver.models.EncryptedWalletAccount
 import org.tokend.sdk.keyserver.models.KeychainData
+import org.tokend.sdk.keyserver.seedreader.KeychainDataSeedsArrayReader
+import org.tokend.sdk.keyserver.seedreader.KeychainDataSingleSeedReader
 import org.tokend.wallet.Account
 import java.nio.ByteBuffer
 import java.nio.CharBuffer
-import java.nio.charset.Charset
 import java.security.SecureRandom
 
 object WalletEncryption {
@@ -26,26 +28,74 @@ object WalletEncryption {
     fun encryptSecretSeed(seed: CharArray,
                           iv: ByteArray,
                           walletEncryptionKey: ByteArray): KeychainData {
-        val jsonStartChars = "{\"seed\":\"".toCharArray()
-        val jsonEndChars = "\"}".toCharArray()
-        val jsonChars = jsonStartChars.plus(seed).plus(jsonEndChars)
+        return encryptSecretSeeds(listOf(seed), iv, walletEncryptionKey)
+    }
 
-        val jsonCharBuffer = CharBuffer.wrap(jsonChars)
-        val jsonByteBuffer = Charset.defaultCharset().encode(jsonCharBuffer)
+    /**
+     * Wraps given secret seeds into JSON object
+     * and encrypts it with given key
+     *
+     * @param seeds secret seeds of the [Account]. The first will be used
+     * for legacy format ("seed" attribute)
+     * @param iv non-empty cipher initialization vector
+     * @param walletEncryptionKey 32 bytes encryption key
+     *
+     * @see WalletKeyDerivation.deriveWalletEncryptionKey
+     * @see Account.secretSeed
+     * @see Aes256GCM
+     */
+    @JvmStatic
+    fun encryptSecretSeeds(seeds: List<CharArray>,
+                           iv: ByteArray,
+                           walletEncryptionKey: ByteArray): KeychainData {
+        val primarySeed = seeds.first()
+
+        val jsonStart = """{"seed":""""
+        val jsonMiddle = """","seeds":["""
+        val jsonEnd = """]}"""
+
+        val jsonCharBuffer = CharBuffer.allocate(
+                jsonStart.length +
+                        primarySeed.size +
+                        jsonMiddle.length +
+                        seeds.sumBy { it.size } +
+                        // "...", - last comma
+                        seeds.size * 3 - 1 +
+                        jsonEnd.length
+        )
+
+        jsonCharBuffer.apply {
+            put(jsonStart)
+            put(primarySeed)
+            put(jsonMiddle)
+            seeds.forEachIndexed { i, seed ->
+                put('"')
+                put(seed)
+                put('"')
+                if (i != seeds.size - 1) {
+                    put(',')
+                }
+            }
+            put(jsonEnd)
+
+            rewind()
+        }
+
+        val jsonByteBuffer = Charsets.UTF_8.encode(jsonCharBuffer)
         jsonCharBuffer.clear()
-        jsonChars.fill('0')
+        jsonCharBuffer.array().erase()
 
         val jsonBytes = ByteArray(jsonByteBuffer.remaining())
         jsonByteBuffer.get(jsonBytes).clear()
 
         val encrypted = Aes256GCM(iv).encrypt(jsonBytes, walletEncryptionKey)
-        jsonBytes.fill(0)
+        jsonBytes.erase()
 
         return KeychainData.fromRaw(iv, encrypted)
     }
 
     /**
-     * Decrypts secret seed wrapped into JSON object with given key
+     * Decrypts single secret seed wrapped into JSON object with given key
      *
      * @see WalletKeyDerivation.deriveWalletEncryptionKey
      * @see encryptSecretSeed
@@ -53,56 +103,42 @@ object WalletEncryption {
     @JvmStatic
     fun decryptSecretSeed(keychainData: KeychainData,
                           walletEncryptionKey: ByteArray): CharArray {
+        return decryptSecretSeeds(keychainData, walletEncryptionKey).first()
+    }
+
+    /**
+     * Decrypts secret seeds wrapped into JSON object with given key.
+     * It supports both legacy ("seed") and new ("seeds") formats.
+     * If there are both legacy and new attributes then it returns array values.
+     *
+     * @see WalletKeyDerivation.deriveWalletEncryptionKey
+     * @see encryptSecretSeeds
+     */
+    fun decryptSecretSeeds(keychainData: KeychainData,
+                           walletEncryptionKey: ByteArray): List<CharArray> {
         val iv = keychainData.iv
         val cipherText = keychainData.cipherText
 
         val seedJsonBytes = Aes256GCM(iv).decrypt(cipherText, walletEncryptionKey)
         val seedJsonByteBuffer = ByteBuffer.wrap(seedJsonBytes)
 
-        val seedJsonCharBuffer = Charset.defaultCharset().decode(seedJsonByteBuffer)
+        val seedJsonCharBuffer = Charsets.UTF_8.decode(seedJsonByteBuffer)
         seedJsonByteBuffer.clear()
-        seedJsonBytes.fill(0)
-        val seedJsonChars = CharArray(seedJsonCharBuffer.remaining())
-        seedJsonCharBuffer.get(seedJsonChars).clear()
+        seedJsonBytes.erase()
 
-        val seedStartKey = "\"seed\"".toCharArray()
-        val seedArrayStartKey = "\"seeds\"".toCharArray()
-        var seedStartIndex = getSeedStartIndex(seedJsonChars = seedJsonChars, seedStartKey = seedStartKey)
-        if (seedStartIndex < 0) {
-            seedStartIndex = getSeedStartIndex(seedJsonChars = seedJsonChars, seedStartKey = seedArrayStartKey)
-            seedJsonChars.fill('0', 0, seedStartIndex + seedArrayStartKey.size)
-        }else {
-            seedJsonChars.fill('0', 0, seedStartIndex + seedStartKey.size)
-        }
-        seedStartIndex = seedJsonChars.indexOf('"')
-        seedJsonChars[seedStartIndex] = '0'
+        val arrayParser = KeychainDataSeedsArrayReader().apply { run(seedJsonCharBuffer) }
+        seedJsonCharBuffer.rewind()
+        val singleParser = KeychainDataSingleSeedReader().apply { run(seedJsonCharBuffer) }
 
-        seedStartIndex++
-        val seedEndIndex = seedJsonChars.indexOf('"')
-        val seed = seedJsonChars.copyOfRange(seedStartIndex, seedEndIndex)
-        seedJsonChars.fill('0')
+        seedJsonCharBuffer.clear()
+        seedJsonCharBuffer.array().erase()
 
-        return seed
-    }
-
-    private fun getSeedStartIndex(seedJsonChars: CharArray, seedStartKey: CharArray): Int {
-        return seedJsonChars.foldIndexed(-1) { index, found, _ ->
-            if (found >= 0) {
-                return@foldIndexed found
-            }
-
-            var match = true
-            for (i in seedStartKey.indices) {
-                if (i + index == seedJsonChars.size) {
-                    return@foldIndexed -1
-                }
-                if (seedStartKey[i] != seedJsonChars[i + index]) {
-                    match = false
-                    break
-                }
-            }
-            return@foldIndexed if (match) index else -1
-        }
+        return if (arrayParser.readSeeds.isNotEmpty())
+            arrayParser.readSeeds
+        else
+            singleParser.readSeed
+                    ?.let { listOf(it) }
+                    ?: throw IllegalStateException("Unable to parse seed")
     }
 
     /**
