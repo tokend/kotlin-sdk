@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.*
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.github.jasminb.jsonapi.ResourceConverter
 import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory
-import org.tokend.sdk.api.base.model.BaseResource
 import org.tokend.sdk.api.generated.resources.AllResources
 import org.tokend.sdk.api.identity.model.IdentityResource
 import org.tokend.sdk.api.identity.model.IdentitySettingsResource
@@ -31,7 +30,7 @@ import java.util.logging.Logger
  * with type adapters for SDK models.
  */
 object JsonApiToolsProvider {
-    private val extraResources = mutableSetOf<Class<out BaseResource>>(
+    private val extraResources = mutableSetOf<Class<*>>(
             IdentityResource::class.java,
             BusinessResource::class.java,
             ClientResource::class.java,
@@ -52,7 +51,7 @@ object JsonApiToolsProvider {
      * the first call of [getResourceConverter]
      */
     @JvmStatic
-    fun addExtraResources(vararg resourceClass: Class<out BaseResource>) {
+    fun addExtraResources(vararg resourceClass: Class<*>) {
         if (resourceConverter != null) {
             Logger.getGlobal().log(Level.WARNING, "Attempt to add extra resources " +
                     "when the converter is already created and cached. This will have no effect!")
