@@ -24,6 +24,13 @@ public class ManageOfferRequestResource extends BaseReviewableRequestDetailsReso
         return baseAmount;
     }
     
+    @JsonProperty("creator_details")
+    private JsonNode creatorDetails;
+    
+    public JsonNode getCreatorDetails() {
+        return creatorDetails;
+    }
+    
     @JsonProperty("fee")
     private Fee fee;
     
@@ -62,6 +69,7 @@ public class ManageOfferRequestResource extends BaseReviewableRequestDetailsReso
     @Override
     public boolean isFilled() {
         return             baseAmount != null &&
+            creatorDetails != null &&
             fee != null &&
             isBuy != null &&
             offerId != null &&

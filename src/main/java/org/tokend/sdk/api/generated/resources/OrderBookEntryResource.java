@@ -39,9 +39,9 @@ public class OrderBookEntryResource extends BaseResource {
     }
     
     @JsonProperty("cumulative_quote_amount")
-    private BigDecimal cumulativeQuoteAmount;
+    private String cumulativeQuoteAmount;
     
-    public BigDecimal getCumulativeQuoteAmount() {
+    public String getCumulativeQuoteAmount() {
         return cumulativeQuoteAmount;
     }
     
@@ -60,9 +60,9 @@ public class OrderBookEntryResource extends BaseResource {
     }
     
     @JsonProperty("quote_amount")
-    private BigDecimal quoteAmount;
+    private String quoteAmount;
     
-    public BigDecimal getQuoteAmount() {
+    public String getQuoteAmount() {
         return quoteAmount;
     }
     

@@ -24,6 +24,13 @@ public class CreatePaymentRequestOpResource extends BaseOperationDetailsResource
         return amount;
     }
     
+    @JsonProperty("creator_details")
+    private JsonNode creatorDetails;
+    
+    public JsonNode getCreatorDetails() {
+        return creatorDetails;
+    }
+    
     @JsonProperty("destination_fee")
     private Fee destinationFee;
     
@@ -62,6 +69,7 @@ public class CreatePaymentRequestOpResource extends BaseOperationDetailsResource
     @Override
     public boolean isFilled() {
         return             amount != null &&
+            creatorDetails != null &&
             destinationFee != null &&
             reference != null &&
             sourceFee != null &&
