@@ -241,10 +241,9 @@ class YamlSpecsGenerator(openApi: OpenApi) {
         val type = attribute.type
 
         return when {
-            type == "object"
-                    || ref == "Details"
-                    || format == "json.RawMessage" -> "Object"
+            ref == "Details" -> "Object"
             ref != null -> ref
+            type == "object" || format == "json.RawMessage" -> "Object"
             format == "Amount"
                     || format == "regources.Amount" -> "Amount"
             format == "date-time"
