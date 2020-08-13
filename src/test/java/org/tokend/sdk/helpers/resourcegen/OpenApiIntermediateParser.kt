@@ -12,7 +12,8 @@ import java.util.logging.Logger
  * file created by TokenD OpenAPI generator.
  */
 class OpenApiIntermediateParser {
-    fun parse(fileName: String): OpenApi {
+    fun parse(fileName: String,
+              ignoredKeys: Set<String> = emptySet()): OpenApi {
         val file = File(fileName)
 
         val componentsMap = ObjectMapper(YAMLFactory()).readTree(file)["components"]["schemas"]
@@ -22,7 +23,7 @@ class OpenApiIntermediateParser {
                 .toMap()
 
         val keysSchemaMap = componentsMap
-                .filterKeys(ResourceKey.NAME_PREDICATE)
+                .filterKeys { ResourceKey.NAME_PREDICATE(it) && !ignoredKeys.contains(it) }
 
         val keysMap = keysSchemaMap
                 .entries
@@ -40,12 +41,16 @@ class OpenApiIntermediateParser {
 
         val resourcesMap = resourceSchemaMap
                 .entries
-                .map { resourceSchemaEntry ->
-                    resourceSchemaEntry.key to Resource(
+                .mapNotNull { resourceSchemaEntry ->
+                    val resource = Resource(
                             name = resourceSchemaEntry.key,
                             schema = resourceSchemaEntry.value,
                             componentsMap = componentsMap
                     )
+                    if (ignoredKeys.contains(resource.keyName))
+                        null
+                    else
+                        resourceSchemaEntry.key to resource
                 }
                 .toMap()
                 .toMutableMap()

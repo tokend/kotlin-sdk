@@ -405,7 +405,7 @@ class KeyServer constructor(
                 accountId = currentWalletInfo.accountId,
                 email = currentWalletInfo.email,
                 loginParams = newLoginParams,
-                mSecretSeeds = newAccounts.mapNotNull(Account::secretSeed),
+                secretSeeds = newAccounts.mapNotNull(Account::secretSeed),
                 walletIdHex = newWallet.walletData.id!!
         )
     }

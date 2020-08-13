@@ -20,6 +20,7 @@ class ResourceGenerator(
      * @param resourceGroupName used to create temp files and dirs in [tempOutputDirectoryPath]
      * @param generatedClassesDirectoryPath where to write Java classes
      * @param generatedClassesNamespace namespace for generated classes, must match [generatedClassesDirectoryPath]
+     * @param ignoredKeys OpenApi keys (i.e. 'PaymentOpKey') for which no resources and inners will be generated
      * @param buildWithMake use 'make' for build instead of NodeJS
      */
     fun generateResources(docsDirectoryPath: String,
@@ -27,6 +28,7 @@ class ResourceGenerator(
                           resourceGroupName: String,
                           generatedClassesDirectoryPath: String,
                           generatedClassesNamespace: String,
+                          ignoredKeys: Set<String> = emptySet(),
                           buildWithMake: Boolean = false) {
         File(tempOutputDirectoryPath).mkdir()
 
@@ -35,7 +37,7 @@ class ResourceGenerator(
 
         buildDocs(docsDirectoryPath, buildWithMake)
         generateIntermediate(openApiYamlFilePath, intermediateFilePath)
-        convertIntermediateToSpecs(intermediateFilePath, specsDirectoryPath)
+        convertIntermediateToSpecs(intermediateFilePath, specsDirectoryPath, ignoredKeys)
         generateClassesFromSpecs(specsDirectoryPath, generatedClassesDirectoryPath, generatedClassesNamespace)
 
         println("✅ Done! Do not forget to register new resources ;)")
@@ -92,10 +94,11 @@ class ResourceGenerator(
     }
 
     private fun convertIntermediateToSpecs(intermediateFilePath: String,
-                                           outputDirectoryPath: String) {
+                                           outputDirectoryPath: String,
+                                           ignoredKeys: Set<String>) {
         println("Converting intermediate '$intermediateFilePath' to specs '$outputDirectoryPath'...\n")
 
-        val openApi = OpenApiIntermediateParser().parse(intermediateFilePath)
+        val openApi = OpenApiIntermediateParser().parse(intermediateFilePath, ignoredKeys)
         val specs = YamlSpecsGenerator(openApi).generate()
 
         File(outputDirectoryPath).deleteRecursively()

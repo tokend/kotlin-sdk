@@ -87,8 +87,10 @@ public class InvitationResource extends BaseResource {
     }
     
     @JsonProperty("state")
+    @Nullable
     private org.tokend.sdk.api.integrations.invitations.model.generated.inner.Enum state;
     
+    @Nullable
     public org.tokend.sdk.api.integrations.invitations.model.generated.inner.Enum getState() {
         return state;
     }
@@ -126,7 +128,6 @@ public class InvitationResource extends BaseResource {
             holdsAllowed != null &&
             holdsLeft != null &&
             reference != null &&
-            state != null &&
             to != null 
         ;
     }

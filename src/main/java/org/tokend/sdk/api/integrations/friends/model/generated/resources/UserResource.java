@@ -2,11 +2,14 @@
 
 package org.tokend.sdk.api.integrations.friends.model.generated.resources;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.jasminb.jsonapi.annotations.Relationship;
-import com.github.jasminb.jsonapi.annotations.Type;
-import org.tokend.sdk.api.base.model.BaseResource;
+import java.math.*;
+import java.util.*;
+import com.fasterxml.jackson.annotation.*;
+import com.github.jasminb.jsonapi.annotations.*;
+import org.tokend.sdk.api.integrations.friends.model.generated.resources.*;
+import com.fasterxml.jackson.databind.*;
+import org.jetbrains.annotations.Nullable;
+import org.tokend.sdk.api.base.model.*;
 
 
 @Type("users")

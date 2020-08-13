@@ -9,6 +9,8 @@ import org.tokend.sdk.api.custom.CustomRequestsApi
 import org.tokend.sdk.api.integrations.cards.model.CardState
 import org.tokend.sdk.api.integrations.cards.model.CreateCardRequest
 import org.tokend.sdk.api.integrations.cards.model.generated.resources.CardResource
+import org.tokend.sdk.api.integrations.cards.model.generated.resources.InfoResource
+import org.tokend.sdk.api.integrations.cards.model.generated.resources.TransactionResource
 import org.tokend.sdk.api.integrations.cards.params.CardParams
 import org.tokend.sdk.api.integrations.cards.params.CardsPageParams
 import org.tokend.sdk.factory.JsonApiToolsProvider
@@ -102,4 +104,27 @@ open class CardsApi(
                     url = "integrations/cards/$number",
                     responseClass = Void::class.java
             )
+
+    open fun getInfo() =
+            customRequestsApi.get(
+                    url = "integrations/cards/info",
+                    responseClass = InfoResource::class.java
+            )
+
+    open fun approvePaymentTransaction(envelope: String,
+                                       sourceCardNumber: String,
+                                       destinationCardNumber: String) =
+            customRequestsApi.post(
+                    url = "integrations/cards/approve",
+                    body = DataEntity(mapOf(
+                            "attributes" to mapOf(
+                                    "env" to envelope
+                            ),
+                            "relationships" to mapOf(
+                                    "source_card" to DataEntity(mapOf("id" to sourceCardNumber)),
+                                    "destination_card" to DataEntity(mapOf("id" to destinationCardNumber))
+                            )
+                    )),
+                    responseClass = TransactionResource::class.java
+            ).map(TransactionResource::getEnv)
 }
