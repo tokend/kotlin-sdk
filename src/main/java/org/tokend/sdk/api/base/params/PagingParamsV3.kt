@@ -59,6 +59,6 @@ private constructor(
         fun withNumber(number: String? = null,
                        limit: Int? = null,
                        order: PagingOrder? = null
-        ) = PagingParamsV3(order, number, limit, numberInsteadOfCursor = false)
+        ) = PagingParamsV3(order, number, limit, numberInsteadOfCursor = true)
     }
 }
