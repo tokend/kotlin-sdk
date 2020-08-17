@@ -292,7 +292,7 @@ class KeyServer constructor(
                              newAccounts: List<Account>,
                              networkParams: NetworkParams,
                              currentSigners: List<SignerData>,
-                             newSigners: List<SignerData>): ApiRequest<WalletInfo> {
+                             newSigners: Collection<SignerData>): ApiRequest<WalletInfo> {
         return MappedCallableApiRequest(
                 {
                     getUpdateWalletPasswordResult(
@@ -356,7 +356,7 @@ class KeyServer constructor(
                                               newAccounts: List<Account>,
                                               networkParams: NetworkParams,
                                               currentSigners: List<SignerData>,
-                                              newSigners: List<SignerData>
+                                              newSigners: Collection<SignerData>
     ): WalletInfo {
         val signersUpdateTx = createSignersUpdateTransaction(
                 networkParams = networkParams,
@@ -364,10 +364,6 @@ class KeyServer constructor(
                 originalAccountId = currentWalletInfo.accountId,
                 signersToAdd = newSigners,
                 signersToRemove = currentSigners
-                        .sortedBy {
-                            // Remove current signer lastly, otherwise tx will be failed.
-                            it.id == currentAccount.accountId
-                        }
                         .filterNot {
                             // Do not remove recovery signer.
                             it.roleId == RECOVERY_SIGNER_ROLE_ID
@@ -420,8 +416,21 @@ class KeyServer constructor(
     fun recoverWalletPassword(email: String,
                               newPassword: CharArray,
                               newAccount: Account): ApiRequest<WalletCreateResult> {
+        return recoverWalletPassword(email, newPassword, listOf(newAccount))
+    }
+
+    /**
+     * Updates wallet with new password according to the KYC recovery flow.
+     * Temp signer will be added in order to request KYC recovery after
+     * sign in with new credentials.
+     *
+     * This requires email TFA confirmation.
+     */
+    fun recoverWalletPassword(email: String,
+                              newPassword: CharArray,
+                              newAccounts: List<Account>): ApiRequest<WalletCreateResult> {
         return MappedCallableApiRequest(
-                { getRecoverWalletPasswordResult(email, newPassword, listOf(newAccount)) },
+                { getRecoverWalletPasswordResult(email, newPassword, newAccounts) },
                 { it }
         )
     }
@@ -612,16 +621,52 @@ class KeyServer constructor(
          * that performs account signers update
          *
          * @param currentAccount account of a valid signer to be a tx signer
-         * @param signersToRemove account IDs of signers that will be removed in given order
+         * @param signersToRemove account IDs of signers that will be removed
          */
         fun createSignersUpdateTransaction(networkParams: NetworkParams,
                                            currentAccount: Account,
                                            originalAccountId: String,
-                                           signersToAdd: List<SignerData>,
-                                           signersToRemove: List<String>
+                                           signersToAdd: Collection<SignerData>,
+                                           signersToRemove: Collection<String>
         ): Transaction {
+            val removeCurrentAccountSigner =
+                    if (signersToRemove.contains(currentAccount.accountId))
+                        Operation.OperationBody.ManageSigner(
+                                ManageSignerOp(
+                                        ManageSignerOp.ManageSignerOpData.Remove(
+                                                RemoveSignerData(
+                                                        publicKey = currentAccount.xdrPublicKey,
+                                                        ext = EmptyExt.EmptyVersion()
+                                                )
+                                        ),
+                                        EmptyExt.EmptyVersion()
+                                )
+                        )
+                    else
+                        null
+
+            val removeSignersButNoCurrent =
+                    signersToRemove.mapNotNull { signerToRemove ->
+                        if (signerToRemove == currentAccount.accountId)
+                            return@mapNotNull null
+
+                        Operation.OperationBody.ManageSigner(
+                                ManageSignerOp(
+                                        ManageSignerOp.ManageSignerOpData.Remove(
+                                                RemoveSignerData(
+                                                        publicKey =
+                                                        PublicKeyFactory.fromAccountId(signerToRemove),
+                                                        ext = EmptyExt.EmptyVersion()
+                                                )
+                                        ),
+                                        EmptyExt.EmptyVersion()
+                                )
+                        )
+                    }
+
             return TransactionBuilder(networkParams, originalAccountId)
                     .addSigner(currentAccount)
+                    .addOperations(removeSignersButNoCurrent)
                     .addOperations(signersToAdd.map { signerToAdd ->
                         Operation.OperationBody.ManageSigner(
                                 ManageSignerOp(
@@ -640,20 +685,7 @@ class KeyServer constructor(
                                 )
                         )
                     })
-                    .addOperations(signersToRemove.map { signerToRemove ->
-                        Operation.OperationBody.ManageSigner(
-                                ManageSignerOp(
-                                        ManageSignerOp.ManageSignerOpData.Remove(
-                                                RemoveSignerData(
-                                                        publicKey =
-                                                        PublicKeyFactory.fromAccountId(signerToRemove),
-                                                        ext = EmptyExt.EmptyVersion()
-                                                )
-                                        ),
-                                        EmptyExt.EmptyVersion()
-                                )
-                        )
-                    })
+                    .apply { removeCurrentAccountSigner?.let { addOperation(it) } }
                     .build()
         }
 
