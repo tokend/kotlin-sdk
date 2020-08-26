@@ -6,9 +6,13 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.tokend.sdk.utils.CookieJarProvider
 import org.tokend.sdk.utils.CustomHeadersInterceptor
+import java.security.KeyStore
+import java.security.SecureRandom
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManagerFactory
+import javax.net.ssl.X509TrustManager
 
 /**
  * Constructs base http client builder.
@@ -21,13 +25,19 @@ class HttpClientFactory {
                                  withLogs: Boolean = false)
             : OkHttpClient.Builder {
         val sslContext = SSLContext.getInstance("TLSv1.2")
-        sslContext.init(null, null, null)
+        val trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
+        val defaultKeystore: KeyStore? = null
+        trustManagerFactory.init(defaultKeystore)
+        val trustManagers = trustManagerFactory.trustManagers
+        val x509trustManager = trustManagers.firstOrNull() as? X509TrustManager
+                ?: throw IllegalStateException("No X509TrustManager found")
+        sslContext.init(null, trustManagers, SecureRandom())
         val sslFactory = sslContext.socketFactory
 
         val clientBuilder = OkHttpClient.Builder()
                 .readTimeout(requestTimeoutMs, TimeUnit.MILLISECONDS)
                 .connectTimeout(requestTimeoutMs, TimeUnit.MILLISECONDS)
-                .sslSocketFactory(sslFactory)
+                .sslSocketFactory(sslFactory, x509trustManager)
 
         val connectionSpec = ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
                 .allEnabledTlsVersions()
