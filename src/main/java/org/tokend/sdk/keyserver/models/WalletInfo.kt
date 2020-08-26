@@ -13,6 +13,14 @@ class WalletInfo(
         @SerializedName("loginParams")
         var loginParams: LoginParams
 ) {
+    constructor(
+            accountId: String,
+            email: String,
+            walletIdHex: String,
+            secretSeed: CharArray,
+            loginParams: LoginParams
+    ) : this(accountId, email, walletIdHex, listOf(secretSeed), loginParams)
+
     @SerializedName("secretSeeds")
     private var mSecretSeeds: List<CharArray>? = secretSeeds
 
@@ -39,6 +47,13 @@ class WalletInfo(
              secretSeeds: List<CharArray>? = this.secretSeeds,
              loginParams: LoginParams = this.loginParams
     ) = WalletInfo(accountId, email, walletIdHex, secretSeeds, loginParams)
+
+    fun copy(accountId: String = this.accountId,
+             email: String = this.email,
+             walletIdHex: String = this.walletIdHex,
+             secretSeed: CharArray = this.secretSeeds.first(),
+             loginParams: LoginParams = this.loginParams
+    ) = WalletInfo(accountId, email, walletIdHex, listOf(secretSeed), loginParams)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
