@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [3.6.0] 2020-08-26
+
+### Added 
+- Ability to register any extra resource classes in `JsonApiToolsProvider`
+
+### Changed
+- Now KeyServer supports wallets with multiple secret seeds.
+Backward compatibility is present.
+
+### Fixed
+- Deprecated `SslSocketFactory` setting up in `HttpClientFactory`
+that caused errors on Java 9
+- Double URL-decoding of `TokenDUri` query params
+- Incorrect number-based pagination behavior in PagingParamsV3
+
 ## [3.5.0] 2020-07-15
 
 ### Added

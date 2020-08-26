@@ -51,7 +51,7 @@ class WalletInfo(
     fun copy(accountId: String = this.accountId,
              email: String = this.email,
              walletIdHex: String = this.walletIdHex,
-             secretSeed: CharArray = this.secretSeeds.first(),
+             secretSeed: CharArray = this.secretSeed,
              loginParams: LoginParams = this.loginParams
     ) = WalletInfo(accountId, email, walletIdHex, listOf(secretSeed), loginParams)
 
