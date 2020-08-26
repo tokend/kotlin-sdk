@@ -363,4 +363,5 @@ with `addExtraResources` method
 [3.3.5]: https://github.com/tokend/kotlin-sdk/compare/3.3.4...3.3.5
 [3.4.0]: https://github.com/tokend/kotlin-sdk/compare/3.3.5...3.4.0
 [3.5.0]: https://github.com/tokend/kotlin-sdk/compare/3.4.0...3.5.0
-[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/3.5.0...HEAD
+[3.6.0]: https://github.com/tokend/kotlin-sdk/compare/3.5.0...3.6.0
+[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/3.6.0...HEAD
