@@ -31,6 +31,13 @@ public class EventResource extends BaseResource {
         return createdAt;
     }
     
+    @JsonProperty("event_type")
+    private org.tokend.sdk.api.integrations.invoices.model.generated.inner.Enum eventType;
+    
+    public org.tokend.sdk.api.integrations.invoices.model.generated.inner.Enum getEventType() {
+        return eventType;
+    }
+    
     @JsonProperty("signature")
     @Nullable
     private String signature;
@@ -43,7 +50,8 @@ public class EventResource extends BaseResource {
     @Override
     public boolean isFilled() {
         return             amount != null &&
-            createdAt != null 
+            createdAt != null &&
+            eventType != null 
         ;
     }
     
