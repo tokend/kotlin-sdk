@@ -91,6 +91,7 @@ For correct ProGuard processing add following lines to your project's `proguard-
 # Wallet
 # Uncomment this if you would like to decode XDRs
 #-keep class org.tokend.wallet.xdr.* { *; }
+#-dontnote org.tokend.wallet.xdr.*
 ```
 
 ## Documentation
