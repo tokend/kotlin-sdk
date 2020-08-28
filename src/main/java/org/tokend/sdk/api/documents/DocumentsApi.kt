@@ -11,6 +11,7 @@ import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.base.SimpleRetrofitApiRequest
 import org.tokend.sdk.api.base.model.DataEntity
+import org.tokend.sdk.api.base.model.RemoteFile
 import org.tokend.sdk.api.documents.model.DocumentType
 import org.tokend.sdk.api.documents.model.DocumentUploadPolicy
 import org.tokend.sdk.api.documents.model.DocumentUploadRequest
@@ -63,11 +64,12 @@ open class DocumentsApi(
      */
     open fun upload(policy: DocumentUploadPolicy,
                     file: File,
-                    contentType: String): ApiRequest<Void> {
+                    contentType: String): RemoteFile {
         val filePart = MultipartBody.Part.createFormData("file", file.name,
                 RequestBody.create(MediaType.parse(contentType), file))
+        uploadFileMultipart(policy, filePart).execute()
 
-        return uploadFileMultipart(policy, filePart)
+        return RemoteFile(policy[POLICY_URL_KEY]!!, file.name, contentType)
     }
 
     /**
@@ -172,6 +174,6 @@ open class DocumentsApi(
     }
 
     companion object {
-        private const val POLICY_URL_KEY = "url"
+        const val POLICY_URL_KEY = "url"
     }
 }
