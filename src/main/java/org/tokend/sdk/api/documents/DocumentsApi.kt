@@ -64,12 +64,12 @@ open class DocumentsApi(
      */
     open fun upload(policy: DocumentUploadPolicy,
                     file: File,
-                    contentType: String): RemoteFile {
+                    contentType: String): RemoteFile? {
         val filePart = MultipartBody.Part.createFormData("file", file.name,
                 RequestBody.create(MediaType.parse(contentType), file))
         uploadFileMultipart(policy, filePart).execute()
 
-        return RemoteFile(policy[POLICY_URL_KEY]!!, file.name, contentType)
+        return policy[REMOTE_FILE_KEY]?.let { RemoteFile(it, file.name, contentType) }
     }
 
     /**
@@ -82,11 +82,13 @@ open class DocumentsApi(
     open fun upload(policy: DocumentUploadPolicy,
                     contentType: String,
                     fileName: String,
-                    content: ByteArray): ApiRequest<Void> {
+                    content: ByteArray): RemoteFile? {
         val filePart = MultipartBody.Part.createFormData("file", fileName,
                 RequestBody.create(MediaType.parse(contentType), content))
 
-        return uploadFileMultipart(policy, filePart)
+        uploadFileMultipart(policy, filePart).execute()
+        return policy[REMOTE_FILE_KEY]?.let { RemoteFile(it, fileName, contentType) }
+
     }
 
     /**
@@ -103,7 +105,7 @@ open class DocumentsApi(
                     contentType: String,
                     fileName: String,
                     inputStreamProvider: () -> InputStream,
-                    length: Long): ApiRequest<Void> {
+                    length: Long): RemoteFile? {
         val requestBody = object : RequestBody() {
             override fun contentType() = MediaType.parse(contentType)
 
@@ -122,7 +124,9 @@ open class DocumentsApi(
 
         val filePart = MultipartBody.Part.createFormData("file", fileName, requestBody)
 
-        return uploadFileMultipart(policy, filePart)
+        uploadFileMultipart(policy, filePart).execute()
+        return policy[REMOTE_FILE_KEY]?.let { RemoteFile(it, fileName, contentType) }
+
     }
 
     protected open fun uploadFileMultipart(policy: DocumentUploadPolicy,
@@ -175,5 +179,6 @@ open class DocumentsApi(
 
     companion object {
         const val POLICY_URL_KEY = "url"
+        const val REMOTE_FILE_KEY = "key"
     }
 }

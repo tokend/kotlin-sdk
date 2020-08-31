@@ -48,7 +48,6 @@ class DocumentsTest {
                         fileName = "test.txt",
                         content = document
                 )
-                .execute()
 
         val key = uploadPolicy["key"]
         if (key == null) {
