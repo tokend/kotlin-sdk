@@ -6,8 +6,10 @@ import org.tokend.sdk.api.base.model.DataPage
 import org.tokend.sdk.api.base.params.map
 import org.tokend.sdk.api.custom.CustomRequestsApi
 import org.tokend.sdk.api.integrations.invitations.model.CreateInvitationRequest
+import org.tokend.sdk.api.integrations.invitations.model.generated.resources.EventResource
 import org.tokend.sdk.api.integrations.invitations.model.generated.resources.InfoResource
 import org.tokend.sdk.api.integrations.invitations.model.generated.resources.InvitationResource
+import org.tokend.sdk.api.integrations.invitations.params.InvitationHistoryPageParams
 import org.tokend.sdk.api.integrations.invitations.params.InvitationsPageParams
 import org.tokend.sdk.api.integrations.invitations.params.SortedInvitationsPageParams
 import org.tokend.sdk.signing.RequestSigner
@@ -114,6 +116,15 @@ open class InvitationsApi(
                 url = "integrations/invitations/$id/wait",
                 body = Any(),
                 responseClass = Void::class.java
+        )
+    }
+
+    fun getHistoryPage(params: InvitationHistoryPageParams? = null):
+            ApiRequest<DataPage<EventResource>> {
+        return customRequestsApi.getPage(
+                url = "integrations/invitations/history",
+                pageItemClass = EventResource::class.java,
+                queryMap = params.map()
         )
     }
 }

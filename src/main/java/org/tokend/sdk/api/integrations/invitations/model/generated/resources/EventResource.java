@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
 
 
-@Type("events")
+@Type("invitation-events")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class EventResource extends BaseResource {
     
@@ -41,9 +41,9 @@ public class EventResource extends BaseResource {
     }
     
     @JsonProperty("type")
-    private Integer type;
+    private org.tokend.sdk.api.integrations.invitations.model.generated.inner.Enum type;
     
-    public Integer getType() {
+    public org.tokend.sdk.api.integrations.invitations.model.generated.inner.Enum getType() {
         return type;
     }
     
