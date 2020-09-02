@@ -27,6 +27,7 @@ class DocumentsTest {
 
         val signedApi = Util.getSignedApi(rootAccount, api.rootUrl)
 
+        val fileName = "test.txt"
         val document = "Hello World".toByteArray()
         val contentType = "text/plain"
 
@@ -40,21 +41,38 @@ class DocumentsTest {
                 .execute()
                 .get()
 
-        api
+        val uploadedFile = api
                 .documents
                 .upload(
                         policy = uploadPolicy,
                         contentType = contentType,
-                        fileName = "test.txt",
+                        fileName = fileName,
                         content = document
                 )
                 .execute()
+                .get()
 
         val key = uploadPolicy["key"]
         if (key == null) {
             Assert.fail("Upload policy has no key, can't check if upload was successful")
             return
         }
+
+        Assert.assertEquals(
+                "Uploaded file key does not match the one from the policy",
+                key,
+                uploadedFile.key
+        )
+        Assert.assertEquals(
+                "Uploaded file content type does not match the local one",
+                contentType,
+                uploadedFile.mimeType
+        )
+        Assert.assertEquals(
+                "Uploaded file name does not match the local one",
+                fileName,
+                uploadedFile.name
+        )
 
         val uploadedUrl = signedApi
                 .documents

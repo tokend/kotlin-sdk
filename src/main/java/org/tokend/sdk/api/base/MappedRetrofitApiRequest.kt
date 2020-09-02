@@ -1,5 +1,7 @@
 package org.tokend.sdk.api.base
 
+import okhttp3.MediaType
+import okhttp3.ResponseBody
 import org.tokend.sdk.api.base.model.ApiResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -92,10 +94,25 @@ open class MappedRetrofitApiRequest<CallType, ResponseType>(
     }
 
     protected open fun mapResponse(response: CallType): ResponseType {
-        return if (response is Void || response == null)
+        return if (response == null) {
+            try {
+                responseMapper(VOID as CallType)
+            } catch (_: Throwable) {
+                try {
+                    responseMapper(UNIT as CallType)
+                } catch (_: Throwable) {
+                    try {
+                        responseMapper(EMPTY_JSON_BODY as CallType)
+                    } catch (_: Throwable) {
+                        response as ResponseType
+                    }
+                }
+            }
+        } else if (response is Void || response is Unit) {
             response as ResponseType
-        else
+        } else {
             responseMapper(response)
+        }
     }
 
     override fun <MappedResponseType> map(mapper: (ResponseType) -> MappedResponseType)
@@ -113,5 +130,24 @@ open class MappedRetrofitApiRequest<CallType, ResponseType>(
                 responseMapper,
                 errorMapper
         )
+    }
+
+    private companion object {
+        private val UNIT: Unit =
+                Unit::class.java.getDeclaredConstructor().run {
+                    isAccessible = true
+                    val instance = newInstance()
+                    isAccessible = false
+                    instance as Unit
+                }
+        private val VOID: Void =
+                Void::class.java.getDeclaredConstructor().run {
+                    isAccessible = true
+                    val instance = newInstance()
+                    isAccessible = false
+                    instance as Void
+                }
+        private val EMPTY_JSON_BODY =
+                ResponseBody.create(MediaType.parse("application/json"), "{}")
     }
 }

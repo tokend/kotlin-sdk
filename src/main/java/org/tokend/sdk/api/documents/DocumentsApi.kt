@@ -11,6 +11,7 @@ import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.base.SimpleRetrofitApiRequest
 import org.tokend.sdk.api.base.model.DataEntity
+import org.tokend.sdk.api.base.model.RemoteFile
 import org.tokend.sdk.api.documents.model.DocumentType
 import org.tokend.sdk.api.documents.model.DocumentUploadPolicy
 import org.tokend.sdk.api.documents.model.DocumentUploadRequest
@@ -63,11 +64,11 @@ open class DocumentsApi(
      */
     open fun upload(policy: DocumentUploadPolicy,
                     file: File,
-                    contentType: String): ApiRequest<Void> {
+                    contentType: String): ApiRequest<RemoteFile> {
         val filePart = MultipartBody.Part.createFormData("file", file.name,
                 RequestBody.create(MediaType.parse(contentType), file))
-
         return uploadFileMultipart(policy, filePart)
+                .map { RemoteFile(policy.getValue(REMOTE_FILE_KEY), file.name, contentType) }
     }
 
     /**
@@ -80,11 +81,12 @@ open class DocumentsApi(
     open fun upload(policy: DocumentUploadPolicy,
                     contentType: String,
                     fileName: String,
-                    content: ByteArray): ApiRequest<Void> {
+                    content: ByteArray): ApiRequest<RemoteFile> {
         val filePart = MultipartBody.Part.createFormData("file", fileName,
                 RequestBody.create(MediaType.parse(contentType), content))
 
         return uploadFileMultipart(policy, filePart)
+                .map { RemoteFile(policy.getValue(REMOTE_FILE_KEY), fileName, contentType) }
     }
 
     /**
@@ -101,7 +103,7 @@ open class DocumentsApi(
                     contentType: String,
                     fileName: String,
                     inputStreamProvider: () -> InputStream,
-                    length: Long): ApiRequest<Void> {
+                    length: Long): ApiRequest<RemoteFile> {
         val requestBody = object : RequestBody() {
             override fun contentType() = MediaType.parse(contentType)
 
@@ -121,6 +123,7 @@ open class DocumentsApi(
         val filePart = MultipartBody.Part.createFormData("file", fileName, requestBody)
 
         return uploadFileMultipart(policy, filePart)
+                .map { RemoteFile(policy.getValue(REMOTE_FILE_KEY), fileName, contentType) }
     }
 
     protected open fun uploadFileMultipart(policy: DocumentUploadPolicy,
@@ -172,6 +175,7 @@ open class DocumentsApi(
     }
 
     companion object {
-        private const val POLICY_URL_KEY = "url"
+        const val POLICY_URL_KEY = "url"
+        const val REMOTE_FILE_KEY = "key"
     }
 }
