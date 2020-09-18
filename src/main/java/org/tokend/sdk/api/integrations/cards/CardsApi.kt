@@ -83,6 +83,16 @@ open class CardsApi(
                     responseClass = Void::class.java
             )
 
+    open fun updateCardDetails(number: String,
+                               newDetails: Any) =
+            customRequestsApi.patch(
+                    url = "integrations/cards/$number",
+                    body = DataEntity(AttributesEntity(mapOf(
+                            "details" to newDetails
+                    ))),
+                    responseClass = Void::class.java
+            )
+
     open fun updateCardBalances(number: String,
                                 bindBalances: Collection<String>,
                                 unbindBalances: Collection<String>) =
