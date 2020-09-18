@@ -1,5 +1,6 @@
 package org.tokend.sdk.helpers.resourcegen
 
+import org.tokend.sdk.factory.JsonApiToolsProvider
 import java.io.File
 
 /**
@@ -40,7 +41,8 @@ class ResourceGenerator(
         convertIntermediateToSpecs(intermediateFilePath, specsDirectoryPath, ignoredKeys)
         generateClassesFromSpecs(specsDirectoryPath, generatedClassesDirectoryPath, generatedClassesNamespace)
 
-        println("✅ Done! Do not forget to register new resources ;)")
+        println("✅ Done! Do not forget to register new resources in " +
+                "${JsonApiToolsProvider::class.java.simpleName} \uD83D\uDE09")
     }
 
     private fun buildDocs(docsDirectoryPath: String,
@@ -57,38 +59,22 @@ class ResourceGenerator(
     }
 
     private fun buildDocsWithMake(docsDirectoryPath: String) {
-        ProcessBuilder()
-                .directory(File(docsDirectoryPath))
-                .command("make")
-                .inheritIO()
-                .start()
-                .waitFor()
+        executeCommand("cd $docsDirectoryPath && make")
     }
 
     private fun buildDocsWithNode(docsDirectoryPath: String) {
-        Runtime.getRuntime()
-                .exec("yarn --cwd $docsDirectoryPath run build")
-                .apply {
-                    inputStream.use { inputStream ->
-                        inputStream.reader().forEachLine(System.out::println)
-                    }
-                }
-                .waitFor()
+        executeCommand("yarn --cwd $docsDirectoryPath run build")
     }
 
     private fun generateIntermediate(openApiYamlFilePath: String,
                                      intermediateFileOutputPath: String) {
         println("Creating intermediate from OpenAPI '$openApiYamlFilePath' to '$intermediateFileOutputPath'...\n")
 
-        Runtime.getRuntime()
-                .exec("python3 $openApiGeneratorDirectoryPath/intermediate.py " +
-                        "--path $openApiYamlFilePath --out $intermediateFileOutputPath ")
-                .apply {
-                    inputStream.use { inputStream ->
-                        inputStream.reader().forEachLine(System.out::println)
-                    }
-                }
-                .waitFor()
+        executeCommand(
+                command = "python3 $openApiGeneratorDirectoryPath/intermediate.py " +
+                        "--path $openApiYamlFilePath --out $intermediateFileOutputPath ",
+                errorLinePredicate = { !it.startsWith("WARNING:") }
+        )
 
         println()
     }
@@ -126,16 +112,35 @@ class ResourceGenerator(
                                          namespace: String) {
         println("Generating classes from specs '$specsDirectoryPath' to '$outputDirectoryPath'...\n")
 
+        executeCommand("ruby $resourcegenPath " +
+                "--specs $specsDirectoryPath --out $outputDirectoryPath --namespace $namespace")
+
+        println()
+    }
+
+    private fun executeCommand(command: String,
+                               errorLinePredicate: (String) -> Boolean = { true }) {
+        println("> $command")
+
         Runtime.getRuntime()
-                .exec("ruby $resourcegenPath " +
-                        "--specs $specsDirectoryPath --out $outputDirectoryPath --namespace $namespace")
+                .exec(command)
                 .apply {
                     inputStream.use { inputStream ->
                         inputStream.reader().forEachLine(System.out::println)
                     }
-                }
-                .waitFor()
+                    errorStream.use { errorStream ->
+                        errorStream.reader().forEachLine {
+                            if (errorLinePredicate(it)) {
+                                System.err.println(it)
+                            }
+                        }
+                    }
 
-        println()
+                    waitFor()
+
+                    if (exitValue() != 0) {
+                        throw Exception("Execution failed")
+                    }
+                }
     }
 }
