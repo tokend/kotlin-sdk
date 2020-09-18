@@ -11,6 +11,7 @@ constructor(
         val dimensionFilters: Map<String, String>? = null,
         val pagingParams: PagingParamsWithNamedCursors? = null,
         val participants: Collection<String>? = null,
+        val queryName: String? = null,
         include: Collection<String>? = null
 ) : JsonApiQueryParams(include) {
     override fun map(): Map<String, Any> = mutableMapOf<String, Any>().apply {
@@ -20,5 +21,6 @@ constructor(
         dimensionFilters?.forEach { (dimensionFilterKey, dimensionFilterValue) ->
             putFilter(dimensionFilterKey, dimensionFilterValue)
         }
+        queryName?.also { put("query", it) }
     }
 }
