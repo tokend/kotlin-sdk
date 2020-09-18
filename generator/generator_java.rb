@@ -206,6 +206,8 @@ end
 def get_output_attribute_type(type)
   if type == 'Amount'
     'BigDecimal'
+  elsif type == 'Double'
+    'Double'
   elsif type == 'Object'
     'JsonNode'
   elsif type == 'String'

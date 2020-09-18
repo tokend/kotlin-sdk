@@ -220,8 +220,10 @@ class YamlSpecsGenerator(openApi: OpenApi) {
                                 |    name: ${rel.name}
                                 |    resource: ${getKeyType(rel.keyName)}
                                 |    is_collection: ${rel.isArray}
-                                |    ${if (!rel.description.isNullOrBlank())
-                                "description: " + formatMultilineString(rel.description.capitalize()) else ""}
+                                |    ${
+                                if (!rel.description.isNullOrBlank())
+                                    "description: " + formatMultilineString(rel.description.capitalize()) else ""
+                            }
                             """.trimMargin()
                         }
 
@@ -247,7 +249,9 @@ class YamlSpecsGenerator(openApi: OpenApi) {
             format == "Amount"
                     || format == "regources.Amount" -> "Amount"
             format == "date-time"
-                    || format == "time.Time" -> "Date"
+                    || format == "time.Time"
+                    || type == "time.Time" -> "Date"
+            type == "float" -> "Double"
             lowercaseFormat.contains("uint32") -> "UInt32"
             lowercaseFormat.contains("uint64") -> "UInt64"
             lowercaseFormat.contains("int64") -> "Int64"
