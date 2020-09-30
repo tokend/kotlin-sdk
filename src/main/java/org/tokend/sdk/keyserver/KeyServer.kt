@@ -26,9 +26,10 @@ class KeyServer constructor(
     @JvmOverloads
     fun getWalletInfo(login: String,
                       password: CharArray,
-                      isRecovery: Boolean = false): ApiRequest<WalletInfo> {
+                      isRecovery: Boolean = false,
+                      queryMap: Map<String, Any>? = null): ApiRequest<WalletInfo> {
         return MappedCallableApiRequest(
-                { buildWalletInfo(login, password, isRecovery) },
+                { buildWalletInfo(login, password, isRecovery, queryMap) },
                 { it }
         )
     }
@@ -43,7 +44,8 @@ class KeyServer constructor(
     )
     private fun buildWalletInfo(login: String,
                                 password: CharArray,
-                                isRecovery: Boolean = false): WalletInfo {
+                                isRecovery: Boolean = false,
+                                queryMap: Map<String, Any>? = null): WalletInfo {
         val loginParams = getLoginParams(login, isRecovery).execute().get()
 
         val derivationLogin = login.toLowerCase()
@@ -53,7 +55,7 @@ class KeyServer constructor(
         val walletKey = WalletKeyDerivation
                 .deriveWalletEncryptionKey(derivationLogin, password, loginParams.kdfAttributes)
 
-        val walletData = getWalletData(hexWalletId).execute().get()
+        val walletData = getWalletData(hexWalletId, queryMap).execute().get()
 
         val keychainData = walletData.attributes.keychainData
         val accountId = walletData.attributes.accountId
@@ -94,8 +96,10 @@ class KeyServer constructor(
     @Throws(InvalidCredentialsException::class,
             EmailNotVerifiedException::class,
             HttpException::class)
-    fun getWalletData(walletId: String): ApiRequest<WalletData> {
-        return walletsApi.getById(walletId)
+    @JvmOverloads
+    fun getWalletData(walletId: String,
+                      queryMap: Map<String, Any>? = null): ApiRequest<WalletData> {
+        return walletsApi.getById(walletId, queryMap)
     }
     // endregion
 

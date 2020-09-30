@@ -21,9 +21,11 @@ open class WalletsApi(
      * Will return specific wallet by given id.
      * @see <a href="https://tokend.gitlab.io/docs/?http#get-wallet">Docs</a>
      */
-    open fun getById(walletId: String): ApiRequest<WalletData> {
+    @JvmOverloads
+    open fun getById(walletId: String,
+                     queryMap: Map<String, Any>? = null): ApiRequest<WalletData> {
         return MappedRetrofitApiRequest(
-                walletsService.getById(walletId),
+                walletsService.getById(walletId, queryMap),
                 { it.data }
         ) { error ->
             if (error is HttpException) {
