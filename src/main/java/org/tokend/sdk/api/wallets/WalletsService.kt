@@ -25,7 +25,10 @@ interface WalletsService {
             : Call<DataEntity<LoginParams>>
 
     @GET("wallets/{walletId}")
-    fun getById(@Path("walletId") walletId: String): Call<DataEntity<WalletData>>
+    @JvmSuppressWildcards
+    fun getById(@Path("walletId") walletId: String,
+                @QueryMap queryMap: Map<String, Any>?)
+            : Call<DataEntity<WalletData>>
 
     @PUT("wallets/{walletId}")
     @JvmSuppressWildcards
