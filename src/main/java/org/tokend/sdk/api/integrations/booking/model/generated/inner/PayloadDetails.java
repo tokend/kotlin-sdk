@@ -27,10 +27,8 @@ public class PayloadDetails {
     }
     
     @JsonProperty("work_days")
-    @Nullable
     private Map<String, WorkHours> workDays;
     
-    @Nullable
     public Map<String, ? extends WorkHours> getWorkDays() {
         return workDays;
     }

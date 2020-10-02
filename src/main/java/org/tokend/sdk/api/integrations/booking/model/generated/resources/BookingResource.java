@@ -38,6 +38,13 @@ public class BookingResource extends BaseResource {
         return confirmationType;
     }
     
+    @JsonProperty("details")
+    private JsonNode details;
+    
+    public JsonNode getDetails() {
+        return details;
+    }
+    
     @JsonProperty("end_time")
     private Date endTime;
     
@@ -94,6 +101,7 @@ public class BookingResource extends BaseResource {
         return             amount != null &&
             cancelTill != null &&
             confirmationType != null &&
+            details != null &&
             endTime != null &&
             participants != null &&
             payload != null &&
