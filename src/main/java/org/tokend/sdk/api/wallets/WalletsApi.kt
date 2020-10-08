@@ -23,7 +23,7 @@ open class WalletsApi(
      */
     @JvmOverloads
     open fun getById(walletId: String,
-                     queryMap: Map<String, Any>? = null): ApiRequest<WalletData> {
+                     queryMap: Map<String, Any> = mapOf()): ApiRequest<WalletData> {
         return MappedRetrofitApiRequest(
                 walletsService.getById(walletId, queryMap),
                 { it.data }

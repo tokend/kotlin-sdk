@@ -99,7 +99,7 @@ class KeyServer constructor(
     @JvmOverloads
     fun getWalletData(walletId: String,
                       queryMap: Map<String, Any>? = null): ApiRequest<WalletData> {
-        return walletsApi.getById(walletId, queryMap)
+        return walletsApi.getById(walletId, queryMap ?: mapOf())
     }
     // endregion
 
