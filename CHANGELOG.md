@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [3.6.1] 2020-10-09
+
+### Added
+- Return of `RemoteFile` from document uploading API calls
+- Query name param to merged history page params
+- Query map param to `getWalletInfo` and `getWalletData`
+calls of `KeyServer`
+
+### Changed
+- Actualized invitations, invoices and booking integration APIs
+
+### Internal 
+- Add `float` to resource generator
+- Make resource generator print errors and not report success if 
+errors occurred
+
 ## [3.6.0] 2020-08-26
 
 ### Added 
@@ -364,4 +380,5 @@ with `addExtraResources` method
 [3.4.0]: https://github.com/tokend/kotlin-sdk/compare/3.3.5...3.4.0
 [3.5.0]: https://github.com/tokend/kotlin-sdk/compare/3.4.0...3.5.0
 [3.6.0]: https://github.com/tokend/kotlin-sdk/compare/3.5.0...3.6.0
-[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/3.6.0...HEAD
+[3.6.1]: https://github.com/tokend/kotlin-sdk/compare/3.6.0...3.6.1
+[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/3.6.1...HEAD
