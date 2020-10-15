@@ -7,6 +7,7 @@ import org.tokend.sdk.api.integrations.booking.model.CreateBookingRequestAttribu
 import org.tokend.sdk.api.integrations.booking.model.generated.resources.BookingResource
 import org.tokend.sdk.api.integrations.booking.model.generated.resources.BusinessResource
 import org.tokend.sdk.api.integrations.booking.model.scheduler.SchedulerPayloadResource
+import org.tokend.sdk.api.integrations.booking.model.scheduler.generated.resources.FreeBusyResource
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -45,6 +46,11 @@ interface BookingService {
     @JvmSuppressWildcards
     fun getFreeRooms(@Path("calendarId") calendarId: String,
                      @QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<SchedulerPayloadResource>>>
+
+    @GET("integrations/scheduler/calendars/{calendarId}/freebusy")
+    @JvmSuppressWildcards
+    fun getFreeBusy(@Path("calendarId") calendarId: String,
+                    @QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<FreeBusyResource>>>
 
     @GET("integrations/booking/references/{reference}")
     @JvmSuppressWildcards

@@ -46,6 +46,13 @@ public class EventResource extends BaseResource {
         ;
     }
     
+    @Relationship("attendee")
+    private BaseResource attendee;
+    
+    public BaseResource getAttendee() {
+        return attendee;
+    }
+    
     @Relationship("calendar")
     private BaseResource calendar;
     

@@ -11,8 +11,10 @@ import org.tokend.sdk.api.base.params.map
 import org.tokend.sdk.api.integrations.booking.model.CreateBookingRequestAttributes
 import org.tokend.sdk.api.integrations.booking.model.generated.resources.BookingResource
 import org.tokend.sdk.api.integrations.booking.model.generated.resources.BusinessResource
+import org.tokend.sdk.api.integrations.booking.model.scheduler.generated.resources.FreeBusyResource
 import org.tokend.sdk.api.integrations.booking.params.BookingsPageParams
 import org.tokend.sdk.api.integrations.booking.params.BusinessesPageParams
+import org.tokend.sdk.api.integrations.booking.params.FreeBusyParams
 import org.tokend.sdk.api.integrations.booking.params.FreeRoomsParams
 
 open class BookingApi(
@@ -88,6 +90,17 @@ open class BookingApi(
                         params.map()
                 ),
                 { it.get().map(BaseResource::getId) }
+        )
+    }
+
+    open fun getFreeBusy(calendarId: String,
+                         params: FreeBusyParams): ApiRequest<List<FreeBusyResource>> {
+        return MappedRetrofitApiRequest(
+                bookingService.getFreeBusy(
+                        calendarId,
+                        params.map()
+                ),
+                JSONAPIDocument<List<FreeBusyResource>>::get
         )
     }
 

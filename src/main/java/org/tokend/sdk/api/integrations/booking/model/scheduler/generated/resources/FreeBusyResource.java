@@ -13,28 +13,44 @@ import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
 
 
-@Type("calendars")
+@Type("freebusy")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CalendarResource extends BaseResource {
+public class FreeBusyResource extends BaseResource {
     
-    @JsonProperty("capacity")
-    private Map<String, Integer> capacity;
+    @JsonProperty("end_time")
+    private Date endTime;
     
-    public Map<String, ? extends Integer> getCapacity() {
-        return capacity;
+    public Date getEndTime() {
+        return endTime;
     }
     
-    @JsonProperty("details")
-    private JsonNode details;
+    @JsonProperty("participants")
+    private Integer participants;
     
-    public JsonNode getDetails() {
-        return details;
+    public Integer getParticipants() {
+        return participants;
+    }
+    
+    @JsonProperty("payload")
+    private String payload;
+    
+    public String getPayload() {
+        return payload;
+    }
+    
+    @JsonProperty("start_time")
+    private Date startTime;
+    
+    public Date getStartTime() {
+        return startTime;
     }
     
     @Override
     public boolean isFilled() {
-        return             capacity != null &&
-            details != null 
+        return             endTime != null &&
+            participants != null &&
+            payload != null &&
+            startTime != null 
         ;
     }
     
@@ -43,19 +59,5 @@ public class CalendarResource extends BaseResource {
     
     public List<? extends EventResource> getEvents() {
         return events;
-    }
-    
-    @Relationship("owner")
-    private BaseResource owner;
-    
-    public BaseResource getOwner() {
-        return owner;
-    }
-    
-    @Relationship("recurrences")
-    private List<EventRecurrenceResource> recurrences;
-    
-    public List<? extends EventRecurrenceResource> getRecurrences() {
-        return recurrences;
     }
 }

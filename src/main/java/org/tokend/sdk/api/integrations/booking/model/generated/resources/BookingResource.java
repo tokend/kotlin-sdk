@@ -38,6 +38,15 @@ public class BookingResource extends BaseResource {
         return confirmationType;
     }
     
+    @JsonProperty("created_at")
+    @Nullable
+    private Date createdAt;
+    
+    @Nullable
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+    
     @JsonProperty("details")
     private JsonNode details;
     
