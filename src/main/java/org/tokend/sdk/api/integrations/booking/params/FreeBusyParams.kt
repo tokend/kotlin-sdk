@@ -10,8 +10,8 @@ class FreeBusyParams(
         val endTime: Date
 ) : QueryParams {
     override fun map(): Map<String, Any> = mutableMapOf<String, Any>().apply {
-        put("start-time", ApiDateUtil.formatDateForRequest(startTime))
-        put("end-time", ApiDateUtil.formatDateForRequest(startTime))
+        put("start-time", startTime.time / 1000L)
+        put("end-time", endTime.time / 1000L)
         put("payload", payload)
     }
 }
