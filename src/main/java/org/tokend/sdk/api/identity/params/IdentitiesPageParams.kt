@@ -7,6 +7,7 @@ open class IdentitiesPageParams(
         val email: String? = null,
         val address: String? = null,
         val phone: String? = null,
+        val passport: String? = null,
         val identifier: String? = null,
         include: Collection<String>? = null,
         pagingParams: PagingParamsV2? = null
@@ -16,6 +17,7 @@ open class IdentitiesPageParams(
             email?.also { putFilter("email", it) }
             address?.also { putFilter("address", it) }
             phone?.also { putFilter("phone", it) }
+            passport?.also { putFilter("passport", it) }
             identifier?.also { putFilter("identifier", it) }
         }
     }
@@ -24,6 +26,7 @@ open class IdentitiesPageParams(
         private var email: String? = null
         private var address: String? = null
         private var phone: String? = null
+        private var passport: String? = null
         private var identifier: String? = null
 
         fun withEmail(email: String) = also { this.email = email }
@@ -31,6 +34,8 @@ open class IdentitiesPageParams(
         fun withAddress(address: String) = also { this.address = address }
 
         fun withPhone(phone: String) = also { this.phone = phone }
+
+        fun withPassport(passport: String) = also { this.passport = passport }
 
         fun withIdentifier(identifier: String) = also { this.identifier = identifier }
 
@@ -47,7 +52,7 @@ open class IdentitiesPageParams(
         }
 
         override fun build(): IdentitiesPageParams {
-            return IdentitiesPageParams(email, address, phone, identifier, include, pagingParams)
+            return IdentitiesPageParams(email, address, phone, passport, identifier,include, pagingParams)
         }
     }
 }

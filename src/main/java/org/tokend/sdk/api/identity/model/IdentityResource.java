@@ -17,6 +17,9 @@ public class IdentityResource extends BaseResource {
     @JsonProperty("phone_number")
     private String phoneNumber;
 
+    @JsonProperty("passport")
+    private String passportId;
+
     @JsonProperty("telegram_username")
     private String telegramUsername;
 
@@ -32,13 +35,17 @@ public class IdentityResource extends BaseResource {
         return phoneNumber;
     }
 
+    public String getPassportId() {
+        return passportId;
+    }
+
     public String getTelegramUsername() {
         return telegramUsername;
     }
 
     @Override
     public boolean isFilled() {
-        return address != null && email != null && phoneNumber != null
+        return address != null && email != null && phoneNumber != null && passportId != null
                 && telegramUsername != null;
     }
 }

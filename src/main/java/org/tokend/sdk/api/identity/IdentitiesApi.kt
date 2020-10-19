@@ -67,6 +67,16 @@ open class IdentitiesApi(
         )
     }
 
+    open fun setPassportId(accountId: String,
+                            passportId: String): ApiRequest<Void> {
+        return SimpleRetrofitApiRequest(
+                identitesService.setPassportId(
+                        accountId,
+                        DataEntity(AttributesEntity(SetPassportIdRequestAttributes(passportId)))
+                )
+        )
+    }
+
     open fun setTelegramUsername(accountId: String,
                                  username: String): ApiRequest<Void> {
         return SimpleRetrofitApiRequest(
