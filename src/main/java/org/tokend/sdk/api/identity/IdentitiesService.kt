@@ -3,11 +3,7 @@ package org.tokend.sdk.api.identity
 import com.github.jasminb.jsonapi.JSONAPIDocument
 import org.tokend.sdk.api.base.model.AttributesEntity
 import org.tokend.sdk.api.base.model.DataEntity
-import org.tokend.sdk.api.identity.model.IdentityResource
-import org.tokend.sdk.api.identity.model.MassEmailAccountKey
-import org.tokend.sdk.api.identity.model.SetPhoneRequestAttributes
-import org.tokend.sdk.api.identity.model.SetTelegramRequestAttributes
-import org.tokend.sdk.api.identity.model.IdentitySettingsResource
+import org.tokend.sdk.api.identity.model.*
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -29,6 +25,11 @@ interface IdentitiesService {
     @JvmSuppressWildcards
     fun setPhone(@Path("accountId") accountId: String,
                  @Body body: DataEntity<AttributesEntity<SetPhoneRequestAttributes>>): Call<Void>
+
+    @PUT("identities/{accountId}/settings/passport")
+    @JvmSuppressWildcards
+    fun setPassportId(@Path("accountId") accountId: String,
+                 @Body body: DataEntity<AttributesEntity<SetPassportIdRequestAttributes>>): Call<Void>
 
     @PUT("identities/{accountId}/settings/telegram")
     @JvmSuppressWildcards
