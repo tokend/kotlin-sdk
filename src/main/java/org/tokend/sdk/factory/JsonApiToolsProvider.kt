@@ -78,6 +78,7 @@ object JsonApiToolsProvider {
                         *org.tokend.sdk.api.integrations.mergedhistory.model.generated.resources.AllResources.ARRAY,
                         *org.tokend.sdk.api.integrations.invitations.model.generated.resources.AllResources.ARRAY,
                         *org.tokend.sdk.api.integrations.exchange.model.generated.resources.AllResources.ARRAY,
+                        *org.tokend.sdk.api.integrations.kycprovider.model.generated.resources.AllResources.ARRAY,
                         *extraResources.toTypedArray()
                 )
                         .also { resourceConverter = it }

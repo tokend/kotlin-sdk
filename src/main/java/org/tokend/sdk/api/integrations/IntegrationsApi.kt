@@ -16,6 +16,7 @@ import org.tokend.sdk.api.integrations.fiat.FiatService
 import org.tokend.sdk.api.integrations.friends.FriendsApi
 import org.tokend.sdk.api.integrations.invitations.InvitationsApi
 import org.tokend.sdk.api.integrations.invoices.InvoicesApi
+import org.tokend.sdk.api.integrations.kycprovider.KycProviderApi
 import org.tokend.sdk.api.integrations.locator.LocatorApi
 import org.tokend.sdk.api.integrations.locator.LocatorService
 import org.tokend.sdk.api.integrations.marketplace.MarketplaceApi
@@ -99,5 +100,9 @@ open class IntegrationsApi(
 
     open val exchange: ExchangeApi by lazy {
         ExchangeApi(customRequests)
+    }
+
+    open val kycProvider: KycProviderApi by lazy {
+        KycProviderApi(customRequests)
     }
 }
