@@ -7,11 +7,12 @@ import java.util.*
 
 object ApiDateUtil {
     private val utcTimezone = TimeZone.getTimeZone("UTC")
-    private val defaultFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
+    private val defaultFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH)
             .utcTimeZone()
 
     private val supported = arrayOf(
             defaultFormat,
+            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").utcTimeZone(),
             SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").utcTimeZone(),
             SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").utcTimeZone(),
             SimpleDateFormat("yyyy-MM-dd HH:mm:ss").utcTimeZone(),
