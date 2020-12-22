@@ -109,7 +109,7 @@ open class IdentitiesApi(
 
 
     /**
-     * @param value - will be serialzied with Gson
+     * @param value - will be serialized with Gson
      */
     open fun setSettingsItem(accountId: String,
                              key: String,
