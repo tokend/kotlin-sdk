@@ -17,13 +17,13 @@ import java.util.concurrent.Executor
 class ServiceFactory(private val url: String,
                      private val withLogs: Boolean,
                      private val asyncCallbackExecutor: Executor,
-                     private val userAgent: String? = null
+                     private val extraHeaders: Map<String, String?>? = null
 
 ) {
     fun getTfaVerificationService(): TfaVerificationService {
         return getCustomService(TfaVerificationService::class.java,
                 HttpClientFactory().getBaseHttpClientBuilder(
-                        headers = getDefaultHeaders(userAgent),
+                        headers = getDefaultHeaders(extraHeaders),
                         withLogs = withLogs
 
                 ).build())
@@ -44,7 +44,7 @@ class ServiceFactory(private val url: String,
         val client =
                 HttpClientFactory().getBaseHttpClientBuilder(
                         cookieJarProvider = cookieJarProvider,
-                        headers = getDefaultHeaders(userAgent),
+                        headers = getDefaultHeaders(extraHeaders),
                         withLogs = withLogs
                 )
                         .addInterceptor(
@@ -90,16 +90,24 @@ class ServiceFactory(private val url: String,
                 .callbackExecutor(asyncCallbackExecutor)
     }
 
-    private fun getDefaultHeaders(userAgent: String?): Map<String, String?> {
-        return mapOf(
-                HEADER_USER_AGENT_NAME to userAgent,
+    private fun getDefaultHeaders(extraHeaders: Map<String, String?>?): Map<String, String?> {
+        return mutableMapOf(
                 HEADER_CONTENT_TYPE_NAME to CONTENT_TYPE,
                 HEADER_ACCEPT_NAME to CONTENT_TYPE
-        )
+        ).apply {
+            extraHeaders?.let {
+                putAll(filterNotNullValues(it))
+            }
+        }
+    }
+
+    private fun filterNotNullValues(map: Map<String, String?>): Map<String, String> {
+        return map.filterValues {
+            it != null
+        }.mapValues { it -> it.value as String }
     }
 
     companion object {
-        private const val HEADER_USER_AGENT_NAME = "User-Agent"
         private const val HEADER_ACCEPT_NAME = "Accept"
         private const val HEADER_CONTENT_TYPE_NAME = "Content-Type"
         private const val CONTENT_TYPE = "application/vnd.api+json"

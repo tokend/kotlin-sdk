@@ -54,7 +54,7 @@ open class TokenDApi
  * @param tfaCallback required to handle 2FA (2 factor auth) requests.
  * If not set requests protected by 2FA will be uncompletable
  * @param cookieJarProvider if set will be used to store cookies
- * @param userAgent overrides default user agent
+ * @param extraHeaders  add headers to all requests
  * @param withLogs enable/disable HTTP Logs. True by default.
  * @param asyncCallbackExecutor [Executor] that performs [ApiRequest.executeAsync] callback.
  * By default it is [DEFAULT_ASYNC_CALLBACK_EXECUTOR], you may
@@ -68,13 +68,14 @@ constructor(
         requestSigner: RequestSigner? = null,
         tfaCallback: TfaCallback? = null,
         cookieJarProvider: CookieJarProvider? = null,
-        userAgent: String? = null,
+        extraHeaders: Map<String, String?>? = null,
         withLogs: Boolean = true,
         asyncCallbackExecutor: Executor = DEFAULT_ASYNC_CALLBACK_EXECUTOR
-) : BaseApi(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent,
+) : BaseApi(rootUrl, requestSigner, tfaCallback, cookieJarProvider, extraHeaders,
         asyncCallbackExecutor, withLogs) {
+
     open val v3: TokenDApiV3 by lazy {
-        TokenDApiV3(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent, withLogs,
+        TokenDApiV3(rootUrl, requestSigner, tfaCallback, cookieJarProvider, extraHeaders, withLogs,
                 asyncCallbackExecutor)
     }
 
@@ -82,7 +83,7 @@ constructor(
      * 🚨 Integration modules APIs. Backward compatibility is not guaranteed.
      */
     open val integrations: IntegrationsApi by lazy {
-        IntegrationsApi(rootUrl, requestSigner, tfaCallback, cookieJarProvider, userAgent, withLogs,
+        IntegrationsApi(rootUrl, requestSigner, tfaCallback, cookieJarProvider, extraHeaders, withLogs,
                 asyncCallbackExecutor)
     }
 
@@ -171,7 +172,7 @@ constructor(
         private var requestSigner: RequestSigner? = null
         private var tfaCallback: TfaCallback? = null
         private var cookieJarProvider: CookieJarProvider? = null
-        private var userAgent: String? = null
+        private var extraHeaders: Map<String, String?>? = null
         private var withLogs: Boolean = true
         protected var asyncCallbackExecutor: Executor = DEFAULT_ASYNC_CALLBACK_EXECUTOR
 
@@ -202,10 +203,18 @@ constructor(
         }
 
         /**
+         * Set extra headers.
+         */
+        fun setExtraHeaders(extraHeaders: Map<String, String?>?): Builder {
+            this.extraHeaders = extraHeaders
+            return this
+        }
+
+        /**
          * Overrides default user agent.
          */
         fun setUserAgent(userAgent: String): Builder {
-            this.userAgent = userAgent
+            setExtraHeaders(mapOf(HEADER_USER_AGENT_NAME to userAgent))
             return this
         }
 
@@ -232,10 +241,14 @@ constructor(
                 requestSigner,
                 tfaCallback,
                 cookieJarProvider,
-                userAgent,
+                extraHeaders,
                 withLogs,
                 asyncCallbackExecutor
         )
+    }
+
+    companion object {
+        private const val HEADER_USER_AGENT_NAME = "User-Agent"
     }
 
 }
