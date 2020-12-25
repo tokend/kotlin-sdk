@@ -74,16 +74,6 @@ constructor(
 ) : BaseApi(rootUrl, requestSigner, tfaCallback, cookieJarProvider, extraHeaders,
         asyncCallbackExecutor, withLogs) {
 
-    constructor(rootUrl: String,
-                requestSigner: RequestSigner? = null,
-                tfaCallback: TfaCallback? = null,
-                cookieJarProvider: CookieJarProvider? = null,
-                userAgent: String? = null,
-                withLogs: Boolean = true,
-                asyncCallbackExecutor: Executor = DEFAULT_ASYNC_CALLBACK_EXECUTOR) : this(
-            rootUrl, requestSigner, tfaCallback, cookieJarProvider, mapOf(HEADER_USER_AGENT_NAME to userAgent), withLogs, asyncCallbackExecutor
-    )
-
     open val v3: TokenDApiV3 by lazy {
         TokenDApiV3(rootUrl, requestSigner, tfaCallback, cookieJarProvider, extraHeaders, withLogs,
                 asyncCallbackExecutor)
@@ -182,7 +172,7 @@ constructor(
         private var requestSigner: RequestSigner? = null
         private var tfaCallback: TfaCallback? = null
         private var cookieJarProvider: CookieJarProvider? = null
-        private var userAgent: String? = null
+        private var extraHeaders: Map<String, String?>? = null
         private var withLogs: Boolean = true
         protected var asyncCallbackExecutor: Executor = DEFAULT_ASYNC_CALLBACK_EXECUTOR
 
@@ -213,10 +203,18 @@ constructor(
         }
 
         /**
+         * Set extra headers.
+         */
+        fun setExtraHeaders(extraHeaders: Map<String, String?>?): Builder {
+            this.extraHeaders = extraHeaders
+            return this
+        }
+
+        /**
          * Overrides default user agent.
          */
         fun setUserAgent(userAgent: String): Builder {
-            this.userAgent = userAgent
+            setExtraHeaders(mapOf(HEADER_USER_AGENT_NAME to userAgent))
             return this
         }
 
@@ -243,7 +241,7 @@ constructor(
                 requestSigner,
                 tfaCallback,
                 cookieJarProvider,
-                userAgent,
+                extraHeaders,
                 withLogs,
                 asyncCallbackExecutor
         )
