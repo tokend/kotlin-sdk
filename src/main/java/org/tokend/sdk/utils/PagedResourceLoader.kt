@@ -22,6 +22,8 @@ constructor(
 
     /***
      * Provides api request to get [DataPage] of specific resource.
+     *
+     * @param nextCursor cursor or number for the next page
      */
     abstract fun getPageRequest(nextCursor: String?): ApiRequest<DataPage<T>>
 
