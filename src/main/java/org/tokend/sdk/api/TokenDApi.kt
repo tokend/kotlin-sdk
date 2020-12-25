@@ -3,8 +3,8 @@ package org.tokend.sdk.api
 import com.google.gson.Gson
 import org.tokend.sdk.api.accounts.AccountsApi
 import org.tokend.sdk.api.accounts.AccountsService
-import org.tokend.sdk.api.assets.AssetsApi
-import org.tokend.sdk.api.assets.AssetsService
+import org.tokend.sdk.api.charts.ChartsApi
+import org.tokend.sdk.api.charts.ChartsService
 import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.BaseApi
 import org.tokend.sdk.api.base.model.BaseResource
@@ -109,8 +109,8 @@ constructor(
         TradesApi(getService(TradesService::class.java))
     }
 
-    open val assets: AssetsApi by lazy {
-        AssetsApi(getService(AssetsService::class.java))
+    open val charts: ChartsApi by lazy {
+        ChartsApi(getService(ChartsService::class.java))
     }
 
     open val wallets: WalletsApi by lazy {

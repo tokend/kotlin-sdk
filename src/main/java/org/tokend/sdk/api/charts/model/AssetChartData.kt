@@ -1,4 +1,4 @@
-package org.tokend.sdk.api.assets.model
+package org.tokend.sdk.api.charts.model
 
 import com.google.gson.annotations.SerializedName
 import org.tokend.sdk.utils.ApiDateUtil
