@@ -13,16 +13,9 @@ import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
 
 
-@Type("operations-create-aml-alert")
+@Type("request-details-data-remove")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CreateAmlAlertRequestOpResource extends BaseOperationDetailsResource {
-    
-    @JsonProperty("amount")
-    private BigDecimal amount;
-    
-    public BigDecimal getAmount() {
-        return amount;
-    }
+public class DataRemoveRequestResource extends BaseReviewableRequestDetailsResource {
     
     @JsonProperty("creator_details")
     private JsonNode creatorDetails;
@@ -31,25 +24,25 @@ public class CreateAmlAlertRequestOpResource extends BaseOperationDetailsResourc
         return creatorDetails;
     }
     
+    @JsonProperty("sequence_number")
+    private Long sequenceNumber;
+    
+    public Long getSequenceNumber() {
+        return sequenceNumber;
+    }
+    
     @Override
     public boolean isFilled() {
-        return             amount != null &&
-            creatorDetails != null 
+        return             creatorDetails != null &&
+            sequenceNumber != null 
             && super.isFilled()
         ;
     }
     
-    @Relationship("balance")
-    private BalanceResource balance;
+    @Relationship("data")
+    private DataResource data;
     
-    public BalanceResource getBalance() {
-        return balance;
-    }
-    
-    @Relationship("request")
-    private ReviewableRequestResource request;
-    
-    public ReviewableRequestResource getRequest() {
-        return request;
+    public DataResource getData() {
+        return data;
     }
 }

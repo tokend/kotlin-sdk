@@ -6,8 +6,8 @@ package org.tokend.sdk.api.integrations.booking.model.scheduler.generated.resour
 public class AllResources {
     public static final Class<?>[] ARRAY = {
         EventResource.class,
-        EventRecurrenceResource.class,
         FreeBusyResource.class,
-        CalendarResource.class
+        CalendarResource.class,
+        EventRecurrenceResource.class
     };
 }
