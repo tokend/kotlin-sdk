@@ -8,13 +8,13 @@ For **Gradle** add following lines to your project's `build.gradle`:
 ```groovy
 allprojects {
     repositories {
-        ...
+        /*...*/
         maven { url "https://maven.tokend.io" }
     }
 }
 
 dependencies {
-    ...
+    /*...*/
     compile "org.tokend:sdk:3.6.2"
 }
 
@@ -94,7 +94,28 @@ For correct ProGuard processing add following lines to your project's `proguard-
 #-dontnote org.tokend.wallet.xdr.*
 ```
 
+## Generate resources
+
+Use TokenD mobile resourcegen Docker image to generate Java resources from
+OpenAPI docs.
+
+Create unit test in `org.tokend.sdk.dev` test package and use `DockerResourceGenerator`  
+to generate resources directly from IDE.
+
+Example of usage:
+```kotlin
+val generator = DockerResourceGenerator(
+        tempDirectoryPath = "~/git/tokend/sdk/gen"
+)
+generator.generateResources(
+        openapiSpecFilePath = "~/git/tokend/horizon/docs/build/openapi.yaml",
+        namespace = "org.tokend.sdk.api.generated",
+        outputDirectoryPath = "~/git/tokend/sdk/src/main/java/org/tokend/sdk/api/generated",
+        ignoredKeys = setOf()
+)
+```
+
 ## Documentation
 Visit our [Docs](https://docs.tokend.io/) to get information on working with TokenD.
 
-Also take a look at [Wiki](https://github.com/tokend/kotlin-sdk/wiki) to learn how to use SDK in your projects.
+Also, take a look at [Wiki](https://github.com/tokend/kotlin-sdk/wiki/) to learn how to use SDK in your projects.
