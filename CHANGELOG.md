@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [3.7.0] 2020-12-25
+
+### Added
+- Ability to set any extra headers in `TokenDApi` constructor (down to `ServiceFactory`)
+
+### Changed
+- Updated Kotlin version to `1.4.10`
+- Moved `SaleState` to `api.v3.sales.model`
+- Moved `RequestState` to `api.v3.requests.model`
+- Moved `getChart` methods to `ChartsApi` (`TokenDApi.charts`)
+
+### Removed
+- Deprecated sales API
+- Deprecated reviewable requests API
+- Deprecated key-value API
+- Deprecated assets API
+- Deprecated calls in blobs API
+- Deprecated calls in accounts API
+- Deprecated calls in documents API
+
+### Internal
+- Replace internal resourcegen with dockerized one
+
 ## [3.6.2] 2020-12-09
 
 ### Added
@@ -394,4 +417,5 @@ with `addExtraResources` method
 [3.6.0]: https://github.com/tokend/kotlin-sdk/compare/3.5.0...3.6.0
 [3.6.1]: https://github.com/tokend/kotlin-sdk/compare/3.6.0...3.6.1
 [3.6.2]: https://github.com/tokend/kotlin-sdk/compare/3.6.1...3.6.2
-[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/3.6.1...HEAD
+[3.7.0]: https://github.com/tokend/kotlin-sdk/compare/3.6.2...3.7.0
+[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/3.7.0...HEAD
