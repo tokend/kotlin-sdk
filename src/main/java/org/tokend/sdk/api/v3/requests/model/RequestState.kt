@@ -1,4 +1,4 @@
-package org.tokend.sdk.api.requests.model.base
+package org.tokend.sdk.api.v3.requests.model
 
 enum class RequestState(val i: Int) {
     UNKNOWN(-1),

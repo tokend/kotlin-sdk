@@ -1,7 +1,7 @@
 package org.tokend.sdk.api.v3.requests.params
 
 import org.tokend.sdk.api.base.params.PagingParamsV2
-import org.tokend.sdk.api.requests.model.base.RequestState
+import org.tokend.sdk.api.v3.requests.model.RequestState
 import org.tokend.wallet.xdr.ReviewableRequestType
 
 /**

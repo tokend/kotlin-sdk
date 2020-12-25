@@ -9,7 +9,7 @@ import org.tokend.sdk.api.blobs.params.BlobPageParams
 import org.tokend.sdk.api.identity.params.IdentitiesPageParams
 import org.tokend.sdk.api.integrations.marketplace.params.MarketplaceOfferParams
 import org.tokend.sdk.api.integrations.marketplace.params.MarketplaceOffersPageParams
-import org.tokend.sdk.api.requests.model.base.RequestState
+import org.tokend.sdk.api.v3.requests.model.RequestState
 import org.tokend.sdk.api.v3.sales.model.SaleState
 import org.tokend.sdk.api.v3.assetpairs.params.AssetPairParams
 import org.tokend.sdk.api.v3.assetpairs.params.AssetPairsPageParams

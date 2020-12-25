@@ -5,8 +5,6 @@ import org.tokend.sdk.api.accounts.AccountsApi
 import org.tokend.sdk.api.accounts.AccountsService
 import org.tokend.sdk.api.assets.AssetsApi
 import org.tokend.sdk.api.assets.AssetsService
-import org.tokend.sdk.api.authenticator.AuthResultsApi
-import org.tokend.sdk.api.authenticator.AuthResultsService
 import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.BaseApi
 import org.tokend.sdk.api.base.model.BaseResource
@@ -25,8 +23,6 @@ import org.tokend.sdk.api.identity.IdentitiesService
 import org.tokend.sdk.api.integrations.IntegrationsApi
 import org.tokend.sdk.api.keyvaluestorage.KeyValueStorageApi
 import org.tokend.sdk.api.keyvaluestorage.KeyValueStorageService
-import org.tokend.sdk.api.requests.RequestsApi
-import org.tokend.sdk.api.requests.RequestsService
 import org.tokend.sdk.api.tfa.TfaApi
 import org.tokend.sdk.api.tfa.TfaService
 import org.tokend.sdk.api.trades.TradesApi
@@ -130,15 +126,6 @@ constructor(
 
     open val documents: DocumentsApi by lazy {
         DocumentsApi(getService(DocumentsService::class.java))
-    }
-
-    @Deprecated("Use v3 instead")
-    open val requests: RequestsApi by lazy {
-        RequestsApi(getService(RequestsService::class.java))
-    }
-
-    open val authResults: AuthResultsApi by lazy {
-        AuthResultsApi(getService(AuthResultsService::class.java))
     }
 
     open val identities: IdentitiesApi by lazy {
