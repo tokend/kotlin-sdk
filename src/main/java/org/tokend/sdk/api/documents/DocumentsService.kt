@@ -22,10 +22,6 @@ interface DocumentsService {
                @PartMap partMap: Map<String, RequestBody>,
                @Part filePart: MultipartBody.Part): Call<Void>
 
-    @GET("accounts/{accountId}/documents/{document}")
-    fun getUrl(@Path("accountId") accountId: String,
-               @Path("document") document: String): Call<DataEntity<DocumentUrlRequest>>
-
     @GET("documents/{document}")
     fun getUrl(@Path("document") document: String): Call<DataEntity<DocumentUrlRequest>>
 }

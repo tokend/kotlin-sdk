@@ -21,8 +21,6 @@ import org.tokend.sdk.api.general.GeneralService
 import org.tokend.sdk.api.identity.IdentitiesApi
 import org.tokend.sdk.api.identity.IdentitiesService
 import org.tokend.sdk.api.integrations.IntegrationsApi
-import org.tokend.sdk.api.keyvaluestorage.KeyValueStorageApi
-import org.tokend.sdk.api.keyvaluestorage.KeyValueStorageService
 import org.tokend.sdk.api.tfa.TfaApi
 import org.tokend.sdk.api.tfa.TfaService
 import org.tokend.sdk.api.trades.TradesApi
@@ -51,7 +49,7 @@ open class TokenDApi
  * @param extraHeaders  add headers to all requests
  * @param withLogs enable/disable HTTP Logs. True by default.
  * @param asyncCallbackExecutor [Executor] that performs [ApiRequest.executeAsync] callback.
- * By default it is [DEFAULT_ASYNC_CALLBACK_EXECUTOR], you may
+ * By default it is [BaseApi.DEFAULT_ASYNC_CALLBACK_EXECUTOR], you may
  * want to use Android main thread executor for this.
  *
  * @see [AccountRequestSigner]
@@ -117,11 +115,6 @@ constructor(
 
     open val wallets: WalletsApi by lazy {
         WalletsApi(getService(WalletsService::class.java))
-    }
-
-    @Deprecated("Use v3 instead")
-    open val keyValueEntries: KeyValueStorageApi by lazy {
-        KeyValueStorageApi(getService(KeyValueStorageService::class.java))
     }
 
     open val documents: DocumentsApi by lazy {
@@ -230,5 +223,4 @@ constructor(
     companion object {
         private const val HEADER_USER_AGENT_NAME = "User-Agent"
     }
-
 }
