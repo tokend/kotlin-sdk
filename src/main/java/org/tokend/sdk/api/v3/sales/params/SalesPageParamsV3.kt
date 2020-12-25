@@ -1,7 +1,7 @@
 package org.tokend.sdk.api.v3.sales.params
 
 import org.tokend.sdk.api.base.params.PagingParamsV2
-import org.tokend.sdk.api.sales.model.SaleState
+import org.tokend.sdk.api.v3.sales.model.SaleState
 import org.tokend.sdk.api.v3.base.PageQueryParams
 import org.tokend.sdk.utils.ApiDateUtil
 import org.tokend.sdk.utils.BigDecimalUtil

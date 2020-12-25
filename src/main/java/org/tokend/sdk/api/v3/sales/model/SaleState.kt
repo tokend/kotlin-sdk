@@ -1,4 +1,4 @@
-package org.tokend.sdk.api.sales.model
+package org.tokend.sdk.api.v3.sales.model
 
 enum class SaleState(val value: Int) {
     OPEN(1),

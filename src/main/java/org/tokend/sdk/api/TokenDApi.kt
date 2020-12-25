@@ -27,8 +27,6 @@ import org.tokend.sdk.api.keyvaluestorage.KeyValueStorageApi
 import org.tokend.sdk.api.keyvaluestorage.KeyValueStorageService
 import org.tokend.sdk.api.requests.RequestsApi
 import org.tokend.sdk.api.requests.RequestsService
-import org.tokend.sdk.api.sales.SalesApi
-import org.tokend.sdk.api.sales.SalesService
 import org.tokend.sdk.api.tfa.TfaApi
 import org.tokend.sdk.api.tfa.TfaService
 import org.tokend.sdk.api.trades.TradesApi
@@ -94,11 +92,6 @@ constructor(
     @Deprecated("Use v3 instead")
     open val transactions: TransactionsApi by lazy {
         TransactionsApi(getService(TransactionsService::class.java))
-    }
-
-    @Deprecated("Use v3 instead")
-    open val sales: SalesApi by lazy {
-        SalesApi(getService(SalesService::class.java))
     }
 
     open val blobs: BlobsApi by lazy {
