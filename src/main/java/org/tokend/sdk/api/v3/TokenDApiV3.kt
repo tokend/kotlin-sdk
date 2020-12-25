@@ -42,12 +42,12 @@ open class TokenDApiV3(rootUrl: String,
                        requestSigner: RequestSigner?,
                        tfaCallback: TfaCallback?,
                        cookieJarProvider: CookieJarProvider?,
-                       userAgent: String?,
+                       extraHeaders: Map<String, String?>?,
                        withLogs: Boolean,
                        asyncCallbackExecutor: Executor
 ) : BaseApi(
         rootUrl, requestSigner, tfaCallback, cookieJarProvider,
-        userAgent, asyncCallbackExecutor, withLogs
+        extraHeaders, asyncCallbackExecutor, withLogs
 ) {
     open val accounts: AccountsApiV3 by lazy {
         AccountsApiV3(getService(AccountsServiceV3::class.java))

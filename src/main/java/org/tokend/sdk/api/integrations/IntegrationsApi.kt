@@ -35,12 +35,12 @@ open class IntegrationsApi(
         requestSigner: RequestSigner?,
         tfaCallback: TfaCallback?,
         cookieJarProvider: CookieJarProvider?,
-        userAgent: String?,
+        extraHeaders: Map<String, String?>?,
         withLogs: Boolean,
         asyncCallbackExecutor: Executor
 ) : BaseApi(
         rootUrl, requestSigner, tfaCallback, cookieJarProvider,
-        userAgent, asyncCallbackExecutor, withLogs
+        extraHeaders, asyncCallbackExecutor, withLogs
 ) {
     protected open val customRequests: CustomRequestsApi by lazy {
         CustomRequestsApi(getService(CustomRequestsService::class.java))
