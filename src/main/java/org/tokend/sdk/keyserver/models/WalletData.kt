@@ -26,7 +26,9 @@ open class WalletData(
             @SerializedName("salt")
             val salt: String,
             @SerializedName("verified")
-            val isVerified: Boolean
+            val isVerified: Boolean,
+            @SerializedName("verification_doce")
+            val verificationCode: String?,
     ) {
         val keychainData: KeychainData
             get() = KeychainData.fromJson(String(encodedKeychainData.decodeBase64()))
@@ -41,9 +43,12 @@ open class WalletData(
      * @see WalletData.TYPE_DEFAULT
      * @see WalletData.TYPE_RECOVERY
      */
-    constructor(type: String,
-                walletIdHex: String,
-                encryptedAccount: EncryptedWalletAccount) : this(
+    constructor(
+            type: String,
+            walletIdHex: String,
+            encryptedAccount: EncryptedWalletAccount,
+            verificationCode: String? = null,
+    ) : this(
             type = type,
             id = walletIdHex,
             attributes = WalletAttributes(
@@ -51,7 +56,8 @@ open class WalletData(
                     email = encryptedAccount.email,
                     salt = encryptedAccount.encodedSalt,
                     encodedKeychainData = encryptedAccount.encodedKeychainData,
-                    isVerified = false
+                    isVerified = false,
+                    verificationCode = verificationCode,
             )
     )
 
@@ -63,7 +69,7 @@ open class WalletData(
         relationships[name] = DataEntity(relations)
     }
 
-    fun getFlatterRelationships(): List<WalletRelation> =
+    fun getFlattenRelationships(): List<WalletRelation> =
             relationships
                     .values
                     .flatMap { relation ->
