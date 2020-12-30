@@ -66,7 +66,8 @@ open class DataPage<T>(open val nextCursor: String?,
          * Creates [DataPage] from collection [JSONAPIDocument] with specific meta info.
          */
         fun <T> fromPageDocument(pageDocument: JSONAPIDocument<List<T>>): DataPage<T> {
-            val selfLink = URLDecoder.decode(pageDocument.links.self.href, "UTF-8")
+            val selfLink = URLDecoder.decode(pageDocument.links.self?.href
+                    ?: throw IllegalArgumentException("Self link can't be null"), "UTF-8")
             val nextLink = pageDocument.links?.next?.href
                     ?.takeIf(String::isNotBlank)
                     ?.let { URLDecoder.decode(it, "UTF-8") }

@@ -220,7 +220,7 @@ class QueryParamsTest {
 
     @Test
     fun salesParams() {
-        val expected = "{filter[base_asset]=BTC, filter[max_end_time]=2019-02-08T09:38:40Z, filter[max_hard_cap]=1, filter[max_start_time]=2019-02-08T09:28:40Z, filter[min_soft_cap]=10, filter[owner]=$accountId, filter[sale_type]=2, filter[state]=1, include=base_asset, order=desc, page[order]=desc}"
+        val expected = "{filter[base_asset]=BTC, filter[max_end_time]=2019-02-08T09:38:40.000Z, filter[max_hard_cap]=1, filter[max_start_time]=2019-02-08T09:28:40.000Z, filter[min_soft_cap]=10, filter[owner]=$accountId, filter[sale_type]=2, filter[state]=1, include=base_asset, order=desc, page[order]=desc}"
 
         val params = SalesPageParamsV3(
                 baseAsset = "BTC",
@@ -450,7 +450,7 @@ class QueryParamsTest {
 
     @Test
     fun pollsPageParams() {
-        val expected = "{cursor=8, filter[max_end_time]=2028-08-11T14:58:40Z, filter[max_start_time]=2025-06-11T05:12:00Z, filter[min_end_time]=2022-04-10T19:25:20Z, filter[min_start_time]=2019-02-08T09:38:40Z, filter[owner]=$accountId, filter[permission_type]=0, filter[poll_type]=0, filter[state]=3, filter[vote_confirmation]=true, include=participation,participation.votes, limit=10, order=desc, page=8, page[cursor]=8, page[limit]=10, page[number]=8, page[order]=desc}"
+        val expected = "{cursor=8, filter[max_end_time]=2028-08-11T14:58:40.000Z, filter[max_start_time]=2025-06-11T05:12:00.000Z, filter[min_end_time]=2022-04-10T19:25:20.000Z, filter[min_start_time]=2019-02-08T09:38:40.000Z, filter[owner]=GBA4EX43M25UPV4WIE6RRMQOFTWXZZRIPFAI5VPY6Z2ZVVXVWZ6NEOOB, filter[permission_type]=0, filter[poll_type]=0, filter[state]=3, filter[vote_confirmation]=true, include=participation,participation.votes, limit=10, order=desc, page=8, page[cursor]=8, page[limit]=10, page[number]=8, page[order]=desc}"
 
         val params = PollsPageParams(
                 owner = accountId,

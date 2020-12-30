@@ -6,7 +6,7 @@ import org.tokend.sdk.api.base.MappedCallableApiRequest
 import org.tokend.sdk.api.base.model.DataPage
 import org.tokend.sdk.utils.SimplePagedResourceLoader
 
-class PagedResourceLoader {
+class PagedResourceLoaderTest {
     @Test
     fun local() {
         val data = (0..1000).toList()

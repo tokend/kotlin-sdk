@@ -120,7 +120,7 @@ class PaginationTest {
 
         try {
             DataPage.fromPageDocument(document)
-        } catch (e: IllegalStateException) {
+        } catch (e: IllegalArgumentException) {
             // Ok.
             return
         }
