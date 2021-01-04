@@ -87,21 +87,13 @@ class WalletEncryptionTest {
         )
     }
 
-    @Test
+    @Test(expected = IllegalStateException::class)
     fun decryptMalformed() {
         val content = "{\"nothing\":\"here\"\"]}"
         val iv = SecureRandom.getSeed(8)
         val key = SecureRandom.getSeed(32)
         val encrypted = Aes256GCM(iv).encrypt(content.toByteArray(), key)
         val keychainData = KeychainData.fromRaw(iv, encrypted)
-        try {
-            WalletEncryption.decryptSecretSeeds(keychainData, key)
-        } catch (e: IllegalStateException) {
-            // Ok
-            return
-        } catch (e: Exception) {
-            Assert.fail("Must throw IllegalStateException but $e is thrown")
-        }
-        Assert.fail("Must throw IllegalStateException but nothing is thrown")
+        WalletEncryption.decryptSecretSeeds(keychainData, key)
     }
 }

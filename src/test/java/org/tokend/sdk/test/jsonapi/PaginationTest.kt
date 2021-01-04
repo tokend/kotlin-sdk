@@ -64,7 +64,7 @@ class PaginationTest {
     @Test
     fun dataPageMapNotNull() {
         val source = DataPage(null, listOf(1, 2, 3, 4), true)
-        val transform: (Int) -> Int? = { i -> i.takeIf { it % 2 == 0}}
+        val transform: (Int) -> Int? = { i -> i.takeIf { it % 2 == 0 } }
         val mapped = source.mapItemsNotNull(transform)
 
         Assert.assertEquals("Mapped page next cursor must be the same",
@@ -110,21 +110,12 @@ class PaginationTest {
                 "to avoid infinite pagination", page.isLast)
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException::class)
     fun noLinks() {
         val document = JSONAPIDocument<List<Int>>(
                 listOf(1, 2, 3, 4),
                 Links(),
                 emptyMap()
         )
-
-        try {
-            DataPage.fromPageDocument(document)
-        } catch (e: IllegalArgumentException) {
-            // Ok.
-            return
-        }
-
-        Assert.fail("DataPage must throw exception if document has no links")
     }
 }
