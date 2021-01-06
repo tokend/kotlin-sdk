@@ -10,6 +10,7 @@ import org.tokend.sdk.api.base.model.BaseResource
 import org.tokend.sdk.api.base.model.DataPage
 import org.tokend.sdk.api.base.model.DataPageWithNamedCursors
 import org.tokend.sdk.api.base.model.Page
+import org.tokend.sdk.api.v3.base.JsonApiQueryMapBuilder
 import org.tokend.sdk.factory.GsonFactory
 import org.tokend.sdk.factory.JsonApiToolsProvider
 import retrofit2.Call
@@ -50,6 +51,7 @@ open class CustomRequestsApi(
      * @param headersMap Map of headers
      *
      * @see TypeToken
+     * @see JsonApiQueryMapBuilder
      */
     @JvmOverloads
     open fun <T> get(url: String,
@@ -71,6 +73,8 @@ open class CustomRequestsApi(
      * @param responseClass [Class] that matches [T]
      * @param queryMap Map of query params
      * @param headersMap Map of headers
+     *
+     * @see JsonApiQueryMapBuilder
      */
     @JvmOverloads
     open fun <T> get(url: String,
@@ -92,6 +96,8 @@ open class CustomRequestsApi(
      * @param pageItemClass [Class] that matches [T]
      * @param queryMap Map of query params
      * @param headersMap Map of headers
+     *
+     * @see JsonApiQueryMapBuilder
      */
     @JvmOverloads
     open fun <T> getPage(url: String,
@@ -113,6 +119,8 @@ open class CustomRequestsApi(
      * @param pageItemClass [Class] that matches [T]
      * @param queryMap Map of query params
      * @param headersMap Map of headers
+     *
+     * @see JsonApiQueryMapBuilder
      */
     @JvmOverloads
     open fun <T : BaseResource> getPageWithNamedCursors(url: String,
@@ -172,6 +180,8 @@ open class CustomRequestsApi(
      * @param responseType [Type] that matches [T]
      * @param queryMap Map of query params
      * @param headersMap Map of headers
+     *
+     * @see JsonApiQueryMapBuilder
      */
     @JvmOverloads
     open fun <T> post(url: String,
@@ -206,6 +216,8 @@ open class CustomRequestsApi(
      * @param responseClass [Class] that matches [T]
      * @param queryMap Map of query params
      * @param headersMap Map of headers
+     *
+     * @see JsonApiQueryMapBuilder
      */
     @JvmOverloads
     open fun <T> put(url: String,
@@ -231,6 +243,8 @@ open class CustomRequestsApi(
      * @param responseType [Type] that matches [T]
      * @param queryMap Map of query params
      * @param headersMap Map of headers
+     *
+     * @see JsonApiQueryMapBuilder
      */
     @JvmOverloads
     open fun <T> put(url: String,
@@ -265,6 +279,8 @@ open class CustomRequestsApi(
      * @param responseClass [Class] that matches [T]
      * @param queryMap Map of query params
      * @param headersMap Map of headers
+     *
+     * @see JsonApiQueryMapBuilder
      */
     @JvmOverloads
     open fun <T> patch(url: String,
@@ -290,6 +306,8 @@ open class CustomRequestsApi(
      * @param responseType [Type] that matches [T]
      * @param queryMap Map of query params
      * @param headersMap Map of headers
+     *
+     * @see JsonApiQueryMapBuilder
      */
     @JvmOverloads
     open fun <T> patch(url: String,
@@ -323,6 +341,8 @@ open class CustomRequestsApi(
      * @param responseType [Type] that matches [T]
      * @param queryMap Map of query params
      * @param headersMap Map of headers
+     *
+     * @see JsonApiQueryMapBuilder
      */
     @JvmOverloads
     open fun <T> delete(url: String,
@@ -344,6 +364,8 @@ open class CustomRequestsApi(
      * @param responseClass [Class] that matches [T]
      * @param queryMap Map of query params
      * @param headersMap Map of headers
+     *
+     * @see JsonApiQueryMapBuilder
      */
     @JvmOverloads
     open fun <T> delete(url: String,

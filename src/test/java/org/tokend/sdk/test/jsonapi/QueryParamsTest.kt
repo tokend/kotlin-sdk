@@ -4,13 +4,12 @@ import org.junit.Assert
 import org.junit.Test
 import org.tokend.sdk.api.base.params.PagingOrder
 import org.tokend.sdk.api.base.params.PagingParamsV2
+import org.tokend.sdk.api.base.params.PagingParamsV3
 import org.tokend.sdk.api.blobs.model.BlobType
 import org.tokend.sdk.api.blobs.params.BlobPageParams
 import org.tokend.sdk.api.identity.params.IdentitiesPageParams
 import org.tokend.sdk.api.integrations.marketplace.params.MarketplaceOfferParams
 import org.tokend.sdk.api.integrations.marketplace.params.MarketplaceOffersPageParams
-import org.tokend.sdk.api.v3.requests.model.RequestState
-import org.tokend.sdk.api.v3.sales.model.SaleState
 import org.tokend.sdk.api.v3.assetpairs.params.AssetPairParams
 import org.tokend.sdk.api.v3.assetpairs.params.AssetPairsPageParams
 import org.tokend.sdk.api.v3.assets.model.AssetState
@@ -20,6 +19,7 @@ import org.tokend.sdk.api.v3.atomicswap.params.AtomicSwapAskParams
 import org.tokend.sdk.api.v3.atomicswap.params.AtomicSwapAsksPageParams
 import org.tokend.sdk.api.v3.balances.params.BalanceParams
 import org.tokend.sdk.api.v3.balances.params.BalancesPageParams
+import org.tokend.sdk.api.v3.base.JsonApiQueryMapBuilder
 import org.tokend.sdk.api.v3.fees.params.FeesPageParamsV3
 import org.tokend.sdk.api.v3.history.params.OperationParams
 import org.tokend.sdk.api.v3.history.params.OperationsPageParams
@@ -32,8 +32,10 @@ import org.tokend.sdk.api.v3.orderbook.params.OrderBookParamsV3
 import org.tokend.sdk.api.v3.polls.model.PollState
 import org.tokend.sdk.api.v3.polls.params.PollParams
 import org.tokend.sdk.api.v3.polls.params.PollsPageParams
+import org.tokend.sdk.api.v3.requests.model.RequestState
 import org.tokend.sdk.api.v3.requests.params.RequestParamsV3
 import org.tokend.sdk.api.v3.requests.params.RequestsPageParamsV3
+import org.tokend.sdk.api.v3.sales.model.SaleState
 import org.tokend.sdk.api.v3.sales.params.SaleParamsV3
 import org.tokend.sdk.api.v3.sales.params.SalesPageParamsV3
 import org.tokend.sdk.api.v3.swaps.model.SwapState
@@ -641,5 +643,29 @@ class QueryParamsTest {
 
         Assert.assertEquals(expected, params.map().toSortedMap().toString())
         Assert.assertEquals(expected, builtParams.map().toSortedMap().toString())
+    }
+
+    @Test
+    fun jsonApiQueryMapBuilder() {
+        val expected = "{extra=param, filter[owner]=$accountId, include=a,b,c,d, my=param, page[cursor]=cursor432, page[limit]=42, page[order]=desc}"
+
+        val map = JsonApiQueryMapBuilder()
+                .filter("owner", accountId)
+                .filter("optional", null)
+                .include("a", "b", "c", "d")
+                .param("my", "param")
+                .append(PagingParamsV3.withCursor(
+                        cursor = "cursor432",
+                        limit = 42,
+                        order = PagingOrder.DESC
+                ))
+                .append(mapOf(
+                        "extra" to "param"
+                ))
+                .build()
+                .toSortedMap()
+
+        Assert.assertEquals(expected, map.toString())
+        Assert.assertFalse(map.toString().contains("optional"))
     }
 }
