@@ -34,25 +34,37 @@ class GsonFactory {
 
     private fun getGsonDateDeserializer(): JsonDeserializer<Date?> {
         return JsonDeserializer { json, _, _ ->
-            ApiDateUtil.tryParseDate(json?.asString)
+            if (json.isJsonNull)
+                null
+            else
+                ApiDateUtil.tryParseDate(json.asString)
         }
     }
 
     private fun getGsonDateSerializer(): JsonSerializer<Date?> {
         return JsonSerializer { source, _, _ ->
-            JsonPrimitive(ApiDateUtil.formatDateForRequest(source))
+            if (source == null)
+                JsonNull.INSTANCE
+            else
+                JsonPrimitive(ApiDateUtil.formatDateForRequest(source))
         }
     }
 
     private fun getGsonBigDecimalDeserializer(): JsonDeserializer<BigDecimal?> {
         return JsonDeserializer { source, _, _ ->
-            BigDecimalUtil.valueOf(source?.asString)
+            if (source.isJsonNull)
+                null
+            else
+                BigDecimalUtil.valueOf(source.asString)
         }
     }
 
     private fun getGsonBigDecimalSerializer(): JsonSerializer<BigDecimal?> {
         return JsonSerializer { source, _, _ ->
-            JsonPrimitive(BigDecimalUtil.toPlainString(source))
+            if (source == null)
+                JsonNull.INSTANCE
+            else
+                JsonPrimitive(BigDecimalUtil.toPlainString(source))
         }
     }
 

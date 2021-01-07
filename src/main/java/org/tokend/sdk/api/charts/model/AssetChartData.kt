@@ -12,8 +12,10 @@ open class AssetChartData(
         @SerializedName("month") val month: List<ChartPoint>? = null,
         @SerializedName("year") val year: List<ChartPoint>? = null) {
 
-    open class ChartPoint(@SerializedName("value") val value: BigDecimal? = null,
-                     @SerializedName("timestamp") private val timestamp: String? = null) {
+    open class ChartPoint(
+            @SerializedName("value") val value: BigDecimal,
+            @SerializedName("timestamp") private val timestamp: String
+    ) {
 
         private var parsedDate: Date? = null
         val date: Date

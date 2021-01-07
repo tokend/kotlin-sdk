@@ -7,6 +7,10 @@ import java.util.*
 
 object ApiDateUtil {
     private val utcTimezone = TimeZone.getTimeZone("UTC")
+
+    /**
+     * ISO 8601
+     */
     private val defaultFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH)
             .utcTimeZone()
 
@@ -21,30 +25,47 @@ object ApiDateUtil {
     )
 
     /**
-     * Allow to safety parse Date from String.
+     * Parses [Date] from [strDate] using one of supported formats.
      *
      * Method is synchronised!
      *
-     * @return parsed value or current Date.
+     * @return parsed [Date].
+     *
+     * @throws ParseException if format is unknown or data is malformed
+     *
+     * @see parseDateOrCurrent
      */
-    fun tryParseDate(strDate: String?): Date = synchronized(this) {
-        if (strDate.isNullOrEmpty())
-            return Date()
+    fun tryParseDate(strDate: String): Date = synchronized(this) {
         for (format in supported) {
             try {
                 return format.parse(strDate)
             } catch (_: ParseException) {
             }
         }
-        return Date()
+
+        throw ParseException(strDate, 0)
     }
 
     /**
-     * Format Date to String.
-     * @return formatted String or empty String if [dateForRequest] is null.
+     * Parses [Date] from [strDate] using one of supported formats.
+     *
+     * @return parsed [Date] or current date in case of failure
+     *
+     * @see tryParseDate
      */
-    fun formatDateForRequest(dateForRequest: Date?): String {
-        return dateForRequest?.let(defaultFormat::format) ?: ""
+    fun parseDateOrCurrent(strDate: String): Date = try {
+        tryParseDate(strDate)
+    } catch (_: Exception) {
+        Date()
+    }
+
+    /**
+     * Format Date to String using the default format (ISO 8601).
+     *
+     * Method is synchronised!
+     */
+    fun formatDateForRequest(dateForRequest: Date): String = synchronized(this) {
+        return defaultFormat.format(dateForRequest)
     }
 
     private fun DateFormat.utcTimeZone(): DateFormat = apply {
