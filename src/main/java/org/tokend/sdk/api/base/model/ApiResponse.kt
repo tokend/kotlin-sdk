@@ -21,6 +21,6 @@ class ApiResponse<T>(
      * @return true if there is a value, false otherwise.
      */
     fun hasValue(): Boolean {
-        return value != null
+        return value != null && value !is Void && value !is Unit
     }
 }
