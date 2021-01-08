@@ -18,7 +18,6 @@ import org.tokend.sdk.api.custom.CustomRequestsApi
 import org.tokend.sdk.factory.GsonFactory
 import org.tokend.sdk.factory.JsonApiToolsProvider
 import org.tokend.sdk.utils.HashCodes
-import sun.misc.IOUtils
 import java.io.PrintWriter
 import java.net.HttpURLConnection
 import java.net.InetSocketAddress
@@ -104,7 +103,7 @@ class CustomRequestsTest {
             val captureRequestParams = { http: HttpExchange ->
                 lastRequestMethod = http.requestMethod
                 lastRequestUrl = http.requestURI.toString()
-                lastRequestBody = String(IOUtils.readFully(http.requestBody, -1, true))
+                lastRequestBody = http.requestBody.bufferedReader(Charsets.UTF_8).readText()
                 lastRequestHeadersString = http.requestHeaders.toMap()
                         .mapValues { it.value.first() }
                         .filterKeys { it.startsWith("X_") }
