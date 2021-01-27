@@ -42,6 +42,7 @@ open class SignInterceptor(
         const val REQUEST_TARGET_HEADER = "(request-target)"
         const val DATE_HEADER = "Date"
         const val AUTH_HEADER = "Authorization"
+        const val ACCOUNT_ID_HEADER = "Account-Id"
         const val AUTH_ALGORITHM = "ed25519-sha256"
         @JvmStatic
         val SIGNATURE_STRING_CHARSET = Charsets.UTF_8
@@ -62,7 +63,8 @@ open class SignInterceptor(
             )
 
             return mapOf(
-                    AUTH_HEADER to authHeaderContent
+                    AUTH_HEADER to authHeaderContent,
+                    ACCOUNT_ID_HEADER to signer.originalAccountId
             )
         }
 

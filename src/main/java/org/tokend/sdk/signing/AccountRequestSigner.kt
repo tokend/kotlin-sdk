@@ -11,8 +11,11 @@ import org.tokend.wallet.Account
  * @see <a href="https://tokend.gitbook.io/knowledge-base/technical-details/key-entities/accounts#signers">Knowledge base</a>
  * @see <a href="https://tokend.gitbook.io/knowledge-base/technical-details/security#rest-api">Requests signing on Knowledge base</a>
  */
-class AccountRequestSigner(
-        private val account: Account
+class AccountRequestSigner
+@JvmOverloads
+constructor(
+        private val account: Account,
+        override val originalAccountId: String = ""
 ) : RequestSigner {
     override val accountId = account.accountId
 
