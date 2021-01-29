@@ -15,7 +15,7 @@ allprojects {
 
 dependencies {
     /*...*/
-    compile "org.tokend:sdk:3.7.0"
+    compile "org.tokend:sdk:3.7.1"
 }
 
 ```
@@ -114,6 +114,7 @@ generator.generateResources(
         ignoredKeys = setOf()
 )
 ```
+For more information check out [Docker resource generator Readme](https://gitlab.com/tokend/mobile-openapi-resourcegen/-/blob/master/README.md)
 
 ## Documentation
 Visit our [Docs](https://docs.tokend.io/) to get information on working with TokenD.

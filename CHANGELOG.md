@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [3.7.1] 2021-01-29
+
+### Added
+- Ability to provide verification code during wallet creation to auto-verify email
+- `JsonApiQueryMapBuilder` which is useful when constructing query maps for custom APIs
+- Ability to specify original Account ID in `RequestSigner` (and so in `AccountRequestSigner`)
+to use for envs that require `Account-Id` header
+- `RemoteFile?.isReallyNullOrNullAccordingToTheJavascript` that allows to find out if it is really null or
+"null according to the Javascript" (has everything empty)
+
+### Changed
+- `ApiDateUtil.tryParseDate` now throws error for unsupported formats instead
+of current date return. See `ApiDateUtil.parseDateOrCurrent` for that
+- `ApiDateUtil.tryParseDate` now throws specific error for empty strings
+- `RemoteFile` fields are no more optional
+- `RemoteFile.getUrl` can no more neither accept null `storageUrl` nor return null
+
+### Fixed
+- False-positive .hasValue for ApiResponse with Void or Unit fake value
+
+### Internal
+- Removed useless tests
+- Fix not working tests on Java 11
+
 ## [3.7.0] 2020-12-25
 
 ### Added
@@ -418,4 +442,5 @@ with `addExtraResources` method
 [3.6.1]: https://github.com/tokend/kotlin-sdk/compare/3.6.0...3.6.1
 [3.6.2]: https://github.com/tokend/kotlin-sdk/compare/3.6.1...3.6.2
 [3.7.0]: https://github.com/tokend/kotlin-sdk/compare/3.6.2...3.7.0
-[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/3.7.0...HEAD
+[3.7.1]: https://github.com/tokend/kotlin-sdk/compare/3.7.0...3.7.1
+[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/3.7.1...HEAD
