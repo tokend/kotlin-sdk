@@ -36,6 +36,12 @@ object ApiDateUtil {
      * @see parseDateOrCurrent
      */
     fun tryParseDate(strDate: String): Date = synchronized(this) {
+        if (strDate.isEmpty()) {
+            throw IllegalArgumentException("\n============\nAh shit, here we go again! If the date is optional, " +
+                    "then use null or do not send it at all!\nSend this to backend/JS\n" +
+                    "============")
+        }
+
         for (format in supported) {
             try {
                 return format.parse(strDate)
