@@ -16,17 +16,33 @@ open class TfaVerifier(
         private val factorId: Long,
         private val token: String
 ) {
-    /**
-     * Communication object between TFA handler and TFA verifier.
-     */
-    inner class Interface {
+    interface Interface {
         /**
          * Performs OTP verification.
          * If OTP was verified successfully original request will be completed.
          */
         fun verify(otp: String,
                    onSuccess: EmptyCallback? = null,
-                   onError: OptionalThrowableCallback? = null) {
+                   onError: OptionalThrowableCallback? = null)
+
+        /**
+         * Informs verifier that verification will not be performed.
+         * Original request will be then failed with the [java.util.concurrent.CancellationException]
+         */
+        fun cancelVerification()
+    }
+
+    /**
+     * Communication object between TFA handler and TFA verifier.
+     */
+    private inner class InterfaceImpl : Interface {
+        /**
+         * Performs OTP verification.
+         * If OTP was verified successfully original request will be completed.
+         */
+        override fun verify(otp: String,
+                            onSuccess: EmptyCallback?,
+                            onError: OptionalThrowableCallback?) {
             this@TfaVerifier.verify(otp,
                     onSuccess = {
                         this@TfaVerifier.onVerifiedCallback?.invoke()
@@ -39,7 +55,7 @@ open class TfaVerifier(
          * Informs verifier that verification will not be performed.
          * Original request will be then failed with the [java.util.concurrent.CancellationException]
          */
-        fun cancelVerification() {
+        override fun cancelVerification() {
             this@TfaVerifier.onVerificationCancelledCallback?.invoke()
         }
     }
@@ -48,7 +64,7 @@ open class TfaVerifier(
                 tfaException: NeedTfaException) : this(verificationService,
             tfaException.walletId, tfaException.factorId, tfaException.token)
 
-    val verifierInterface = Interface()
+    val verifierInterface: Interface = InterfaceImpl()
 
     protected var onVerifiedCallback: EmptyCallback? = null
     protected var onVerificationCancelledCallback: EmptyCallback? = null
