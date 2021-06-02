@@ -14,7 +14,8 @@ class DockerResourceGenerator(
     fun generateResources(openapiSpecFilePath: String,
                           namespace: String,
                           outputDirectoryPath: String,
-                          ignoredKeys: Set<String> = emptySet()) {
+                          ignoredKeys: Set<String> = emptySet(),
+                          language: String = "java") {
         executeCommand("docker pull $GENERATOR_IMAGE")
 
         val ignoredKeysArgs = ignoredKeys.joinToString(
@@ -33,7 +34,7 @@ class DockerResourceGenerator(
                     "-v $openapiSpecFilePath:/resourcegen/openapi.json " +
                     "-v $tempOutputPath:/resourcegen/generated " +
                     "$GENERATOR_IMAGE " +
-                    "--language java " +
+                    "--language $language " +
                     "--namespace $namespace " +
                     "$ignoredKeysArgs " +
                     "--json"
@@ -43,7 +44,7 @@ class DockerResourceGenerator(
                     "-v $openapiSpecFilePath:/resourcegen/openapi.yaml " +
                     "-v $tempOutputPath:/resourcegen/generated " +
                     "$GENERATOR_IMAGE " +
-                    "--language java " +
+                    "--language $language " +
                     "--namespace $namespace " +
                     "$ignoredKeysArgs "
             )
