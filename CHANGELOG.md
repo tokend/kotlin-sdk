@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [3.7.2] 2021-06-02
+
+### Added
+- Jackson serialization annotations for `RemoteFile`, `Policies`, `NameValue`
+
+### Changed
+- `TfaVerifier.Interface` is now really an interface, so mocked implementations
+are possible now
+- Handle `410 - Gone` HTTP error in `KeyServer` as incorrect password error
+
+### Internal
+- Removed Ruby resources generator files
+- Fixed hardcoded language in Docker resource generator calls
+
 ## [3.7.1] 2021-01-29
 
 ### Added
@@ -443,4 +457,5 @@ with `addExtraResources` method
 [3.6.2]: https://github.com/tokend/kotlin-sdk/compare/3.6.1...3.6.2
 [3.7.0]: https://github.com/tokend/kotlin-sdk/compare/3.6.2...3.7.0
 [3.7.1]: https://github.com/tokend/kotlin-sdk/compare/3.7.0...3.7.1
-[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/3.7.1...HEAD
+[3.7.2]: https://github.com/tokend/kotlin-sdk/compare/3.7.1...3.7.2
+[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/3.7.2...HEAD
