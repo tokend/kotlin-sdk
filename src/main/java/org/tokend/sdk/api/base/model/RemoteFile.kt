@@ -15,14 +15,16 @@ open class RemoteFile(
          * Unique identifier of the file
          */
         @SerializedName("key")
-        @JsonProperty("key")
+        @param:JsonProperty("key")
+        @get:JsonProperty("key")
         val key: String,
 
         /**
          * Original name of the file with an extension
          */
         @SerializedName("name")
-        @JsonProperty("name")
+        @param:JsonProperty("name")
+        @get:JsonProperty("name")
         val name: String,
 
         /**
@@ -31,7 +33,8 @@ open class RemoteFile(
          * @see <a href="https://www.iana.org/assignments/media-types/media-types.xhtml">List of MIME types</a>
          */
         @SerializedName("mime_type")
-        @JsonProperty("mime_type")
+        @param:JsonProperty("mime_type")
+        @get:JsonProperty("mime_type")
         val mimeType: String
 ) : Serializable {
     open fun getUrl(storageRoot: String) =

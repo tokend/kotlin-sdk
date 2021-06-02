@@ -11,14 +11,16 @@ data class Policies(
          * Policies parsed as [NameValue] pairs
          */
         @SerializedName("flags")
-        @JsonProperty("flags")
+        @get:JsonProperty("flags")
+        @param:JsonProperty("flags")
         val flags: List<NameValue<Int>>?,
 
         /**
          * Policies bitmask
          */
         @SerializedName("mask")
-        @JsonProperty("mask")
+        @get:JsonProperty("mask")
+        @param:JsonProperty("mask")
         val mask: Long
 ) {
     /**

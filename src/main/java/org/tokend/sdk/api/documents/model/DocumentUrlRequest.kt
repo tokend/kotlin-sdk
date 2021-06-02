@@ -5,12 +5,14 @@ import com.google.gson.annotations.SerializedName
 
 class DocumentUrlRequest(
         @SerializedName("attributes")
-        @JsonProperty("attributes")
+        @get:JsonProperty("attributes")
+        @param:JsonProperty("attributes")
         val attributes: Attributes
 ) {
     class Attributes(
             @SerializedName("url")
-            @JsonProperty("url")
+            @get:JsonProperty("url")
+            @param:JsonProperty("url")
             val url: String
     )
 }

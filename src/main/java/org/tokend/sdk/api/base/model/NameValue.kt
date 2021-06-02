@@ -1,5 +1,6 @@
 package org.tokend.sdk.api.base.model
 
+import com.fasterxml.jackson.annotation.JsonAlias
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.google.gson.annotations.SerializedName
 
@@ -8,9 +9,11 @@ import com.google.gson.annotations.SerializedName
  */
 data class NameValue<T>(
         @SerializedName("name")
-        @JsonProperty("string")
+        @get:JsonProperty("string")
+        @param:JsonProperty("string")
         val name: String,
         @SerializedName("value")
-        @JsonProperty("int")
+        @get:JsonProperty("int")
+        @param:JsonProperty("int")
         val value: T
 )
