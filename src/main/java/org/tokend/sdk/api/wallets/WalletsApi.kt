@@ -34,6 +34,9 @@ open class WalletsApi(
                     HttpURLConnection.HTTP_NOT_FOUND -> throw InvalidCredentialsException(
                             InvalidCredentialsException.Credential.PASSWORD
                     )
+                    HttpURLConnection.HTTP_GONE -> throw InvalidCredentialsException(
+                            InvalidCredentialsException.Credential.PASSWORD
+                    )
                     else -> error
                 }
             } else {
