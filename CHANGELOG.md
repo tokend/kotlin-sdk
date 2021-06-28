@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+
+### Added
+- `GeneralApiV3` with system info method
+
+### Removed
+- `HashCodes` util. Use `arrayOf(x, y, z).contentHashCode()`
+or `Objects.hash(x, y, z)` instead
+- `ByteArray.hash()` extension. Use `Hashing.sha256()` instead
+- Useless string encoding arguments in `Encoding` extensions
+
+### Changed
+- `GeneralApi` is now deprecated, use v3 instead
+
 ## [3.7.2] 2021-06-02
 
 ### Added
