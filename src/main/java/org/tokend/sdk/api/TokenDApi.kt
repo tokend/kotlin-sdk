@@ -100,6 +100,7 @@ constructor(
         TfaApi(getService(TfaService::class.java))
     }
 
+    @Deprecated("Use v3 instead")
     open val general: GeneralApi by lazy {
         GeneralApi(getService(GeneralService::class.java))
     }

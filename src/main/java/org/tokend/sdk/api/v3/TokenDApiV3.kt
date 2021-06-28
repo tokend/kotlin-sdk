@@ -1,6 +1,8 @@
 package org.tokend.sdk.api.v3
 
 import org.tokend.sdk.api.base.BaseApi
+import org.tokend.sdk.api.custom.CustomRequestsApi
+import org.tokend.sdk.api.custom.CustomRequestsService
 import org.tokend.sdk.api.v3.accounts.AccountsApiV3
 import org.tokend.sdk.api.v3.accounts.AccountsServiceV3
 import org.tokend.sdk.api.v3.assetpairs.AssetPairsApi
@@ -13,6 +15,7 @@ import org.tokend.sdk.api.v3.balances.BalancesApi
 import org.tokend.sdk.api.v3.balances.BalancesService
 import org.tokend.sdk.api.v3.fees.FeesApiV3
 import org.tokend.sdk.api.v3.fees.FeesServiceV3
+import org.tokend.sdk.api.v3.general.GeneralApiV3
 import org.tokend.sdk.api.v3.history.HistoryApi
 import org.tokend.sdk.api.v3.history.HistoryService
 import org.tokend.sdk.api.v3.keyvalue.KeyValueStorageApiV3
@@ -49,6 +52,14 @@ open class TokenDApiV3(rootUrl: String,
         rootUrl, requestSigner, tfaCallback, cookieJarProvider,
         extraHeaders, asyncCallbackExecutor, withLogs
 ) {
+    protected open val customRequests: CustomRequestsApi by lazy {
+        CustomRequestsApi(getService(CustomRequestsService::class.java))
+    }
+
+    open val general: GeneralApiV3 by  lazy {
+        GeneralApiV3(customRequests)
+    }
+
     open val accounts: AccountsApiV3 by lazy {
         AccountsApiV3(getService(AccountsServiceV3::class.java))
     }
