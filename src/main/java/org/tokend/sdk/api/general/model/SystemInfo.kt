@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName
 import org.tokend.sdk.api.general.model.SystemInfo.Companion.LEDGER_CORE
 import org.tokend.sdk.api.general.model.SystemInfo.Companion.LEDGER_HISTORY
 import org.tokend.sdk.api.general.model.SystemInfo.Companion.LEDGER_HISTORY_2
-import org.tokend.sdk.utils.HashCodes
 import org.tokend.wallet.NetworkParams
 import java.util.*
 
@@ -41,14 +40,23 @@ open class SystemInfo(
     )
 
     override fun equals(other: Any?): Boolean {
-        return other is SystemInfo
-                && other.passphrase == passphrase
-                && other.masterExchangeName == masterExchangeName
-                && other.adminAccountId == adminAccountId
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as SystemInfo
+
+        if (passphrase != other.passphrase) return false
+        if (adminAccountId != other.adminAccountId) return false
+        if (masterExchangeName != other.masterExchangeName) return false
+
+        return true
     }
 
     override fun hashCode(): Int {
-        return HashCodes.ofMany(passphrase, masterExchangeName, adminAccountId)
+        var result = passphrase.hashCode()
+        result = 31 * result + adminAccountId.hashCode()
+        result = 31 * result + masterExchangeName.hashCode()
+        return result
     }
 
     fun toNetworkParams(): NetworkParams {

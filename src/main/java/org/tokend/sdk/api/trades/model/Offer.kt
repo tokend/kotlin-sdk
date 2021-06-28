@@ -1,7 +1,6 @@
 package org.tokend.sdk.api.trades.model
 
 import com.google.gson.annotations.SerializedName
-import org.tokend.sdk.utils.HashCodes
 import java.io.Serializable
 import java.math.BigDecimal
 import java.util.*
@@ -47,6 +46,8 @@ constructor(
     }
 
     override fun hashCode(): Int {
-        return HashCodes.ofMany(id, orderBookId)
+        var result = id.hashCode()
+        result = 31 * result + orderBookId.hashCode()
+        return result
     }
 }
