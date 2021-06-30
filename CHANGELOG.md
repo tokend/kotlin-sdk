@@ -44,7 +44,7 @@ are possible now
 - `JsonApiQueryMapBuilder` which is useful when constructing query maps for custom APIs
 - Ability to specify original Account ID in `RequestSigner` (and so in `AccountRequestSigner`)
 to use for envs that require `Account-Id` header
-- `RemoteFile?.isReallyNullOrNullAccordingToTheJavascript` that allows to find out if it is really null or
+- `RemoteFile?.isReallyNullOrNullAccordingToTheJavascript` that allows finding out if it is really null or
 "null according to the Javascript" (has everything empty)
 
 ### Changed
