@@ -30,4 +30,8 @@ class JsonApiQueryMapBuilder {
     }
 
     fun build(): Map<String, Any> = map
+
+    fun buildParams(): QueryParams = object : QueryParams{
+        override fun map() = map
+    }
 }

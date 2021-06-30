@@ -27,6 +27,7 @@ import org.tokend.sdk.api.v3.history.params.ParticipantEffectsPageParams
 import org.tokend.sdk.api.v3.history.params.ParticipantEffectsParams
 import org.tokend.sdk.api.v3.offers.params.OfferParamsV3
 import org.tokend.sdk.api.v3.offers.params.OffersPageParamsV3
+import org.tokend.sdk.api.v3.orderbook.params.MatchesPageParams
 import org.tokend.sdk.api.v3.orderbook.params.OrderBookPageParams
 import org.tokend.sdk.api.v3.orderbook.params.OrderBookParamsV3
 import org.tokend.sdk.api.v3.polls.model.PollState
@@ -667,5 +668,37 @@ class QueryParamsTest {
 
         Assert.assertEquals(expected, map.toString())
         Assert.assertFalse(map.toString().contains("optional"))
+    }
+
+    @Test
+    fun matchesParams() {
+        val expected = "{cursor=8, filter[base_asset]=BTC, filter[order_book]=3, filter[quote_asset]=USD, include=base_asset, limit=10, order=desc, page=8, page[cursor]=8, page[limit]=10, page[number]=8, page[order]=desc}"
+
+        val params = MatchesPageParams(
+                baseAsset = "BTC",
+                quoteAsset = "USD",
+                orderBookId = "3",
+                include = listOf("base_asset"),
+                pagingParams = PagingParamsV2(
+                        order = PagingOrder.DESC,
+                        limit = 10,
+                        page = "8"
+                )
+        )
+
+        val builtParams = MatchesPageParams.Builder()
+                .withBaseAsset("BTC")
+                .withQuoteAsset("USD")
+                .withOrderBookId("3")
+                .withInclude("base_asset")
+                .withPagingParams(PagingParamsV2(
+                        order = PagingOrder.DESC,
+                        limit = 10,
+                        page = "8"
+                ))
+                .build()
+
+        Assert.assertEquals(expected, params.map().toSortedMap().toString())
+        Assert.assertEquals(expected, builtParams.map().toSortedMap().toString())
     }
 }
