@@ -23,8 +23,6 @@ import org.tokend.sdk.api.identity.IdentitiesService
 import org.tokend.sdk.api.integrations.IntegrationsApi
 import org.tokend.sdk.api.tfa.TfaApi
 import org.tokend.sdk.api.tfa.TfaService
-import org.tokend.sdk.api.trades.TradesApi
-import org.tokend.sdk.api.trades.TradesService
 import org.tokend.sdk.api.v3.TokenDApiV3
 import org.tokend.sdk.api.wallets.WalletsApi
 import org.tokend.sdk.api.wallets.WalletsService
@@ -96,11 +94,6 @@ constructor(
     @Deprecated("Use v3 instead")
     open val general: GeneralApi by lazy {
         GeneralApi(getService(GeneralService::class.java))
-    }
-
-    @Deprecated("Use v3 instead")
-    open val trades: TradesApi by lazy {
-        TradesApi(getService(TradesService::class.java))
     }
 
     open val charts: ChartsApi by lazy {

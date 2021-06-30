@@ -10,17 +10,18 @@ for further information about branching and tagging conventions.
 ## [Unreleased]
 
 ### Added
-- `GeneralApiV3` with system info method
+- `v3.general` API with system info method
 
 ### Removed
 - `HashCodes` util. Use `arrayOf(x, y, z).contentHashCode()`
 or `Objects.hash(x, y, z)` instead
 - `ByteArray.hash()` extension. Use `Hashing.sha256()` instead
 - Useless string encoding arguments in `Encoding` extensions
-- Deprecated `Transactions` API, use v3 instead
+- Deprecated `transactions` API, use `v3.transactions` instead
+- Deprecated `trades` API, use `v3.orderBooks` instead
 
 ### Changed
-- `GeneralApi` is now deprecated, use v3 instead
+- `general` API is now deprecated, use `v3.general` instead
 
 ## [3.7.2] 2021-06-02
 
