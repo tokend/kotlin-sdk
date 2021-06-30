@@ -6,6 +6,7 @@ import org.tokend.sdk.api.transactions.model.TransactionFailedException
 import org.tokend.sdk.test.Config
 import org.tokend.sdk.test.Util
 import org.tokend.sdk.utils.extentions.encodeHexString
+import org.tokend.sdk.utils.extentions.toNetworkParams
 import org.tokend.wallet.Account
 import org.tokend.wallet.PublicKeyFactory
 import org.tokend.wallet.TransactionBuilder
@@ -16,7 +17,7 @@ class TransactionsIntegrationTest {
     fun submitError() {
         val api = Util.getApi()
 
-        val netParams = api.general.getSystemInfo().execute().get().toNetworkParams()
+        val netParams = api.v3.general.getSystemInfo().execute().get().toNetworkParams()
 
         val tx = TransactionBuilder(netParams, Config.ADMIN_ACCOUNT.accountId)
                 .addOperation(

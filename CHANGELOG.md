@@ -17,6 +17,7 @@ for further information about branching and tagging conventions.
 or `Objects.hash(x, y, z)` instead
 - `ByteArray.hash()` extension. Use `Hashing.sha256()` instead
 - Useless string encoding arguments in `Encoding` extensions
+- Deprecated `Transactions` API, use v3 instead
 
 ### Changed
 - `GeneralApi` is now deprecated, use v3 instead

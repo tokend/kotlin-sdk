@@ -17,11 +17,11 @@ import org.tokend.sdk.api.base.model.BaseResource
 import org.tokend.sdk.api.custom.CustomRequestsApi
 import org.tokend.sdk.factory.GsonFactory
 import org.tokend.sdk.factory.JsonApiToolsProvider
-import org.tokend.sdk.utils.HashCodes
 import java.io.PrintWriter
 import java.net.HttpURLConnection
 import java.net.InetSocketAddress
 import java.net.ServerSocket
+import java.util.*
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class CustomRequestsTest {
@@ -54,7 +54,7 @@ class CustomRequestsTest {
         }
 
         override fun hashCode(): Int {
-            return HashCodes.ofMany(id, a, b)
+            return Objects.hash(id, a, b)
         }
 
         companion object {

@@ -3,13 +3,13 @@ package org.tokend.sdk.api
 import com.google.gson.Gson
 import org.tokend.sdk.api.accounts.AccountsApi
 import org.tokend.sdk.api.accounts.AccountsService
-import org.tokend.sdk.api.charts.ChartsApi
-import org.tokend.sdk.api.charts.ChartsService
 import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.BaseApi
 import org.tokend.sdk.api.base.model.BaseResource
 import org.tokend.sdk.api.blobs.BlobsApi
 import org.tokend.sdk.api.blobs.BlobsService
+import org.tokend.sdk.api.charts.ChartsApi
+import org.tokend.sdk.api.charts.ChartsService
 import org.tokend.sdk.api.custom.CustomRequestsApi
 import org.tokend.sdk.api.custom.CustomRequestsService
 import org.tokend.sdk.api.documents.DocumentsApi
@@ -25,8 +25,6 @@ import org.tokend.sdk.api.tfa.TfaApi
 import org.tokend.sdk.api.tfa.TfaService
 import org.tokend.sdk.api.trades.TradesApi
 import org.tokend.sdk.api.trades.TradesService
-import org.tokend.sdk.api.transactions.TransactionsApi
-import org.tokend.sdk.api.transactions.TransactionsService
 import org.tokend.sdk.api.v3.TokenDApiV3
 import org.tokend.sdk.api.wallets.WalletsApi
 import org.tokend.sdk.api.wallets.WalletsService
@@ -81,11 +79,6 @@ constructor(
 
     open val accounts: AccountsApi by lazy {
         AccountsApi(getService(AccountsService::class.java))
-    }
-
-    @Deprecated("Use v3 instead")
-    open val transactions: TransactionsApi by lazy {
-        TransactionsApi(getService(TransactionsService::class.java))
     }
 
     open val blobs: BlobsApi by lazy {
@@ -148,7 +141,7 @@ constructor(
         private var cookieJarProvider: CookieJarProvider? = null
         private var extraHeaders: Map<String, String?>? = null
         private var withLogs: Boolean = true
-        protected var asyncCallbackExecutor: Executor = DEFAULT_ASYNC_CALLBACK_EXECUTOR
+        private var asyncCallbackExecutor: Executor = DEFAULT_ASYNC_CALLBACK_EXECUTOR
 
         /**
          * Required to perform requests with signature check.
@@ -202,7 +195,7 @@ constructor(
 
         /**
          * [Executor] that performs [ApiRequest.executeAsync] callback.
-         * By default it is [DEFAULT_ASYNC_CALLBACK_EXECUTOR], you may
+         * By default it is [BaseApi.DEFAULT_ASYNC_CALLBACK_EXECUTOR], you may
          * want to use Android main thread executor for this.
          */
         fun setAsyncCallbackExecutor(asyncCallbackExecutor: Executor): Builder {
