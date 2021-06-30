@@ -17,6 +17,7 @@ import org.tokend.sdk.tfa.PasswordTfaOtpGenerator
 import org.tokend.sdk.tfa.TfaCallback
 import org.tokend.sdk.tfa.TfaVerifier
 import org.tokend.sdk.utils.extentions.encodeHexString
+import org.tokend.sdk.utils.extentions.toNetworkParams
 import org.tokend.wallet.Account
 import java.security.SecureRandom
 import kotlin.math.absoluteValue
@@ -218,13 +219,10 @@ class KeyServerTest {
 
         val signedApi = Util.getSignedApi(rootAccount, api.rootUrl, tfaCallback = tfaCallback)
 
-        val netParams = api
-                .general
-                .getSystemInfo()
+        val netParams = api.v3.general.getSystemInfo()
                 .execute()
                 .get()
                 .toNetworkParams()
-
 
         val newPassword = "qweqwe".toCharArray()
         val newAccount = Account.random()

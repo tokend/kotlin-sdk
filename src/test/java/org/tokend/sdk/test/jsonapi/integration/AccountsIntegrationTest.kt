@@ -12,12 +12,10 @@ class AccountsIntegrationTest {
 
     @Before
     fun getAccountId() {
-        accountId = Util.getApi()
-                .general
-                .getSystemInfo()
+        accountId = Util.getApi().v3.general.getSystemInfo()
                 .execute()
                 .get()
-                .adminAccountId
+                .masterAccountId
     }
 
     @Test
