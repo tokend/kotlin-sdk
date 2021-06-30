@@ -112,10 +112,11 @@ class PaginationTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun noLinks() {
-        JSONAPIDocument(
+        val document = JSONAPIDocument(
                 listOf(1, 2, 3, 4),
                 Links(),
                 emptyMap()
         )
+        DataPage.fromPageDocument(document)
     }
 }

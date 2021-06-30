@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.*
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.github.jasminb.jsonapi.ResourceConverter
 import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory
+import org.jetbrains.annotations.TestOnly
 import org.tokend.sdk.api.generated.resources.AllResources
 import org.tokend.sdk.api.identity.model.IdentityResource
 import org.tokend.sdk.api.identity.model.IdentitySettingsResource
@@ -171,6 +172,14 @@ object JsonApiToolsProvider {
                 return BigDecimalUtil.valueOf(value)
             }
         }
+    }
+
+    @TestOnly
+    @JvmStatic
+    fun reset() {
+        resourceConverter = null
+        objectMapper = null
+        jsonApiConverterFactory = null
     }
 
     private var resourceConverter: ResourceConverter? = null

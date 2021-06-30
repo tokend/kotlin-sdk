@@ -17,7 +17,6 @@ import org.tokend.sdk.api.base.model.BaseResource
 import org.tokend.sdk.api.custom.CustomRequestsApi
 import org.tokend.sdk.factory.GsonFactory
 import org.tokend.sdk.factory.JsonApiToolsProvider
-import java.io.PrintWriter
 import java.net.HttpURLConnection
 import java.net.InetSocketAddress
 import java.net.ServerSocket
@@ -93,6 +92,7 @@ class CustomRequestsTest {
         @JvmStatic
         @BeforeClass
         fun setUpTestServer() {
+            JsonApiToolsProvider.reset()
             JsonApiToolsProvider.addExtraResources(DummyResource::class.java)
 
             val socket = ServerSocket(0).apply { reuseAddress = true }
@@ -115,77 +115,80 @@ class CustomRequestsTest {
             server.createContext("/dummy") { http ->
                 captureRequestParams(http)
 
+                val response = GsonFactory().getBaseGson().toJson(DummyEntity.DEFAULT)
+                        .toByteArray(Charsets.UTF_8)
+
                 http.responseHeaders.add("Content-type", "application/json")
-                http.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0)
-                PrintWriter(http.responseBody).use { out ->
-                    out.println(GsonFactory().getBaseGson().toJson(DummyEntity.DEFAULT))
-                }
+                http.sendResponseHeaders(HttpURLConnection.HTTP_OK, response.size.toLong())
+                http.responseBody.use { it.write(response) }
             }
 
             server.createContext("/dummy_list") { http ->
                 captureRequestParams(http)
 
+                val response = GsonFactory().getBaseGson().toJson(listOf(DummyEntity.DEFAULT))
+                        .toByteArray(Charsets.UTF_8)
+
                 http.responseHeaders.add("Content-type", "application/json")
-                http.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0)
-                PrintWriter(http.responseBody).use { out ->
-                    out.println(GsonFactory().getBaseGson().toJson(listOf(DummyEntity.DEFAULT)))
-                }
+                http.sendResponseHeaders(HttpURLConnection.HTTP_OK, response.size.toLong())
+                http.responseBody.use { it.write(response) }
             }
 
             server.createContext("/dummy_page") { http ->
                 captureRequestParams(http)
 
+                val page = mapOf(
+                        "_embedded" to mapOf(
+                                "records" to listOf(DummyEntity.DEFAULT)
+                        ),
+                        "_links" to mapOf(
+                                "self" to Link("/dummy_page?page=0&limit=10"),
+                                "next" to Link("/dummy_page?page=1&limit=10")
+                        )
+                )
+                val response = GsonFactory().getBaseGson().toJson(page)
+                        .toByteArray(Charsets.UTF_8)
+
                 http.responseHeaders.add("Content-type", "application/json")
-                http.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0)
-                PrintWriter(http.responseBody).use { out ->
-                    val page = mapOf(
-                            "_embedded" to mapOf(
-                                    "records" to listOf(DummyEntity.DEFAULT)
-                            ),
-                            "_links" to mapOf(
-                                    "self" to Link("/dummy_page?page=0&limit=10"),
-                                    "next" to Link("/dummy_page?page=1&limit=10")
-                            )
-                    )
-                    out.println(GsonFactory().getBaseGson().toJson(page))
-                }
+                http.sendResponseHeaders(HttpURLConnection.HTTP_OK, response.size.toLong())
+                http.responseBody.use { it.write(response) }
             }
 
             server.createContext("/dummy_resource") { http ->
                 captureRequestParams(http)
 
+                val response = JsonApiToolsProvider.getResourceConverter().writeDocument(
+                        JSONAPIDocument(DummyResource.DEFAULT)
+                )
+
                 http.responseHeaders.add("Content-type", "application/vnd.api+json")
-                http.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0)
-                http.responseBody.use { out ->
-                    out.write(JsonApiToolsProvider.getResourceConverter().writeDocument(
-                            JSONAPIDocument(DummyResource.DEFAULT)
-                    ))
-                }
+                http.sendResponseHeaders(HttpURLConnection.HTTP_OK, response.size.toLong())
+                http.responseBody.use { it.write(response) }
             }
 
             server.createContext("/dummy_resource_page") { http ->
                 captureRequestParams(http)
 
+                val response = JsonApiToolsProvider.getResourceConverter().writeDocumentCollection(
+                        JSONAPIDocument(
+                                listOf(DummyResource.DEFAULT),
+                                Links(mapOf(
+                                        "self" to Link("/dummy_resource_page?page%5Blimit%5D=10&page%5Bnumber%5D=0"),
+                                        "next" to Link("/dummy_resource_page?page%5Blimit%5D=10&page%5Bnumber%5D=1")
+                                )),
+                                emptyMap()
+                        )
+                )
+
                 http.responseHeaders.add("Content-type", "application/vnd.api+json")
-                http.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0)
-                http.responseBody.use { out ->
-                    out.write(JsonApiToolsProvider.getResourceConverter().writeDocumentCollection(
-                            JSONAPIDocument(
-                                    listOf(DummyResource.DEFAULT),
-                                    Links(mapOf(
-                                            "self" to Link("/dummy_resource_page?page%5Blimit%5D=10&page%5Bnumber%5D=0"),
-                                            "next" to Link("/dummy_resource_page?page%5Blimit%5D=10&page%5Bnumber%5D=1")
-                                    )),
-                                    emptyMap()
-                            )
-                    ))
-                }
+                http.sendResponseHeaders(HttpURLConnection.HTTP_OK, response.size.toLong())
+                http.responseBody.use { it.write(response) }
             }
 
             server.createContext("/no_content") { http ->
                 captureRequestParams(http)
 
-                http.sendResponseHeaders(HttpURLConnection.HTTP_NO_CONTENT, 0)
+                http.sendResponseHeaders(HttpURLConnection.HTTP_NO_CONTENT, -1)
                 http.responseBody.close()
             }
 
