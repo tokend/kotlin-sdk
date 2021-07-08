@@ -23,6 +23,9 @@ or `Objects.hash(x, y, z)` instead
 ### Changed
 - `general` API is now deprecated, use `v3.general` instead
 
+### Fixed
+- Incorrect serialization annotations in `NameValue`
+
 ## [3.7.2] 2021-06-02
 
 ### Added

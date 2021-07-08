@@ -8,11 +8,11 @@ import com.google.gson.annotations.SerializedName
  */
 data class NameValue<T>(
         @SerializedName("name")
-        @get:JsonProperty("string")
-        @param:JsonProperty("string")
+        @get:JsonProperty("name")
+        @param:JsonProperty("name")
         val name: String,
         @SerializedName("value")
-        @get:JsonProperty("int")
-        @param:JsonProperty("int")
+        @get:JsonProperty("value")
+        @param:JsonProperty("value")
         val value: T
 )
