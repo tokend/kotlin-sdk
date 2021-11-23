@@ -14,7 +14,6 @@ import java.util.*
 class GsonFactory {
     fun getNewBaseGsonBuilder(): GsonBuilder {
         return GsonBuilder()
-                .serializeNulls()
                 .registerTypeAdapter(Date::class.java, getGsonDateSerializer())
                 .registerTypeAdapter(Date::class.java, getGsonDateDeserializer())
                 .registerTypeAdapter(BigDecimal::class.java, getGsonBigDecimalSerializer())
