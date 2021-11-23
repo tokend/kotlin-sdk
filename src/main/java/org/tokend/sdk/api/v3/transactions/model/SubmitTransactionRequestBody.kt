@@ -1,10 +1,10 @@
 package org.tokend.sdk.api.v3.transactions.model
 
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
 
 class SubmitTransactionRequestBody(
-        @SerializedName("tx")
-        val envelopeBase64: String,
-        @SerializedName("wait_for_ingest")
-        val waitForIngest: Boolean
+    @JsonProperty("tx")
+    val envelopeBase64: String,
+    @JsonProperty("wait_for_ingest")
+    val waitForIngest: Boolean
 )

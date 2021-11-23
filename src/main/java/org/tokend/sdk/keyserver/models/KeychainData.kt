@@ -1,7 +1,7 @@
 package org.tokend.sdk.keyserver.models
 
-import com.google.gson.annotations.SerializedName
-import org.tokend.sdk.factory.GsonFactory
+import com.fasterxml.jackson.annotation.JsonProperty
+import org.tokend.sdk.factory.JsonApiToolsProvider
 import org.tokend.sdk.utils.extentions.decodeBase64
 import org.tokend.sdk.utils.extentions.encodeBase64String
 
@@ -13,14 +13,15 @@ import org.tokend.sdk.utils.extentions.encodeBase64String
  */
 open class KeychainData
 @JvmOverloads
-constructor(@SerializedName("IV")
-            private val encodedIv: String,
-            @SerializedName("cipherText")
-            private val encodedCipherText: String,
-            @SerializedName("cipherName")
-            private val cipherName: String = "aes",
-            @SerializedName("modeName")
-            private val cipherMode: String = "gcm"
+constructor(
+    @JsonProperty("IV")
+    private val encodedIv: String,
+    @JsonProperty("cipherText")
+    private val encodedCipherText: String,
+    @JsonProperty("cipherName")
+    private val cipherName: String = "aes",
+    @JsonProperty("modeName")
+    private val cipherMode: String = "gcm"
 ) {
     /**
      * Raw bytes of the init vector.
@@ -38,7 +39,9 @@ constructor(@SerializedName("IV")
      * Serializes data to JSON and encodes it with Base64
      */
     fun encode(): String {
-        return GsonFactory().getBaseGson().toJson(this).toByteArray().encodeBase64String()
+        return JsonApiToolsProvider.getObjectMapper().writeValueAsString(this)
+            .toByteArray()
+            .encodeBase64String()
     }
 
     companion object {
@@ -49,7 +52,8 @@ constructor(@SerializedName("IV")
 
         @JvmStatic
         fun fromJson(rawJson: String): KeychainData {
-            return GsonFactory().getBaseGson().fromJson(rawJson, KeychainData::class.java)
+            return JsonApiToolsProvider.getObjectMapper()
+                .readValue(rawJson, KeychainData::class.java)
         }
 
         @JvmStatic

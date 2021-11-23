@@ -1,12 +1,12 @@
 package org.tokend.sdk.api.integrations.locator.model
 
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
 
 open class MinimalUserData(
-        @SerializedName("avatar_url")
-        val avatar: String?,
-        @SerializedName("name")
-        val name: String,
-        @SerializedName("email")
-        val email: String
+    @JsonProperty("avatar_url")
+    val avatar: String?,
+    @JsonProperty("name")
+    val name: String,
+    @JsonProperty("email")
+    val email: String
 )

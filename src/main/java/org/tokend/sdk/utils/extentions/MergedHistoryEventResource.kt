@@ -18,8 +18,8 @@ object MergedHistoryEventResourceUtil {
                                                resourceClass: Class<out T>): T {
         val objectMapper = JsonApiToolsProvider.getObjectMapper()
         val resourceNode = objectMapper.createObjectNode()
-        resourceNode.set("data", body["data"])
-        resourceNode.set(
+        resourceNode.set<JsonNode>("data", body["data"])
+        resourceNode.set<JsonNode>(
                 "included",
                 objectMapper.createArrayNode().apply {
                     addAll(

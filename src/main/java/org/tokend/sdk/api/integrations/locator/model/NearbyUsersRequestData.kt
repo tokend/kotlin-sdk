@@ -1,16 +1,16 @@
 package org.tokend.sdk.api.integrations.locator.model
 
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
 
 class NearbyUsersRequestData(
-        @SerializedName("latitude")
-        val lat: Double,
-        @SerializedName("longitude")
-        val lng: Double,
-        @SerializedName("radius")
-        val radiusKm: Double,
-        @SerializedName("address")
-        val accountId: String,
-        @SerializedName("blob")
-        val userData: MinimalUserData
+    @JsonProperty("latitude")
+    val lat: Double,
+    @JsonProperty("longitude")
+    val lng: Double,
+    @JsonProperty("radius")
+    val radiusKm: Double,
+    @JsonProperty("address")
+    val accountId: String,
+    @JsonProperty("blob")
+    val userData: MinimalUserData
 )

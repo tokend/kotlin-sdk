@@ -1,9 +1,11 @@
 package org.tokend.sdk.factory
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.*
 import com.fasterxml.jackson.databind.module.SimpleModule
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.github.jasminb.jsonapi.ResourceConverter
 import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory
 import org.jetbrains.annotations.TestOnly
@@ -21,6 +23,7 @@ import org.tokend.sdk.api.integrations.paymentproxy.model.PaymentAccountResource
 import org.tokend.sdk.utils.ApiDateUtil
 import org.tokend.sdk.utils.BigDecimalUtil
 import retrofit2.Converter
+import retrofit2.converter.jackson.JacksonConverterFactory
 import java.math.BigDecimal
 import java.util.*
 import java.util.logging.Level
@@ -101,6 +104,11 @@ object JsonApiToolsProvider {
     }
 
     @JvmStatic
+    fun getJacksonConverterFactory(): JacksonConverterFactory {
+        return JacksonConverterFactory.create(getObjectMapper())
+    }
+
+    @JvmStatic
     fun getObjectMapper(): ObjectMapper = synchronized(this) {
         return objectMapper
                 ?: createBaseObjectMapper()
@@ -108,16 +116,22 @@ object JsonApiToolsProvider {
     }
 
     private fun createBaseObjectMapper(): ObjectMapper {
-        val module = SimpleModule()
-
-        module.addSerializer(Date::class.java, getDateSerializer())
-        module.addDeserializer(Date::class.java, getDateDeserializer())
-
-        module.addSerializer(BigDecimal::class.java, getBigDecimalSerializer())
-        module.addDeserializer(BigDecimal::class.java, getBigDecimalDeserializer())
-
         val mapper = ObjectMapper()
-        mapper.registerModule(module)
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+
+        val tokenDSerializationModule = SimpleModule().apply {
+            addSerializer(Date::class.java, getDateSerializer())
+            addDeserializer(Date::class.java, getDateDeserializer())
+
+            addSerializer(BigDecimal::class.java, getBigDecimalSerializer())
+            addDeserializer(BigDecimal::class.java, getBigDecimalDeserializer())
+        }
+
+        val kotlinModule = KotlinModule.Builder()
+            .build()
+
+        mapper.registerModules(tokenDSerializationModule, kotlinModule)
 
         return mapper
     }

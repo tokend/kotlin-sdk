@@ -1,6 +1,6 @@
 package org.tokend.sdk.api.general.model
 
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
 import org.tokend.sdk.api.general.model.SystemInfo.Companion.LEDGER_CORE
 import org.tokend.sdk.api.general.model.SystemInfo.Companion.LEDGER_HISTORY
 import org.tokend.sdk.api.general.model.SystemInfo.Companion.LEDGER_HISTORY_2
@@ -8,35 +8,35 @@ import org.tokend.wallet.NetworkParams
 import java.util.*
 
 open class SystemInfo(
-        /**
-         * @see LEDGER_CORE
-         * @see LEDGER_HISTORY
-         * @see LEDGER_HISTORY_2
-         */
-        @SerializedName("ledgers_state")
-        val ledgersState: Map<String, LedgerState>,
-        @SerializedName("network_passphrase")
-        val passphrase: String,
-        @SerializedName("current_time")
-        val currentTime: Long,
-        @SerializedName("commission_account_id")
-        val commissionAccountId: String,
-        @SerializedName("operational_account_id")
-        val operationalAccountId: String,
-        @SerializedName("admin_account_id")
-        val adminAccountId: String,
-        @SerializedName("master_exchange_name")
-        val masterExchangeName: String,
-        @SerializedName("precision")
-        val precisionMultiplier: Long
+    /**
+     * @see LEDGER_CORE
+     * @see LEDGER_HISTORY
+     * @see LEDGER_HISTORY_2
+     */
+    @JsonProperty("ledgers_state")
+    val ledgersState: Map<String, LedgerState>,
+    @JsonProperty("network_passphrase")
+    val passphrase: String,
+    @JsonProperty("current_time")
+    val currentTime: Long,
+    @JsonProperty("commission_account_id")
+    val commissionAccountId: String,
+    @JsonProperty("operational_account_id")
+    val operationalAccountId: String,
+    @JsonProperty("admin_account_id")
+    val adminAccountId: String,
+    @JsonProperty("master_exchange_name")
+    val masterExchangeName: String,
+    @JsonProperty("precision")
+    val precisionMultiplier: Long
 ) {
     open class LedgerState(
-            @SerializedName("latest")
-            val latest: Long,
-            @SerializedName("oldest_on_start")
-            val oldestOnStart: Long,
-            @SerializedName("last_ledger_increase_time")
-            val lastLedgerIncreaseTime: Date
+        @JsonProperty("latest")
+        val latest: Long,
+        @JsonProperty("oldest_on_start")
+        val oldestOnStart: Long,
+        @JsonProperty("last_ledger_increase_time")
+        val lastLedgerIncreaseTime: Date
     )
 
     override fun equals(other: Any?): Boolean {

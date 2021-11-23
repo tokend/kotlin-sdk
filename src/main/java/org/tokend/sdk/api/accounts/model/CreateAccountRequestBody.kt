@@ -1,6 +1,6 @@
 package org.tokend.sdk.api.accounts.model
 
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
 import org.tokend.sdk.api.base.model.DataEntity
 import org.tokend.sdk.keyserver.models.SignerData
 import org.tokend.sdk.keyserver.models.WalletRelation
@@ -9,10 +9,10 @@ class CreateAccountRequestBody(
         accountId: String,
         signers: Collection<SignerData>
 ) {
-    @SerializedName("included")
+    @JsonProperty("included")
     val included = signers.map(WalletRelation.Companion::signer)
 
-    @SerializedName("data")
+    @JsonProperty("data")
     val data = mapOf(
             "id" to accountId,
             "relationships" to mapOf(

@@ -1,23 +1,22 @@
 package org.tokend.sdk.api.base.model
 
-import com.google.gson.JsonElement
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.node.ObjectNode
 
 /**
  * Represents Server error.
  */
 open class ServerError {
-    @SerializedName("title")
-    @Expose
+    @JsonProperty("title")
     val title: String? = null
-    @SerializedName("status")
-    @Expose
+
+    @JsonProperty("status")
     val status: Int? = null
-    @SerializedName("detail")
-    @Expose
+
+    @JsonProperty("detail")
     val detail: String? = null
-    @SerializedName("meta")
-    @Expose
-    val meta: JsonElement? = null
+
+    @JsonProperty("meta")
+    val meta: JsonNode? = null
 }

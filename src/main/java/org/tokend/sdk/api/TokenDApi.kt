@@ -1,6 +1,5 @@
 package org.tokend.sdk.api
 
-import com.google.gson.Gson
 import org.tokend.sdk.api.accounts.AccountsApi
 import org.tokend.sdk.api.accounts.AccountsService
 import org.tokend.sdk.api.base.ApiRequest

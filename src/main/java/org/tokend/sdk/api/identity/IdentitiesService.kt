@@ -23,31 +23,43 @@ interface IdentitiesService {
 
     @PUT("identities/{accountId}/settings/phone")
     @JvmSuppressWildcards
-    fun setPhone(@Path("accountId") accountId: String,
-                 @Body body: DataEntity<AttributesEntity<SetPhoneRequestAttributes>>): Call<Void>
+    fun setPhone(
+        @Path("accountId") accountId: String,
+        @Body body: DataEntity<AttributesEntity<Any>>
+    ): Call<Void>
 
     @PUT("identities/{accountId}/settings/passport")
     @JvmSuppressWildcards
-    fun setPassportId(@Path("accountId") accountId: String,
-                 @Body body: DataEntity<AttributesEntity<SetPassportIdRequestAttributes>>): Call<Void>
+    fun setPassportId(
+        @Path("accountId") accountId: String,
+        @Body body: DataEntity<AttributesEntity<Any>>
+    ): Call<Void>
 
     @PUT("identities/{accountId}/settings/telegram")
     @JvmSuppressWildcards
-    fun setTelegramUsername(@Path("accountId") accountId: String,
-                            @Body body: DataEntity<AttributesEntity<SetTelegramRequestAttributes>>): Call<Void>
+    fun setTelegramUsername(
+        @Path("accountId") accountId: String,
+        @Body body: DataEntity<AttributesEntity<Any>>
+    ): Call<Void>
 
     @GET("identities/{accountId}/settings")
     @JvmSuppressWildcards
-    fun getSettings(@Path("accountId") accountId: String,
-                    @QueryMap query: Map<String, Any>): Call<JSONAPIDocument<List<IdentitySettingsResource>>>
+    fun getSettings(
+        @Path("accountId") accountId: String,
+        @QueryMap query: Map<String, Any>
+    ): Call<JSONAPIDocument<List<IdentitySettingsResource>>>
 
     @GET("identities/{accountId}/settings/{key}")
     @JvmSuppressWildcards
-    fun getSettingsItemByKey(@Path("accountId") accountId: String,
-                             @Path("key") key: String): Call<JSONAPIDocument<IdentitySettingsResource>>
+    fun getSettingsItemByKey(
+        @Path("accountId") accountId: String,
+        @Path("key") key: String
+    ): Call<JSONAPIDocument<IdentitySettingsResource>>
 
     @PUT("identities/{accountId}/settings")
     @JvmSuppressWildcards
-    fun setSettingsItem(@Path("accountId") accountId: String,
-                        @Body data: DataEntity<AttributesEntity<Any>>): Call<Void>
+    fun setSettingsItem(
+        @Path("accountId") accountId: String,
+        @Body data: DataEntity<AttributesEntity<Any>>
+    ): Call<Void>
 }

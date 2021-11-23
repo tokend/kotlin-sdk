@@ -1,15 +1,16 @@
 package org.tokend.sdk.api.base.model
 
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
-import org.tokend.sdk.factory.GsonFactory
+import com.fasterxml.jackson.annotation.JsonProperty
+import org.tokend.sdk.factory.JsonApiToolsProvider
+
 
 /**
  * Represents request body with [T] data.
  */
-open class DataEntity<out T>(@SerializedName("data")
-                        @Expose
-                        val data: T) {
+open class DataEntity<out T>(
+    @JsonProperty("data")
+    val data: T
+) {
 
-    fun toJson() = GsonFactory().getBaseGson().toJson(this)
+    fun toJson() = JsonApiToolsProvider.getObjectMapper().writeValueAsString(data)
 }

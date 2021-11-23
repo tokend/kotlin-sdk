@@ -1,8 +1,8 @@
 package org.tokend.sdk.api.integrations.fiat.model
 
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
 
 class FiatInvoiceAttributes(
-        @SerializedName("pay_url")
-        val paymentUrl: String
+    @JsonProperty("pay_url")
+    val paymentUrl: String
 )

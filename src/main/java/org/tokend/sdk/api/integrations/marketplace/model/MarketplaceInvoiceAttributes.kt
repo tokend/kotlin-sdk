@@ -1,11 +1,12 @@
 package org.tokend.sdk.api.integrations.marketplace.model
 
-import com.google.gson.JsonObject
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.JsonNode
+
 
 class MarketplaceInvoiceAttributes(
-        @SerializedName("type")
-        val type: String,
-        @SerializedName("data")
-        val data: JsonObject
+    @JsonProperty("type")
+    val type: String,
+    @JsonProperty("data")
+    val data: JsonNode
 )

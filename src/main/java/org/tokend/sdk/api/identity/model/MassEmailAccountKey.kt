@@ -1,11 +1,12 @@
 package org.tokend.sdk.api.identity.model
 
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
+
 
 class MassEmailAccountKey(
-        @SerializedName("id")
-        val accountId: String
+    @JsonProperty("id")
+    val accountId: String
 ) {
-    @SerializedName("type")
+    @JsonProperty("type")
     val type = "accounts"
 }

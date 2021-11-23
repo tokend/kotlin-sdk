@@ -1,38 +1,39 @@
 package org.tokend.sdk.keyserver.models
 
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
 import org.tokend.sdk.utils.extentions.decodeBase64
 import org.tokend.sdk.utils.extentions.encodeBase64String
 
 data class LoginParams(
-        @SerializedName("type")
-        val type: String,
-        @SerializedName("id")
-        val id: Long,
-        @SerializedName("attributes")
-        val kdfAttributes: KdfAttributes
+    @JsonProperty("type")
+    val type: String,
+    @JsonProperty("id")
+    val id: Long,
+    @JsonProperty("attributes")
+    val kdfAttributes: KdfAttributes
 )
 
 data class KdfAttributes(
-        @SerializedName("algorithm")
-        val algorithm: String,
-        @SerializedName("bits")
-        val bits: Int,
-        @SerializedName("n")
-        val n: Int,
-        @SerializedName("p")
-        val p: Int,
-        @SerializedName("r")
-        val r: Int,
-        @SerializedName("salt")
-        var encodedSalt: String?
+    @JsonProperty("algorithm")
+    val algorithm: String,
+    @JsonProperty("bits")
+    val bits: Int,
+    @JsonProperty("n")
+    val n: Int,
+    @JsonProperty("p")
+    val p: Int,
+    @JsonProperty("r")
+    val r: Int,
+    @JsonProperty("salt")
+    var encodedSalt: String?
 ) {
-    constructor(algorithm: String,
-                bits: Int,
-                n: Int,
-                p: Int,
-                r: Int,
-                salt: ByteArray?
+    constructor(
+        algorithm: String,
+        bits: Int,
+        n: Int,
+        p: Int,
+        r: Int,
+        salt: ByteArray?
     ) : this(algorithm, bits, n, p, r, salt?.encodeBase64String())
 
     var salt: ByteArray?

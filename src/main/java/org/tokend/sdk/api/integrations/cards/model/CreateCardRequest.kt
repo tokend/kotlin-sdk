@@ -1,6 +1,6 @@
 package org.tokend.sdk.api.integrations.cards.model
 
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
 import org.tokend.sdk.api.base.model.DataEntity
 
 class CreateCardRequest(
@@ -9,13 +9,13 @@ class CreateCardRequest(
         details: Any?,
         balances: Collection<String>
 ) {
-    @SerializedName("attributes")
+    @JsonProperty("attributes")
     val attributes = mapOf(
             "card_number" to number,
             "details" to details
     )
 
-    @SerializedName("relationships")
+    @JsonProperty("relationships")
     val relationships = mapOf(
             "owner" to DataEntity(mapOf("id" to ownerAccountId)),
             "balances" to DataEntity(balances.map {

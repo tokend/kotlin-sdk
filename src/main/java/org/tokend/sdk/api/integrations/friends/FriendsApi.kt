@@ -22,7 +22,7 @@ open class FriendsApi(
                             mapOf("id" to it)
                         })
                 ))),
-                responseType = Void::class.java
+                responseClass = Void::class.java
         )
     }
 

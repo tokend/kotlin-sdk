@@ -1,9 +1,8 @@
 package org.tokend.sdk.api.tfa
 
-import com.google.gson.JsonObject
+import com.fasterxml.jackson.databind.JsonNode
 import org.tokend.sdk.api.base.model.AttributesEntity
 import org.tokend.sdk.api.base.model.DataEntity
-import org.tokend.sdk.api.tfa.model.CreateTfaRequestBody
 import org.tokend.sdk.api.tfa.model.TfaFactor
 import retrofit2.Call
 import retrofit2.http.*
@@ -15,7 +14,7 @@ interface TfaService {
     @POST("wallets/{walletId}/factors")
     @JvmSuppressWildcards
     fun createFactor(@Path("walletId") walletId: String?,
-                     @Body data: DataEntity<CreateTfaRequestBody>): Call<DataEntity<JsonObject>>
+                     @Body data: DataEntity<Any>): Call<DataEntity<JsonNode>>
 
     @DELETE("wallets/{walletId}/factors/{id}")
     fun deleteFactor(@Path("walletId") walletId: String?,

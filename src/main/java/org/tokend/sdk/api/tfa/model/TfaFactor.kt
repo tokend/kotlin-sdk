@@ -1,26 +1,31 @@
 package org.tokend.sdk.api.tfa.model
 
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
 
 open class TfaFactor(
-        @SerializedName("id")
-        val id: Long,
-        @SerializedName("type")
-        val type: Type,
-        @SerializedName("attributes")
-        val attributes: Attributes
+    @JsonProperty("id")
+    val id: Long,
+    @JsonProperty("type")
+    val type: Type,
+    @JsonProperty("attributes")
+    val attributes: Attributes
 ) {
     enum class Type {
-        @SerializedName("totp")
+        @JsonProperty("totp")
         TOTP,
-        @SerializedName("password")
+
+        @JsonProperty("password")
         PASSWORD,
-        @SerializedName("email")
+
+        @JsonProperty("email")
         EMAIL,
-        @SerializedName("phone")
+
+        @JsonProperty("phone")
         PHONE,
-        @SerializedName("telegram")
+
+        @JsonProperty("telegram")
         TELEGRAM,
+
         UNKNOWN;
 
         companion object {
@@ -36,8 +41,8 @@ open class TfaFactor(
     }
 
     open class Attributes(
-            @SerializedName("priority")
-            val priority: Int
+        @JsonProperty("priority")
+        val priority: Int
     )
 
     override fun equals(other: Any?): Boolean {

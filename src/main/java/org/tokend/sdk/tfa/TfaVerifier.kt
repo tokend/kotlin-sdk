@@ -2,7 +2,6 @@ package org.tokend.sdk.tfa
 
 import org.tokend.sdk.api.base.model.AttributesEntity
 import org.tokend.sdk.api.base.model.DataEntity
-import org.tokend.sdk.api.tfa.model.VerifyTfaRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -11,19 +10,21 @@ import retrofit2.Response
  * Performs OTP verification.
  */
 open class TfaVerifier(
-        private val verificationService: TfaVerificationService,
-        private val walletId: String,
-        private val factorId: Long,
-        private val token: String
+    private val verificationService: TfaVerificationService,
+    private val walletId: String,
+    private val factorId: Long,
+    private val token: String
 ) {
     interface Interface {
         /**
          * Performs OTP verification.
          * If OTP was verified successfully original request will be completed.
          */
-        fun verify(otp: String,
-                   onSuccess: EmptyCallback? = null,
-                   onError: OptionalThrowableCallback? = null)
+        fun verify(
+            otp: String,
+            onSuccess: EmptyCallback? = null,
+            onError: OptionalThrowableCallback? = null
+        )
 
         /**
          * Informs verifier that verification will not be performed.
@@ -40,15 +41,19 @@ open class TfaVerifier(
          * Performs OTP verification.
          * If OTP was verified successfully original request will be completed.
          */
-        override fun verify(otp: String,
-                            onSuccess: EmptyCallback?,
-                            onError: OptionalThrowableCallback?) {
-            this@TfaVerifier.verify(otp,
-                    onSuccess = {
-                        this@TfaVerifier.onVerifiedCallback?.invoke()
-                        onSuccess?.invoke()
-                    },
-                    onError = onError)
+        override fun verify(
+            otp: String,
+            onSuccess: EmptyCallback?,
+            onError: OptionalThrowableCallback?
+        ) {
+            this@TfaVerifier.verify(
+                otp,
+                onSuccess = {
+                    this@TfaVerifier.onVerifiedCallback?.invoke()
+                    onSuccess?.invoke()
+                },
+                onError = onError
+            )
         }
 
         /**
@@ -60,9 +65,13 @@ open class TfaVerifier(
         }
     }
 
-    constructor(verificationService: TfaVerificationService,
-                tfaException: NeedTfaException) : this(verificationService,
-            tfaException.walletId, tfaException.factorId, tfaException.token)
+    constructor(
+        verificationService: TfaVerificationService,
+        tfaException: NeedTfaException
+    ) : this(
+        verificationService,
+        tfaException.walletId, tfaException.factorId, tfaException.token
+    )
 
     val verifierInterface: Interface = InterfaceImpl()
 
@@ -79,24 +88,33 @@ open class TfaVerifier(
         return this
     }
 
-    protected open fun verify(otp: String, onSuccess: EmptyCallback? = null,
-                              onError: OptionalThrowableCallback? = null) {
-        val attributes = VerifyTfaRequestBody(token, otp)
+    protected open fun verify(
+        otp: String, onSuccess: EmptyCallback? = null,
+        onError: OptionalThrowableCallback? = null
+    ) {
+        verificationService.verifyTfaFactor(
+            walletId, factorId,
+            DataEntity(
+                AttributesEntity(
+                    mapOf(
+                        "token" to token,
+                        "otp" to "otp"
+                    )
+                )
+            )
+        )
+            .enqueue(object : Callback<Void> {
+                override fun onFailure(call: Call<Void>?, t: Throwable?) {
+                    onError?.invoke(t)
+                }
 
-        verificationService.verifyTfaFactor(walletId, factorId,
-                DataEntity(AttributesEntity(attributes)))
-                .enqueue(object : Callback<Void> {
-                    override fun onFailure(call: Call<Void>?, t: Throwable?) {
-                        onError?.invoke(t)
+                override fun onResponse(call: Call<Void>?, response: Response<Void>?) {
+                    if (response?.isSuccessful == true) {
+                        onSuccess?.invoke()
+                    } else {
+                        onError?.invoke(InvalidOtpException())
                     }
-
-                    override fun onResponse(call: Call<Void>?, response: Response<Void>?) {
-                        if (response?.isSuccessful == true) {
-                            onSuccess?.invoke()
-                        } else {
-                            onError?.invoke(InvalidOtpException())
-                        }
-                    }
-                })
+                }
+            })
     }
 }

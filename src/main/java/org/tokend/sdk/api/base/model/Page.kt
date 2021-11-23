@@ -1,23 +1,26 @@
 package org.tokend.sdk.api.base.model
 
 
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.*
 
 /**
  * Response with list of specific [T] items
  */
 open class Page<T> {
-    @SerializedName("records")
+    @JsonProperty("records")
     var records: List<T> = emptyList()
         get() = (if (field.isEmpty() && this.embeddedPage != null) {
             this.embeddedPage.records
         } else field) ?: emptyList()
-    @SerializedName("links")
+
+    @JsonProperty("links")
     private var links: Links? = null
-    @SerializedName("_embedded")
+
+    @JsonProperty("_embedded")
     private val embeddedPage: EmbeddedPage<T>? = null
-    @SerializedName("_links")
+
+    @JsonProperty("_links")
     private val embeddedLinks: Links? = null
 
     fun getLinks(): Links? {
@@ -27,13 +30,17 @@ open class Page<T> {
     /**
      * Links connected to page response.
      */
-    class Links internal constructor(@field:SerializedName("next")
-                                     val next: Link?,
-                                     @field:SerializedName("prev")
-                                     val prev: Link?,
-                                     @field:SerializedName("self")
-                                     val self: Link?)
+    class Links internal constructor(
+        @field:JsonProperty("next")
+        val next: Link?,
+        @field:JsonProperty("prev")
+        val prev: Link?,
+        @field:JsonProperty("self")
+        val self: Link?
+    )
 
-    private class EmbeddedPage<T>(@field:SerializedName("records")
-                                  val records: ArrayList<T>?)
+    private class EmbeddedPage<T>(
+        @field:JsonProperty("records")
+        val records: ArrayList<T>?
+    )
 }

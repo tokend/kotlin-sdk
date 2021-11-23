@@ -4,7 +4,6 @@ import org.junit.Assert
 import org.junit.Test
 import org.tokend.sdk.api.base.model.RemoteFile
 import org.tokend.sdk.api.base.model.isReallyNullOrNullAccordingToTheJavascript
-import org.tokend.sdk.factory.GsonFactory
 import org.tokend.sdk.factory.JsonApiToolsProvider
 
 class RemoteFileTest {
@@ -18,18 +17,18 @@ class RemoteFileTest {
             }
         """.trimIndent()
 
-        val remoteFileGson = GsonFactory().getBaseGson().fromJson(json, RemoteFile::class.java)
+        val remoteFileJson = JsonApiToolsProvider.getObjectMapper().readValue(json, RemoteFile::class.java)
         Assert.assertEquals(
                 "dpurex4inf5nahjrsqkkimns6ascqpnddoe2roficpj7xtqorlvw4jd3lsglzzh4a4ctkaxuigqyht6i3t2usyu2",
-                remoteFileGson.key
+                remoteFileJson.key
         )
         Assert.assertEquals(
                 "sample.pdf",
-                remoteFileGson.name
+                remoteFileJson.name
         )
         Assert.assertEquals(
                 "application/pdf",
-                remoteFileGson.mimeType
+                remoteFileJson.mimeType
         )
 
         val remoteFileJackson = JsonApiToolsProvider.getObjectMapper().readValue(json, RemoteFile::class.java)
@@ -46,7 +45,7 @@ class RemoteFileTest {
                 remoteFileJackson.mimeType
         )
 
-        Assert.assertEquals(remoteFileGson, remoteFileJackson)
+        Assert.assertEquals(remoteFileJson, remoteFileJackson)
     }
 
     @Test

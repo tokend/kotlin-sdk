@@ -14,7 +14,7 @@ import retrofit2.HttpException
 import java.net.HttpURLConnection
 
 open class WalletsApi(
-        protected val walletsService: WalletsService
+    protected val walletsService: WalletsService
 ) {
 
     /**
@@ -22,20 +22,22 @@ open class WalletsApi(
      * @see <a href="https://tokend.gitlab.io/docs/?http#get-wallet">Docs</a>
      */
     @JvmOverloads
-    open fun getById(walletId: String,
-                     queryMap: Map<String, Any> = mapOf()): ApiRequest<WalletData> {
+    open fun getById(
+        walletId: String,
+        queryMap: Map<String, Any> = mapOf()
+    ): ApiRequest<WalletData> {
         return MappedRetrofitApiRequest(
-                walletsService.getById(walletId, queryMap),
-                { it.data }
+            walletsService.getById(walletId, queryMap),
+            { it.data }
         ) { error ->
             if (error is HttpException) {
                 when (error.code()) {
                     HttpURLConnection.HTTP_FORBIDDEN -> throw EmailNotVerifiedException(walletId)
                     HttpURLConnection.HTTP_NOT_FOUND -> throw InvalidCredentialsException(
-                            InvalidCredentialsException.Credential.PASSWORD
+                        InvalidCredentialsException.Credential.PASSWORD
                     )
                     HttpURLConnection.HTTP_GONE -> throw InvalidCredentialsException(
-                            InvalidCredentialsException.Credential.PASSWORD
+                        InvalidCredentialsException.Credential.PASSWORD
                     )
                     else -> error
                 }
@@ -51,13 +53,14 @@ open class WalletsApi(
      */
     open fun create(data: WalletData): ApiRequest<WalletData> {
         return MappedRetrofitApiRequest(
-                walletsService.create(
-                        WalletResourceBody(data)
-                ),
-                DataEntity<WalletData>::data
+            walletsService.create(
+                WalletResourceBody(data)
+            ),
+            DataEntity<WalletData>::data
         ) { error ->
             if (error is HttpException &&
-                    error.code() == HttpURLConnection.HTTP_CONFLICT)
+                error.code() == HttpURLConnection.HTTP_CONFLICT
+            )
                 EmailAlreadyTakenException()
             else
                 error
@@ -69,13 +72,15 @@ open class WalletsApi(
      * used to update account signers.
      * @see <a href="https://tokend.gitlab.io/docs/?http#update-wallet">Docs</a>
      */
-    open fun update(walletId: String,
-                    data: WalletData): ApiRequest<Void> {
+    open fun update(
+        walletId: String,
+        data: WalletData
+    ): ApiRequest<Void> {
         return SimpleRetrofitApiRequest(
-                walletsService.update(
-                        walletId,
-                        WalletResourceBody(data)
-                )
+            walletsService.update(
+                walletId,
+                WalletResourceBody(data)
+            )
         )
     }
 
@@ -83,17 +88,21 @@ open class WalletsApi(
      * Verifies wallet with given ID.
      * @see <a href="https://tokend.gitlab.io/docs/?http#wallet-verification">Docs</a>
      */
-    open fun verify(walletId: String,
-                    token: String): ApiRequest<Void> {
+    open fun verify(
+        walletId: String,
+        token: String
+    ): ApiRequest<Void> {
         return SimpleRetrofitApiRequest(
-                walletsService.verify(
-                        walletId,
-                        DataEntity(
-                                AttributesEntity(
-                                        VerifyWalletRequestBody(token)
-                                )
+            walletsService.verify(
+                walletId,
+                DataEntity(
+                    AttributesEntity(
+                        mapOf(
+                            "token" to token
                         )
+                    )
                 )
+            )
         )
     }
 
@@ -106,11 +115,11 @@ open class WalletsApi(
             throw IllegalArgumentException("Invalid redirect payload")
         }
 
-        val walletId = redirectPayload.meta.get(VERIFICATION_META_WALLET_ID)?.asString
-                ?: throw IllegalArgumentException("Missing '$VERIFICATION_META_WALLET_ID' in meta data")
+        val walletId = redirectPayload.meta.get(VERIFICATION_META_WALLET_ID).asText()
+            ?: throw IllegalArgumentException("Missing '$VERIFICATION_META_WALLET_ID' in meta data")
 
-        val token = redirectPayload.meta.get(VERIFICATION_META_TOKEN)?.asString
-                ?: throw IllegalArgumentException("Missing '$VERIFICATION_META_TOKEN' in meta data")
+        val token = redirectPayload.meta.get(VERIFICATION_META_TOKEN)?.asText()
+            ?: throw IllegalArgumentException("Missing '$VERIFICATION_META_TOKEN' in meta data")
 
         return verify(walletId, token)
     }
@@ -121,7 +130,7 @@ open class WalletsApi(
      */
     open fun requestVerification(walletId: String): ApiRequest<Void> {
         return SimpleRetrofitApiRequest(
-                walletsService.requestVerification(walletId)
+            walletsService.requestVerification(walletId)
         )
     }
 
@@ -129,14 +138,17 @@ open class WalletsApi(
      * Will return current default derivation parameters or parameters used to derive specific wallet.
      * @see <a href="https://tokend.gitlab.io/docs/?http#get-kdf-params">Docs</a>
      */
-    open fun getLoginParams(email: String?,
-                            isRecovery: Boolean): ApiRequest<LoginParams> {
+    open fun getLoginParams(
+        email: String?,
+        isRecovery: Boolean
+    ): ApiRequest<LoginParams> {
         return MappedRetrofitApiRequest(
-                walletsService.getLoginParams(email, isRecovery),
-                { it.data }
+            walletsService.getLoginParams(email, isRecovery),
+            { it.data }
         ) { error ->
             return@MappedRetrofitApiRequest if (error is HttpException
-                    && error.code() == HttpURLConnection.HTTP_NOT_FOUND)
+                && error.code() == HttpURLConnection.HTTP_NOT_FOUND
+            )
                 InvalidCredentialsException(InvalidCredentialsException.Credential.EMAIL)
             else
                 error

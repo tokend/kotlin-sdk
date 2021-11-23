@@ -1,10 +1,11 @@
 package org.tokend.sdk.api.accounts.model.limits
 
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
+
 
 data class LimitEntry(
-        @SerializedName("limit")
+        @JsonProperty("limit")
         val limit: Limit,
-        @SerializedName("statistics")
+        @JsonProperty("statistics")
         val statistics: Statistics
 )

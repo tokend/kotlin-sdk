@@ -1,9 +1,9 @@
 package org.tokend.sdk.api.integrations.escrow.model
 
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
 import org.tokend.sdk.api.integrations.marketplace.model.MarketplaceInvoiceData
 
 class CreatedEscrowAttributes(
-        @SerializedName("invoice")
-        val invoice: MarketplaceInvoiceData.Redirect
+    @JsonProperty("invoice")
+    val invoice: MarketplaceInvoiceData.Redirect
 )

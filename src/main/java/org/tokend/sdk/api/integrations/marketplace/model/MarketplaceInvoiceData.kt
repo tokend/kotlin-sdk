@@ -1,15 +1,15 @@
 package org.tokend.sdk.api.integrations.marketplace.model
 
-import com.google.gson.annotations.SerializedName
-import org.tokend.sdk.factory.GsonFactory
+import com.fasterxml.jackson.annotation.JsonProperty
+import org.tokend.sdk.factory.JsonApiToolsProvider
 import java.math.BigDecimal
 
 sealed class MarketplaceInvoiceData {
     class Crypto(
-            @SerializedName("address")
-            val address: String,
-            @SerializedName("amount")
-            val amount: BigDecimal
+        @JsonProperty("address")
+        val address: String,
+        @JsonProperty("amount")
+        val amount: BigDecimal
     ) : MarketplaceInvoiceData() {
         companion object {
             const val TYPE = "crypto_invoice"
@@ -17,8 +17,8 @@ sealed class MarketplaceInvoiceData {
     }
 
     class Redirect(
-            @SerializedName("pay_url")
-            val url: String
+        @JsonProperty("pay_url")
+        val url: String
     ) : MarketplaceInvoiceData() {
         companion object {
             const val TYPE = "redirect"
@@ -26,9 +26,9 @@ sealed class MarketplaceInvoiceData {
     }
 
     class Internal(
-            @SerializedName("tx")
-            val transactionEnvelope: String
-    ): MarketplaceInvoiceData() {
+        @JsonProperty("tx")
+        val transactionEnvelope: String
+    ) : MarketplaceInvoiceData() {
         companion object {
             const val TYPE = "internal"
         }
@@ -37,16 +37,14 @@ sealed class MarketplaceInvoiceData {
     companion object {
         @JvmStatic
         fun fromInvoiceAttributes(invoiceAttributes: MarketplaceInvoiceAttributes): MarketplaceInvoiceData {
-            val gson = GsonFactory().getBaseGson()
-
             val clazz = when (invoiceAttributes.type) {
-                MarketplaceInvoiceData.Crypto.TYPE -> MarketplaceInvoiceData.Crypto::class.java
-                MarketplaceInvoiceData.Redirect.TYPE -> MarketplaceInvoiceData.Redirect::class.java
-                MarketplaceInvoiceData.Internal.TYPE -> MarketplaceInvoiceData.Internal::class.java
+                Crypto.TYPE -> Crypto::class.java
+                Redirect.TYPE -> Redirect::class.java
+                Internal.TYPE -> Internal::class.java
                 else -> throw IllegalArgumentException("Unknown marketplace invoice data type '${invoiceAttributes.type}'")
             }
 
-            return gson.fromJson(invoiceAttributes.data, clazz)
+            return JsonApiToolsProvider.getObjectMapper().treeToValue(invoiceAttributes.data, clazz)
         }
     }
 }

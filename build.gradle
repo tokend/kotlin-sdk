@@ -25,11 +25,12 @@ dependencies {
     testCompile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.7.4"
 
     compile "com.squareup.retrofit2:retrofit:${retrofitVersion}"
-    compile "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
     compile "com.squareup.retrofit2:converter-scalars:${retrofitVersion}"
+    compile "com.squareup.retrofit2:converter-jackson:${retrofitVersion}"
     compile 'com.squareup.okhttp3:logging-interceptor:3.5.0'
 
     compile 'com.github.jasminb:jsonapi-converter:0.9'
+    compile 'com.fasterxml.jackson.module:jackson-module-kotlin:2.13.0'
 
     compile 'org.tokend:crypto-cipher:1.0.2'
     compile 'org.tokend:crypto-kdf:1.0.4'
