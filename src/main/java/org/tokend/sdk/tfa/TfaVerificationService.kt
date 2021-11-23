@@ -9,6 +9,7 @@ import retrofit2.http.Path
 
 interface TfaVerificationService {
     @PUT("wallets/{walletId}/factors/{id}/verification")
+    @JvmSuppressWildcards
     fun verifyTfaFactor(
         @Path("walletId") walletId: String,
         @Path("id") factorId: Long,

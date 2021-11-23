@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.core.type.TypeReference
 import com.github.jasminb.jsonapi.JSONAPIDocument
-import com.github.jasminb.jsonapi.Link
 import com.github.jasminb.jsonapi.Links
 import com.github.jasminb.jsonapi.annotations.Type
 import com.sun.net.httpserver.HttpExchange
@@ -13,6 +12,7 @@ import org.junit.*
 import org.junit.runners.MethodSorters
 import org.tokend.sdk.api.TokenDApi
 import org.tokend.sdk.api.base.model.BaseResource
+import org.tokend.sdk.api.base.model.Link
 import org.tokend.sdk.api.custom.CustomRequestsApi
 import org.tokend.sdk.factory.JsonApiToolsProvider
 import java.net.HttpURLConnection
@@ -175,8 +175,8 @@ class CustomRequestsTest {
                         listOf(DummyResource.DEFAULT),
                         Links(
                             mapOf(
-                                "self" to Link("/dummy_resource_page?page%5Blimit%5D=10&page%5Bnumber%5D=0"),
-                                "next" to Link("/dummy_resource_page?page%5Blimit%5D=10&page%5Bnumber%5D=1")
+                                "self" to com.github.jasminb.jsonapi.Link("/dummy_resource_page?page%5Blimit%5D=10&page%5Bnumber%5D=0"),
+                                "next" to com.github.jasminb.jsonapi.Link("/dummy_resource_page?page%5Blimit%5D=10&page%5Bnumber%5D=1")
                             )
                         ),
                         emptyMap()

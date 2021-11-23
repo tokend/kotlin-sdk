@@ -1,5 +1,7 @@
 package org.tokend.sdk.keyserver.models
 
+import com.fasterxml.jackson.annotation.JsonAlias
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.tokend.sdk.factory.JsonApiToolsProvider
 import org.tokend.sdk.utils.extentions.decodeBase64
@@ -14,24 +16,27 @@ import org.tokend.sdk.utils.extentions.encodeBase64String
 open class KeychainData
 @JvmOverloads
 constructor(
-    @JsonProperty("IV")
-    private val encodedIv: String,
+    @JsonProperty("iv")
+    @JsonAlias("IV")
+    val encodedIv: String,
     @JsonProperty("cipherText")
-    private val encodedCipherText: String,
+    val encodedCipherText: String,
     @JsonProperty("cipherName")
-    private val cipherName: String = "aes",
+    val cipherName: String = "aes",
     @JsonProperty("modeName")
-    private val cipherMode: String = "gcm"
+    val cipherMode: String = "gcm"
 ) {
     /**
      * Raw bytes of the init vector.
      */
+    @get:JsonIgnore
     val iv: ByteArray
         get() = encodedIv.decodeBase64()
 
     /**
      * Raw bytes of the encrypted data
      */
+    @get:JsonIgnore
     val cipherText: ByteArray
         get() = encodedCipherText.decodeBase64()
 

@@ -3,16 +3,14 @@ package org.tokend.sdk.api.blobs.model
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.databind.JavaType
 import org.tokend.sdk.factory.JsonApiToolsProvider
-import java.lang.reflect.Type
 
 open class Blob(
-    @JsonProperty("id")
+    @field:JsonProperty("id")
     val id: String,
-    @JsonProperty("type")
+    @field:JsonProperty("type")
     val typeName: String,
-    @JsonProperty("attributes")
+    @field:JsonProperty("attributes")
     private val attributes: Attributes
 ) {
     class Attributes(@JsonProperty("value") val value: String)

@@ -1,5 +1,6 @@
 package org.tokend.sdk.keyserver.models
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.tokend.sdk.utils.extentions.decodeBase64
 import org.tokend.sdk.utils.extentions.encodeBase64String
@@ -30,6 +31,7 @@ open class EncryptedWalletAccount(
         keychainData: KeychainData
     ) : this(accountId, email, salt.encodeBase64String(), keychainData.encode())
 
+    @get:JsonIgnore
     val keychainData: KeychainData
         get() = KeychainData.fromEncoded(String(encodedKeychainData.decodeBase64()))
 }

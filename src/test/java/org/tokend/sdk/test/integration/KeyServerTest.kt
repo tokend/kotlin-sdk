@@ -10,7 +10,7 @@ import org.tokend.sdk.api.wallets.model.EmailAlreadyTakenException
 import org.tokend.sdk.api.wallets.model.InvalidCredentialsException
 import org.tokend.sdk.keyserver.KeyServer
 import org.tokend.sdk.keyserver.models.SignerData
-import org.tokend.sdk.keyserver.models.WalletCreateResult
+import org.tokend.sdk.keyserver.models.WalletCreationResult
 import org.tokend.sdk.test.Util
 import org.tokend.sdk.tfa.NeedTfaException
 import org.tokend.sdk.tfa.PasswordTfaOtpGenerator
@@ -109,7 +109,7 @@ class KeyServerTest {
         checkSignUpResult(email, password, result, api)
 
         val actualSigners = api.v3
-                .signers.get(result.walletData.attributes.accountId)
+                .signers.get(result.creationData.attributes.accountId)
                 .execute()
                 .get()
 
@@ -127,14 +127,14 @@ class KeyServerTest {
 
     private fun checkSignUpResult(email: String,
                                   password: CharArray,
-                                  result: WalletCreateResult,
+                                  result: WalletCreationResult,
                                   api: TokenDApi) {
         val keyServer = KeyServer(api.wallets)
 
         Assert.assertEquals(
                 "Account ID in wallet data must be equal to the root account ID",
                 result.rootAccount.accountId,
-                result.walletData.attributes.accountId
+                result.creationData.attributes.accountId
         )
 
         Assert.assertFalse(
@@ -144,7 +144,7 @@ class KeyServerTest {
 
         Assert.assertTrue(
                 "Email in wallet data must be lowercased",
-                email.toLowerCase() == result.walletData.attributes.email
+                email.toLowerCase() == result.creationData.attributes.email
         )
 
         val walletInfo = try {
@@ -158,7 +158,7 @@ class KeyServerTest {
 
         Assert.assertEquals(
                 "Wallet ID obtained from the key server must be equal to the sent one",
-                result.walletData.id,
+                result.creationData.id,
                 walletInfo.walletIdHex
         )
 
@@ -437,7 +437,7 @@ class KeyServerTest {
         checkSignUpResult(email, password, result, api)
 
         val actualSigners = api.v3
-                .signers.get(result.walletData.attributes.accountId)
+                .signers.get(result.creationData.attributes.accountId)
                 .execute()
                 .get()
 

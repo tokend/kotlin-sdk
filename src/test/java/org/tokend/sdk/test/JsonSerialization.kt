@@ -27,7 +27,7 @@ class JsonSerialization {
                 .writeValueAsString(BigDecimalContainer(BigDecimal("3.14")))
         )
         Assert.assertEquals(
-            "{\"v\":null}",
+            "{}",
             JsonApiToolsProvider.getObjectMapper().writeValueAsString(BigDecimalContainer(null))
         )
 
@@ -51,7 +51,7 @@ class JsonSerialization {
                 .writeValueAsString(DateContainer(Date(1610015467000)))
         )
         Assert.assertEquals(
-            "{\"v\":null}",
+            "{}",
             JsonApiToolsProvider.getObjectMapper().writeValueAsString(DateContainer(null))
         )
 

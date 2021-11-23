@@ -16,7 +16,7 @@ import org.tokend.wallet.xdr.*
 import retrofit2.HttpException
 
 class KeyServer constructor(
-        private val walletsApi: WalletsApi
+    private val walletsApi: WalletsApi
 ) {
     // region Obtain
     /**
@@ -24,58 +24,66 @@ class KeyServer constructor(
      * @see buildWalletInfo
      */
     @JvmOverloads
-    fun getWalletInfo(login: String,
-                      password: CharArray,
-                      isRecovery: Boolean = false,
-                      queryMap: Map<String, Any>? = null): ApiRequest<WalletInfo> {
+    fun getWalletInfo(
+        login: String,
+        password: CharArray,
+        isRecovery: Boolean = false,
+        queryMap: Map<String, Any>? = null
+    ): ApiRequest<WalletInfo> {
         return MappedCallableApiRequest(
-                { buildWalletInfo(login, password, isRecovery, queryMap) },
-                { it }
+            { buildWalletInfo(login, password, isRecovery, queryMap) },
+            { it }
         )
     }
 
     /**
      * @see getLoginParams
-     * @see getWalletData
+     * @see getExistingWallet
      */
-    @Throws(InvalidCredentialsException::class,
-            EmailNotVerifiedException::class,
-            HttpException::class
+    @Throws(
+        InvalidCredentialsException::class,
+        EmailNotVerifiedException::class,
+        HttpException::class
     )
-    private fun buildWalletInfo(login: String,
-                                password: CharArray,
-                                isRecovery: Boolean = false,
-                                queryMap: Map<String, Any>? = null): WalletInfo {
+    private fun buildWalletInfo(
+        login: String,
+        password: CharArray,
+        isRecovery: Boolean = false,
+        queryMap: Map<String, Any>? = null
+    ): WalletInfo {
         val loginParams = getLoginParams(login, isRecovery).execute().get()
 
         val derivationLogin = login.toLowerCase()
 
         val hexWalletId = WalletKeyDerivation
-                .deriveAndEncodeWalletId(derivationLogin, password, loginParams.kdfAttributes)
+            .deriveAndEncodeWalletId(derivationLogin, password, loginParams.kdfAttributes)
         val walletKey = WalletKeyDerivation
-                .deriveWalletEncryptionKey(derivationLogin, password, loginParams.kdfAttributes)
+            .deriveWalletEncryptionKey(derivationLogin, password, loginParams.kdfAttributes)
 
-        val walletData = getWalletData(hexWalletId, queryMap).execute().get()
+        val existingWallet = getExistingWallet(hexWalletId, queryMap).execute().get()
 
-        val keychainData = walletData.attributes.keychainData
-        val accountId = walletData.attributes.accountId
-        val email = walletData.attributes.email
+        val encodedKeychainData = existingWallet.data.attributes.keychainData
+        val accountId = existingWallet.data.attributes.accountId
+        val email = existingWallet.data.attributes.email
 
         return if (isRecovery) {
             WalletInfo(
-                    accountId,
-                    email,
-                    hexWalletId,
-                    listOf(password),
-                    loginParams
+                accountId,
+                email,
+                hexWalletId,
+                listOf(password),
+                loginParams
             )
         } else {
             WalletInfo(
-                    accountId,
-                    email,
-                    hexWalletId,
-                    WalletEncryption.decryptSecretSeeds(keychainData, walletKey),
-                    loginParams
+                accountId,
+                email,
+                hexWalletId,
+                WalletEncryption.decryptSecretSeeds(
+                    KeychainData.fromEncoded(encodedKeychainData),
+                    walletKey
+                ),
+                loginParams
             )
         }
     }
@@ -86,19 +94,26 @@ class KeyServer constructor(
      */
     @Throws(InvalidCredentialsException::class, HttpException::class)
     @JvmOverloads
-    fun getLoginParams(login: String? = null, isRecovery: Boolean = false): ApiRequest<LoginParams> {
+    fun getLoginParams(
+        login: String? = null,
+        isRecovery: Boolean = false
+    ): ApiRequest<LoginParams> {
         return walletsApi.getLoginParams(login, isRecovery)
     }
 
     /**
      * Loads wallet by wallet ID.
      */
-    @Throws(InvalidCredentialsException::class,
-            EmailNotVerifiedException::class,
-            HttpException::class)
+    @Throws(
+        InvalidCredentialsException::class,
+        EmailNotVerifiedException::class,
+        HttpException::class
+    )
     @JvmOverloads
-    fun getWalletData(walletId: String,
-                      queryMap: Map<String, Any>? = null): ApiRequest<WalletData> {
+    fun getExistingWallet(
+        walletId: String,
+        queryMap: Map<String, Any>? = null
+    ): ApiRequest<ExistingWallet> {
         return walletsApi.getById(walletId, queryMap ?: mapOf())
     }
     // endregion
@@ -108,18 +123,18 @@ class KeyServer constructor(
      * Submits given wallet to the system.
      */
     @Throws(
-            EmailAlreadyTakenException::class,
-            HttpException::class
+        EmailAlreadyTakenException::class,
+        HttpException::class
     )
-    fun saveWallet(walletData: WalletData): ApiRequest<WalletData> {
-        return walletsApi.create(walletData)
+    fun saveWallet(walletCreationData: WalletCreationData): ApiRequest<ExistingWallet> {
+        return walletsApi.create(walletCreationData)
     }
 
     /**
      * Updates wallet by given wallet ID with given data.
      */
-    fun updateWallet(walletId: String, walletData: WalletData): ApiRequest<Void> {
-        return walletsApi.update(walletId, walletData)
+    fun updateWallet(walletId: String, walletCreationData: WalletCreationData): ApiRequest<Void> {
+        return walletsApi.update(walletId, walletCreationData)
     }
     // endregion
 
@@ -129,24 +144,24 @@ class KeyServer constructor(
      */
     @JvmOverloads
     fun createAndSaveWallet(
-            email: String,
-            password: CharArray,
-            keyValueApi: KeyValueStorageApiV3,
-            rootAccount: Account = Account.random(),
-            verificationCode: String? = null,
-    ): ApiRequest<WalletCreateResult> {
+        email: String,
+        password: CharArray,
+        keyValueApi: KeyValueStorageApiV3,
+        rootAccount: Account = Account.random(),
+        verificationCode: String? = null,
+    ): ApiRequest<WalletCreationResult> {
         return MappedCallableApiRequest(
-                {
-                    val defaultSignerRole = getDefaultSignerRole(keyValueApi)
-                    getCreateAndSaveWalletResult(
-                            email = email,
-                            password = password,
-                            accounts = listOf(rootAccount),
-                            signers = listOf(SignerData(rootAccount.accountId, defaultSignerRole)),
-                            verificationCode = verificationCode,
-                    )
-                },
-                { it }
+            {
+                val defaultSignerRole = getDefaultSignerRole(keyValueApi)
+                getCreateAndSaveWalletResult(
+                    email = email,
+                    password = password,
+                    accounts = listOf(rootAccount),
+                    signers = listOf(SignerData(rootAccount.accountId, defaultSignerRole)),
+                    verificationCode = verificationCode,
+                )
+            },
+            { it }
         )
     }
 
@@ -156,18 +171,18 @@ class KeyServer constructor(
      */
     @JvmOverloads
     fun createAndSaveWallet(
-            email: String,
-            password: CharArray,
-            defaultSignerRole: Uint64,
-            rootAccount: Account = Account.random(),
-            verificationCode: String? = null,
-    ): ApiRequest<WalletCreateResult> {
+        email: String,
+        password: CharArray,
+        defaultSignerRole: Uint64,
+        rootAccount: Account = Account.random(),
+        verificationCode: String? = null,
+    ): ApiRequest<WalletCreationResult> {
         return createAndSaveWallet(
-                email = email,
-                password = password,
-                rootAccount = rootAccount,
-                signers = listOf(SignerData(rootAccount.accountId, defaultSignerRole)),
-                verificationCode = verificationCode
+            email = email,
+            password = password,
+            rootAccount = rootAccount,
+            signers = listOf(SignerData(rootAccount.accountId, defaultSignerRole)),
+            verificationCode = verificationCode
         )
     }
 
@@ -176,23 +191,23 @@ class KeyServer constructor(
      * and submits it to the system.
      */
     fun createAndSaveWallet(
-            email: String,
-            password: CharArray,
-            rootAccount: Account,
-            signers: Collection<SignerData>,
-            verificationCode: String? = null,
-    ): ApiRequest<WalletCreateResult> {
+        email: String,
+        password: CharArray,
+        rootAccount: Account,
+        signers: Collection<SignerData>,
+        verificationCode: String? = null,
+    ): ApiRequest<WalletCreationResult> {
         return MappedCallableApiRequest(
-                {
-                    getCreateAndSaveWalletResult(
-                            email = email,
-                            password = password,
-                            accounts = listOf(rootAccount),
-                            signers = signers,
-                            verificationCode = verificationCode,
-                    )
-                },
-                { it }
+            {
+                getCreateAndSaveWalletResult(
+                    email = email,
+                    password = password,
+                    accounts = listOf(rootAccount),
+                    signers = signers,
+                    verificationCode = verificationCode,
+                )
+            },
+            { it }
         )
     }
 
@@ -202,23 +217,23 @@ class KeyServer constructor(
      * and submits it to the system. The first account is taken as a root one.
      */
     fun createAndSaveWallet(
-            email: String,
-            password: CharArray,
-            accounts: List<Account>,
-            signers: Collection<SignerData>,
-            verificationCode: String? = null,
-    ): ApiRequest<WalletCreateResult> {
+        email: String,
+        password: CharArray,
+        accounts: List<Account>,
+        signers: Collection<SignerData>,
+        verificationCode: String? = null,
+    ): ApiRequest<WalletCreationResult> {
         return MappedCallableApiRequest(
-                {
-                    getCreateAndSaveWalletResult(
-                            email = email,
-                            password = password,
-                            accounts = accounts,
-                            signers = signers,
-                            verificationCode = verificationCode
-                    )
-                },
-                { it }
+            {
+                getCreateAndSaveWalletResult(
+                    email = email,
+                    password = password,
+                    accounts = accounts,
+                    signers = signers,
+                    verificationCode = verificationCode
+                )
+            },
+            { it }
         )
     }
 
@@ -229,118 +244,130 @@ class KeyServer constructor(
      */
     @Throws(EmailAlreadyTakenException::class)
     private fun getCreateAndSaveWalletResult(
-            email: String,
-            password: CharArray,
-            accounts: List<Account>,
-            signers: Collection<SignerData>,
-            verificationCode: String? = null,
-    ): WalletCreateResult {
+        email: String,
+        password: CharArray,
+        accounts: List<Account>,
+        signers: Collection<SignerData>,
+        verificationCode: String? = null,
+    ): WalletCreationResult {
         val loginParams = getLoginParams().execute().get()
 
         val kdf = loginParams.kdfAttributes
         val kdfVersion = loginParams.id
 
         val result = createWallet(
-                email = email,
-                password = password,
-                kdfAttributes = kdf,
-                kdfVersion = kdfVersion,
-                accounts = accounts,
-                signers = signers,
-                verificationCode = verificationCode
+            email = email,
+            password = password,
+            kdfAttributes = kdf,
+            kdfVersion = kdfVersion,
+            accounts = accounts,
+            signers = signers,
+            verificationCode = verificationCode
         )
 
-        val remoteWalletData = saveWallet(result.walletData)
-                .execute()
-                .get()
+        val remoteWalletData = saveWallet(result.creationData)
+            .execute()
+            .get()
 
-        return result.copy(walletData = remoteWalletData)
+        return result.copy(isVerified = remoteWalletData.data.attributes.isVerified)
     }
 
-    fun updateWalletPassword(currentWalletInfo: WalletInfo,
-                             currentAccount: Account,
-                             newPassword: CharArray,
-                             newAccount: Account,
-                             networkParams: NetworkParams,
-                             signersApi: SignersApiV3,
-                             keyValueApi: KeyValueStorageApiV3): ApiRequest<WalletInfo> {
+    fun updateWalletPassword(
+        currentWalletInfo: WalletInfo,
+        currentAccount: Account,
+        newPassword: CharArray,
+        newAccount: Account,
+        networkParams: NetworkParams,
+        signersApi: SignersApiV3,
+        keyValueApi: KeyValueStorageApiV3
+    ): ApiRequest<WalletInfo> {
         return MappedCallableApiRequest(
-                {
-                    getUpdateWalletPasswordResult(currentWalletInfo, currentAccount,
-                            newPassword, newAccount, networkParams, signersApi, keyValueApi)
-                },
-                { it }
+            {
+                getUpdateWalletPasswordResult(
+                    currentWalletInfo, currentAccount,
+                    newPassword, newAccount, networkParams, signersApi, keyValueApi
+                )
+            },
+            { it }
         )
     }
 
-    fun updateWalletPassword(currentWalletInfo: WalletInfo,
-                             currentAccount: Account,
-                             newPassword: CharArray,
-                             newAccount: Account,
-                             networkParams: NetworkParams,
-                             currentSigners: List<SignerData>,
-                             defaultSignerRole: Uint64): ApiRequest<WalletInfo> {
+    fun updateWalletPassword(
+        currentWalletInfo: WalletInfo,
+        currentAccount: Account,
+        newPassword: CharArray,
+        newAccount: Account,
+        networkParams: NetworkParams,
+        currentSigners: List<SignerData>,
+        defaultSignerRole: Uint64
+    ): ApiRequest<WalletInfo> {
         val currentAccountSigner = currentSigners.find { it.id == currentAccount.accountId }
-                ?: SignerData(currentAccount.accountId, defaultSignerRole)
+            ?: SignerData(currentAccount.accountId, defaultSignerRole)
 
         return MappedCallableApiRequest(
-                {
-                    getUpdateWalletPasswordResult(
-                            currentWalletInfo = currentWalletInfo,
-                            currentAccount = currentAccount,
-                            currentSigners = currentSigners,
-                            newAccounts = listOf(newAccount),
-                            newPassword = newPassword,
-                            networkParams = networkParams,
-                            newSigners = listOf(SignerData(
-                                    id = newAccount.accountId,
-                                    weight = currentAccountSigner.weight,
-                                    identity = currentAccountSigner.identity,
-                                    roleId = currentAccountSigner.roleId,
-                                    detailsJson = currentAccountSigner.detailsJson
-                            ))
+            {
+                getUpdateWalletPasswordResult(
+                    currentWalletInfo = currentWalletInfo,
+                    currentAccount = currentAccount,
+                    currentSigners = currentSigners,
+                    newAccounts = listOf(newAccount),
+                    newPassword = newPassword,
+                    networkParams = networkParams,
+                    newSigners = listOf(
+                        SignerData(
+                            id = newAccount.accountId,
+                            weight = currentAccountSigner.weight,
+                            identity = currentAccountSigner.identity,
+                            roleId = currentAccountSigner.roleId,
+                            detailsJson = currentAccountSigner.detailsJson
+                        )
                     )
-                },
-                { it }
+                )
+            },
+            { it }
         )
     }
 
-    fun updateWalletPassword(currentWalletInfo: WalletInfo,
-                             currentAccount: Account,
-                             newPassword: CharArray,
-                             newAccounts: List<Account>,
-                             networkParams: NetworkParams,
-                             currentSigners: List<SignerData>,
-                             newSigners: Collection<SignerData>): ApiRequest<WalletInfo> {
+    fun updateWalletPassword(
+        currentWalletInfo: WalletInfo,
+        currentAccount: Account,
+        newPassword: CharArray,
+        newAccounts: List<Account>,
+        networkParams: NetworkParams,
+        currentSigners: List<SignerData>,
+        newSigners: Collection<SignerData>
+    ): ApiRequest<WalletInfo> {
         return MappedCallableApiRequest(
-                {
-                    getUpdateWalletPasswordResult(
-                            currentWalletInfo = currentWalletInfo,
-                            currentAccount = currentAccount,
-                            currentSigners = currentSigners,
-                            newAccounts = newAccounts,
-                            newPassword = newPassword,
-                            networkParams = networkParams,
-                            newSigners = newSigners
-                    )
-                },
-                { it }
+            {
+                getUpdateWalletPasswordResult(
+                    currentWalletInfo = currentWalletInfo,
+                    currentAccount = currentAccount,
+                    currentSigners = currentSigners,
+                    newAccounts = newAccounts,
+                    newPassword = newPassword,
+                    networkParams = networkParams,
+                    newSigners = newSigners
+                )
+            },
+            { it }
         )
     }
 
-    private fun getUpdateWalletPasswordResult(currentWalletInfo: WalletInfo,
-                                              currentAccount: Account,
-                                              newPassword: CharArray,
-                                              newAccount: Account,
-                                              networkParams: NetworkParams,
-                                              signersApi: SignersApiV3,
-                                              keyValueApi: KeyValueStorageApiV3): WalletInfo {
+    private fun getUpdateWalletPasswordResult(
+        currentWalletInfo: WalletInfo,
+        currentAccount: Account,
+        newPassword: CharArray,
+        newAccount: Account,
+        networkParams: NetworkParams,
+        signersApi: SignersApiV3,
+        keyValueApi: KeyValueStorageApiV3
+    ): WalletInfo {
         val signers: List<SignerData> = try {
             signersApi
-                    .get(currentWalletInfo.accountId)
-                    .execute()
-                    .get()
-                    .map { SignerData(it) }
+                .get(currentWalletInfo.accountId)
+                .execute()
+                .get()
+                .map { SignerData(it) }
         } catch (e: HttpException) {
             if (e.isNotFound())
                 emptyList()
@@ -350,78 +377,84 @@ class KeyServer constructor(
 
         val defaultSignerRole = getDefaultSignerRole(keyValueApi)
         val currentAccountSigner = signers.find { it.id == currentAccount.accountId }
-                ?: SignerData(currentAccount.accountId, defaultSignerRole)
+            ?: SignerData(currentAccount.accountId, defaultSignerRole)
 
         return getUpdateWalletPasswordResult(
-                currentWalletInfo = currentWalletInfo,
-                currentAccount = currentAccount,
-                currentSigners = signers,
-                newAccounts = listOf(newAccount),
-                newPassword = newPassword,
-                networkParams = networkParams,
-                newSigners = listOf(SignerData(
-                        id = newAccount.accountId,
-                        weight = currentAccountSigner.weight,
-                        identity = currentAccountSigner.identity,
-                        roleId = currentAccountSigner.roleId,
-                        detailsJson = currentAccountSigner.detailsJson
-                ))
+            currentWalletInfo = currentWalletInfo,
+            currentAccount = currentAccount,
+            currentSigners = signers,
+            newAccounts = listOf(newAccount),
+            newPassword = newPassword,
+            networkParams = networkParams,
+            newSigners = listOf(
+                SignerData(
+                    id = newAccount.accountId,
+                    weight = currentAccountSigner.weight,
+                    identity = currentAccountSigner.identity,
+                    roleId = currentAccountSigner.roleId,
+                    detailsJson = currentAccountSigner.detailsJson
+                )
+            )
         )
     }
 
-    private fun getUpdateWalletPasswordResult(currentWalletInfo: WalletInfo,
-                                              currentAccount: Account,
-                                              newPassword: CharArray,
-                                              newAccounts: List<Account>,
-                                              networkParams: NetworkParams,
-                                              currentSigners: List<SignerData>,
-                                              newSigners: Collection<SignerData>
+    private fun getUpdateWalletPasswordResult(
+        currentWalletInfo: WalletInfo,
+        currentAccount: Account,
+        newPassword: CharArray,
+        newAccounts: List<Account>,
+        networkParams: NetworkParams,
+        currentSigners: List<SignerData>,
+        newSigners: Collection<SignerData>
     ): WalletInfo {
         val signersUpdateTx = createSignersUpdateTransaction(
-                networkParams = networkParams,
-                currentAccount = currentAccount,
-                originalAccountId = currentWalletInfo.accountId,
-                signersToAdd = newSigners,
-                signersToRemove = currentSigners
-                        .filterNot {
-                            // Do not remove recovery signer.
-                            it.roleId == RECOVERY_SIGNER_ROLE_ID
-                        }
-                        .map(SignerData::id)
+            networkParams = networkParams,
+            currentAccount = currentAccount,
+            originalAccountId = currentWalletInfo.accountId,
+            signersToAdd = newSigners,
+            signersToRemove = currentSigners
+                .filterNot {
+                    // Do not remove recovery signer.
+                    it.roleId == RECOVERY_SIGNER_ROLE_ID
+                }
+                .map(SignerData::id)
         )
 
         val newLoginParams = currentWalletInfo.loginParams.copy(
-                kdfAttributes = currentWalletInfo.loginParams.kdfAttributes.copy()
+            kdfAttributes = currentWalletInfo.loginParams.kdfAttributes.copy()
         )
 
         // New KDF salt should be generated.
         newLoginParams.kdfAttributes.salt = null
 
         val newWallet = createWallet(
-                email = currentWalletInfo.email,
-                password = newPassword,
-                kdfAttributes = newLoginParams.kdfAttributes,
-                kdfVersion = newLoginParams.id,
-                accounts = newAccounts,
-                signers = emptyList()
+            email = currentWalletInfo.email,
+            password = newPassword,
+            kdfAttributes = newLoginParams.kdfAttributes,
+            kdfVersion = newLoginParams.id,
+            accounts = newAccounts,
+            signers = emptyList()
         )
 
-        newLoginParams.kdfAttributes.encodedSalt = newWallet.walletData.attributes.salt
+        newLoginParams.kdfAttributes.encodedSalt = newWallet.creationData.attributes.salt
 
-        newWallet.walletData.addRelation("transaction", WalletRelation.transaction(signersUpdateTx))
+        newWallet.creationData.addRelation(
+            "transaction",
+            WalletRelation.transaction(signersUpdateTx)
+        )
 
         updateWallet(
-                currentWalletInfo.walletIdHex,
-                newWallet.walletData
+            currentWalletInfo.walletIdHex,
+            newWallet.creationData
         )
-                .execute()
+            .execute()
 
         return WalletInfo(
-                accountId = currentWalletInfo.accountId,
-                email = currentWalletInfo.email,
-                loginParams = newLoginParams,
-                secretSeeds = newAccounts.mapNotNull(Account::secretSeed),
-                walletIdHex = newWallet.walletData.id!!
+            accountId = currentWalletInfo.accountId,
+            email = currentWalletInfo.email,
+            loginParams = newLoginParams,
+            secretSeeds = newAccounts.mapNotNull(Account::secretSeed),
+            walletIdHex = newWallet.creationData.id!!
         )
     }
 
@@ -432,9 +465,11 @@ class KeyServer constructor(
      *
      * This requires email TFA confirmation.
      */
-    fun recoverWalletPassword(email: String,
-                              newPassword: CharArray,
-                              newAccount: Account): ApiRequest<WalletCreateResult> {
+    fun recoverWalletPassword(
+        email: String,
+        newPassword: CharArray,
+        newAccount: Account
+    ): ApiRequest<WalletCreationResult> {
         return recoverWalletPassword(email, newPassword, listOf(newAccount))
     }
 
@@ -445,54 +480,63 @@ class KeyServer constructor(
      *
      * This requires email TFA confirmation.
      */
-    fun recoverWalletPassword(email: String,
-                              newPassword: CharArray,
-                              newAccounts: List<Account>): ApiRequest<WalletCreateResult> {
+    fun recoverWalletPassword(
+        email: String,
+        newPassword: CharArray,
+        newAccounts: List<Account>
+    ): ApiRequest<WalletCreationResult> {
         return MappedCallableApiRequest(
-                { getRecoverWalletPasswordResult(email, newPassword, newAccounts) },
-                { it }
+            { getRecoverWalletPasswordResult(email, newPassword, newAccounts) },
+            { it }
         )
     }
 
-    private fun getRecoverWalletPasswordResult(email: String,
-                                               newPassword: CharArray,
-                                               newAccounts: List<Account>): WalletCreateResult {
+    private fun getRecoverWalletPasswordResult(
+        email: String,
+        newPassword: CharArray,
+        newAccounts: List<Account>
+    ): WalletCreationResult {
         val currentLoginParams = getLoginParams(email, true)
-                .execute()
-                .get()
+            .execute()
+            .get()
 
         val newLoginParams = currentLoginParams.copy(
-                kdfAttributes = currentLoginParams.kdfAttributes.copy()
+            kdfAttributes = currentLoginParams.kdfAttributes.copy()
         )
 
         // New KDF salt should be generated.
         newLoginParams.kdfAttributes.salt = null
 
         val recoveryWallet = createWallet(
-                email = email,
-                password = newPassword,
-                kdfAttributes = newLoginParams.kdfAttributes,
-                kdfVersion = newLoginParams.id,
-                accounts = newAccounts,
-                walletType = WalletData.TYPE_RECOVERY,
-                signers = emptyList()
+            email = email,
+            password = newPassword,
+            kdfAttributes = newLoginParams.kdfAttributes,
+            kdfVersion = newLoginParams.id,
+            accounts = newAccounts,
+            walletType = WalletCreationData.TYPE_RECOVERY,
+            signers = emptyList()
         )
 
-        recoveryWallet.walletData.addRelation(
-                "signer",
-                WalletRelation.signer(SignerData(recoveryWallet.walletData.attributes.accountId, 0))
+        recoveryWallet.creationData.addRelation(
+            "signer",
+            WalletRelation.signer(
+                SignerData(
+                    recoveryWallet.creationData.attributes.accountId,
+                    0
+                )
+            )
         )
 
-        newLoginParams.kdfAttributes.encodedSalt = recoveryWallet.walletData.attributes.salt
+        newLoginParams.kdfAttributes.encodedSalt = recoveryWallet.creationData.attributes.salt
 
-        val newWalletId = recoveryWallet.walletData.id
-                ?: throw  IllegalStateException("Missing wallet ID in new wallet data")
+        val newWalletId = recoveryWallet.creationData.id
+            ?: throw  IllegalStateException("Missing wallet ID in new wallet data")
 
         updateWallet(
-                newWalletId,
-                recoveryWallet.walletData
+            newWalletId,
+            recoveryWallet.creationData
         )
-                .execute()
+            .execute()
 
         return recoveryWallet
     }
@@ -517,15 +561,15 @@ class KeyServer constructor(
         @JvmStatic
         @JvmOverloads
         fun createWallet(
-                email: String,
-                password: CharArray,
-                kdfAttributes: KdfAttributes,
-                kdfVersion: Long,
-                accounts: List<Account>,
-                signers: Collection<SignerData>,
-                walletType: String = WalletData.TYPE_DEFAULT,
-                verificationCode: String? = null,
-        ): WalletCreateResult {
+            email: String,
+            password: CharArray,
+            kdfAttributes: KdfAttributes,
+            kdfVersion: Long,
+            accounts: List<Account>,
+            signers: Collection<SignerData>,
+            walletType: String = WalletCreationData.TYPE_DEFAULT,
+            verificationCode: String? = null,
+        ): WalletCreationResult {
             val derivationEmail = email.toLowerCase()
 
             val kdfSalt = kdfAttributes.salt ?: WalletKeyDerivation.generateKdfSalt()
@@ -533,47 +577,48 @@ class KeyServer constructor(
             kdfAttributesWithSalt.salt = kdfSalt
 
             val walletKey = WalletKeyDerivation
-                    .deriveWalletEncryptionKey(derivationEmail, password, kdfAttributesWithSalt)
+                .deriveWalletEncryptionKey(derivationEmail, password, kdfAttributesWithSalt)
             val walletId = WalletKeyDerivation
-                    .deriveAndEncodeWalletId(derivationEmail, password, kdfAttributesWithSalt)
+                .deriveAndEncodeWalletId(derivationEmail, password, kdfAttributesWithSalt)
 
             val encryptedSeed = WalletEncryption.encryptAccounts(
-                    derivationEmail,
-                    accounts,
-                    walletKey,
-                    kdfSalt
+                derivationEmail,
+                accounts,
+                walletKey,
+                kdfSalt
             )
 
-            val wallet = WalletData(
-                    type = walletType,
-                    walletIdHex = walletId,
-                    encryptedAccount = encryptedSeed,
-                    verificationCode = verificationCode,
+            val wallet = WalletCreationData(
+                type = walletType,
+                walletIdHex = walletId,
+                encryptedAccount = encryptedSeed,
+                verificationCode = verificationCode,
             )
 
             wallet.addRelation("kdf", WalletRelation.kdf(kdfVersion))
 
             val passwordFactorAccount = Account.random()
             val encryptedPasswordFactor = WalletEncryption.encryptAccount(
-                    derivationEmail,
-                    passwordFactorAccount,
-                    walletKey,
-                    kdfSalt
+                derivationEmail,
+                passwordFactorAccount,
+                walletKey,
+                kdfSalt
             )
             wallet.addRelation("factor", WalletRelation.password(encryptedPasswordFactor))
 
             wallet.addArrayRelation("signers", signers.map(WalletRelation.Companion::signer))
 
-            return WalletCreateResult(
-                    walletData = wallet,
-                    accounts = accounts,
-                    rootAccount = accounts.first(),
-                    walletId = walletId,
-                    loginParams = LoginParams(
-                            id = kdfVersion,
-                            type = "kdf",
-                            kdfAttributes = kdfAttributesWithSalt
-                    )
+            return WalletCreationResult(
+                creationData = wallet,
+                accounts = accounts,
+                rootAccount = accounts.first(),
+                walletId = walletId,
+                loginParams = LoginParams(
+                    id = kdfVersion,
+                    type = "kdf",
+                    kdfAttributes = kdfAttributesWithSalt
+                ),
+                isVerified = wallet.attributes.isVerified
             )
         }
 
@@ -591,24 +636,24 @@ class KeyServer constructor(
         @JvmStatic
         @JvmOverloads
         fun createWallet(
-                email: String,
-                password: CharArray,
-                kdfAttributes: KdfAttributes,
-                kdfVersion: Long,
-                defaultSignerRole: Uint64,
-                rootAccount: Account = Account.random(),
-                walletType: String = WalletData.TYPE_DEFAULT,
-                verificationCode: String? = null,
-        ): WalletCreateResult {
+            email: String,
+            password: CharArray,
+            kdfAttributes: KdfAttributes,
+            kdfVersion: Long,
+            defaultSignerRole: Uint64,
+            rootAccount: Account = Account.random(),
+            walletType: String = WalletCreationData.TYPE_DEFAULT,
+            verificationCode: String? = null,
+        ): WalletCreationResult {
             return createWallet(
-                    email = email,
-                    password = password,
-                    kdfAttributes = kdfAttributes,
-                    kdfVersion = kdfVersion,
-                    accounts = listOf(rootAccount),
-                    walletType = walletType,
-                    signers = listOf(SignerData(rootAccount.accountId, defaultSignerRole)),
-                    verificationCode = verificationCode
+                email = email,
+                password = password,
+                kdfAttributes = kdfAttributes,
+                kdfVersion = kdfVersion,
+                accounts = listOf(rootAccount),
+                walletType = walletType,
+                signers = listOf(SignerData(rootAccount.accountId, defaultSignerRole)),
+                verificationCode = verificationCode
             )
         }
 
@@ -628,22 +673,24 @@ class KeyServer constructor(
         @JvmStatic
         @JvmOverloads
         fun createWallet(
-                email: String,
-                password: CharArray,
-                kdfAttributes: KdfAttributes,
-                kdfVersion: Long,
-                keyValueApi: KeyValueStorageApiV3,
-                rootAccount: Account = Account.random(),
-                walletType: String = WalletData.TYPE_DEFAULT,
-                verificationCode: String? = null,
-        ): ApiRequest<WalletCreateResult> {
+            email: String,
+            password: CharArray,
+            kdfAttributes: KdfAttributes,
+            kdfVersion: Long,
+            keyValueApi: KeyValueStorageApiV3,
+            rootAccount: Account = Account.random(),
+            walletType: String = WalletCreationData.TYPE_DEFAULT,
+            verificationCode: String? = null,
+        ): ApiRequest<WalletCreationResult> {
             return MappedCallableApiRequest(
-                    {
-                        val defaultSignerRole = getDefaultSignerRole(keyValueApi)
-                        createWallet(email, password, kdfAttributes, kdfVersion,
-                                defaultSignerRole, rootAccount, walletType, verificationCode)
-                    },
-                    { it }
+                {
+                    val defaultSignerRole = getDefaultSignerRole(keyValueApi)
+                    createWallet(
+                        email, password, kdfAttributes, kdfVersion,
+                        defaultSignerRole, rootAccount, walletType, verificationCode
+                    )
+                },
+                { it }
             )
         }
 
@@ -654,83 +701,86 @@ class KeyServer constructor(
          * @param currentAccount account of a valid signer to be a tx signer
          * @param signersToRemove account IDs of signers that will be removed
          */
-        fun createSignersUpdateTransaction(networkParams: NetworkParams,
-                                           currentAccount: Account,
-                                           originalAccountId: String,
-                                           signersToAdd: Collection<SignerData>,
-                                           signersToRemove: Collection<String>
+        fun createSignersUpdateTransaction(
+            networkParams: NetworkParams,
+            currentAccount: Account,
+            originalAccountId: String,
+            signersToAdd: Collection<SignerData>,
+            signersToRemove: Collection<String>
         ): Transaction {
             val removeCurrentAccountSigner =
-                    if (signersToRemove.contains(currentAccount.accountId))
-                        Operation.OperationBody.ManageSigner(
-                                ManageSignerOp(
-                                        ManageSignerOp.ManageSignerOpData.Remove(
-                                                RemoveSignerData(
-                                                        publicKey = currentAccount.xdrPublicKey,
-                                                        ext = EmptyExt.EmptyVersion()
-                                                )
-                                        ),
-                                        EmptyExt.EmptyVersion()
+                if (signersToRemove.contains(currentAccount.accountId))
+                    Operation.OperationBody.ManageSigner(
+                        ManageSignerOp(
+                            ManageSignerOp.ManageSignerOpData.Remove(
+                                RemoveSignerData(
+                                    publicKey = currentAccount.xdrPublicKey,
+                                    ext = EmptyExt.EmptyVersion()
                                 )
+                            ),
+                            EmptyExt.EmptyVersion()
                         )
-                    else
-                        null
+                    )
+                else
+                    null
 
             val removeSignersButNoCurrent =
-                    signersToRemove.mapNotNull { signerToRemove ->
-                        if (signerToRemove == currentAccount.accountId)
-                            return@mapNotNull null
+                signersToRemove.mapNotNull { signerToRemove ->
+                    if (signerToRemove == currentAccount.accountId)
+                        return@mapNotNull null
 
-                        Operation.OperationBody.ManageSigner(
-                                ManageSignerOp(
-                                        ManageSignerOp.ManageSignerOpData.Remove(
-                                                RemoveSignerData(
-                                                        publicKey =
-                                                        PublicKeyFactory.fromAccountId(signerToRemove),
-                                                        ext = EmptyExt.EmptyVersion()
-                                                )
-                                        ),
-                                        EmptyExt.EmptyVersion()
+                    Operation.OperationBody.ManageSigner(
+                        ManageSignerOp(
+                            ManageSignerOp.ManageSignerOpData.Remove(
+                                RemoveSignerData(
+                                    publicKey =
+                                    PublicKeyFactory.fromAccountId(signerToRemove),
+                                    ext = EmptyExt.EmptyVersion()
                                 )
+                            ),
+                            EmptyExt.EmptyVersion()
                         )
-                    }
+                    )
+                }
 
             return TransactionBuilder(networkParams, originalAccountId)
-                    .addSigner(currentAccount)
-                    .addOperations(removeSignersButNoCurrent)
-                    .addOperations(signersToAdd.map { signerToAdd ->
-                        Operation.OperationBody.ManageSigner(
-                                ManageSignerOp(
-                                        ManageSignerOp.ManageSignerOpData.Create(
-                                                UpdateSignerData(
-                                                        publicKey =
-                                                        PublicKeyFactory.fromAccountId(signerToAdd.id),
-                                                        identity = signerToAdd.identity,
-                                                        weight = signerToAdd.weight,
-                                                        roleID = signerToAdd.roleId,
-                                                        details = signerToAdd.detailsJson ?: "{}",
-                                                        ext = EmptyExt.EmptyVersion()
-                                                )
-                                        ),
-                                        EmptyExt.EmptyVersion()
+                .addSigner(currentAccount)
+                .addOperations(removeSignersButNoCurrent)
+                .addOperations(signersToAdd.map { signerToAdd ->
+                    Operation.OperationBody.ManageSigner(
+                        ManageSignerOp(
+                            ManageSignerOp.ManageSignerOpData.Create(
+                                UpdateSignerData(
+                                    publicKey =
+                                    PublicKeyFactory.fromAccountId(signerToAdd.id),
+                                    identity = signerToAdd.identity,
+                                    weight = signerToAdd.weight,
+                                    roleID = signerToAdd.roleId,
+                                    details = signerToAdd.detailsJson ?: "{}",
+                                    ext = EmptyExt.EmptyVersion()
                                 )
+                            ),
+                            EmptyExt.EmptyVersion()
                         )
-                    })
-                    .apply { removeCurrentAccountSigner?.let { addOperation(it) } }
-                    .build()
+                    )
+                })
+                .apply { removeCurrentAccountSigner?.let { addOperation(it) } }
+                .build()
         }
 
         private fun getDefaultSignerRole(keyValueApi: KeyValueStorageApiV3): Long {
             return try {
                 keyValueApi
-                        .getById(DEFAULT_SIGNER_ROLE_KEY_VALUE_KEY)
-                        .execute()
-                        .get()
-                        .value
-                        .u32!!
+                    .getById(DEFAULT_SIGNER_ROLE_KEY_VALUE_KEY)
+                    .execute()
+                    .get()
+                    .value
+                    .u32!!
             } catch (e: Exception) {
-                throw IllegalStateException("Unable to obtain default role for signer " +
-                        "by key $DEFAULT_SIGNER_ROLE_KEY_VALUE_KEY", e)
+                throw IllegalStateException(
+                    "Unable to obtain default role for signer " +
+                            "by key $DEFAULT_SIGNER_ROLE_KEY_VALUE_KEY", e
+                )
             }
         }
     }

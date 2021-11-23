@@ -6,25 +6,25 @@ import java.io.Serializable
 import java.math.BigDecimal
 
 open class Fee(
-    @JsonProperty("fee_type")
+    @field:JsonProperty("fee_type")
     val feeType: Int,
-    @JsonProperty("subtype")
+    @field:JsonProperty("subtype")
     val subtype: Int,
-    @JsonProperty("asset")
+    @field:JsonProperty("asset")
     val requestAsset: String,
-    @JsonProperty("fee_asset")
+    @field:JsonProperty("fee_asset")
     val asset: String,
-    @JsonProperty("fixed")
+    @field:JsonProperty("fixed")
     val fixed: BigDecimal,
-    @JsonProperty("percent")
+    @field:JsonProperty("percent")
     val percent: BigDecimal,
-    @JsonProperty("lower_bound")
+    @field:JsonProperty("lower_bound")
     val lowerBound: BigDecimal,
-    @JsonProperty("upper_bound")
+    @field:JsonProperty("upper_bound")
     val upperBound: BigDecimal,
-    @JsonProperty("exists")
+    @field:JsonProperty("exists")
     val exists: Boolean,
-    @JsonProperty("account_id")
+    @field:JsonProperty("account_id")
     val account_id: String
 ) : Serializable {
 

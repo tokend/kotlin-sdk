@@ -98,7 +98,7 @@ open class TfaVerifier(
                 AttributesEntity(
                     mapOf(
                         "token" to token,
-                        "otp" to "otp"
+                        "otp" to otp
                     )
                 )
             )

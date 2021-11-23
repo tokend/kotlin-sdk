@@ -1,14 +1,14 @@
 package org.tokend.sdk.api.base.model
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
-import java.util.*
 
 /**
  * Response with list of specific [T] items
  */
 open class Page<T> {
-    @JsonProperty("records")
+    @field:JsonProperty("records")
     var records: List<T> = emptyList()
         get() = (if (field.isEmpty() && this.embeddedPage != null) {
             this.embeddedPage.records
@@ -23,6 +23,7 @@ open class Page<T> {
     @JsonProperty("_links")
     private val embeddedLinks: Links? = null
 
+    @JsonIgnore
     fun getLinks(): Links? {
         return this.links ?: this.embeddedLinks
     }
@@ -31,16 +32,16 @@ open class Page<T> {
      * Links connected to page response.
      */
     class Links internal constructor(
-        @field:JsonProperty("next")
+        @JsonProperty("next")
         val next: Link?,
-        @field:JsonProperty("prev")
+        @JsonProperty("prev")
         val prev: Link?,
-        @field:JsonProperty("self")
+        @JsonProperty("self")
         val self: Link?
     )
 
     private class EmbeddedPage<T>(
-        @field:JsonProperty("records")
+        @JsonProperty("records")
         val records: ArrayList<T>?
     )
 }

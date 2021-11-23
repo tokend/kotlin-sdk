@@ -1,6 +1,7 @@
 package org.tokend.sdk.keyserver.models
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.tokend.sdk.api.base.model.DataEntity
 import org.tokend.sdk.keyserver.WalletEncryption
@@ -8,7 +9,7 @@ import org.tokend.sdk.keyserver.WalletKeyDerivation
 import org.tokend.sdk.utils.extentions.decodeBase64
 
 @JvmSuppressWildcards
-open class WalletData(
+open class WalletCreationData(
     @JsonProperty("type")
     val type: String,
     @JsonProperty("id")
@@ -30,6 +31,7 @@ open class WalletData(
         @JsonProperty("verification_doce")
         val verificationCode: String?,
     ) {
+        @get:JsonIgnore
         val keychainData: KeychainData
             get() = KeychainData.fromJson(String(encodedKeychainData.decodeBase64()))
     }
@@ -40,8 +42,8 @@ open class WalletData(
     /**
      * @see WalletKeyDerivation
      * @see WalletEncryption
-     * @see WalletData.TYPE_DEFAULT
-     * @see WalletData.TYPE_RECOVERY
+     * @see WalletCreationData.TYPE_DEFAULT
+     * @see WalletCreationData.TYPE_RECOVERY
      */
     constructor(
         type: String,
@@ -69,6 +71,7 @@ open class WalletData(
         relationships[name] = DataEntity(relations)
     }
 
+    @JsonIgnore
     fun getFlattenRelationships(): List<WalletRelation> =
         relationships
             .values

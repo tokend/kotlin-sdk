@@ -6,19 +6,19 @@ import com.fasterxml.jackson.databind.JsonNode
 import java.util.*
 
 open class SubmitTransactionResponse constructor(
-    @JsonProperty("extras")
+    @field:JsonProperty("extras")
     val extras: Extras?,
-    @JsonProperty("ledger")
+    @field:JsonProperty("ledger")
     val ledger: Long?,
-    @JsonProperty("created_at")
+    @field:JsonProperty("created_at")
     val createdAt: Date?,
-    @JsonProperty("hash")
+    @field:JsonProperty("hash")
     val hash: String?,
-    @JsonProperty("envelope_xdr")
+    @field:JsonProperty("envelope_xdr")
     private val envelopeXdr: String,
-    @JsonProperty("result_xdr")
+    @field:JsonProperty("result_xdr")
     private val resultXdr: String,
-    @JsonProperty("result_meta_xdr")
+    @field:JsonProperty("result_meta_xdr")
     val resultMetaXdr: String?
 ) {
     @get:JsonIgnore

@@ -7,22 +7,22 @@ import java.math.BigDecimal
 import java.util.*
 
 open class AssetChartData(
-    @JsonProperty("hour")
+    @field:JsonProperty("hour")
     val hour: List<ChartPoint>? = null,
-    @JsonProperty("day")
+    @field:JsonProperty("day")
     val day: List<ChartPoint>? = null,
-    @JsonProperty("week")
+    @field:JsonProperty("week")
     val week: List<ChartPoint>? = null,
-    @JsonProperty("month")
+    @field:JsonProperty("month")
     val month: List<ChartPoint>? = null,
-    @JsonProperty("year")
+    @field:JsonProperty("year")
     val year: List<ChartPoint>? = null
 ) {
 
     open class ChartPoint(
-        @JsonProperty("value")
+        @field:JsonProperty("value")
         val value: BigDecimal,
-        @JsonProperty("timestamp")
+        @field:JsonProperty("timestamp")
         private val timestamp: String
     ) {
 

@@ -1,5 +1,6 @@
 package org.tokend.sdk.redirects
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.JsonNode
 import okhttp3.HttpUrl
@@ -16,6 +17,7 @@ class ClientRedirectPayload(
     @JsonProperty("meta")
     val meta: JsonNode
 ) {
+    @get:JsonIgnore
     val type: ClientRedirectType
         get() = ClientRedirectType.fromName(typeName)
 

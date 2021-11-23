@@ -1,5 +1,6 @@
 package org.tokend.sdk.keyserver.models
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.tokend.sdk.utils.extentions.decodeBase64
 import org.tokend.sdk.utils.extentions.encodeBase64String
@@ -36,12 +37,14 @@ data class KdfAttributes(
         salt: ByteArray?
     ) : this(algorithm, bits, n, p, r, salt?.encodeBase64String())
 
+    @get:JsonIgnore
     var salt: ByteArray?
         get() = encodedSalt?.decodeBase64()
         set(value) {
             encodedSalt = value?.encodeBase64String()
         }
 
+    @get:JsonIgnore
     val bytes: Int
         get() = bits / 8
 }

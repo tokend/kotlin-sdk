@@ -1,6 +1,7 @@
 package org.tokend.sdk.api.base.model
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.net.URI
 import java.net.URISyntaxException
@@ -9,11 +10,10 @@ import java.net.URISyntaxException
  * Represents links in responses.
  */
 open class Link internal constructor(
-    @JsonProperty("href")
-    val href: String,
-    @JsonProperty("templated")
-    val isTemplated: Boolean
+    @field:JsonProperty("href")
+    val href: String
 ) {
+    @get:JsonIgnore
     val uri: URI
         get() {
             try {
@@ -21,6 +21,5 @@ open class Link internal constructor(
             } catch (e: URISyntaxException) {
                 throw RuntimeException(e)
             }
-
         }
 }

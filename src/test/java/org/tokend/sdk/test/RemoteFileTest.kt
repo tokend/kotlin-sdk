@@ -30,22 +30,46 @@ class RemoteFileTest {
                 "application/pdf",
                 remoteFileJson.mimeType
         )
+    }
 
-        val remoteFileJackson = JsonApiToolsProvider.getObjectMapper().readValue(json, RemoteFile::class.java)
-        Assert.assertEquals(
-                "dpurex4inf5nahjrsqkkimns6ascqpnddoe2roficpj7xtqorlvw4jd3lsglzzh4a4ctkaxuigqyht6i3t2usyu2",
-                remoteFileJackson.key
-        )
-        Assert.assertEquals(
-                "sample.pdf",
-                remoteFileJackson.name
-        )
-        Assert.assertEquals(
-                "application/pdf",
-                remoteFileJackson.mimeType
+    @Test
+    fun serialize() {
+        val file = RemoteFile(
+            key = "dpurex4inf5nahjrsqkkimns6ascqpnddoe2roficpj7xtqorlvw4jd3lsglzzh4a4ctkaxuigqyht6i3t2usyu2",
+            name = "file.pdf",
+            mimeType = "application/pdf"
         )
 
-        Assert.assertEquals(remoteFileJson, remoteFileJackson)
+        Assert.assertEquals(
+            "{\"key\":\"dpurex4inf5nahjrsqkkimns6ascqpnddoe2roficpj7xtqorlvw4jd3lsglzzh4a4ctkaxuigqyht6i3t2usyu2\",\"name\":\"file.pdf\",\"mime_type\":\"application/pdf\"}",
+            JsonApiToolsProvider.getObjectMapper().writeValueAsString(file)
+        )
+    }
+
+    @Test
+    fun parseWithAliasesAndCompare() {
+        // MIME type alias.
+        val json = """
+            {
+              "key": "dpurex4inf5nahjrsqkkimns6ascqpnddoe2roficpj7xtqorlvw4jd3lsglzzh4a4ctkaxuigqyht6i3t2usyu2",
+              "name": "sample.pdf",
+              "mimeType": "application/pdf"
+            }
+        """.trimIndent()
+
+        val remoteFileJson = JsonApiToolsProvider.getObjectMapper().readValue(json, RemoteFile::class.java)
+        Assert.assertEquals(
+            "dpurex4inf5nahjrsqkkimns6ascqpnddoe2roficpj7xtqorlvw4jd3lsglzzh4a4ctkaxuigqyht6i3t2usyu2",
+            remoteFileJson.key
+        )
+        Assert.assertEquals(
+            "sample.pdf",
+            remoteFileJson.name
+        )
+        Assert.assertEquals(
+            "application/pdf",
+            remoteFileJson.mimeType
+        )
     }
 
     @Test

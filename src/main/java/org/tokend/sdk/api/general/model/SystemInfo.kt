@@ -13,29 +13,29 @@ open class SystemInfo(
      * @see LEDGER_HISTORY
      * @see LEDGER_HISTORY_2
      */
-    @JsonProperty("ledgers_state")
+    @field:JsonProperty("ledgers_state")
     val ledgersState: Map<String, LedgerState>,
-    @JsonProperty("network_passphrase")
+    @field:JsonProperty("network_passphrase")
     val passphrase: String,
-    @JsonProperty("current_time")
+    @field:JsonProperty("current_time")
     val currentTime: Long,
-    @JsonProperty("commission_account_id")
+    @field:JsonProperty("commission_account_id")
     val commissionAccountId: String,
-    @JsonProperty("operational_account_id")
+    @field:JsonProperty("operational_account_id")
     val operationalAccountId: String,
-    @JsonProperty("admin_account_id")
+    @field:JsonProperty("admin_account_id")
     val adminAccountId: String,
-    @JsonProperty("master_exchange_name")
+    @field:JsonProperty("master_exchange_name")
     val masterExchangeName: String,
-    @JsonProperty("precision")
+    @field:JsonProperty("precision")
     val precisionMultiplier: Long
 ) {
     open class LedgerState(
-        @JsonProperty("latest")
+        @field:JsonProperty("latest")
         val latest: Long,
-        @JsonProperty("oldest_on_start")
+        @field:JsonProperty("oldest_on_start")
         val oldestOnStart: Long,
-        @JsonProperty("last_ledger_increase_time")
+        @field:JsonProperty("last_ledger_increase_time")
         val lastLedgerIncreaseTime: Date
     )
 
