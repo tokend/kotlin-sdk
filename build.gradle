@@ -42,10 +42,10 @@ repositories {
 }
 
 compileKotlin {
-    kotlinOptions.jvmTarget = "1.6"
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
 }
 compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.6"
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
 }
 
 apply from: 'deploy.gradle'

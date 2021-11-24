@@ -2,7 +2,6 @@ package org.tokend.sdk.test.integration
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.github.jasminb.jsonapi.JSONAPIDocument
 import com.github.jasminb.jsonapi.Links
@@ -225,7 +224,7 @@ class CustomRequestsTest {
         val response = getApi()
             .get(
                 "/dummy_list",
-                object : TypeReference<List<DummyEntity>>() {},
+                jacksonTypeRef<List<DummyEntity>>(),
                 defaultQueryMap,
                 defaultHeadersMap
             )
