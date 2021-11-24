@@ -3,7 +3,7 @@ package org.tokend.sdk.keyserver.models
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.tokend.sdk.api.generated.resources.SignerResource
-import org.tokend.sdk.factory.JsonApiToolsProvider
+import org.tokend.sdk.factory.JsonApiTools
 import org.tokend.wallet.xdr.Uint32
 import org.tokend.wallet.xdr.Uint64
 
@@ -25,7 +25,7 @@ class SignerData(
     @JvmOverloads
     constructor(
         source: SignerResource,
-        objectMapper: ObjectMapper = JsonApiToolsProvider.getObjectMapper()
+        objectMapper: ObjectMapper = JsonApiTools.objectMapper
     ) : this(
         identity = source.identity.toInt(),
         weight = source.weight.toInt(),

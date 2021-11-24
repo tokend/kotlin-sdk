@@ -13,7 +13,7 @@ import org.tokend.sdk.api.transactions.model.SubmitTransactionResponse
 import org.tokend.sdk.api.transactions.model.TransactionFailedException
 import org.tokend.sdk.api.v3.transactions.model.SubmitTransactionRequestBody
 import org.tokend.sdk.api.v3.transactions.params.TransactionsPageParams
-import org.tokend.sdk.factory.JsonApiToolsProvider
+import org.tokend.sdk.factory.JsonApiTools
 import org.tokend.sdk.utils.extentions.isBadRequest
 import org.tokend.wallet.Transaction
 import org.tokend.wallet.xdr.TransactionEnvelope
@@ -104,7 +104,7 @@ open class TransactionsApiV3(
         val buffer = errorBody.source().buffer().clone()
         val string = buffer.readString(Charset.defaultCharset())
 
-        val mapper = JsonApiToolsProvider.getObjectMapper()
+        val mapper = JsonApiTools.objectMapper
 
         try {
             val firstError = mapper.readValue(string, ErrorBody::class.java).firstOrNull

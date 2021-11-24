@@ -2,7 +2,7 @@ package org.tokend.sdk.api.base.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import okhttp3.ResponseBody
-import org.tokend.sdk.factory.JsonApiToolsProvider
+import org.tokend.sdk.factory.JsonApiTools
 import retrofit2.HttpException
 import retrofit2.Response
 
@@ -22,7 +22,7 @@ class ErrorBody(
     companion object {
         @JvmStatic
         fun fromJsonString(json: String): ErrorBody {
-            return JsonApiToolsProvider.getObjectMapper().readValue(json, ErrorBody::class.java)
+            return JsonApiTools.objectMapper.readValue(json, ErrorBody::class.java)
         }
 
         /**

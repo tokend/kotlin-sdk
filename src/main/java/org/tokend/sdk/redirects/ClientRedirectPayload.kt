@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.JsonNode
 import okhttp3.HttpUrl
-import org.tokend.sdk.factory.JsonApiToolsProvider
+import org.tokend.sdk.factory.JsonApiTools
 import org.tokend.sdk.utils.extentions.decodeBase64
 
 /**
@@ -33,7 +33,7 @@ class ClientRedirectPayload(
 
             return try {
                 String(encodedPayload.decodeBase64()).let {
-                    JsonApiToolsProvider.getObjectMapper()
+                    JsonApiTools.objectMapper
                         .readValue(it, ClientRedirectPayload::class.java)
                 }
             } catch (e: Exception) {

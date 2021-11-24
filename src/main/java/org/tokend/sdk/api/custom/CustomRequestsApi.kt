@@ -11,7 +11,7 @@ import org.tokend.sdk.api.base.model.DataPage
 import org.tokend.sdk.api.base.model.DataPageWithNamedCursors
 import org.tokend.sdk.api.base.model.Page
 import org.tokend.sdk.api.v3.base.JsonApiQueryMapBuilder
-import org.tokend.sdk.factory.JsonApiToolsProvider
+import org.tokend.sdk.factory.JsonApiTools
 import retrofit2.Call
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
@@ -19,7 +19,7 @@ import java.lang.reflect.Type
 /**
  * Allows to make custom HTTP requests with response body mapping.
  *
- * If response class extends [BaseResource], then [JsonApiToolsProvider] will be used for mapping.
+ * If response class extends [BaseResource], then [JsonApiTools] will be used for mapping.
  * If response class is [String] or [ByteArray] or primitive Java byte array,
  * then no mapping will be performed.
  * Otherwise [Gson] will be used for mapping.
@@ -27,8 +27,8 @@ import java.lang.reflect.Type
 open class CustomRequestsApi(
     protected open val customRequestsService: CustomRequestsService
 ) {
-    protected open val mapper = JsonApiToolsProvider.getObjectMapper()
-    protected open val jsonApiResourceConverter = JsonApiToolsProvider.getResourceConverter()
+    protected open val mapper = JsonApiTools.objectMapper
+    protected open val jsonApiResourceConverter = JsonApiTools.getResourceConverter()
 
     // region GET
     protected open fun doGet(

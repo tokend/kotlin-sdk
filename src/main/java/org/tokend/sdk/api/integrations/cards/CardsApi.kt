@@ -13,7 +13,7 @@ import org.tokend.sdk.api.integrations.cards.model.generated.resources.InfoResou
 import org.tokend.sdk.api.integrations.cards.model.generated.resources.TransactionResource
 import org.tokend.sdk.api.integrations.cards.params.CardParams
 import org.tokend.sdk.api.integrations.cards.params.CardsPageParams
-import org.tokend.sdk.factory.JsonApiToolsProvider
+import org.tokend.sdk.factory.JsonApiTools
 
 open class CardsApi(
         protected open val customRequestsApi: CustomRequestsApi
@@ -61,7 +61,7 @@ open class CardsApi(
                     responseClass = ByteArray::class.java
             )
                     .map {
-                        JsonApiToolsProvider.getResourceConverter()
+                        JsonApiTools.getResourceConverter()
                                 .readDocumentCollection(it, CardResource::class.java)
                                 .get()
                     }

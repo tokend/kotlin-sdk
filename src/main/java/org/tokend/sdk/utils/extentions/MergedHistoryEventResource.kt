@@ -3,7 +3,7 @@ package org.tokend.sdk.utils.extentions
 import com.fasterxml.jackson.databind.JsonNode
 import org.tokend.sdk.api.base.model.BaseResource
 import org.tokend.sdk.api.integrations.mergedhistory.model.generated.resources.EventResource
-import org.tokend.sdk.factory.JsonApiToolsProvider
+import org.tokend.sdk.factory.JsonApiTools
 
 /**
  * Reads merged history event body as a particular resource of type [T]
@@ -16,7 +16,7 @@ object MergedHistoryEventResourceUtil {
     @JvmStatic
     fun <T : BaseResource> eventBodyToResource(body: JsonNode,
                                                resourceClass: Class<out T>): T {
-        val objectMapper = JsonApiToolsProvider.getObjectMapper()
+        val objectMapper = JsonApiTools.objectMapper
         val resourceNode = objectMapper.createObjectNode()
         resourceNode.set<JsonNode>("data", body["data"])
         resourceNode.set<JsonNode>(
@@ -37,7 +37,7 @@ object MergedHistoryEventResourceUtil {
                 }
         )
         val resourceBody = objectMapper.writeValueAsBytes(resourceNode)
-        return JsonApiToolsProvider.getResourceConverter()
+        return JsonApiTools.getResourceConverter()
                 .readDocument(resourceBody, resourceClass)
                 .get()
     }

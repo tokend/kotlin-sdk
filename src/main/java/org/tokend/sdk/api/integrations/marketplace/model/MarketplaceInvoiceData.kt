@@ -1,7 +1,7 @@
 package org.tokend.sdk.api.integrations.marketplace.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.tokend.sdk.factory.JsonApiToolsProvider
+import org.tokend.sdk.factory.JsonApiTools
 import java.math.BigDecimal
 
 sealed class MarketplaceInvoiceData {
@@ -44,7 +44,7 @@ sealed class MarketplaceInvoiceData {
                 else -> throw IllegalArgumentException("Unknown marketplace invoice data type '${invoiceAttributes.type}'")
             }
 
-            return JsonApiToolsProvider.getObjectMapper().treeToValue(invoiceAttributes.data, clazz)
+            return JsonApiTools.objectMapper.treeToValue(invoiceAttributes.data, clazz)
         }
     }
 }

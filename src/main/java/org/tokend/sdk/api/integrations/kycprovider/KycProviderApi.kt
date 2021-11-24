@@ -4,7 +4,7 @@ import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.model.DataEntity
 import org.tokend.sdk.api.custom.CustomRequestsApi
 import org.tokend.sdk.api.integrations.kycprovider.model.generated.resources.KycResource
-import org.tokend.sdk.factory.JsonApiToolsProvider
+import org.tokend.sdk.factory.JsonApiTools
 
 open class KycProviderApi(
         protected open val customRequestsApi: CustomRequestsApi
@@ -26,7 +26,7 @@ open class KycProviderApi(
                     responseClass = ByteArray::class.java
             )
                     .map { rawBytes ->
-                        JsonApiToolsProvider.getResourceConverter()
+                        JsonApiTools.getResourceConverter()
                                 .readDocumentCollection(rawBytes, KycResource::class.java)
                                 .get()
                     }

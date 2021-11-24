@@ -1,7 +1,7 @@
 package org.tokend.sdk.api.base.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.tokend.sdk.factory.JsonApiToolsProvider
+import org.tokend.sdk.factory.JsonApiTools
 
 
 /**
@@ -12,5 +12,5 @@ open class DataEntity<out T>(
     val data: T
 ) {
 
-    fun toJson() = JsonApiToolsProvider.getObjectMapper().writeValueAsString(data)
+    fun toJson() = JsonApiTools.objectMapper.writeValueAsString(data)
 }

@@ -3,7 +3,7 @@ package org.tokend.sdk.keyserver.models
 import com.fasterxml.jackson.annotation.JsonAlias
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.tokend.sdk.factory.JsonApiToolsProvider
+import org.tokend.sdk.factory.JsonApiTools
 import org.tokend.sdk.utils.extentions.decodeBase64
 import org.tokend.sdk.utils.extentions.encodeBase64String
 
@@ -44,7 +44,7 @@ constructor(
      * Serializes data to JSON and encodes it with Base64
      */
     fun encode(): String {
-        return JsonApiToolsProvider.getObjectMapper().writeValueAsString(this)
+        return JsonApiTools.objectMapper.writeValueAsString(this)
             .toByteArray()
             .encodeBase64String()
     }
@@ -57,7 +57,7 @@ constructor(
 
         @JvmStatic
         fun fromJson(rawJson: String): KeychainData {
-            return JsonApiToolsProvider.getObjectMapper()
+            return JsonApiTools.objectMapper
                 .readValue(rawJson, KeychainData::class.java)
         }
 

@@ -8,7 +8,7 @@ import org.tokend.sdk.api.base.model.AttributesEntity
 import org.tokend.sdk.api.base.model.DataEntity
 import org.tokend.sdk.api.tfa.model.TfaFactor
 import org.tokend.sdk.api.tfa.model.TfaFactorCreationResult
-import org.tokend.sdk.factory.JsonApiToolsProvider
+import org.tokend.sdk.factory.JsonApiTools
 
 open class TfaApi(
     protected val tfaService: TfaService
@@ -49,7 +49,7 @@ open class TfaApi(
 
                 val attributesElement = json["attributes"]
 
-                val mapper = JsonApiToolsProvider.getObjectMapper()
+                val mapper = JsonApiTools.objectMapper
                 val attributes: Map<String, Any> =
                     if (attributesElement != null)
                         mapper.treeToValue<Map<String, Any>>(attributesElement)!!

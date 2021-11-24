@@ -4,7 +4,7 @@ import org.junit.Assert
 import org.junit.Test
 import org.tokend.sdk.api.base.model.RemoteFile
 import org.tokend.sdk.api.base.model.isReallyNullOrNullAccordingToTheJavascript
-import org.tokend.sdk.factory.JsonApiToolsProvider
+import org.tokend.sdk.factory.JsonApiTools
 
 class RemoteFileTest {
     @Test
@@ -17,7 +17,7 @@ class RemoteFileTest {
             }
         """.trimIndent()
 
-        val remoteFileJson = JsonApiToolsProvider.getObjectMapper().readValue(json, RemoteFile::class.java)
+        val remoteFileJson = JsonApiTools.objectMapper.readValue(json, RemoteFile::class.java)
         Assert.assertEquals(
                 "dpurex4inf5nahjrsqkkimns6ascqpnddoe2roficpj7xtqorlvw4jd3lsglzzh4a4ctkaxuigqyht6i3t2usyu2",
                 remoteFileJson.key
@@ -42,7 +42,7 @@ class RemoteFileTest {
 
         Assert.assertEquals(
             "{\"key\":\"dpurex4inf5nahjrsqkkimns6ascqpnddoe2roficpj7xtqorlvw4jd3lsglzzh4a4ctkaxuigqyht6i3t2usyu2\",\"name\":\"file.pdf\",\"mime_type\":\"application/pdf\"}",
-            JsonApiToolsProvider.getObjectMapper().writeValueAsString(file)
+            JsonApiTools.objectMapper.writeValueAsString(file)
         )
     }
 
@@ -57,7 +57,7 @@ class RemoteFileTest {
             }
         """.trimIndent()
 
-        val remoteFileJson = JsonApiToolsProvider.getObjectMapper().readValue(json, RemoteFile::class.java)
+        val remoteFileJson = JsonApiTools.objectMapper.readValue(json, RemoteFile::class.java)
         Assert.assertEquals(
             "dpurex4inf5nahjrsqkkimns6ascqpnddoe2roficpj7xtqorlvw4jd3lsglzzh4a4ctkaxuigqyht6i3t2usyu2",
             remoteFileJson.key

@@ -14,7 +14,7 @@ import org.tokend.sdk.api.TokenDApi
 import org.tokend.sdk.api.base.model.BaseResource
 import org.tokend.sdk.api.base.model.Link
 import org.tokend.sdk.api.custom.CustomRequestsApi
-import org.tokend.sdk.factory.JsonApiToolsProvider
+import org.tokend.sdk.factory.JsonApiTools
 import java.net.HttpURLConnection
 import java.net.InetSocketAddress
 import java.net.ServerSocket
@@ -90,8 +90,8 @@ class CustomRequestsTest {
         @JvmStatic
         @BeforeClass
         fun setUpTestServer() {
-            JsonApiToolsProvider.reset()
-            JsonApiToolsProvider.addExtraResources(DummyResource::class.java)
+            JsonApiTools.reset()
+            JsonApiTools.addExtraResources(DummyResource::class.java)
 
             val socket = ServerSocket(0).apply { reuseAddress = true }
             port = socket.localPort
@@ -113,7 +113,7 @@ class CustomRequestsTest {
             server.createContext("/dummy") { http ->
                 captureRequestParams(http)
 
-                val response = JsonApiToolsProvider.getObjectMapper()
+                val response = JsonApiTools.objectMapper
                     .writeValueAsBytes(DummyEntity.DEFAULT)
 
                 http.responseHeaders.add("Content-type", "application/json")
@@ -124,7 +124,7 @@ class CustomRequestsTest {
             server.createContext("/dummy_list") { http ->
                 captureRequestParams(http)
 
-                val response = JsonApiToolsProvider.getObjectMapper()
+                val response = JsonApiTools.objectMapper
                     .writeValueAsBytes(listOf(DummyEntity.DEFAULT))
 
                 http.responseHeaders.add("Content-type", "application/json")
@@ -144,7 +144,7 @@ class CustomRequestsTest {
                         "next" to Link("/dummy_page?page=1&limit=10")
                     )
                 )
-                val response = JsonApiToolsProvider.getObjectMapper()
+                val response = JsonApiTools.objectMapper
                     .writeValueAsBytes(page)
 
                 http.responseHeaders.add("Content-type", "application/json")
@@ -155,7 +155,7 @@ class CustomRequestsTest {
             server.createContext("/dummy_resource") { http ->
                 captureRequestParams(http)
 
-                val response = JsonApiToolsProvider.getResourceConverter().writeDocument(
+                val response = JsonApiTools.getResourceConverter().writeDocument(
                     JSONAPIDocument(DummyResource.DEFAULT)
                 )
 
@@ -167,7 +167,7 @@ class CustomRequestsTest {
             server.createContext("/dummy_resource_page") { http ->
                 captureRequestParams(http)
 
-                val response = JsonApiToolsProvider.getResourceConverter().writeDocumentCollection(
+                val response = JsonApiTools.getResourceConverter().writeDocumentCollection(
                     JSONAPIDocument(
                         listOf(DummyResource.DEFAULT),
                         Links(
@@ -309,7 +309,7 @@ class CustomRequestsTest {
         Assert.assertEquals("/dummy$defaultQueryMapEncoded", lastRequestUrl)
         Assert.assertEquals(defaultHeadersString, lastRequestHeadersString)
         Assert.assertEquals(
-            JsonApiToolsProvider.getObjectMapper().writeValueAsString(data),
+            JsonApiTools.objectMapper.writeValueAsString(data),
             lastRequestBody
         )
         Assert.assertEquals(DummyEntity.DEFAULT, response)
@@ -327,7 +327,7 @@ class CustomRequestsTest {
         Assert.assertEquals("/no_content$defaultQueryMapEncoded", lastRequestUrl)
         Assert.assertEquals(defaultHeadersString, lastRequestHeadersString)
         Assert.assertEquals(
-            JsonApiToolsProvider.getObjectMapper().writeValueAsString(data),
+            JsonApiTools.objectMapper.writeValueAsString(data),
             lastRequestBody
         )
         Assert.assertFalse(response.hasValue())
@@ -346,7 +346,7 @@ class CustomRequestsTest {
         Assert.assertEquals("/dummy$defaultQueryMapEncoded", lastRequestUrl)
         Assert.assertEquals(defaultHeadersString, lastRequestHeadersString)
         Assert.assertEquals(
-            JsonApiToolsProvider.getObjectMapper().writeValueAsString(data),
+            JsonApiTools.objectMapper.writeValueAsString(data),
             lastRequestBody
         )
         Assert.assertEquals(DummyEntity.DEFAULT, response)
@@ -364,7 +364,7 @@ class CustomRequestsTest {
         Assert.assertEquals("/no_content$defaultQueryMapEncoded", lastRequestUrl)
         Assert.assertEquals(defaultHeadersString, lastRequestHeadersString)
         Assert.assertEquals(
-            JsonApiToolsProvider.getObjectMapper().writeValueAsString(data),
+            JsonApiTools.objectMapper.writeValueAsString(data),
             lastRequestBody
         )
         Assert.assertFalse(response.hasValue())
@@ -383,7 +383,7 @@ class CustomRequestsTest {
         Assert.assertEquals("/dummy$defaultQueryMapEncoded", lastRequestUrl)
         Assert.assertEquals(defaultHeadersString, lastRequestHeadersString)
         Assert.assertEquals(
-            JsonApiToolsProvider.getObjectMapper().writeValueAsString(data),
+            JsonApiTools.objectMapper.writeValueAsString(data),
             lastRequestBody
         )
         Assert.assertEquals(DummyEntity.DEFAULT, response)
@@ -401,7 +401,7 @@ class CustomRequestsTest {
         Assert.assertEquals("/no_content$defaultQueryMapEncoded", lastRequestUrl)
         Assert.assertEquals(defaultHeadersString, lastRequestHeadersString)
         Assert.assertEquals(
-            JsonApiToolsProvider.getObjectMapper().writeValueAsString(data),
+            JsonApiTools.objectMapper.writeValueAsString(data),
             lastRequestBody
         )
         Assert.assertFalse(response.hasValue())

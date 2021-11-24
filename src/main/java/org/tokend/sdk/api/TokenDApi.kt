@@ -25,7 +25,7 @@ import org.tokend.sdk.api.tfa.TfaService
 import org.tokend.sdk.api.v3.TokenDApiV3
 import org.tokend.sdk.api.wallets.WalletsApi
 import org.tokend.sdk.api.wallets.WalletsService
-import org.tokend.sdk.factory.JsonApiToolsProvider
+import org.tokend.sdk.factory.JsonApiTools
 import org.tokend.sdk.signing.AccountRequestSigner
 import org.tokend.sdk.signing.RequestSigner
 import org.tokend.sdk.tfa.TfaCallback
@@ -114,7 +114,7 @@ constructor(
     /**
      * Allows to make custom HTTP requests with response body mapping.
      *
-     * If response class extends [BaseResource], then [JsonApiToolsProvider] will be used for mapping.
+     * If response class extends [BaseResource], then [JsonApiTools] will be used for mapping.
      * If response class is [String] or [ByteArray] or primitive Java byte array,
      * then no mapping will be performed.
      * Otherwise [Gson] will be used for mapping.

@@ -32,19 +32,22 @@ import java.util.logging.Logger
 /**
  * Constructs and provides base [ObjectMapper] and base [JSONAPIConverterFactory]
  * with type adapters for SDK models.
+ *
+ * @see objectMapper
+ * @see addExtraResources
  */
-object JsonApiToolsProvider {
+object JsonApiTools {
     private val extraResources = mutableSetOf<Class<*>>(
-            IdentityResource::class.java,
-            BusinessResource::class.java,
-            ClientResource::class.java,
-            ClientBalanceResource::class.java,
-            UserInfoResource::class.java,
-            PaymentAccountResource::class.java,
-            MarketplaceOfferResource::class.java,
-            MarketplacePaymentMethodResource::class.java,
-            IdentitySettingsResource::class.java,
-            SchedulerPayloadResource::class.java
+        IdentityResource::class.java,
+        BusinessResource::class.java,
+        ClientResource::class.java,
+        ClientBalanceResource::class.java,
+        UserInfoResource::class.java,
+        PaymentAccountResource::class.java,
+        MarketplaceOfferResource::class.java,
+        MarketplacePaymentMethodResource::class.java,
+        IdentitySettingsResource::class.java,
+        SchedulerPayloadResource::class.java
     )
 
     /**
@@ -56,9 +59,11 @@ object JsonApiToolsProvider {
      */
     @JvmStatic
     fun addExtraResources(vararg resourceClass: Class<*>) {
-        if (resourceConverter != null) {
-            Logger.getGlobal().log(Level.WARNING, "Attempt to add extra resources " +
-                    "when the converter is already created and cached. This will have no effect!")
+        if (mResourceConverter != null) {
+            Logger.getGlobal().log(
+                Level.WARNING, "Attempt to add extra resources " +
+                        "when the converter is already created and cached. This will have no effect!"
+            )
         }
         extraResources.addAll(resourceClass)
     }
@@ -70,22 +75,23 @@ object JsonApiToolsProvider {
      */
     @JvmStatic
     fun getResourceConverter(): ResourceConverter = synchronized(this) {
-        return resourceConverter
-                ?: ResourceConverter(getObjectMapper(),
-                        *AllResources.ARRAY,
-                        *org.tokend.sdk.api.integrations.booking.model.generated.resources.AllResources.ARRAY,
-                        *org.tokend.sdk.api.integrations.booking.model.scheduler.generated.resources.AllResources.ARRAY,
-                        *org.tokend.sdk.api.integrations.invoices.model.generated.resources.AllResources.ARRAY,
-                        *org.tokend.sdk.api.integrations.recpayments.model.generated.resources.AllResources.ARRAY,
-                        *org.tokend.sdk.api.integrations.cards.model.generated.resources.AllResources.ARRAY,
-                        *org.tokend.sdk.api.integrations.friends.model.generated.resources.AllResources.ARRAY,
-                        *org.tokend.sdk.api.integrations.mergedhistory.model.generated.resources.AllResources.ARRAY,
-                        *org.tokend.sdk.api.integrations.invitations.model.generated.resources.AllResources.ARRAY,
-                        *org.tokend.sdk.api.integrations.exchange.model.generated.resources.AllResources.ARRAY,
-                        *org.tokend.sdk.api.integrations.kycprovider.model.generated.resources.AllResources.ARRAY,
-                        *extraResources.toTypedArray()
-                )
-                        .also { resourceConverter = it }
+        return mResourceConverter
+            ?: ResourceConverter(
+                objectMapper,
+                *AllResources.ARRAY,
+                *org.tokend.sdk.api.integrations.booking.model.generated.resources.AllResources.ARRAY,
+                *org.tokend.sdk.api.integrations.booking.model.scheduler.generated.resources.AllResources.ARRAY,
+                *org.tokend.sdk.api.integrations.invoices.model.generated.resources.AllResources.ARRAY,
+                *org.tokend.sdk.api.integrations.recpayments.model.generated.resources.AllResources.ARRAY,
+                *org.tokend.sdk.api.integrations.cards.model.generated.resources.AllResources.ARRAY,
+                *org.tokend.sdk.api.integrations.friends.model.generated.resources.AllResources.ARRAY,
+                *org.tokend.sdk.api.integrations.mergedhistory.model.generated.resources.AllResources.ARRAY,
+                *org.tokend.sdk.api.integrations.invitations.model.generated.resources.AllResources.ARRAY,
+                *org.tokend.sdk.api.integrations.exchange.model.generated.resources.AllResources.ARRAY,
+                *org.tokend.sdk.api.integrations.kycprovider.model.generated.resources.AllResources.ARRAY,
+                *extraResources.toTypedArray()
+            )
+                .also { mResourceConverter = it }
     }
 
     /**
@@ -97,23 +103,25 @@ object JsonApiToolsProvider {
      */
     @JvmStatic
     fun getJsonApiConverterFactory(): JSONAPIConverterFactory = synchronized(this) {
-        return jsonApiConverterFactory
+        return mJsonApiConverterFactory
 
-                ?: JSONAPIConverterFactory(getResourceConverter())
-                        .also { jsonApiConverterFactory = it }
+            ?: JSONAPIConverterFactory(getResourceConverter())
+                .also { mJsonApiConverterFactory = it }
     }
 
     @JvmStatic
     fun getJacksonConverterFactory(): JacksonConverterFactory {
-        return JacksonConverterFactory.create(getObjectMapper())
+        return JacksonConverterFactory.create(objectMapper)
     }
 
     @JvmStatic
-    fun getObjectMapper(): ObjectMapper = synchronized(this) {
-        return objectMapper
+    val objectMapper: ObjectMapper
+        get() = synchronized(this) {
+            mObjectMapper
                 ?: createBaseObjectMapper()
-                        .also { objectMapper = it }
-    }
+                    .also { mObjectMapper = it }
+        }
+
 
     private fun createBaseObjectMapper(): ObjectMapper {
         val mapper = ObjectMapper()
@@ -138,9 +146,11 @@ object JsonApiToolsProvider {
 
     private fun getDateSerializer(): JsonSerializer<Date> {
         return object : JsonSerializer<Date>() {
-            override fun serialize(value: Date?,
-                                   gen: JsonGenerator?,
-                                   serializers: SerializerProvider?) {
+            override fun serialize(
+                value: Date?,
+                gen: JsonGenerator?,
+                serializers: SerializerProvider?
+            ) {
                 if (value == null) {
                     gen?.writeNull()
                 } else {
@@ -152,10 +162,12 @@ object JsonApiToolsProvider {
 
     private fun getDateDeserializer(): JsonDeserializer<Date> {
         return object : JsonDeserializer<Date>() {
-            override fun deserialize(p: JsonParser?,
-                                     ctxt: DeserializationContext?): Date? {
+            override fun deserialize(
+                p: JsonParser?,
+                ctxt: DeserializationContext?
+            ): Date? {
                 val value = p?.valueAsString
-                        ?: return null
+                    ?: return null
 
                 return ApiDateUtil.tryParseDate(value)
             }
@@ -164,9 +176,11 @@ object JsonApiToolsProvider {
 
     private fun getBigDecimalSerializer(): JsonSerializer<BigDecimal> {
         return object : JsonSerializer<BigDecimal>() {
-            override fun serialize(value: BigDecimal?,
-                                   gen: JsonGenerator?,
-                                   serializers: SerializerProvider?) {
+            override fun serialize(
+                value: BigDecimal?,
+                gen: JsonGenerator?,
+                serializers: SerializerProvider?
+            ) {
                 if (value == null) {
                     gen?.writeNull()
                 } else {
@@ -178,10 +192,12 @@ object JsonApiToolsProvider {
 
     private fun getBigDecimalDeserializer(): JsonDeserializer<BigDecimal> {
         return object : JsonDeserializer<BigDecimal>() {
-            override fun deserialize(p: JsonParser?,
-                                     ctxt: DeserializationContext?): BigDecimal? {
+            override fun deserialize(
+                p: JsonParser?,
+                ctxt: DeserializationContext?
+            ): BigDecimal? {
                 val value = p?.valueAsString
-                        ?: return null
+                    ?: return null
 
                 return BigDecimalUtil.valueOf(value)
             }
@@ -191,12 +207,12 @@ object JsonApiToolsProvider {
     @TestOnly
     @JvmStatic
     fun reset() {
-        resourceConverter = null
-        objectMapper = null
-        jsonApiConverterFactory = null
+        mResourceConverter = null
+        mObjectMapper = null
+        mJsonApiConverterFactory = null
     }
 
-    private var resourceConverter: ResourceConverter? = null
-    private var objectMapper: ObjectMapper? = null
-    private var jsonApiConverterFactory: JSONAPIConverterFactory? = null
+    private var mResourceConverter: ResourceConverter? = null
+    private var mObjectMapper: ObjectMapper? = null
+    private var mJsonApiConverterFactory: JSONAPIConverterFactory? = null
 }

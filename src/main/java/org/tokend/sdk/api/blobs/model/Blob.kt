@@ -3,7 +3,7 @@ package org.tokend.sdk.api.blobs.model
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.core.type.TypeReference
-import org.tokend.sdk.factory.JsonApiToolsProvider
+import org.tokend.sdk.factory.JsonApiTools
 
 open class Blob(
     @field:JsonProperty("id")
@@ -34,12 +34,12 @@ open class Blob(
 
     @JsonIgnore
     fun <T> getValue(typeClass: Class<T>): T {
-        return JsonApiToolsProvider.getObjectMapper().readValue(valueString, typeClass)
+        return JsonApiTools.objectMapper.readValue(valueString, typeClass)
     }
 
     @JsonIgnore
     fun <T> getValue(type: TypeReference<T>): T {
-        return JsonApiToolsProvider.getObjectMapper().readValue(valueString, type)
+        return JsonApiTools.objectMapper.readValue(valueString, type)
     }
 
     override fun equals(other: Any?): Boolean {
