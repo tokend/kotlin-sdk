@@ -109,7 +109,7 @@ class KeyServerTest {
         checkSignUpResult(email, password, result, api)
 
         val actualSigners = api.v3
-                .signers.get(result.creationData.attributes.accountId)
+                .signers.get(result.creationData.accountId)
                 .execute()
                 .get()
 
@@ -134,7 +134,7 @@ class KeyServerTest {
         Assert.assertEquals(
                 "Account ID in wallet data must be equal to the root account ID",
                 result.rootAccount.accountId,
-                result.creationData.attributes.accountId
+                result.creationData.accountId
         )
 
         Assert.assertFalse(
@@ -144,7 +144,7 @@ class KeyServerTest {
 
         Assert.assertTrue(
                 "Email in wallet data must be lowercased",
-                email.toLowerCase() == result.creationData.attributes.email
+                email.toLowerCase() == result.creationData.email
         )
 
         val walletInfo = try {
@@ -158,8 +158,8 @@ class KeyServerTest {
 
         Assert.assertEquals(
                 "Wallet ID obtained from the key server must be equal to the sent one",
-                result.creationData.id,
-                walletInfo.walletIdHex
+                result.creationData.walletId,
+                walletInfo.walletId
         )
 
         val recoveryWalletInfo = try {
@@ -201,7 +201,7 @@ class KeyServerTest {
 
         val (wallet, rootAccount)
                 = keyServer.createAndSaveWallet(email, password, api.v3.keyValue).execute().get()
-        email = wallet.attributes.email
+        email = wallet.email
 
         val currentWalletInfo = keyServer.getWalletInfo(email, password).execute().get()
 
@@ -257,8 +257,8 @@ class KeyServerTest {
 
         Assert.assertNotEquals(
                 "Wallet ID must be changed after password change",
-                wallet.id,
-                newWalletInfo.walletIdHex
+                wallet.walletId,
+                newWalletInfo.walletId
         )
 
         Assert.assertFalse(
@@ -277,7 +277,7 @@ class KeyServerTest {
         Assert.assertArrayEquals(
                 "Wallet new secret seed must be equal to the required one",
                 newAccount.secretSeed,
-                newWalletInfo.secretSeed
+                newWalletInfo.secretSeeds.first()
         )
 
         val signers = api
@@ -437,7 +437,7 @@ class KeyServerTest {
         checkSignUpResult(email, password, result, api)
 
         val actualSigners = api.v3
-                .signers.get(result.creationData.attributes.accountId)
+                .signers.get(result.creationData.accountId)
                 .execute()
                 .get()
 

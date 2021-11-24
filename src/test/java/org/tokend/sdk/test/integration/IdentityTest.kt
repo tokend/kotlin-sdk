@@ -29,7 +29,7 @@ class IdentityTest {
 
         val (wallet, rootAccount)
                 = keyServer.createAndSaveWallet(email, password, api.v3.keyValue).execute().get()
-        email = wallet.attributes.email
+        email = wallet.email
 
         val currentWalletInfo = keyServer.getWalletInfo(email, password).execute().get()
 
@@ -93,7 +93,7 @@ class IdentityTest {
 
         val (wallet, rootAccount)
                 = keyServer.createAndSaveWallet(email, password, api.v3.keyValue).execute().get()
-        email = wallet.attributes.email
+        email = wallet.email
 
         val currentWalletInfo = keyServer.getWalletInfo(email, password).execute().get()
 

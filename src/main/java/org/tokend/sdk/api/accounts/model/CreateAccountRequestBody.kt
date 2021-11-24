@@ -3,14 +3,14 @@ package org.tokend.sdk.api.accounts.model
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.tokend.sdk.api.base.model.DataEntity
 import org.tokend.sdk.keyserver.models.SignerData
-import org.tokend.sdk.keyserver.models.WalletRelation
+import org.tokend.sdk.keyserver.models.WalletRelationship
 
 class CreateAccountRequestBody(
         accountId: String,
         signers: Collection<SignerData>
 ) {
     @JsonProperty("included")
-    val included = signers.map(WalletRelation.Companion::signer)
+    val included = signers.map(WalletRelationship.Companion::signer)
 
     @JsonProperty("data")
     val data = mapOf(

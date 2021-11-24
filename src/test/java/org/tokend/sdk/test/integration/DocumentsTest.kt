@@ -34,7 +34,7 @@ class DocumentsTest {
         val uploadPolicy = signedApi
                 .documents
                 .requestUpload(
-                        accountId = wallet.attributes.accountId,
+                        accountId = wallet.accountId,
                         documentType = DocumentType.GENERAL_PRIVATE,
                         contentType = contentType
                 )

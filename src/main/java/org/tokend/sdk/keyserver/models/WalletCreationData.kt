@@ -1,88 +1,63 @@
 package org.tokend.sdk.keyserver.models
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.annotation.JsonProperty
 import org.tokend.sdk.api.base.model.DataEntity
-import org.tokend.sdk.keyserver.WalletEncryption
-import org.tokend.sdk.keyserver.WalletKeyDerivation
-import org.tokend.sdk.utils.extentions.decodeBase64
+import org.tokend.sdk.utils.extentions.encodeBase64String
 
-@JvmSuppressWildcards
-open class WalletCreationData(
-    @JsonProperty("type")
+class WalletCreationData(
     val type: String,
-    @JsonProperty("id")
-    val id: String?,
-    @JsonProperty("attributes")
-    val attributes: WalletAttributes
+    val walletId: String,
+    val email: String,
+    val accountId: String,
+    val salt: ByteArray,
+    val keychainData: KeychainData,
+    val extraAttributes: MutableMap<String, Any> = mutableMapOf(),
+    val verificationCode: String? = null
 ) {
-    open class WalletAttributes(
-        @JsonProperty("account_id")
-        val accountId: String,
-        @JsonProperty("email")
-        val email: String,
-        @JsonProperty("keychain_data")
-        val encodedKeychainData: String,
-        @JsonProperty("salt")
-        val salt: String,
-        @JsonProperty("verified")
-        val isVerified: Boolean,
-        @JsonProperty("verification_doce")
-        val verificationCode: String?,
-    ) {
-        @get:JsonIgnore
-        val keychainData: KeychainData
-            get() = KeychainData.fromJson(String(encodedKeychainData.decodeBase64()))
-    }
+    val relationships: MutableMap<String, WalletRelationship> = mutableMapOf()
+    val arrayRelationships: MutableMap<String, Collection<WalletRelationship>> = mutableMapOf()
 
-    @JsonProperty("relationships")
-    val relationships: MutableMap<String, DataEntity<Any>> = mutableMapOf()
+    val encodedSalt: String
+        get() = salt.encodeBase64String()
 
-    /**
-     * @see WalletKeyDerivation
-     * @see WalletEncryption
-     * @see WalletCreationData.TYPE_DEFAULT
-     * @see WalletCreationData.TYPE_RECOVERY
-     */
-    constructor(
-        type: String,
-        walletIdHex: String,
-        encryptedAccount: EncryptedWalletAccount,
-        verificationCode: String? = null,
-    ) : this(
-        type = type,
-        id = walletIdHex,
-        attributes = WalletAttributes(
-            accountId = encryptedAccount.accountId,
-            email = encryptedAccount.email,
-            salt = encryptedAccount.encodedSalt,
-            encodedKeychainData = encryptedAccount.encodedKeychainData,
-            isVerified = false,
-            verificationCode = verificationCode,
-        )
+    val encodedKeychainData: String
+        get() = keychainData.encode()
+
+    fun toRequestBody() = mapOf(
+        "data" to mapOf(
+            "id" to walletId,
+            "type" to type,
+
+            "attributes" to mapOf(
+                "account_id" to accountId,
+                "email" to email,
+                "salt" to encodedSalt,
+                "keychain_data" to encodedKeychainData,
+                "verification_code" to verificationCode
+            ) + extraAttributes,
+
+            "relationships" to
+                    relationships.mapValues { (_, relationship) ->
+                        DataEntity(
+                            mapOf(
+                                "id" to relationship.id,
+                                "type" to relationship.type
+                            )
+                        )
+                    } +
+                    arrayRelationships.mapValues { (_, relationships) ->
+                        DataEntity(relationships.map { relationship ->
+                            mapOf(
+                                "id" to relationship.id,
+                                "type" to relationship.type
+                            )
+                        })
+                    },
+        ),
+
+        "included" to
+                relationships.values +
+                arrayRelationships.values.flatten()
     )
-
-    fun addRelation(name: String, relation: WalletRelation) {
-        relationships[name] = DataEntity(relation)
-    }
-
-    fun addArrayRelation(name: String, relations: Collection<WalletRelation>) {
-        relationships[name] = DataEntity(relations)
-    }
-
-    @JsonIgnore
-    fun getFlattenRelationships(): List<WalletRelation> =
-        relationships
-            .values
-            .flatMap { relation ->
-                val data = relation.data
-                if (data is Collection<*>)
-                    data.map { it as WalletRelation }
-                else
-                    listOf(data as WalletRelation)
-
-            }
 
     companion object {
         const val TYPE_DEFAULT = "wallet"

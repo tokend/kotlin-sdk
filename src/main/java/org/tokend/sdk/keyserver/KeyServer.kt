@@ -71,7 +71,7 @@ class KeyServer constructor(
                 accountId,
                 email,
                 hexWalletId,
-                listOf(password),
+                emptyList(),
                 loginParams
             )
         } else {
@@ -436,15 +436,13 @@ class KeyServer constructor(
             signers = emptyList()
         )
 
-        newLoginParams.kdfAttributes.encodedSalt = newWallet.creationData.attributes.salt
+        newLoginParams.kdfAttributes.encodedSalt = newWallet.creationData.encodedSalt
 
-        newWallet.creationData.addRelation(
-            "transaction",
-            WalletRelation.transaction(signersUpdateTx)
-        )
+        newWallet.creationData.relationships["transaction"] =
+            WalletRelationship.transaction(signersUpdateTx)
 
         updateWallet(
-            currentWalletInfo.walletIdHex,
+            currentWalletInfo.walletId,
             newWallet.creationData
         )
             .execute()
@@ -454,7 +452,7 @@ class KeyServer constructor(
             email = currentWalletInfo.email,
             loginParams = newLoginParams,
             secretSeeds = newAccounts.mapNotNull(Account::secretSeed),
-            walletIdHex = newWallet.creationData.id!!
+            walletId = newWallet.creationData.walletId
         )
     }
 
@@ -517,20 +515,17 @@ class KeyServer constructor(
             signers = emptyList()
         )
 
-        recoveryWallet.creationData.addRelation(
-            "signer",
-            WalletRelation.signer(
+        recoveryWallet.creationData.relationships["signer"] =
+            WalletRelationship.signer(
                 SignerData(
-                    recoveryWallet.creationData.attributes.accountId,
+                    recoveryWallet.creationData.accountId,
                     0
                 )
             )
-        )
 
-        newLoginParams.kdfAttributes.encodedSalt = recoveryWallet.creationData.attributes.salt
+        newLoginParams.kdfAttributes.encodedSalt = recoveryWallet.creationData.encodedSalt
 
-        val newWalletId = recoveryWallet.creationData.id
-            ?: throw  IllegalStateException("Missing wallet ID in new wallet data")
+        val newWalletId = recoveryWallet.creationData.walletId
 
         updateWallet(
             newWalletId,
@@ -581,32 +576,31 @@ class KeyServer constructor(
             val walletId = WalletKeyDerivation
                 .deriveAndEncodeWalletId(derivationEmail, password, kdfAttributesWithSalt)
 
-            val encryptedSeed = WalletEncryption.encryptAccounts(
-                derivationEmail,
-                accounts,
-                walletKey,
-                kdfSalt
-            )
-
             val wallet = WalletCreationData(
                 type = walletType,
-                walletIdHex = walletId,
-                encryptedAccount = encryptedSeed,
-                verificationCode = verificationCode,
+                walletId = walletId,
+                email = derivationEmail,
+                accountId = accounts.first().accountId,
+                keychainData = WalletEncryption.encryptAccountsV2(accounts, walletKey),
+                salt = kdfSalt,
+                verificationCode = verificationCode
             )
 
-            wallet.addRelation("kdf", WalletRelation.kdf(kdfVersion))
+            wallet.relationships["kdf"] = WalletRelationship.kdf(kdfVersion)
 
             val passwordFactorAccount = Account.random()
-            val encryptedPasswordFactor = WalletEncryption.encryptAccount(
-                derivationEmail,
-                passwordFactorAccount,
-                walletKey,
-                kdfSalt
-            )
-            wallet.addRelation("factor", WalletRelation.password(encryptedPasswordFactor))
+            wallet.relationships["factor"] =
+                WalletRelationship.passwordV2(
+                    accountId = passwordFactorAccount.accountId,
+                    keychainData = WalletEncryption.encryptAccountsV2(
+                        listOf(
+                            passwordFactorAccount
+                        ), walletKey
+                    ),
+                    salt = kdfSalt
+                )
 
-            wallet.addArrayRelation("signers", signers.map(WalletRelation.Companion::signer))
+            wallet.arrayRelationships["signers"] = signers.map(WalletRelationship.Companion::signer)
 
             return WalletCreationResult(
                 creationData = wallet,
@@ -618,7 +612,7 @@ class KeyServer constructor(
                     type = "kdf",
                     kdfAttributes = kdfAttributesWithSalt
                 ),
-                isVerified = wallet.attributes.isVerified
+                isVerified = false
             )
         }
 

@@ -25,9 +25,11 @@ object WalletEncryption {
      * @see Aes256GCM
      */
     @JvmStatic
-    fun encryptSecretSeed(seed: CharArray,
-                          iv: ByteArray,
-                          walletEncryptionKey: ByteArray): KeychainData {
+    fun encryptSecretSeed(
+        seed: CharArray,
+        iv: ByteArray,
+        walletEncryptionKey: ByteArray
+    ): KeychainData {
         return encryptSecretSeeds(listOf(seed), iv, walletEncryptionKey)
     }
 
@@ -45,9 +47,11 @@ object WalletEncryption {
      * @see Aes256GCM
      */
     @JvmStatic
-    fun encryptSecretSeeds(seeds: List<CharArray>,
-                           iv: ByteArray,
-                           walletEncryptionKey: ByteArray): KeychainData {
+    fun encryptSecretSeeds(
+        seeds: List<CharArray>,
+        iv: ByteArray,
+        walletEncryptionKey: ByteArray
+    ): KeychainData {
         val primarySeed = seeds.first()
 
         val jsonStart = """{"seed":""""
@@ -55,13 +59,13 @@ object WalletEncryption {
         val jsonEnd = """]}"""
 
         val jsonCharBuffer = CharBuffer.allocate(
-                jsonStart.length +
-                        primarySeed.size +
-                        jsonMiddle.length +
-                        seeds.sumBy { it.size } +
-                        // "...", - last comma
-                        seeds.size * 3 - 1 +
-                        jsonEnd.length
+            jsonStart.length +
+                    primarySeed.size +
+                    jsonMiddle.length +
+                    seeds.sumBy { it.size } +
+                    // "...", - last comma
+                    seeds.size * 3 - 1 +
+                    jsonEnd.length
         )
 
         jsonCharBuffer.apply {
@@ -101,8 +105,10 @@ object WalletEncryption {
      * @see encryptSecretSeed
      */
     @JvmStatic
-    fun decryptSecretSeed(keychainData: KeychainData,
-                          walletEncryptionKey: ByteArray): CharArray {
+    fun decryptSecretSeed(
+        keychainData: KeychainData,
+        walletEncryptionKey: ByteArray
+    ): CharArray {
         return decryptSecretSeeds(keychainData, walletEncryptionKey).first()
     }
 
@@ -114,8 +120,10 @@ object WalletEncryption {
      * @see WalletKeyDerivation.deriveWalletEncryptionKey
      * @see encryptSecretSeeds
      */
-    fun decryptSecretSeeds(keychainData: KeychainData,
-                           walletEncryptionKey: ByteArray): List<CharArray> {
+    fun decryptSecretSeeds(
+        keychainData: KeychainData,
+        walletEncryptionKey: ByteArray
+    ): List<CharArray> {
         val iv = keychainData.iv
         val cipherText = keychainData.cipherText
 
@@ -137,8 +145,8 @@ object WalletEncryption {
             arrayParser.readSeeds
         else
             singleParser.readSeed
-                    ?.let { listOf(it) }
-                    ?: throw IllegalStateException("Unable to parse seed")
+                ?.let { listOf(it) }
+                ?: throw IllegalStateException("Unable to parse seed")
     }
 
     /**
@@ -155,20 +163,22 @@ object WalletEncryption {
      * @see Aes256GCM
      */
     @JvmStatic
-    fun encryptAccount(email: String,
-                       seed: CharArray,
-                       accountId: String,
-                       walletEncryptionKey: ByteArray,
-                       keyDerivationSalt: ByteArray): EncryptedWalletAccount {
+    fun encryptAccount(
+        email: String,
+        seed: CharArray,
+        accountId: String,
+        walletEncryptionKey: ByteArray,
+        keyDerivationSalt: ByteArray
+    ): EncryptedWalletAccount {
         val iv = SecureRandom.getSeed(IV_LENGTH)
 
         val encryptedSeedKeychainData = encryptSecretSeed(seed, iv, walletEncryptionKey)
 
         return EncryptedWalletAccount(
-                accountId,
-                email,
-                keyDerivationSalt,
-                encryptedSeedKeychainData
+            accountId,
+            email,
+            keyDerivationSalt,
+            encryptedSeedKeychainData
         )
     }
 
@@ -184,10 +194,12 @@ object WalletEncryption {
      * @see Aes256GCM
      */
     @JvmStatic
-    fun encryptAccount(email: String,
-                       account: Account,
-                       walletEncryptionKey: ByteArray,
-                       keyDerivationSalt: ByteArray): EncryptedWalletAccount {
+    fun encryptAccount(
+        email: String,
+        account: Account,
+        walletEncryptionKey: ByteArray,
+        keyDerivationSalt: ByteArray
+    ): EncryptedWalletAccount {
         return encryptAccounts(email, listOf(account), walletEncryptionKey, keyDerivationSalt)
     }
 
@@ -203,10 +215,11 @@ object WalletEncryption {
      * @see Aes256GCM
      */
     @JvmStatic
-    fun encryptAccounts(email: String,
-                        accounts: List<Account>,
-                        walletEncryptionKey: ByteArray,
-                        keyDerivationSalt: ByteArray
+    fun encryptAccounts(
+        email: String,
+        accounts: List<Account>,
+        walletEncryptionKey: ByteArray,
+        keyDerivationSalt: ByteArray
     ): EncryptedWalletAccount {
         val iv = SecureRandom.getSeed(IV_LENGTH)
 
@@ -220,19 +233,52 @@ object WalletEncryption {
         }
 
         val encryptedSeedsKeychainData = encryptSecretSeeds(
-                seeds = seeds,
-                iv = iv,
-                walletEncryptionKey = walletEncryptionKey
+            seeds = seeds,
+            iv = iv,
+            walletEncryptionKey = walletEncryptionKey
         )
 
         seeds.forEach(CharArray::erase)
 
         return EncryptedWalletAccount(
-                accountId = mainAccount.accountId,
-                keychainData = encryptedSeedsKeychainData,
-                salt = keyDerivationSalt,
-                email = email
+            accountId = mainAccount.accountId,
+            keychainData = encryptedSeedsKeychainData,
+            salt = keyDerivationSalt,
+            email = email
         )
+    }
+
+    /**
+     * Encrypts given account assuming that first account is the root one
+     *
+     * @param accounts accounts to encrypt in specified order
+     * @param walletEncryptionKey 32 bytes encryption key
+     *
+     * @see WalletKeyDerivation.deriveWalletEncryptionKey
+     * @see Aes256GCM
+     */
+    @JvmStatic
+    fun encryptAccountsV2(
+        accounts: List<Account>,
+        walletEncryptionKey: ByteArray,
+    ): KeychainData {
+        val iv = SecureRandom.getSeed(IV_LENGTH)
+
+        val seeds = accounts.map {
+            requireNotNull(it.secretSeed) {
+                "Account $it has no secret seed"
+            }
+        }
+
+        val encryptedSeedsKeychainData = encryptSecretSeeds(
+            seeds = seeds,
+            iv = iv,
+            walletEncryptionKey = walletEncryptionKey
+        )
+
+        seeds.forEach(CharArray::erase)
+
+        return encryptedSeedsKeychainData
     }
 
     private const val IV_LENGTH = 12
