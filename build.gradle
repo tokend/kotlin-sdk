@@ -30,7 +30,7 @@ dependencies {
     compile 'com.squareup.okhttp3:logging-interceptor:3.5.0'
 
     compile 'com.github.jasminb:jsonapi-converter:0.9'
-    compile 'com.fasterxml.jackson.module:jackson-module-kotlin:2.13.0'
+    compile 'com.fasterxml.jackson.module:jackson-module-kotlin:2.12.0'
 
     compile 'org.tokend:crypto-cipher:1.0.2'
     compile 'org.tokend:crypto-kdf:1.0.4'

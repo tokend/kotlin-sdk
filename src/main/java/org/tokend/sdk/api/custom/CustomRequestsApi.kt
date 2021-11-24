@@ -1,6 +1,7 @@
 package org.tokend.sdk.api.custom
 
 import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.github.jasminb.jsonapi.JSONAPIDocument
 import okhttp3.ResponseBody
 import org.tokend.sdk.api.base.ApiRequest
@@ -48,11 +49,12 @@ open class CustomRequestsApi(
      * @return Response of type [T]
      *
      * @param url Relative endpoint URL
-     * @param responseType [Type] that matches [T]
+     * @param responseType [TypeReference] that matches [T]
      * @param queryMap Map of query params
      * @param headersMap Map of headers
      *
      * @see JsonApiQueryMapBuilder
+     * @see jacksonTypeRef
      */
     @JvmOverloads
     open fun <T> get(
@@ -189,11 +191,12 @@ open class CustomRequestsApi(
      *
      * @param url Relative endpoint URL
      * @param body Request body, will be serialized to JSON with [Gson]
-     * @param responseType [Type] that matches [T]
+     * @param responseType [TypeReference] that matches [T]
      * @param queryMap Map of query params
      * @param headersMap Map of headers
      *
      * @see JsonApiQueryMapBuilder
+     * @see jacksonTypeRef
      */
     @JvmOverloads
     open fun <T> post(
@@ -258,11 +261,12 @@ open class CustomRequestsApi(
      *
      * @param url Relative endpoint URL
      * @param body Request body, will be serialized to JSON with [Gson]
-     * @param responseType [Type] that matches [T]
+     * @param responseType [TypeReference] that matches [T]
      * @param queryMap Map of query params
      * @param headersMap Map of headers
      *
      * @see JsonApiQueryMapBuilder
+     * @see jacksonTypeRef
      */
     @JvmOverloads
     open fun <T> put(
@@ -327,11 +331,12 @@ open class CustomRequestsApi(
      *
      * @param url Relative endpoint URL
      * @param body Request body, will be serialized to JSON with [Gson]
-     * @param responseType [Type] that matches [T]
+     * @param responseType [TypeReference] that matches [T]
      * @param queryMap Map of query params
      * @param headersMap Map of headers
      *
      * @see JsonApiQueryMapBuilder
+     * @see jacksonTypeRef
      */
     @JvmOverloads
     open fun <T> patch(
@@ -368,11 +373,12 @@ open class CustomRequestsApi(
      * @return Response of type [T]
      *
      * @param url Relative endpoint URL
-     * @param responseType [Type] that matches [T]
+     * @param responseType [TypeReference] that matches [T]
      * @param queryMap Map of query params
      * @param headersMap Map of headers
      *
      * @see JsonApiQueryMapBuilder
+     * @see jacksonTypeRef
      */
     @JvmOverloads
     open fun <T> delete(

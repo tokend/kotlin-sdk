@@ -1,6 +1,6 @@
 package org.tokend.sdk.api.tfa
 
-import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.module.kotlin.treeToValue
 import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.base.SimpleRetrofitApiRequest
@@ -52,11 +52,7 @@ open class TfaApi(
                 val mapper = JsonApiToolsProvider.getObjectMapper()
                 val attributes: Map<String, Any> =
                     if (attributesElement != null)
-                        mapper.treeToValue(
-                            attributesElement,
-                            mapper.typeFactory.constructType(object :
-                                TypeReference<Map<String, Any>>() {})
-                        )
+                        mapper.treeToValue<Map<String, Any>>(attributesElement)!!
                     else emptyMap()
 
                 TfaFactorCreationResult(factor, attributes)
