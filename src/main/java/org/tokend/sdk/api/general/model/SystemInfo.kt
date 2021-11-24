@@ -19,10 +19,6 @@ open class SystemInfo(
     val passphrase: String,
     @field:JsonProperty("current_time")
     val currentTime: Long,
-    @field:JsonProperty("commission_account_id")
-    val commissionAccountId: String,
-    @field:JsonProperty("operational_account_id")
-    val operationalAccountId: String,
     @field:JsonProperty("admin_account_id")
     val adminAccountId: String,
     @field:JsonProperty("master_exchange_name")

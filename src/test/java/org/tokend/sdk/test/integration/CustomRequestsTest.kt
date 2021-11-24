@@ -114,8 +114,7 @@ class CustomRequestsTest {
                 captureRequestParams(http)
 
                 val response = JsonApiToolsProvider.getObjectMapper()
-                    .writeValueAsString(DummyEntity.DEFAULT)
-                    .toByteArray(Charsets.UTF_8)
+                    .writeValueAsBytes(DummyEntity.DEFAULT)
 
                 http.responseHeaders.add("Content-type", "application/json")
                 http.sendResponseHeaders(HttpURLConnection.HTTP_OK, response.size.toLong())
@@ -126,8 +125,7 @@ class CustomRequestsTest {
                 captureRequestParams(http)
 
                 val response = JsonApiToolsProvider.getObjectMapper()
-                    .writeValueAsString(listOf(DummyEntity.DEFAULT))
-                    .toByteArray(Charsets.UTF_8)
+                    .writeValueAsBytes(listOf(DummyEntity.DEFAULT))
 
                 http.responseHeaders.add("Content-type", "application/json")
                 http.sendResponseHeaders(HttpURLConnection.HTTP_OK, response.size.toLong())
@@ -147,8 +145,7 @@ class CustomRequestsTest {
                     )
                 )
                 val response = JsonApiToolsProvider.getObjectMapper()
-                    .writeValueAsString(page)
-                    .toByteArray(Charsets.UTF_8)
+                    .writeValueAsBytes(page)
 
                 http.responseHeaders.add("Content-type", "application/json")
                 http.sendResponseHeaders(HttpURLConnection.HTTP_OK, response.size.toLong())
