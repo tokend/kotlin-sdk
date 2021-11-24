@@ -16,14 +16,6 @@ import org.tokend.sdk.api.base.model.*;
 @Type("request-details-asset-create")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CreateAssetRequestResource extends BaseReviewableRequestDetailsResource {
-    
-    @JsonProperty("asset")
-    private String assetCode;
-    
-    public String getAssetCode() {
-        return assetCode;
-    }
-    
     @JsonProperty("creator_details")
     private JsonNode creatorDetails;
     
@@ -75,7 +67,7 @@ public class CreateAssetRequestResource extends BaseReviewableRequestDetailsReso
     
     @Override
     public boolean isFilled() {
-        return             assetCode != null &&
+        return
             creatorDetails != null &&
             initialPreissuedAmount != null &&
             maxIssuanceAmount != null &&
