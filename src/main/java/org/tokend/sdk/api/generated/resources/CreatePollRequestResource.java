@@ -79,6 +79,7 @@ public class CreatePollRequestResource extends BaseReviewableRequestDetailsResou
         ;
     }
     
+    @JsonIgnore
     @Relationship("result_provider")
     private AccountResource resultProvider;
     

@@ -19,6 +19,7 @@ public class PollParticipationResource extends BaseResource {
     @Override
     public boolean isFilled() { return true; }
     
+    @JsonIgnore
     @Relationship("votes")
     private List<VoteResource> votes;
     

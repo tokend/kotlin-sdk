@@ -46,6 +46,7 @@ public class SignerResource extends BaseResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("account")
     private AccountResource account;
     
@@ -53,6 +54,7 @@ public class SignerResource extends BaseResource {
         return account;
     }
     
+    @JsonIgnore
     @Relationship("role")
     private SignerRoleResource role;
     

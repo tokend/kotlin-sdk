@@ -38,6 +38,7 @@ public class DataResource extends BaseResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("owner")
     private AccountResource owner;
     

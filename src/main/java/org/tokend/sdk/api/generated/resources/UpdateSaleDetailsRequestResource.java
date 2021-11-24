@@ -31,6 +31,7 @@ public class UpdateSaleDetailsRequestResource extends BaseReviewableRequestDetai
         ;
     }
     
+    @JsonIgnore
     @Relationship("sale")
     private SaleResource sale;
     

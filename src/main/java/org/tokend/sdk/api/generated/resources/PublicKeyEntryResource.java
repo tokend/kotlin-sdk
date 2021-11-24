@@ -19,6 +19,7 @@ public class PublicKeyEntryResource extends BaseResource {
     @Override
     public boolean isFilled() { return true; }
     
+    @JsonIgnore
     @Relationship("accounts")
     private List<AccountResource> accounts;
     

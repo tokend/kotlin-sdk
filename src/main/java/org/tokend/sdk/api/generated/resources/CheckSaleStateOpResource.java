@@ -31,6 +31,7 @@ public class CheckSaleStateOpResource extends BaseOperationDetailsResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("sale")
     private SaleResource sale;
     

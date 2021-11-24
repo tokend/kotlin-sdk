@@ -19,6 +19,7 @@ public class RemoveAssetOpResource extends BaseOperationDetailsResource {
     @Override
     public boolean isFilled() { return super.isFilled(); }
     
+    @JsonIgnore
     @Relationship("asset")
     private AssetResource asset;
     

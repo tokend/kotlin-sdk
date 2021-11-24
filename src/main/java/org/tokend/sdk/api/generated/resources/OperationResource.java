@@ -30,6 +30,7 @@ public class OperationResource extends BaseResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("details")
     private BaseOperationDetailsResource details;
     
@@ -37,6 +38,7 @@ public class OperationResource extends BaseResource {
         return details;
     }
     
+    @JsonIgnore
     @Relationship("source")
     private AccountResource source;
     
@@ -44,6 +46,7 @@ public class OperationResource extends BaseResource {
         return source;
     }
     
+    @JsonIgnore
     @Relationship("tx")
     private TransactionResource tx;
     

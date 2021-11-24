@@ -19,6 +19,7 @@ public class CancelCloseDeferredPaymentRequestOpResource extends BaseOperationDe
     @Override
     public boolean isFilled() { return super.isFilled(); }
     
+    @JsonIgnore
     @Relationship("request")
     private ReviewableRequestResource request;
     

@@ -39,6 +39,7 @@ public class CreateDataOpResource extends BaseOperationDetailsResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("owner")
     private AccountResource owner;
     

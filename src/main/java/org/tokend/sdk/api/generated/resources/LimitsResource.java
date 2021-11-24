@@ -70,6 +70,7 @@ public class LimitsResource extends BaseResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("account")
     private AccountResource account;
     
@@ -77,6 +78,7 @@ public class LimitsResource extends BaseResource {
         return account;
     }
     
+    @JsonIgnore
     @Relationship("account_role")
     private AccountResource accountRole;
     
@@ -84,6 +86,7 @@ public class LimitsResource extends BaseResource {
         return accountRole;
     }
     
+    @JsonIgnore
     @Relationship("asset")
     private AssetResource asset;
     

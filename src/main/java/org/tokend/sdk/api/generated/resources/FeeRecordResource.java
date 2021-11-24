@@ -46,6 +46,7 @@ public class FeeRecordResource extends BaseResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("account")
     private AccountResource account;
     
@@ -53,6 +54,7 @@ public class FeeRecordResource extends BaseResource {
         return account;
     }
     
+    @JsonIgnore
     @Relationship("account_role")
     private AccountRoleResource accountRole;
     
@@ -60,6 +62,7 @@ public class FeeRecordResource extends BaseResource {
         return accountRole;
     }
     
+    @JsonIgnore
     @Relationship("asset")
     private AccountResource asset;
     

@@ -30,6 +30,7 @@ public class AccountRoleResource extends BaseResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("rules")
     private List<AccountRuleResource> rules;
     

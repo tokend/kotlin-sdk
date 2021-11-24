@@ -39,6 +39,7 @@ public class DataRemoveRequestResource extends BaseReviewableRequestDetailsResou
         ;
     }
     
+    @JsonIgnore
     @Relationship("data")
     private DataResource data;
     

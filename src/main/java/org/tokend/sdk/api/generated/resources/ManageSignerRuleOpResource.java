@@ -71,6 +71,7 @@ public class ManageSignerRuleOpResource extends BaseOperationDetailsResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("rule")
     private SignerRuleResource rule;
     

@@ -30,6 +30,7 @@ public class SignerRoleResource extends BaseResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("owner")
     private AccountResource owner;
     
@@ -37,6 +38,7 @@ public class SignerRoleResource extends BaseResource {
         return owner;
     }
     
+    @JsonIgnore
     @Relationship("rules")
     private List<SignerRuleResource> rules;
     

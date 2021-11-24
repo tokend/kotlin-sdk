@@ -39,6 +39,7 @@ public class CreatePreIssuanceRequestOpResource extends BaseResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("asset")
     private AssetResource asset;
     
@@ -46,6 +47,7 @@ public class CreatePreIssuanceRequestOpResource extends BaseResource {
         return asset;
     }
     
+    @JsonIgnore
     @Relationship("request")
     private ReviewableRequestResource request;
     

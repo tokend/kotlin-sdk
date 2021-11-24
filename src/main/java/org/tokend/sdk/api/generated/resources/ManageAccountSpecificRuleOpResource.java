@@ -40,6 +40,7 @@ public class ManageAccountSpecificRuleOpResource extends BaseOperationDetailsRes
         ;
     }
     
+    @JsonIgnore
     @Relationship("rule")
     private AccountSpecificRuleResource rule;
     

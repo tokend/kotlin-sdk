@@ -95,6 +95,7 @@ public class SwapResource extends BaseResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("asset")
     private AssetResource asset;
     
@@ -102,6 +103,7 @@ public class SwapResource extends BaseResource {
         return asset;
     }
     
+    @JsonIgnore
     @Relationship("destination")
     private AccountResource destination;
     
@@ -109,6 +111,7 @@ public class SwapResource extends BaseResource {
         return destination;
     }
     
+    @JsonIgnore
     @Relationship("destination_balance")
     private BalanceResource destinationBalance;
     
@@ -116,6 +119,7 @@ public class SwapResource extends BaseResource {
         return destinationBalance;
     }
     
+    @JsonIgnore
     @Relationship("source")
     private AccountResource source;
     
@@ -123,6 +127,7 @@ public class SwapResource extends BaseResource {
         return source;
     }
     
+    @JsonIgnore
     @Relationship("source_balance")
     private BalanceResource sourceBalance;
     

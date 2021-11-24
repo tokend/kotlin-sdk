@@ -62,6 +62,7 @@ public class ExternalSystemIDResource extends BaseResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("account")
     private AccountResource account;
     

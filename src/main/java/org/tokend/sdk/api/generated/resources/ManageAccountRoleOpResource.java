@@ -31,6 +31,7 @@ public class ManageAccountRoleOpResource extends BaseOperationDetailsResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("role")
     private AccountRoleResource role;
     
@@ -38,6 +39,7 @@ public class ManageAccountRoleOpResource extends BaseOperationDetailsResource {
         return role;
     }
     
+    @JsonIgnore
     @Relationship("rules")
     private List<AccountRuleResource> rules;
     

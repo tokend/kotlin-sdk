@@ -30,6 +30,7 @@ public class VoteResource extends BaseResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("poll")
     private PollResource poll;
     
@@ -37,6 +38,7 @@ public class VoteResource extends BaseResource {
         return poll;
     }
     
+    @JsonIgnore
     @Relationship("voter")
     private AccountResource voter;
     

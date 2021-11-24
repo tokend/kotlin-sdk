@@ -19,6 +19,7 @@ public class CancelDataRemoveRequestOpResource extends BaseOperationDetailsResou
     @Override
     public boolean isFilled() { return super.isFilled(); }
     
+    @JsonIgnore
     @Relationship("request")
     private ReviewableRequestResource request;
     

@@ -78,6 +78,7 @@ public class SaleResource extends BaseResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("base_asset")
     private AssetResource baseAsset;
     
@@ -85,6 +86,7 @@ public class SaleResource extends BaseResource {
         return baseAsset;
     }
     
+    @JsonIgnore
     @Relationship("default_quote_asset")
     private SaleQuoteAssetResource defaultQuoteAsset;
     
@@ -92,6 +94,7 @@ public class SaleResource extends BaseResource {
         return defaultQuoteAsset;
     }
     
+    @JsonIgnore
     @Relationship("owner")
     private AccountResource owner;
     
@@ -99,6 +102,7 @@ public class SaleResource extends BaseResource {
         return owner;
     }
     
+    @JsonIgnore
     @Relationship("quote_assets")
     private List<SaleQuoteAssetResource> quoteAssets;
     

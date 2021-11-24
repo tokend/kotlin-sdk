@@ -47,6 +47,7 @@ public class CreateWithdrawRequestResource extends BaseReviewableRequestDetailsR
         ;
     }
     
+    @JsonIgnore
     @Relationship("asset")
     private AssetResource asset;
     
@@ -54,6 +55,7 @@ public class CreateWithdrawRequestResource extends BaseReviewableRequestDetailsR
         return asset;
     }
     
+    @JsonIgnore
     @Relationship("balance")
     private BalanceResource balance;
     

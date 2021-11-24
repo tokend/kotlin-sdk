@@ -39,6 +39,7 @@ public class CreateAmlAlertRequestOpResource extends BaseOperationDetailsResourc
         ;
     }
     
+    @JsonIgnore
     @Relationship("balance")
     private BalanceResource balance;
     
@@ -46,6 +47,7 @@ public class CreateAmlAlertRequestOpResource extends BaseOperationDetailsResourc
         return balance;
     }
     
+    @JsonIgnore
     @Relationship("request")
     private ReviewableRequestResource request;
     

@@ -19,6 +19,7 @@ public class RemoveDataOpResource extends BaseOperationDetailsResource {
     @Override
     public boolean isFilled() { return super.isFilled(); }
     
+    @JsonIgnore
     @Relationship("data")
     private DataResource data;
     
@@ -26,6 +27,7 @@ public class RemoveDataOpResource extends BaseOperationDetailsResource {
         return data;
     }
     
+    @JsonIgnore
     @Relationship("owner")
     private AccountResource owner;
     

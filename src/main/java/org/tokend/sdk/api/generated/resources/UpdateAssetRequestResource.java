@@ -39,6 +39,7 @@ public class UpdateAssetRequestResource extends BaseReviewableRequestDetailsReso
         ;
     }
     
+    @JsonIgnore
     @Relationship("asset")
     private AssetResource asset;
     

@@ -111,6 +111,7 @@ public class ReviewableRequestResource extends BaseResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("request_details")
     private BaseReviewableRequestDetailsResource requestDetails;
     
@@ -118,6 +119,7 @@ public class ReviewableRequestResource extends BaseResource {
         return requestDetails;
     }
     
+    @JsonIgnore
     @Relationship("requestor")
     private AccountResource requestor;
     
@@ -125,6 +127,7 @@ public class ReviewableRequestResource extends BaseResource {
         return requestor;
     }
     
+    @JsonIgnore
     @Relationship("reviewer")
     private AccountResource reviewer;
     

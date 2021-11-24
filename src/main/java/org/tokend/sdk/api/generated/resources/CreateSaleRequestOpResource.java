@@ -63,6 +63,7 @@ public class CreateSaleRequestOpResource extends BaseOperationDetailsResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("base_asset")
     private AssetResource baseAsset;
     
@@ -70,6 +71,7 @@ public class CreateSaleRequestOpResource extends BaseOperationDetailsResource {
         return baseAsset;
     }
     
+    @JsonIgnore
     @Relationship("default_quote_asset")
     private AssetResource defaultQuoteAsset;
     
@@ -77,6 +79,7 @@ public class CreateSaleRequestOpResource extends BaseOperationDetailsResource {
         return defaultQuoteAsset;
     }
     
+    @JsonIgnore
     @Relationship("quote_assets")
     private List<AssetResource> quoteAssets;
     
@@ -84,6 +87,7 @@ public class CreateSaleRequestOpResource extends BaseOperationDetailsResource {
         return quoteAssets;
     }
     
+    @JsonIgnore
     @Relationship("request")
     private ReviewableRequestResource request;
     

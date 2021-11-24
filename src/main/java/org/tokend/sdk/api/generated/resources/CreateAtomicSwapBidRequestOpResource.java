@@ -39,6 +39,7 @@ public class CreateAtomicSwapBidRequestOpResource extends BaseOperationDetailsRe
         ;
     }
     
+    @JsonIgnore
     @Relationship("ask")
     private AtomicSwapAskResource ask;
     
@@ -46,6 +47,7 @@ public class CreateAtomicSwapBidRequestOpResource extends BaseOperationDetailsRe
         return ask;
     }
     
+    @JsonIgnore
     @Relationship("quote_asset")
     private AssetResource quoteAsset;
     
@@ -53,6 +55,7 @@ public class CreateAtomicSwapBidRequestOpResource extends BaseOperationDetailsRe
         return quoteAsset;
     }
     
+    @JsonIgnore
     @Relationship("request")
     private ReviewableRequestResource request;
     

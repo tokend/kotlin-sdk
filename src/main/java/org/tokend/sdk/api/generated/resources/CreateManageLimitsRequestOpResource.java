@@ -31,6 +31,7 @@ public class CreateManageLimitsRequestOpResource extends BaseOperationDetailsRes
         ;
     }
     
+    @JsonIgnore
     @Relationship("request")
     private ReviewableRequestResource request;
     

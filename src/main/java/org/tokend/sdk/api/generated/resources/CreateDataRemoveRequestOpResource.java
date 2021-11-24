@@ -31,6 +31,7 @@ public class CreateDataRemoveRequestOpResource extends BaseOperationDetailsResou
         ;
     }
     
+    @JsonIgnore
     @Relationship("data")
     private DataResource data;
     
@@ -38,6 +39,7 @@ public class CreateDataRemoveRequestOpResource extends BaseOperationDetailsResou
         return data;
     }
     
+    @JsonIgnore
     @Relationship("owner")
     private AccountResource owner;
     
@@ -45,6 +47,7 @@ public class CreateDataRemoveRequestOpResource extends BaseOperationDetailsResou
         return owner;
     }
     
+    @JsonIgnore
     @Relationship("request")
     private ReviewableRequestResource request;
     

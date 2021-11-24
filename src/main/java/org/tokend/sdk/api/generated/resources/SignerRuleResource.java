@@ -62,6 +62,7 @@ public class SignerRuleResource extends BaseResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("owner")
     private AccountResource owner;
     

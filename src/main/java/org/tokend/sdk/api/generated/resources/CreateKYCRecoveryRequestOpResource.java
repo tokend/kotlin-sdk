@@ -48,6 +48,7 @@ public class CreateKYCRecoveryRequestOpResource extends BaseOperationDetailsReso
         ;
     }
     
+    @JsonIgnore
     @Relationship("request")
     private ReviewableRequestResource request;
     
@@ -55,6 +56,7 @@ public class CreateKYCRecoveryRequestOpResource extends BaseOperationDetailsReso
         return request;
     }
     
+    @JsonIgnore
     @Relationship("target_account")
     private AccountResource targetAccount;
     

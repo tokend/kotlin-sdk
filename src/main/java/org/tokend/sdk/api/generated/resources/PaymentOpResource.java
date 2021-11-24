@@ -71,6 +71,7 @@ public class PaymentOpResource extends BaseOperationDetailsResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("account_from")
     private AccountResource accountFrom;
     
@@ -78,6 +79,7 @@ public class PaymentOpResource extends BaseOperationDetailsResource {
         return accountFrom;
     }
     
+    @JsonIgnore
     @Relationship("account_to")
     private AccountResource accountTo;
     
@@ -85,6 +87,7 @@ public class PaymentOpResource extends BaseOperationDetailsResource {
         return accountTo;
     }
     
+    @JsonIgnore
     @Relationship("asset")
     private AssetResource asset;
     
@@ -92,6 +95,7 @@ public class PaymentOpResource extends BaseOperationDetailsResource {
         return asset;
     }
     
+    @JsonIgnore
     @Relationship("balance_from")
     private BalanceResource balanceFrom;
     
@@ -99,6 +103,7 @@ public class PaymentOpResource extends BaseOperationDetailsResource {
         return balanceFrom;
     }
     
+    @JsonIgnore
     @Relationship("balance_to")
     private BalanceResource balanceTo;
     

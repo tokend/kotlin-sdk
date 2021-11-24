@@ -39,6 +39,7 @@ public class ManageBalanceOpResource extends BaseOperationDetailsResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("asset")
     private AssetResource asset;
     
@@ -46,6 +47,7 @@ public class ManageBalanceOpResource extends BaseOperationDetailsResource {
         return asset;
     }
     
+    @JsonIgnore
     @Relationship("destination_account")
     private AccountResource destinationAccount;
     

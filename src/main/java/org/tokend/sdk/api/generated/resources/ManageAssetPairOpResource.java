@@ -55,6 +55,7 @@ public class ManageAssetPairOpResource extends BaseOperationDetailsResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("base_asset")
     private AssetResource baseAsset;
     
@@ -62,6 +63,7 @@ public class ManageAssetPairOpResource extends BaseOperationDetailsResource {
         return baseAsset;
     }
     
+    @JsonIgnore
     @Relationship("quote_asset")
     private AssetResource quoteAsset;
     

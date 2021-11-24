@@ -39,6 +39,7 @@ public class CreateAmlAlertRequestResource extends BaseReviewableRequestDetailsR
         ;
     }
     
+    @JsonIgnore
     @Relationship("balance")
     private BalanceResource balance;
     

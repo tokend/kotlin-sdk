@@ -54,6 +54,7 @@ public class ConvertedBalanceStateResource extends BaseResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("balance")
     private BalanceResource balance;
     

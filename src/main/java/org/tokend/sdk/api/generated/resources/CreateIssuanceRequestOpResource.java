@@ -64,6 +64,7 @@ public class CreateIssuanceRequestOpResource extends BaseOperationDetailsResourc
         ;
     }
     
+    @JsonIgnore
     @Relationship("asset")
     private AssetResource asset;
     
@@ -71,6 +72,7 @@ public class CreateIssuanceRequestOpResource extends BaseOperationDetailsResourc
         return asset;
     }
     
+    @JsonIgnore
     @Relationship("receiver_account")
     private AccountResource receiverAccount;
     
@@ -78,6 +80,7 @@ public class CreateIssuanceRequestOpResource extends BaseOperationDetailsResourc
         return receiverAccount;
     }
     
+    @JsonIgnore
     @Relationship("receiver_balance")
     private BalanceResource receiverBalance;
     
@@ -85,6 +88,7 @@ public class CreateIssuanceRequestOpResource extends BaseOperationDetailsResourc
         return receiverBalance;
     }
     
+    @JsonIgnore
     @Relationship("request")
     private ReviewableRequestResource request;
     

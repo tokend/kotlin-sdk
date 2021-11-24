@@ -57,6 +57,7 @@ public class ManagePollOpResource extends BaseOperationDetailsResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("poll")
     private PollResource poll;
     

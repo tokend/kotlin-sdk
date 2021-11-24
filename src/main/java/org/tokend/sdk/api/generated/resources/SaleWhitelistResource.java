@@ -19,6 +19,7 @@ public class SaleWhitelistResource extends BaseResource {
     @Override
     public boolean isFilled() { return true; }
     
+    @JsonIgnore
     @Relationship("participant")
     private AccountResource participant;
     

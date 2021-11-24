@@ -79,6 +79,7 @@ public class ManageOfferOpResource extends BaseOperationDetailsResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("base_asset")
     private AssetResource baseAsset;
     
@@ -86,6 +87,7 @@ public class ManageOfferOpResource extends BaseOperationDetailsResource {
         return baseAsset;
     }
     
+    @JsonIgnore
     @Relationship("quote_asset")
     private AssetResource quoteAsset;
     

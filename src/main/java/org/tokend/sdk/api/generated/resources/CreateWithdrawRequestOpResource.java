@@ -47,6 +47,7 @@ public class CreateWithdrawRequestOpResource extends BaseOperationDetailsResourc
         ;
     }
     
+    @JsonIgnore
     @Relationship("balance")
     private BalanceResource balance;
     

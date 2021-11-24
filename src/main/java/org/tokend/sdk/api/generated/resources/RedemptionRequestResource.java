@@ -39,6 +39,7 @@ public class RedemptionRequestResource extends BaseReviewableRequestDetailsResou
         ;
     }
     
+    @JsonIgnore
     @Relationship("destination")
     private AccountResource destination;
     
@@ -46,6 +47,7 @@ public class RedemptionRequestResource extends BaseReviewableRequestDetailsResou
         return destination;
     }
     
+    @JsonIgnore
     @Relationship("source_balance")
     private BalanceResource sourceBalance;
     

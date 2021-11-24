@@ -47,6 +47,7 @@ public class ManageSignerOpResource extends BaseOperationDetailsResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("role")
     private SignerRoleResource role;
     
@@ -54,6 +55,7 @@ public class ManageSignerOpResource extends BaseOperationDetailsResource {
         return role;
     }
     
+    @JsonIgnore
     @Relationship("signer")
     private SignerResource signer;
     

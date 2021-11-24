@@ -25,9 +25,9 @@ public class CreateRedemptionRequestOpResource extends BaseOperationDetailsResou
     }
     
     @JsonProperty("creator_details")
-    private JsonNode creatorDetails;
+    private String creatorDetails;
     
-    public JsonNode getCreatorDetails() {
+    public String getCreatorDetails() {
         return creatorDetails;
     }
     
@@ -39,6 +39,7 @@ public class CreateRedemptionRequestOpResource extends BaseOperationDetailsResou
         ;
     }
     
+    @JsonIgnore
     @Relationship("account_to")
     private AccountResource accountTo;
     
@@ -46,6 +47,7 @@ public class CreateRedemptionRequestOpResource extends BaseOperationDetailsResou
         return accountTo;
     }
     
+    @JsonIgnore
     @Relationship("balance_from")
     private BalanceResource balanceFrom;
     
@@ -53,6 +55,7 @@ public class CreateRedemptionRequestOpResource extends BaseOperationDetailsResou
         return balanceFrom;
     }
     
+    @JsonIgnore
     @Relationship("request")
     private ReviewableRequestResource request;
     

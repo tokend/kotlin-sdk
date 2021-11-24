@@ -87,6 +87,7 @@ public class CreateSaleRequestResource extends BaseReviewableRequestDetailsResou
         ;
     }
     
+    @JsonIgnore
     @Relationship("base_asset")
     private AssetResource baseAsset;
     
@@ -94,6 +95,7 @@ public class CreateSaleRequestResource extends BaseReviewableRequestDetailsResou
         return baseAsset;
     }
     
+    @JsonIgnore
     @Relationship("default_quote_asset")
     private AssetResource defaultQuoteAsset;
     
@@ -101,6 +103,7 @@ public class CreateSaleRequestResource extends BaseReviewableRequestDetailsResou
         return defaultQuoteAsset;
     }
     
+    @JsonIgnore
     @Relationship("quote_assets")
     private List<AssetResource> quoteAssets;
     

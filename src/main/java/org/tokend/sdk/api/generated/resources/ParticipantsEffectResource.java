@@ -19,6 +19,7 @@ public class ParticipantsEffectResource extends BaseResource {
     @Override
     public boolean isFilled() { return true; }
     
+    @JsonIgnore
     @Relationship("account")
     private AccountResource account;
     
@@ -26,6 +27,7 @@ public class ParticipantsEffectResource extends BaseResource {
         return account;
     }
     
+    @JsonIgnore
     @Relationship("asset")
     private AssetResource asset;
     
@@ -33,6 +35,7 @@ public class ParticipantsEffectResource extends BaseResource {
         return asset;
     }
     
+    @JsonIgnore
     @Relationship("balance")
     private BalanceResource balance;
     
@@ -40,6 +43,7 @@ public class ParticipantsEffectResource extends BaseResource {
         return balance;
     }
     
+    @JsonIgnore
     @Relationship("effect")
     private BaseEffectResource effect;
     
@@ -47,6 +51,7 @@ public class ParticipantsEffectResource extends BaseResource {
         return effect;
     }
     
+    @JsonIgnore
     @Relationship("operation")
     private OperationResource operation;
     

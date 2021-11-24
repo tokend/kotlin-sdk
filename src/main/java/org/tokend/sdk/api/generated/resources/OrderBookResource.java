@@ -19,6 +19,7 @@ public class OrderBookResource extends BaseResource {
     @Override
     public boolean isFilled() { return true; }
     
+    @JsonIgnore
     @Relationship("base_asset")
     private AssetResource baseAsset;
     
@@ -26,6 +27,7 @@ public class OrderBookResource extends BaseResource {
         return baseAsset;
     }
     
+    @JsonIgnore
     @Relationship("buy_entries")
     private List<OrderBookEntryResource> buyEntries;
     
@@ -33,6 +35,7 @@ public class OrderBookResource extends BaseResource {
         return buyEntries;
     }
     
+    @JsonIgnore
     @Relationship("quote_asset")
     private AssetResource quoteAsset;
     
@@ -40,6 +43,7 @@ public class OrderBookResource extends BaseResource {
         return quoteAsset;
     }
     
+    @JsonIgnore
     @Relationship("sell_entries")
     private List<OrderBookEntryResource> sellEntries;
     

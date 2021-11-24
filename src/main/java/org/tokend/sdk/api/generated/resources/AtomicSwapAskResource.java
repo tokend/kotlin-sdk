@@ -62,6 +62,7 @@ public class AtomicSwapAskResource extends BaseResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("base_asset")
     private AssetResource baseAsset;
     
@@ -69,6 +70,7 @@ public class AtomicSwapAskResource extends BaseResource {
         return baseAsset;
     }
     
+    @JsonIgnore
     @Relationship("base_balance")
     private BalanceResource baseBalance;
     
@@ -76,6 +78,7 @@ public class AtomicSwapAskResource extends BaseResource {
         return baseBalance;
     }
     
+    @JsonIgnore
     @Relationship("owner")
     private AccountResource owner;
     
@@ -83,6 +86,7 @@ public class AtomicSwapAskResource extends BaseResource {
         return owner;
     }
     
+    @JsonIgnore
     @Relationship("quote_assets")
     private List<AtomicSwapQuoteAssetResource> quoteAssets;
     

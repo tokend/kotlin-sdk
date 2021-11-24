@@ -47,6 +47,7 @@ public class KYCRecoveryRequestResource extends BaseReviewableRequestDetailsReso
         ;
     }
     
+    @JsonIgnore
     @Relationship("target_account")
     private AccountResource targetAccount;
     

@@ -55,6 +55,7 @@ public class CreatePreIssuanceRequestResource extends BaseReviewableRequestDetai
         ;
     }
     
+    @JsonIgnore
     @Relationship("asset")
     private AssetResource asset;
     

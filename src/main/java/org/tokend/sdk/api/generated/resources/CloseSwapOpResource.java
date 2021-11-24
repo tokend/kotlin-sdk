@@ -33,6 +33,7 @@ public class CloseSwapOpResource extends BaseOperationDetailsResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("swap")
     private SwapResource swap;
     

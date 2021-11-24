@@ -39,6 +39,7 @@ public class CloseDeferredPaymentRequestResource extends BaseReviewableRequestDe
         ;
     }
     
+    @JsonIgnore
     @Relationship("deferred_payment")
     private DeferredPaymentResource deferredPayment;
     
@@ -46,6 +47,7 @@ public class CloseDeferredPaymentRequestResource extends BaseReviewableRequestDe
         return deferredPayment;
     }
     
+    @JsonIgnore
     @Relationship("destination_account")
     private AccountResource destinationAccount;
     
@@ -53,6 +55,7 @@ public class CloseDeferredPaymentRequestResource extends BaseReviewableRequestDe
         return destinationAccount;
     }
     
+    @JsonIgnore
     @Relationship("destination_balance")
     private BalanceResource destinationBalance;
     

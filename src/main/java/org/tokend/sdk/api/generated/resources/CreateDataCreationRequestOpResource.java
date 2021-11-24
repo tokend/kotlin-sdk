@@ -47,6 +47,7 @@ public class CreateDataCreationRequestOpResource extends BaseOperationDetailsRes
         ;
     }
     
+    @JsonIgnore
     @Relationship("owner")
     private AccountResource owner;
     
@@ -54,6 +55,7 @@ public class CreateDataCreationRequestOpResource extends BaseOperationDetailsRes
         return owner;
     }
     
+    @JsonIgnore
     @Relationship("request")
     private ReviewableRequestResource request;
     

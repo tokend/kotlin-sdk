@@ -39,6 +39,7 @@ public class CreateAtomicSwapAskRequestResource extends BaseReviewableRequestDet
         ;
     }
     
+    @JsonIgnore
     @Relationship("base_balance")
     private BalanceResource baseBalance;
     
@@ -46,6 +47,7 @@ public class CreateAtomicSwapAskRequestResource extends BaseReviewableRequestDet
         return baseBalance;
     }
     
+    @JsonIgnore
     @Relationship("quote_assets")
     private List<AssetResource> quoteAssets;
     

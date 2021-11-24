@@ -19,6 +19,7 @@ public class CreateAccountOpResource extends BaseOperationDetailsResource {
     @Override
     public boolean isFilled() { return super.isFilled(); }
     
+    @JsonIgnore
     @Relationship("account")
     private AccountResource account;
     
@@ -26,6 +27,7 @@ public class CreateAccountOpResource extends BaseOperationDetailsResource {
         return account;
     }
     
+    @JsonIgnore
     @Relationship("role")
     private AccountRoleResource role;
     

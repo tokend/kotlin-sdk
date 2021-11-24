@@ -40,6 +40,7 @@ public class ManageCreatePollRequestOpResource extends BaseOperationDetailsResou
         ;
     }
     
+    @JsonIgnore
     @Relationship("request")
     private ReviewableRequestResource request;
     
@@ -47,6 +48,7 @@ public class ManageCreatePollRequestOpResource extends BaseOperationDetailsResou
         return request;
     }
     
+    @JsonIgnore
     @Relationship("result_provider")
     private AccountResource resultProvider;
     

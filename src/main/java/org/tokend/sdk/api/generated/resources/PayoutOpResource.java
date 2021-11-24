@@ -71,6 +71,7 @@ public class PayoutOpResource extends BaseOperationDetailsResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("asset")
     private AssetResource asset;
     
@@ -78,6 +79,7 @@ public class PayoutOpResource extends BaseOperationDetailsResource {
         return asset;
     }
     
+    @JsonIgnore
     @Relationship("source_account")
     private AccountResource sourceAccount;
     
@@ -85,6 +87,7 @@ public class PayoutOpResource extends BaseOperationDetailsResource {
         return sourceAccount;
     }
     
+    @JsonIgnore
     @Relationship("source_balance")
     private BalanceResource sourceBalance;
     

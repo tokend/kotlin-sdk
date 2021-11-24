@@ -19,6 +19,7 @@ public class BalanceResource extends BaseResource {
     @Override
     public boolean isFilled() { return true; }
     
+    @JsonIgnore
     @Relationship("asset")
     private AssetResource asset;
     
@@ -26,6 +27,7 @@ public class BalanceResource extends BaseResource {
         return asset;
     }
     
+    @JsonIgnore
     @Relationship("owner")
     private AccountResource owner;
     
@@ -33,6 +35,7 @@ public class BalanceResource extends BaseResource {
         return owner;
     }
     
+    @JsonIgnore
     @Relationship("state")
     private BalanceStateResource state;
     

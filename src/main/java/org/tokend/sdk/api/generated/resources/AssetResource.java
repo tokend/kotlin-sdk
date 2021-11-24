@@ -102,6 +102,7 @@ public class AssetResource extends BaseResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("owner")
     private AccountResource owner;
     

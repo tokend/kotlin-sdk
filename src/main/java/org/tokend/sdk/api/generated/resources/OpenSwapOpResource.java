@@ -79,6 +79,7 @@ public class OpenSwapOpResource extends BaseOperationDetailsResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("asset")
     private AssetResource asset;
     
@@ -86,6 +87,7 @@ public class OpenSwapOpResource extends BaseOperationDetailsResource {
         return asset;
     }
     
+    @JsonIgnore
     @Relationship("destination")
     private AccountResource destination;
     
@@ -93,6 +95,7 @@ public class OpenSwapOpResource extends BaseOperationDetailsResource {
         return destination;
     }
     
+    @JsonIgnore
     @Relationship("destination_balance")
     private BalanceResource destinationBalance;
     
@@ -100,6 +103,7 @@ public class OpenSwapOpResource extends BaseOperationDetailsResource {
         return destinationBalance;
     }
     
+    @JsonIgnore
     @Relationship("source")
     private AccountResource source;
     
@@ -107,6 +111,7 @@ public class OpenSwapOpResource extends BaseOperationDetailsResource {
         return source;
     }
     
+    @JsonIgnore
     @Relationship("source_balance")
     private BalanceResource sourceBalance;
     

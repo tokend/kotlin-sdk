@@ -62,6 +62,7 @@ public class SaleQuoteAssetResource extends BaseResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("asset")
     private AssetResource asset;
     

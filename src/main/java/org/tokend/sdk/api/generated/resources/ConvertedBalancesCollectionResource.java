@@ -19,6 +19,7 @@ public class ConvertedBalancesCollectionResource extends BaseResource {
     @Override
     public boolean isFilled() { return true; }
     
+    @JsonIgnore
     @Relationship("asset")
     private AssetResource asset;
     
@@ -26,6 +27,7 @@ public class ConvertedBalancesCollectionResource extends BaseResource {
         return asset;
     }
     
+    @JsonIgnore
     @Relationship("states")
     private List<ConvertedBalanceStateResource> states;
     

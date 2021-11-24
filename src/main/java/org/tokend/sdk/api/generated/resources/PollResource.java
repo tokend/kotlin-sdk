@@ -86,6 +86,7 @@ public class PollResource extends BaseResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("owner")
     private AccountResource owner;
     
@@ -93,6 +94,7 @@ public class PollResource extends BaseResource {
         return owner;
     }
     
+    @JsonIgnore
     @Relationship("participation")
     private PollParticipationResource participation;
     
@@ -100,6 +102,7 @@ public class PollResource extends BaseResource {
         return participation;
     }
     
+    @JsonIgnore
     @Relationship("result_provider")
     private AccountResource resultProvider;
     

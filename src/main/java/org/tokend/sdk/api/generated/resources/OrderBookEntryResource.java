@@ -78,6 +78,7 @@ public class OrderBookEntryResource extends BaseResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("base_asset")
     private AssetResource baseAsset;
     
@@ -85,6 +86,7 @@ public class OrderBookEntryResource extends BaseResource {
         return baseAsset;
     }
     
+    @JsonIgnore
     @Relationship("quote_asset")
     private AssetResource quoteAsset;
     

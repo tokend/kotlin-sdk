@@ -79,6 +79,7 @@ public class CreatePaymentRequestResource extends BaseReviewableRequestDetailsRe
         ;
     }
     
+    @JsonIgnore
     @Relationship("balance_from")
     private BalanceResource balanceFrom;
     

@@ -78,6 +78,7 @@ public class StatisticsResource extends BaseResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("account")
     private AccountResource account;
     
@@ -85,6 +86,7 @@ public class StatisticsResource extends BaseResource {
         return account;
     }
     
+    @JsonIgnore
     @Relationship("asset")
     private AssetResource asset;
     

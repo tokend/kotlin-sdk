@@ -79,6 +79,7 @@ public class CreateManageOfferRequestOpResource extends BaseOperationDetailsReso
         ;
     }
     
+    @JsonIgnore
     @Relationship("request")
     private ReviewableRequestResource request;
     

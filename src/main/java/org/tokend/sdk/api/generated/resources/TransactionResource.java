@@ -70,6 +70,7 @@ public class TransactionResource extends BaseResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("ledger_entry_changes")
     private List<LedgerEntryChangeResource> ledgerEntryChanges;
     
@@ -77,6 +78,7 @@ public class TransactionResource extends BaseResource {
         return ledgerEntryChanges;
     }
     
+    @JsonIgnore
     @Relationship("operations")
     private List<OperationResource> operations;
     
@@ -84,6 +86,7 @@ public class TransactionResource extends BaseResource {
         return operations;
     }
     
+    @JsonIgnore
     @Relationship("source")
     private AccountResource source;
     

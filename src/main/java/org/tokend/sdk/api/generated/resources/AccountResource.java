@@ -32,6 +32,7 @@ public class AccountResource extends BaseResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("balances")
     private List<BalanceResource> balances;
     
@@ -39,6 +40,7 @@ public class AccountResource extends BaseResource {
         return balances;
     }
     
+    @JsonIgnore
     @Relationship("external_system_ids")
     private List<ExternalSystemIDResource> externalSystemIds;
     
@@ -46,6 +48,7 @@ public class AccountResource extends BaseResource {
         return externalSystemIds;
     }
     
+    @JsonIgnore
     @Relationship("fees")
     private List<FeeRecordResource> fees;
     
@@ -53,6 +56,7 @@ public class AccountResource extends BaseResource {
         return fees;
     }
     
+    @JsonIgnore
     @Relationship("kyc_data")
     private AccountKYCResource kycData;
     
@@ -60,6 +64,7 @@ public class AccountResource extends BaseResource {
         return kycData;
     }
     
+    @JsonIgnore
     @Relationship("limits")
     private List<LimitsResource> limits;
     
@@ -67,6 +72,7 @@ public class AccountResource extends BaseResource {
         return limits;
     }
     
+    @JsonIgnore
     @Relationship("limits_with_stats")
     private List<LimitsWithStatsResource> limitsWithStats;
     
@@ -74,6 +80,7 @@ public class AccountResource extends BaseResource {
         return limitsWithStats;
     }
     
+    @JsonIgnore
     @Relationship("referrer")
     private AccountResource referrer;
     
@@ -81,6 +88,7 @@ public class AccountResource extends BaseResource {
         return referrer;
     }
     
+    @JsonIgnore
     @Relationship("role")
     private AccountRoleResource role;
     

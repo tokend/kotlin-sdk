@@ -47,6 +47,7 @@ public class DataUpdateRequestResource extends BaseReviewableRequestDetailsResou
         ;
     }
     
+    @JsonIgnore
     @Relationship("data")
     private DataResource data;
     

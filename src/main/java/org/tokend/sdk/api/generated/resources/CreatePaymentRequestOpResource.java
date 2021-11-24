@@ -79,6 +79,7 @@ public class CreatePaymentRequestOpResource extends BaseOperationDetailsResource
         ;
     }
     
+    @JsonIgnore
     @Relationship("account_from")
     private AccountResource accountFrom;
     
@@ -86,6 +87,7 @@ public class CreatePaymentRequestOpResource extends BaseOperationDetailsResource
         return accountFrom;
     }
     
+    @JsonIgnore
     @Relationship("balance_from")
     private BalanceResource balanceFrom;
     
@@ -93,6 +95,7 @@ public class CreatePaymentRequestOpResource extends BaseOperationDetailsResource
         return balanceFrom;
     }
     
+    @JsonIgnore
     @Relationship("request")
     private ReviewableRequestResource request;
     

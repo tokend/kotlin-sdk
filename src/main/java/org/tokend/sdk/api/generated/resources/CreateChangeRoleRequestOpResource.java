@@ -40,6 +40,7 @@ public class CreateChangeRoleRequestOpResource extends BaseOperationDetailsResou
         ;
     }
     
+    @JsonIgnore
     @Relationship("account_to_update_role")
     private AccountResource accountToUpdateRole;
     
@@ -47,6 +48,7 @@ public class CreateChangeRoleRequestOpResource extends BaseOperationDetailsResou
         return accountToUpdateRole;
     }
     
+    @JsonIgnore
     @Relationship("request")
     private ReviewableRequestResource request;
     
@@ -54,6 +56,7 @@ public class CreateChangeRoleRequestOpResource extends BaseOperationDetailsResou
         return request;
     }
     
+    @JsonIgnore
     @Relationship("role_to_set")
     private AccountRoleResource roleToSet;
     

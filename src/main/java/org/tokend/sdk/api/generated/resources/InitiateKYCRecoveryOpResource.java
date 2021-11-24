@@ -31,6 +31,7 @@ public class InitiateKYCRecoveryOpResource extends BaseOperationDetailsResource 
         ;
     }
     
+    @JsonIgnore
     @Relationship("account")
     private AccountResource account;
     

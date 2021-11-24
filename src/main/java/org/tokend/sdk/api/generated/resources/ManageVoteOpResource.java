@@ -49,6 +49,7 @@ public class ManageVoteOpResource extends BaseOperationDetailsResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("poll")
     private PollResource poll;
     
@@ -56,6 +57,7 @@ public class ManageVoteOpResource extends BaseOperationDetailsResource {
         return poll;
     }
     
+    @JsonIgnore
     @Relationship("result_provider")
     private AccountResource resultProvider;
     
@@ -63,6 +65,7 @@ public class ManageVoteOpResource extends BaseOperationDetailsResource {
         return resultProvider;
     }
     
+    @JsonIgnore
     @Relationship("voter")
     private AccountResource voter;
     

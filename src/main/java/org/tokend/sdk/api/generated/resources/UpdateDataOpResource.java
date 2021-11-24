@@ -31,6 +31,7 @@ public class UpdateDataOpResource extends BaseOperationDetailsResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("data")
     private DataResource data;
     

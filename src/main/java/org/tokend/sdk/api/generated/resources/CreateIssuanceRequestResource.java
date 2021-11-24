@@ -39,6 +39,7 @@ public class CreateIssuanceRequestResource extends BaseReviewableRequestDetailsR
         ;
     }
     
+    @JsonIgnore
     @Relationship("asset")
     private AssetResource asset;
     
@@ -46,6 +47,7 @@ public class CreateIssuanceRequestResource extends BaseReviewableRequestDetailsR
         return asset;
     }
     
+    @JsonIgnore
     @Relationship("receiver")
     private BalanceResource receiver;
     

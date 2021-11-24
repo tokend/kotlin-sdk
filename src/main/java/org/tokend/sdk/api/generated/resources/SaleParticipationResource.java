@@ -30,6 +30,7 @@ public class SaleParticipationResource extends BaseResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("base_asset")
     private AssetResource baseAsset;
     
@@ -37,6 +38,7 @@ public class SaleParticipationResource extends BaseResource {
         return baseAsset;
     }
     
+    @JsonIgnore
     @Relationship("participant")
     private AccountResource participant;
     
@@ -44,6 +46,7 @@ public class SaleParticipationResource extends BaseResource {
         return participant;
     }
     
+    @JsonIgnore
     @Relationship("quote_asset")
     private AssetResource quoteAsset;
     

@@ -55,6 +55,7 @@ public class DataCreationRequestResource extends BaseReviewableRequestDetailsRes
         ;
     }
     
+    @JsonIgnore
     @Relationship("owner")
     private AccountResource owner;
     

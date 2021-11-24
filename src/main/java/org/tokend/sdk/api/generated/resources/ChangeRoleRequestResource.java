@@ -47,6 +47,7 @@ public class ChangeRoleRequestResource extends BaseReviewableRequestDetailsResou
         ;
     }
     
+    @JsonIgnore
     @Relationship("account_to_update_role")
     private AccountResource accountToUpdateRole;
     

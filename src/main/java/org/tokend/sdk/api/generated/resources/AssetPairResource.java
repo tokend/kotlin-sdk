@@ -54,6 +54,7 @@ public class AssetPairResource extends BaseResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("base_asset")
     private AssetResource baseAsset;
     
@@ -61,6 +62,7 @@ public class AssetPairResource extends BaseResource {
         return baseAsset;
     }
     
+    @JsonIgnore
     @Relationship("quote_asset")
     private AssetResource quoteAsset;
     

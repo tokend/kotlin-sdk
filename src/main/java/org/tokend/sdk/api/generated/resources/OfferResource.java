@@ -78,6 +78,7 @@ public class OfferResource extends BaseResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("base_asset")
     private AssetResource baseAsset;
     
@@ -85,6 +86,7 @@ public class OfferResource extends BaseResource {
         return baseAsset;
     }
     
+    @JsonIgnore
     @Relationship("base_balance")
     private BalanceResource baseBalance;
     
@@ -92,6 +94,7 @@ public class OfferResource extends BaseResource {
         return baseBalance;
     }
     
+    @JsonIgnore
     @Relationship("owner")
     private AccountResource owner;
     
@@ -99,6 +102,7 @@ public class OfferResource extends BaseResource {
         return owner;
     }
     
+    @JsonIgnore
     @Relationship("quote_asset")
     private AssetResource quoteAsset;
     
@@ -106,6 +110,7 @@ public class OfferResource extends BaseResource {
         return quoteAsset;
     }
     
+    @JsonIgnore
     @Relationship("quote_balance")
     private BalanceResource quoteBalance;
     

@@ -19,6 +19,7 @@ public class CancelAtomicSwapAskOpResource extends BaseOperationDetailsResource 
     @Override
     public boolean isFilled() { return super.isFilled(); }
     
+    @JsonIgnore
     @Relationship("ask")
     private AtomicSwapAskResource ask;
     

@@ -54,6 +54,7 @@ public class DeferredPaymentResource extends BaseResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("asset")
     private AssetResource asset;
     
@@ -61,6 +62,7 @@ public class DeferredPaymentResource extends BaseResource {
         return asset;
     }
     
+    @JsonIgnore
     @Relationship("destination")
     private AccountResource destination;
     
@@ -68,6 +70,7 @@ public class DeferredPaymentResource extends BaseResource {
         return destination;
     }
     
+    @JsonIgnore
     @Relationship("source")
     private AccountResource source;
     
@@ -75,6 +78,7 @@ public class DeferredPaymentResource extends BaseResource {
         return source;
     }
     
+    @JsonIgnore
     @Relationship("source_balance")
     private BalanceResource sourceBalance;
     

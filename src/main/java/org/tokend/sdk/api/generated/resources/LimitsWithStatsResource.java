@@ -38,6 +38,7 @@ public class LimitsWithStatsResource extends BaseResource {
         ;
     }
     
+    @JsonIgnore
     @Relationship("account")
     private AccountResource account;
     

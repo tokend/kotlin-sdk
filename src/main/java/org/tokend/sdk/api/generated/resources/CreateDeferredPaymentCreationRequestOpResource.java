@@ -39,6 +39,7 @@ public class CreateDeferredPaymentCreationRequestOpResource extends BaseOperatio
         ;
     }
     
+    @JsonIgnore
     @Relationship("destination_account")
     private AccountResource destinationAccount;
     
@@ -46,6 +47,7 @@ public class CreateDeferredPaymentCreationRequestOpResource extends BaseOperatio
         return destinationAccount;
     }
     
+    @JsonIgnore
     @Relationship("request")
     private ReviewableRequestResource request;
     
@@ -53,6 +55,7 @@ public class CreateDeferredPaymentCreationRequestOpResource extends BaseOperatio
         return request;
     }
     
+    @JsonIgnore
     @Relationship("source_balance")
     private BalanceResource sourceBalance;
     
