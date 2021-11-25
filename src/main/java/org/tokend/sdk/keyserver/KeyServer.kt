@@ -80,7 +80,7 @@ class KeyServer constructor(
                 accountId,
                 email,
                 hexWalletId,
-                WalletEncryption.decryptSecretSeeds(
+                WalletEncryption.decryptAccounts(
                     KeychainData.fromEncoded(encodedKeychainData),
                     walletKey
                 ),
@@ -482,7 +482,7 @@ class KeyServer constructor(
             accountId = currentWalletInfo.accountId,
             login = currentWalletInfo.login,
             loginParams = newLoginParams,
-            secretSeeds = newAccounts.mapNotNull(Account::secretSeed),
+            accounts = newAccounts,
             walletId = newWallet.creationData.walletId
         )
     }
@@ -623,7 +623,7 @@ class KeyServer constructor(
 
             val passwordFactorAccount = Account.random()
             wallet.relationships["factor"] =
-                WalletRelationship.passwordV2(
+                WalletRelationship.password(
                     accountId = passwordFactorAccount.accountId,
                     keychainData = WalletEncryption.encryptAccounts(
                         listOf(

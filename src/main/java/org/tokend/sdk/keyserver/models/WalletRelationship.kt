@@ -22,14 +22,7 @@ open class WalletRelationship(
 
     companion object {
         @JvmStatic
-        fun password(encryptedPasswordAccount: EncryptedWalletAccount) = WalletRelationship(
-            id = "password_id",
-            type = "password",
-            attributes = encryptedPasswordAccount
-        )
-
-        @JvmStatic
-        fun passwordV2(
+        fun password(
             accountId: String,
             keychainData: KeychainData,
             salt: ByteArray

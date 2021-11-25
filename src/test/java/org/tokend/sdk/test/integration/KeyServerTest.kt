@@ -274,10 +274,10 @@ class KeyServerTest {
                 newWalletInfo.accountId
         )
 
-        Assert.assertArrayEquals(
-                "Wallet new secret seed must be equal to the required one",
-                newAccount.secretSeed,
-                newWalletInfo.secretSeeds.first()
+        Assert.assertEquals(
+                "Wallet new account seed must be equal to the required one",
+                newAccount,
+                newWalletInfo.accounts.first()
         )
 
         val signers = api
@@ -457,10 +457,10 @@ class KeyServerTest {
                 .get()
 
         accounts.forEachIndexed { i, account ->
-            Assert.assertArrayEquals(
-                    "Remote wallet secret seed #$i must be equal to the local one",
-                    account.secretSeed,
-                    walletInfo.secretSeeds[i]
+            Assert.assertEquals(
+                    "Remote wallet account #$i must be equal to the local one",
+                    account,
+                    walletInfo.accounts[i]
             )
         }
     }

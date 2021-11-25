@@ -2,6 +2,7 @@ package org.tokend.sdk.keyserver
 
 import org.tokend.crypto.cipher.Aes256GCM
 import org.tokend.crypto.ecdsa.erase
+import org.tokend.sdk.keyserver.WalletEncryption.encryptSecretSeeds
 import org.tokend.sdk.keyserver.models.KeychainData
 import org.tokend.sdk.keyserver.seedreader.KeychainDataSeedsArrayReader
 import org.tokend.sdk.keyserver.seedreader.KeychainDataSingleSeedReader
@@ -162,23 +163,27 @@ object WalletEncryption {
         accounts: List<Account>,
         walletEncryptionKey: ByteArray,
     ): KeychainData {
-        val iv = SecureRandom.getSeed(IV_LENGTH)
-
-        val seeds = accounts.map {
-            requireNotNull(it.secretSeed) {
-                "Account $it has no secret seed"
-            }
-        }
-
-        val encryptedSeedsKeychainData = encryptSecretSeeds(
-            seeds = seeds,
-            iv = iv,
+        return encryptSecretSeeds(
+            seeds = accounts.map(Account::secretSeed),
+            iv = SecureRandom.getSeed(IV_LENGTH),
             walletEncryptionKey = walletEncryptionKey
         )
+    }
 
-        seeds.forEach(CharArray::erase)
-
-        return encryptedSeedsKeychainData
+    /**
+     * Decrypts secret seeds with [decryptSecretSeeds] and creates [Account]s from them.
+     * Seeds will be erased.
+     */
+    @JvmStatic
+    fun decryptAccounts(
+        keychainData: KeychainData,
+        walletEncryptionKey: ByteArray
+    ): List<Account> {
+        return decryptSecretSeeds(keychainData, walletEncryptionKey)
+            .map { seed ->
+                Account.fromSecretSeed(seed)
+                    .also { seed.erase() }
+            }
     }
 
     private const val IV_LENGTH = 12
