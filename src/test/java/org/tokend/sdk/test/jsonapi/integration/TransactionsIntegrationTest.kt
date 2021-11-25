@@ -17,7 +17,7 @@ class TransactionsIntegrationTest {
     fun submitError() {
         val api = Util.getApi()
 
-        val netParams = api.v3.general.getSystemInfo().execute().get().toNetworkParams()
+        val netParams = api.v3.info.getInfo().execute().get().toNetworkParams()
 
         val tx = TransactionBuilder(netParams, Config.ADMIN_ACCOUNT.accountId)
                 .addOperation(
@@ -55,7 +55,7 @@ class TransactionsIntegrationTest {
     fun submit() {
         val api = Util.getApi()
 
-        val netParams = api.v3.general.getSystemInfo().execute().get().toNetworkParams()
+        val netParams = api.v3.info.getInfo().execute().get().toNetworkParams()
 
         val accountRole = api.v3.accounts.getRoles().execute().get().items.first().id.toLong()
         val signerRole = api.v3.signers.getRoles().execute().get().items.first().id.toLong()

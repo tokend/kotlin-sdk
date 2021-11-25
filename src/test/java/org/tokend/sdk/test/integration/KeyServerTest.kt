@@ -224,7 +224,7 @@ class KeyServerTest {
 
         val signedApi = Util.getSignedApi(accounts.first(), api.rootUrl, tfaCallback = tfaCallback)
 
-        val netParams = api.v3.general.getSystemInfo()
+        val netParams = api.v3.info.getInfo()
             .execute()
             .get()
             .toNetworkParams()

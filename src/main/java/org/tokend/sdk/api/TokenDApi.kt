@@ -13,8 +13,6 @@ import org.tokend.sdk.api.documents.DocumentsApi
 import org.tokend.sdk.api.documents.DocumentsService
 import org.tokend.sdk.api.fees.FeesApi
 import org.tokend.sdk.api.fees.FeesService
-import org.tokend.sdk.api.general.GeneralApi
-import org.tokend.sdk.api.general.GeneralService
 import org.tokend.sdk.api.identity.IdentitiesApi
 import org.tokend.sdk.api.identity.IdentitiesService
 import org.tokend.sdk.api.integrations.IntegrationsApi
@@ -24,6 +22,7 @@ import org.tokend.sdk.api.v3.TokenDApiV3
 import org.tokend.sdk.api.wallets.WalletsApi
 import org.tokend.sdk.api.wallets.WalletsService
 import org.tokend.sdk.factory.JsonApiTools
+import org.tokend.sdk.keyserver.KeyServer
 import org.tokend.sdk.signing.AccountRequestSigner
 import org.tokend.sdk.signing.RequestSigner
 import org.tokend.sdk.tfa.TfaCallback
@@ -94,15 +93,13 @@ constructor(
         TfaApi(getService(TfaService::class.java))
     }
 
-    @Deprecated("Use v3 instead")
-    open val general: GeneralApi by lazy {
-        GeneralApi(getService(GeneralService::class.java))
-    }
-
     open val charts: ChartsApi by lazy {
         ChartsApi(getService(ChartsService::class.java))
     }
 
+    /**
+     * @see [KeyServer]
+     */
     open val wallets: WalletsApi by lazy {
         WalletsApi(getService(WalletsService::class.java))
     }

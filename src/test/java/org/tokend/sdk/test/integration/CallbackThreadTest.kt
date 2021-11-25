@@ -20,7 +20,7 @@ class CallbackThreadTest {
         var threadName = ""
         val latch = CountDownLatch(1)
 
-        api.v3.general.getSystemInfo().executeAsync(
+        api.v3.info.getInfo().executeAsync(
                 onSuccess = {
                     threadName = Thread.currentThread().name
                     latch.countDown()
@@ -55,7 +55,7 @@ class CallbackThreadTest {
 
         val latch = CountDownLatch(1)
 
-        api.v3.general.getSystemInfo().executeAsync(
+        api.v3.info.getInfo().executeAsync(
                 onSuccess = { latch.countDown() },
                 onError = { latch.countDown() }
         )
