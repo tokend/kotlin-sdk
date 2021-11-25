@@ -15,7 +15,7 @@ allprojects {
 
 dependencies {
     /*...*/
-    compile "org.tokend:sdk:3.8.0"
+    implementation "org.tokend:sdk:4.0.0"
 }
 
 ```

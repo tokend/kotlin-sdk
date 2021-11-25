@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
-## [Unreleased]
+## [4.0.0] 2021-11-25
 
 ### Added
 - Ability to customize wallet attributes and relationships
@@ -512,4 +512,5 @@ with `addExtraResources` method
 [3.7.1]: https://github.com/tokend/kotlin-sdk/compare/3.7.0...3.7.1
 [3.7.2]: https://github.com/tokend/kotlin-sdk/compare/3.7.1...3.7.2
 [3.8.0]: https://github.com/tokend/kotlin-sdk/compare/3.7.2...3.8.0
-[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/3.8.0...HEAD
+[4.0.0]: https://github.com/tokend/kotlin-sdk/compare/3.8.0...4.0.0
+[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/4.0.0...HEAD
