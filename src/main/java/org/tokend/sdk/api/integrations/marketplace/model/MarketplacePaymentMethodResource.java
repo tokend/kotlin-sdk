@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.jasminb.jsonapi.annotations.Type;
 import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.BaseResource;
-import org.tokend.sdk.api.generated.inner.Enum;
+import org.tokend.sdk.api.v3.model.generated.inner.Enum;
 
 @Type("payment-method")
 @JsonIgnoreProperties(ignoreUnknown = true)

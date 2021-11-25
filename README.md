@@ -109,7 +109,7 @@ val generator = DockerResourceGenerator(
 )
 generator.generateResources(
         openapiSpecFilePath = "~/git/tokend/horizon/docs/build/openapi.yaml",
-        namespace = "org.tokend.sdk.api.generated",
+        namespace = "org.tokend.sdk.api.v3.model.generated",
         outputDirectoryPath = "~/git/tokend/sdk/src/main/java/org/tokend/sdk/api/generated",
         ignoredKeys = setOf()
 )

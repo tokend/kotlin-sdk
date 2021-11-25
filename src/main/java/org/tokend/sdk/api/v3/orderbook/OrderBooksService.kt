@@ -1,9 +1,9 @@
 package org.tokend.sdk.api.v3.orderbook
 
 import com.github.jasminb.jsonapi.JSONAPIDocument
-import org.tokend.sdk.api.generated.resources.MatchResource
-import org.tokend.sdk.api.generated.resources.OrderBookEntryResource
-import org.tokend.sdk.api.generated.resources.OrderBookResource
+import org.tokend.sdk.api.v3.model.generated.resources.MatchResource
+import org.tokend.sdk.api.v3.model.generated.resources.OrderBookEntryResource
+import org.tokend.sdk.api.v3.model.generated.resources.OrderBookResource
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

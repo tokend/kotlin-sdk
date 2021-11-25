@@ -5,7 +5,7 @@ import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.base.model.DataPage
 import org.tokend.sdk.api.base.params.map
-import org.tokend.sdk.api.generated.resources.*
+import org.tokend.sdk.api.v3.model.generated.resources.*
 import org.tokend.sdk.api.v3.accounts.params.AccountParamsV3
 import org.tokend.sdk.api.v3.accounts.params.AccountRoleParamsV3
 import org.tokend.sdk.api.v3.accounts.params.AccountRolesPageParamsV3

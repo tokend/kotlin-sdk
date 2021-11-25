@@ -1,8 +1,8 @@
 package org.tokend.sdk.api.v3.balances
 
 import com.github.jasminb.jsonapi.JSONAPIDocument
-import org.tokend.sdk.api.generated.resources.BalanceResource
-import org.tokend.sdk.api.generated.resources.ConvertedBalancesCollectionResource
+import org.tokend.sdk.api.v3.model.generated.resources.BalanceResource
+import org.tokend.sdk.api.v3.model.generated.resources.ConvertedBalancesCollectionResource
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

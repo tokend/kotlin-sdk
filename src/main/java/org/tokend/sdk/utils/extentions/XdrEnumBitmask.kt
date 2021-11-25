@@ -1,6 +1,6 @@
 package org.tokend.sdk.utils.extentions
 
-import org.tokend.sdk.api.generated.inner.Mask
+import org.tokend.sdk.api.v3.model.generated.inner.Mask
 
 
 /**

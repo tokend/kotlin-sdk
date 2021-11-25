@@ -1,7 +1,7 @@
 package org.tokend.sdk.api.v3.transactions
 
 import com.github.jasminb.jsonapi.JSONAPIDocument
-import org.tokend.sdk.api.generated.resources.TransactionResource
+import org.tokend.sdk.api.v3.model.generated.resources.TransactionResource
 import org.tokend.sdk.api.v3.transactions.model.SubmitTransactionRequestBody
 import retrofit2.Call
 import retrofit2.http.*

@@ -2,7 +2,7 @@ package org.tokend.sdk.api.integrations.booking
 
 import com.github.jasminb.jsonapi.JSONAPIDocument
 import org.tokend.sdk.api.base.model.DataEntity
-import org.tokend.sdk.api.generated.resources.AccountResource
+import org.tokend.sdk.api.v3.model.generated.resources.AccountResource
 import org.tokend.sdk.api.integrations.booking.model.CreateBookingRequestAttributes
 import org.tokend.sdk.api.integrations.booking.model.generated.resources.BookingResource
 import org.tokend.sdk.api.integrations.booking.model.generated.resources.BusinessResource

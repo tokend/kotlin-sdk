@@ -5,8 +5,8 @@ import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.base.model.DataPage
 import org.tokend.sdk.api.base.params.map
-import org.tokend.sdk.api.generated.resources.BalanceResource
-import org.tokend.sdk.api.generated.resources.ConvertedBalancesCollectionResource
+import org.tokend.sdk.api.v3.model.generated.resources.BalanceResource
+import org.tokend.sdk.api.v3.model.generated.resources.ConvertedBalancesCollectionResource
 import org.tokend.sdk.api.v3.balances.params.BalanceParams
 import org.tokend.sdk.api.v3.balances.params.BalancesPageParams
 import org.tokend.sdk.api.v3.balances.params.ConvertedBalancesParams

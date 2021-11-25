@@ -1,6 +1,6 @@
 package org.tokend.sdk.utils.extentions
 
-import org.tokend.sdk.api.generated.resources.HorizonStateResource
+import org.tokend.sdk.api.v3.model.generated.resources.HorizonStateResource
 import org.tokend.wallet.NetworkParams
 import kotlin.math.log10
 

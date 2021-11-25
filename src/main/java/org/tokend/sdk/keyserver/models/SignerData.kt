@@ -2,7 +2,7 @@ package org.tokend.sdk.keyserver.models
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.tokend.sdk.api.generated.resources.SignerResource
+import org.tokend.sdk.api.v3.model.generated.resources.SignerResource
 import org.tokend.sdk.factory.JsonApiTools
 import org.tokend.wallet.xdr.Uint32
 import org.tokend.wallet.xdr.Uint64

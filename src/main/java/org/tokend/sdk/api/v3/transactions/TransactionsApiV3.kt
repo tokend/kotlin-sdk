@@ -8,7 +8,7 @@ import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.base.model.DataPage
 import org.tokend.sdk.api.base.model.ErrorBody
 import org.tokend.sdk.api.base.params.map
-import org.tokend.sdk.api.generated.resources.TransactionResource
+import org.tokend.sdk.api.v3.model.generated.resources.TransactionResource
 import org.tokend.sdk.api.transactions.model.SubmitTransactionResponse
 import org.tokend.sdk.api.transactions.model.TransactionFailedException
 import org.tokend.sdk.api.v3.transactions.model.SubmitTransactionRequestBody

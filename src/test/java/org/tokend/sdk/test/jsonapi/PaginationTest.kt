@@ -6,7 +6,7 @@ import com.github.jasminb.jsonapi.Links
 import org.junit.Assert
 import org.junit.Test
 import org.tokend.sdk.api.base.model.DataPage
-import org.tokend.sdk.api.generated.resources.AccountResource
+import org.tokend.sdk.api.v3.model.generated.resources.AccountResource
 import org.tokend.sdk.factory.JsonApiTools
 
 class PaginationTest {

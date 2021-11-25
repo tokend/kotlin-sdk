@@ -6,7 +6,7 @@ import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.base.model.DataPage
 import org.tokend.sdk.api.base.params.PagingParamsV2
 import org.tokend.sdk.api.base.params.map
-import org.tokend.sdk.api.generated.resources.KeyValueEntryResource
+import org.tokend.sdk.api.v3.model.generated.resources.KeyValueEntryResource
 
 open class KeyValueStorageApiV3(
         protected open val keyValueStorageService: KeyValueStorageServiceV3

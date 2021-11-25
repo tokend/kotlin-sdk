@@ -9,7 +9,7 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.github.jasminb.jsonapi.ResourceConverter
 import com.github.jasminb.jsonapi.retrofit.JSONAPIConverterFactory
 import org.jetbrains.annotations.TestOnly
-import org.tokend.sdk.api.generated.resources.AllResources
+import org.tokend.sdk.api.v3.model.generated.resources.AllResources
 import org.tokend.sdk.api.identity.model.IdentityResource
 import org.tokend.sdk.api.identity.model.IdentitySettingsResource
 import org.tokend.sdk.api.integrations.booking.model.scheduler.SchedulerPayloadResource

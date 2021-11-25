@@ -1,8 +1,8 @@
 package org.tokend.sdk.api.v3.history
 
 import com.github.jasminb.jsonapi.JSONAPIDocument
-import org.tokend.sdk.api.generated.resources.OperationResource
-import org.tokend.sdk.api.generated.resources.ParticipantsEffectResource
+import org.tokend.sdk.api.v3.model.generated.resources.OperationResource
+import org.tokend.sdk.api.v3.model.generated.resources.ParticipantsEffectResource
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.QueryMap
