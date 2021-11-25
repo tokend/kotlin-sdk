@@ -7,6 +7,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * Represents request body with [T] attributes.
  */
 open class AttributesEntity<out T>(
-    @field:JsonProperty("attributes")
+    @get:JsonProperty("attributes")
     val attributes: T
 )

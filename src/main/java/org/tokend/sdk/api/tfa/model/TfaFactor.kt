@@ -3,11 +3,11 @@ package org.tokend.sdk.api.tfa.model
 import com.fasterxml.jackson.annotation.JsonProperty
 
 open class TfaFactor(
-    @field:JsonProperty("id")
+    @get:JsonProperty("id")
     val id: Long,
-    @field:JsonProperty("type")
+    @get:JsonProperty("type")
     val type: Type,
-    @field:JsonProperty("attributes")
+    @get:JsonProperty("attributes")
     val attributes: Attributes
 ) {
     enum class Type {

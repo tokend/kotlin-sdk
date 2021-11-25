@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * Response with list of specific [T] items
  */
 open class Page<T> {
-    @field:JsonProperty("records")
+    @get:JsonProperty("records")
     var records: List<T> = emptyList()
         get() = (if (field.isEmpty() && this.embeddedPage != null) {
             this.embeddedPage.records

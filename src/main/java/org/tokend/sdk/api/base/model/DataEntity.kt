@@ -8,7 +8,7 @@ import org.tokend.sdk.factory.JsonApiTools
  * Represents request body with [T] data.
  */
 open class DataEntity<out T>(
-    @field:JsonProperty("data")
+    @get:JsonProperty("data")
     val data: T
 ) {
 

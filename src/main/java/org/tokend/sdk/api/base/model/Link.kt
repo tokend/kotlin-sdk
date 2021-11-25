@@ -10,7 +10,7 @@ import java.net.URISyntaxException
  * Represents links in responses.
  */
 open class Link internal constructor(
-    @field:JsonProperty("href")
+    @get:JsonProperty("href")
     val href: String
 ) {
     @get:JsonIgnore
