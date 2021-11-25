@@ -1,42 +1,65 @@
 package org.tokend.sdk.api.blobs.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import org.tokend.sdk.factory.JsonApiTools
 
-open class Blob(
-    @field:JsonProperty("id")
+class Blob(
     val id: String,
-    @field:JsonProperty("type")
     val typeName: String,
-    @field:JsonProperty("attributes")
-    private val attributes: Attributes
+    val valueString: String
 ) {
-    class Attributes(@JsonProperty("value") val value: String)
-
-    @JvmOverloads
-    constructor(type: BlobType, value: String, id: String = "") : this(
-        id = id,
-        typeName = type.name.toLowerCase(),
-        attributes = Attributes(
-            value = value
-        )
+    /**
+     * @param value any object that will be stringified to JSON using [JsonApiTools.objectMapper]
+     */
+    constructor(
+        typeName: String,
+        value: Any
+    ) : this(
+        id = "",
+        typeName = typeName,
+        valueString = JsonApiTools.objectMapper.writeValueAsString(value)
     )
 
-    @get:JsonIgnore
-    val valueString: String
-        get() = attributes.value
+    constructor(
+        type: BlobType,
+        value: String
+    ) : this(
+        id = "",
+        typeName = type.name.toLowerCase(),
+        valueString = value
+    )
+
+    /**
+     * @param value any object that will be stringified to JSON using [JsonApiTools.objectMapper]
+     */
+    constructor(
+        type: BlobType,
+        value: Any
+    ) : this(
+        id = "",
+        typeName = type.name.toLowerCase(),
+        valueString = JsonApiTools.objectMapper.writeValueAsString(value)
+    )
 
     @get:JsonIgnore
     val type: BlobType
         get() = BlobType.fromName(typeName)
 
+    /**
+     * @return typed value deserialized from JSON [valueString] using [JsonApiTools.objectMapper]
+     */
     @JsonIgnore
     fun <T> getValue(typeClass: Class<T>): T {
         return JsonApiTools.objectMapper.readValue(valueString, typeClass)
     }
 
+    /**
+     * @return typed value deserialized from JSON [valueString] using [JsonApiTools.objectMapper]
+     *
+     * @see jacksonTypeRef
+     */
     @JsonIgnore
     fun <T> getValue(type: TypeReference<T>): T {
         return JsonApiTools.objectMapper.readValue(valueString, type)
