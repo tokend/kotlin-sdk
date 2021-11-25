@@ -1,9 +1,10 @@
 package org.tokend.sdk.redirects
 
-import com.google.gson.JsonObject
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.JsonNode
 import okhttp3.HttpUrl
-import org.tokend.sdk.factory.GsonFactory
+import org.tokend.sdk.factory.JsonApiTools
 import org.tokend.sdk.utils.extentions.decodeBase64
 
 /**
@@ -11,11 +12,12 @@ import org.tokend.sdk.utils.extentions.decodeBase64
  * @see <a href="https://tokend.gitlab.io/docs/?http#client-redirects">Docs</a>
  */
 class ClientRedirectPayload(
-        @SerializedName("type")
-        val typeName: String,
-        @SerializedName("meta")
-        val meta: JsonObject
+    @JsonProperty("type")
+    val typeName: String,
+    @JsonProperty("meta")
+    val meta: JsonNode
 ) {
+    @get:JsonIgnore
     val type: ClientRedirectType
         get() = ClientRedirectType.fromName(typeName)
 
@@ -31,7 +33,8 @@ class ClientRedirectPayload(
 
             return try {
                 String(encodedPayload.decodeBase64()).let {
-                    GsonFactory().getBaseGson().fromJson(it, ClientRedirectPayload::class.java)
+                    JsonApiTools.objectMapper
+                        .readValue(it, ClientRedirectPayload::class.java)
                 }
             } catch (e: Exception) {
                 return null

@@ -1,8 +1,8 @@
 package org.tokend.sdk.api.base.model
 
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
 import okhttp3.ResponseBody
-import org.tokend.sdk.factory.GsonFactory
+import org.tokend.sdk.factory.JsonApiTools
 import retrofit2.HttpException
 import retrofit2.Response
 
@@ -10,8 +10,8 @@ import retrofit2.Response
  * Holds errors returned from server.
  */
 class ErrorBody(
-        @SerializedName("errors")
-        val errors: List<ServerError>
+    @JsonProperty("errors")
+    val errors: List<ServerError>
 ) {
     /**
      * Returns first error or [null] if there are no errors somehow.
@@ -22,7 +22,7 @@ class ErrorBody(
     companion object {
         @JvmStatic
         fun fromJsonString(json: String): ErrorBody {
-            return GsonFactory().getBaseGson().fromJson(json, ErrorBody::class.java)
+            return JsonApiTools.objectMapper.readValue(json, ErrorBody::class.java)
         }
 
         /**

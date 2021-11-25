@@ -1,30 +1,30 @@
 package org.tokend.sdk.api.accounts.model.limits
 
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
 import org.tokend.wallet.xdr.StatsOpType
 import java.math.BigDecimal
 import java.util.*
 
 class Statistics(
-        @SerializedName("id")
+        @JsonProperty("id")
         val id: Long,
-        @SerializedName("account_id")
+        @JsonProperty("account_id")
         val accountId: String,
-        @SerializedName("stats_op_type")
+        @JsonProperty("stats_op_type")
         val statsOpTypeI: Int,
-        @SerializedName("asset_code")
+        @JsonProperty("asset_code")
         val asset: String,
-        @SerializedName("is_convert_needed")
+        @JsonProperty("is_convert_needed")
         val isConvertNeeded: Boolean,
-        @SerializedName("daily_outcome")
+        @JsonProperty("daily_outcome")
         val daily: BigDecimal,
-        @SerializedName("weekly_outcome")
+        @JsonProperty("weekly_outcome")
         val weekly: BigDecimal,
-        @SerializedName("monthly_outcome")
+        @JsonProperty("monthly_outcome")
         val monthly: BigDecimal,
-        @SerializedName("annual_outcome")
+        @JsonProperty("annual_outcome")
         val annual: BigDecimal,
-        @SerializedName("updated_at")
+        @JsonProperty("updated_at")
         val updatedAtTimestamp: Long
 ) {
     val updatedAt: Date

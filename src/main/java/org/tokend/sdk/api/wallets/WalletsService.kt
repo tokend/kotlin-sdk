@@ -2,10 +2,8 @@ package org.tokend.sdk.api.wallets
 
 import org.tokend.sdk.api.base.model.AttributesEntity
 import org.tokend.sdk.api.base.model.DataEntity
-import org.tokend.sdk.api.wallets.model.VerifyWalletRequestBody
-import org.tokend.sdk.api.wallets.model.WalletResourceBody
+import org.tokend.sdk.keyserver.models.Wallet
 import org.tokend.sdk.keyserver.models.LoginParams
-import org.tokend.sdk.keyserver.models.WalletData
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -15,27 +13,32 @@ interface WalletsService {
 
     @PUT("wallets/{walletId}/verification")
     @JvmSuppressWildcards
-    fun verify(@Path("walletId") walletId: String,
-               @Body data: DataEntity<AttributesEntity<VerifyWalletRequestBody>>):
-            Call<Void>
+    fun verify(
+        @Path("walletId") walletId: String,
+        @Body data: DataEntity<AttributesEntity<Any>>
+    ): Call<Void>
 
     @GET("wallets/kdf")
-    fun getLoginParams(@Query("email") login: String? = "",
-                       @Query("is_recovery") isRecovery: Boolean = false)
-            : Call<DataEntity<LoginParams>>
+    fun getLoginParams(
+        @Query("email") login: String? = "",
+        @Query("is_recovery") isRecovery: Boolean = false
+    ): Call<DataEntity<LoginParams>>
 
     @GET("wallets/{walletId}")
     @JvmSuppressWildcards
-    fun getById(@Path("walletId") walletId: String,
-                @QueryMap queryMap: Map<String, Any>?)
-            : Call<DataEntity<WalletData>>
+    fun getById(
+        @Path("walletId") walletId: String,
+        @QueryMap queryMap: Map<String, Any>?
+    ): Call<Wallet>
 
     @PUT("wallets/{walletId}")
     @JvmSuppressWildcards
-    fun update(@Path("walletId") walletId: String,
-               @Body wallet: WalletResourceBody): Call<Void>
+    fun update(
+        @Path("walletId") walletId: String,
+        @Body body: Any
+    ): Call<Void>
 
     @POST("wallets")
     @JvmSuppressWildcards
-    fun create(@Body wallet: WalletResourceBody): Call<DataEntity<WalletData>>
+    fun create(@Body body: Any): Call<Wallet>
 }

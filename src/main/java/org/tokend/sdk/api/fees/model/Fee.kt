@@ -1,21 +1,34 @@
 package org.tokend.sdk.api.fees.model
 
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonProperty
 import java.io.Serializable
 import java.math.BigDecimal
 
 open class Fee(
-        @SerializedName("fee_type") val feeType: Int,
-        @SerializedName("subtype") val subtype: Int,
-        @SerializedName("asset") val requestAsset: String,
-        @SerializedName("fee_asset") val asset: String,
-        @SerializedName("fixed") val fixed: BigDecimal,
-        @SerializedName("percent") val percent: BigDecimal,
-        @SerializedName("lower_bound") val lowerBound: BigDecimal,
-        @SerializedName("upper_bound") val upperBound: BigDecimal,
-        @SerializedName("exists") val exists: Boolean,
-        @SerializedName("account_id") val account_id: String) : Serializable {
+    @get:JsonProperty("fee_type")
+    val feeType: Int,
+    @get:JsonProperty("subtype")
+    val subtype: Int,
+    @get:JsonProperty("asset")
+    val requestAsset: String,
+    @get:JsonProperty("fee_asset")
+    val asset: String,
+    @get:JsonProperty("fixed")
+    val fixed: BigDecimal,
+    @get:JsonProperty("percent")
+    val percent: BigDecimal,
+    @get:JsonProperty("lower_bound")
+    val lowerBound: BigDecimal,
+    @get:JsonProperty("upper_bound")
+    val upperBound: BigDecimal,
+    @get:JsonProperty("exists")
+    val exists: Boolean,
+    @get:JsonProperty("account_id")
+    val account_id: String
+) : Serializable {
 
+    @get:JsonIgnore
     val total: BigDecimal
         get() = fixed + percent
 

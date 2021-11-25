@@ -1,6 +1,6 @@
 package org.tokend.sdk.helpers.resourcegen
 
-import org.tokend.sdk.factory.JsonApiToolsProvider
+import org.tokend.sdk.factory.JsonApiTools
 import java.io.File
 
 /**
@@ -62,7 +62,7 @@ class DockerResourceGenerator(
         tempOutputDir.deleteRecursively()
 
         println("✅ Done! Do not forget to register new resources in " +
-                "${JsonApiToolsProvider::class.java.simpleName} \uD83D\uDE09")
+                "${JsonApiTools::class.java.simpleName} \uD83D\uDE09")
     }
 
     private fun executeCommand(command: String,

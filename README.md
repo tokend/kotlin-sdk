@@ -15,7 +15,7 @@ allprojects {
 
 dependencies {
     /*...*/
-    compile "org.tokend:sdk:3.8.0"
+    implementation "org.tokend:sdk:4.0.0"
 }
 
 ```
@@ -29,11 +29,11 @@ const val TOKEND_URL = "https://api.testnet.tokend.org"
 // Use TokenDApi facade members to access particular endpoints.
 val api = TokenDApi(TOKEND_URL)
 val assetsPage = api.v3.assets.get().execute().get()
-val systemInfo = api.general.getSystemInfo().execute().get()
+val systemInfo = api.v3.info.getInfo().execute().get()
 
 // Use KeyServer instance to work with key server.
 val keyServer = KeyServer(api.wallets)
-val walletInfo = keyServer.getWalletInfo(email, password).execute().get()
+val wallet = keyServer.getWallet(email, password).execute().get()
 ```
 
 ### Making custom requests
@@ -109,7 +109,7 @@ val generator = DockerResourceGenerator(
 )
 generator.generateResources(
         openapiSpecFilePath = "~/git/tokend/horizon/docs/build/openapi.yaml",
-        namespace = "org.tokend.sdk.api.generated",
+        namespace = "org.tokend.sdk.api.v3.model.generated",
         outputDirectoryPath = "~/git/tokend/sdk/src/main/java/org/tokend/sdk/api/generated",
         ignoredKeys = setOf()
 )

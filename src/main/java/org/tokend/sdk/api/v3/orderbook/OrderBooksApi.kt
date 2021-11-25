@@ -5,9 +5,9 @@ import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.base.model.DataPage
 import org.tokend.sdk.api.base.params.map
-import org.tokend.sdk.api.generated.resources.MatchResource
-import org.tokend.sdk.api.generated.resources.OrderBookEntryResource
-import org.tokend.sdk.api.generated.resources.OrderBookResource
+import org.tokend.sdk.api.v3.model.generated.resources.MatchResource
+import org.tokend.sdk.api.v3.model.generated.resources.OrderBookEntryResource
+import org.tokend.sdk.api.v3.model.generated.resources.OrderBookResource
 import org.tokend.sdk.api.v3.orderbook.params.MatchesPageParams
 import org.tokend.sdk.api.v3.orderbook.params.OrderBookPageParams
 import org.tokend.sdk.api.v3.orderbook.params.OrderBookParamsV3

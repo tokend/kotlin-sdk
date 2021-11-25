@@ -1,8 +1,8 @@
 package org.tokend.sdk.api.v3.fees
 
 import com.github.jasminb.jsonapi.JSONAPIDocument
-import org.tokend.sdk.api.generated.resources.CalculatedFeeResource
-import org.tokend.sdk.api.generated.resources.FeeRecordResource
+import org.tokend.sdk.api.v3.model.generated.resources.CalculatedFeeResource
+import org.tokend.sdk.api.v3.model.generated.resources.FeeRecordResource
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

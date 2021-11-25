@@ -5,9 +5,9 @@ import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.base.model.DataPage
 import org.tokend.sdk.api.base.params.map
-import org.tokend.sdk.api.generated.resources.SignerResource
-import org.tokend.sdk.api.generated.resources.SignerRoleResource
-import org.tokend.sdk.api.generated.resources.SignerRuleResource
+import org.tokend.sdk.api.v3.model.generated.resources.SignerResource
+import org.tokend.sdk.api.v3.model.generated.resources.SignerRoleResource
+import org.tokend.sdk.api.v3.model.generated.resources.SignerRuleResource
 import org.tokend.sdk.api.v3.signers.params.SignerParamsV3
 import org.tokend.sdk.api.v3.signers.params.SignerRoleParamsV3
 import org.tokend.sdk.api.v3.signers.params.SignerRolesPageParamsV3

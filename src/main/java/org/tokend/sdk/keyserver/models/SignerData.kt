@@ -1,9 +1,9 @@
 package org.tokend.sdk.keyserver.models
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.google.gson.annotations.SerializedName
-import org.tokend.sdk.api.generated.resources.SignerResource
-import org.tokend.sdk.factory.JsonApiToolsProvider
+import org.tokend.sdk.api.v3.model.generated.resources.SignerResource
+import org.tokend.sdk.factory.JsonApiTools
 import org.tokend.wallet.xdr.Uint32
 import org.tokend.wallet.xdr.Uint64
 
@@ -11,35 +11,37 @@ import org.tokend.wallet.xdr.Uint64
  * Account signer data holder
  */
 class SignerData(
-        @SerializedName("id")
-        val id: String,
-        @SerializedName("identity")
-        val identity: Uint32,
-        @SerializedName("weight")
-        val weight: Uint32,
-        @SerializedName("role_id")
-        val roleId: Uint64,
-        @SerializedName("details")
-        val detailsJson: String?
+    @JsonProperty("id")
+    val id: String,
+    @JsonProperty("identity")
+    val identity: Uint32,
+    @JsonProperty("weight")
+    val weight: Uint32,
+    @JsonProperty("role_id")
+    val roleId: Uint64,
+    @JsonProperty("details")
+    val detailsJson: String?
 ) {
     @JvmOverloads
-    constructor(source: SignerResource,
-                objectMapper: ObjectMapper = JsonApiToolsProvider.getObjectMapper()) : this(
-            identity = source.identity.toInt(),
-            weight = source.weight.toInt(),
-            roleId = source.role.id.toLong(),
-            detailsJson = source.details?.let {
-                objectMapper.writeValueAsString(it)
-            },
-            id = source.id
+    constructor(
+        source: SignerResource,
+        objectMapper: ObjectMapper = JsonApiTools.objectMapper
+    ) : this(
+        identity = source.identity.toInt(),
+        weight = source.weight.toInt(),
+        roleId = source.role.id.toLong(),
+        detailsJson = source.details?.let {
+            objectMapper.writeValueAsString(it)
+        },
+        id = source.id
     )
 
-    constructor(id: String, roleId: Uint64): this(
-            id = id,
-            roleId = roleId,
-            identity = DEFAULT_SIGNER_IDENTITY,
-            weight = DEFAULT_SIGNER_WEIGHT,
-            detailsJson = null
+    constructor(id: String, roleId: Uint64) : this(
+        id = id,
+        roleId = roleId,
+        identity = DEFAULT_SIGNER_IDENTITY,
+        weight = DEFAULT_SIGNER_WEIGHT,
+        detailsJson = null
     )
 
     companion object {

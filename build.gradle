@@ -25,15 +25,16 @@ dependencies {
     testCompile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.7.4"
 
     compile "com.squareup.retrofit2:retrofit:${retrofitVersion}"
-    compile "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
     compile "com.squareup.retrofit2:converter-scalars:${retrofitVersion}"
+    compile "com.squareup.retrofit2:converter-jackson:${retrofitVersion}"
     compile 'com.squareup.okhttp3:logging-interceptor:3.5.0'
 
     compile 'com.github.jasminb:jsonapi-converter:0.9'
+    compile 'com.fasterxml.jackson.module:jackson-module-kotlin:2.12.0'
 
     compile 'org.tokend:crypto-cipher:1.0.2'
     compile 'org.tokend:crypto-kdf:1.0.4'
-    compile 'org.tokend:wallet:3.6.5'
+    compile 'org.tokend:wallet:3.7.0'
 }
 repositories {
     mavenCentral()
@@ -41,15 +42,15 @@ repositories {
 }
 
 compileKotlin {
-    kotlinOptions.jvmTarget = "1.6"
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
 }
 compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.6"
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
 }
 
 apply from: 'deploy.gradle'
 
 group 'org.tokend'
-version '3.8.1-x.0'
+version '4.0.0'
 uploadArchives.repositories.mavenDeployer.pom.artifactId = 'sdk'
 uploadArchives.repositories.mavenDeployer.pom.name = 'TokenD SDK'

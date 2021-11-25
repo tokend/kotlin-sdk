@@ -1,9 +1,9 @@
 package org.tokend.sdk.api.v3.signers
 
 import com.github.jasminb.jsonapi.JSONAPIDocument
-import org.tokend.sdk.api.generated.resources.SignerResource
-import org.tokend.sdk.api.generated.resources.SignerRoleResource
-import org.tokend.sdk.api.generated.resources.SignerRuleResource
+import org.tokend.sdk.api.v3.model.generated.resources.SignerResource
+import org.tokend.sdk.api.v3.model.generated.resources.SignerRoleResource
+import org.tokend.sdk.api.v3.model.generated.resources.SignerRuleResource
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

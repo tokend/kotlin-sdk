@@ -1,7 +1,6 @@
 package org.tokend.sdk.api.base.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.google.gson.annotations.SerializedName
 
 /**
  * Holds policies by bitmask
@@ -10,17 +9,13 @@ data class Policies(
         /**
          * Policies parsed as [NameValue] pairs
          */
-        @SerializedName("flags")
-        @get:JsonProperty("flags")
-        @param:JsonProperty("flags")
+        @JsonProperty("flags")
         val flags: List<NameValue<Int>>?,
 
         /**
          * Policies bitmask
          */
-        @SerializedName("mask")
-        @get:JsonProperty("mask")
-        @param:JsonProperty("mask")
+        @JsonProperty("mask")
         val mask: Long
 ) {
     /**

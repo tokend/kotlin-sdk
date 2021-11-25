@@ -1,8 +1,8 @@
 package org.tokend.sdk.api.accounts.model.limits
 
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
 
 class LimitsResponse(
-        @SerializedName("limits")
+        @JsonProperty("limits")
         val entries: List<LimitEntry>?
 )

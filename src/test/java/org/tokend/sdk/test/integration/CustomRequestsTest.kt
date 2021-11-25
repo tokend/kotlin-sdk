@@ -2,21 +2,19 @@ package org.tokend.sdk.test.integration
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.github.jasminb.jsonapi.JSONAPIDocument
-import com.github.jasminb.jsonapi.Link
 import com.github.jasminb.jsonapi.Links
 import com.github.jasminb.jsonapi.annotations.Type
-import com.google.gson.annotations.SerializedName
-import com.google.gson.reflect.TypeToken
 import com.sun.net.httpserver.HttpExchange
 import com.sun.net.httpserver.HttpServer
 import org.junit.*
 import org.junit.runners.MethodSorters
 import org.tokend.sdk.api.TokenDApi
 import org.tokend.sdk.api.base.model.BaseResource
+import org.tokend.sdk.api.base.model.Link
 import org.tokend.sdk.api.custom.CustomRequestsApi
-import org.tokend.sdk.factory.GsonFactory
-import org.tokend.sdk.factory.JsonApiToolsProvider
+import org.tokend.sdk.factory.JsonApiTools
 import java.net.HttpURLConnection
 import java.net.InetSocketAddress
 import java.net.ServerSocket
@@ -25,10 +23,10 @@ import java.util.*
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class CustomRequestsTest {
     private data class DummyEntity(
-            @SerializedName("field_a")
-            val a: Int,
-            @SerializedName("field_b")
-            val b: String
+        @JsonProperty("field_a")
+        val a: Int,
+        @JsonProperty("field_b")
+        val b: String
     ) {
         companion object {
             val DEFAULT = DummyEntity(42, "TEST")
@@ -67,16 +65,16 @@ class CustomRequestsTest {
     }
 
     private val defaultQueryMap = mapOf(
-            "param_a" to 1,
-            "param_b" to "test",
-            "param_c" to "long string"
+        "param_a" to 1,
+        "param_b" to "test",
+        "param_c" to "long string"
     )
     private val defaultQueryMapEncoded = "?param_a=1&param_b=test&param_c=long%20string"
 
     private val defaultHeadersMap = mapOf(
-            "X_header_a" to 1,
-            "X_header_b" to "test",
-            "X_header_c" to "long string"
+        "X_header_a" to 1,
+        "X_header_b" to "test",
+        "X_header_c" to "long string"
     )
     private val defaultHeadersString = defaultHeadersMap.entries.joinToString()
 
@@ -92,8 +90,8 @@ class CustomRequestsTest {
         @JvmStatic
         @BeforeClass
         fun setUpTestServer() {
-            JsonApiToolsProvider.reset()
-            JsonApiToolsProvider.addExtraResources(DummyResource::class.java)
+            JsonApiTools.reset()
+            JsonApiTools.addExtraResources(DummyResource::class.java)
 
             val socket = ServerSocket(0).apply { reuseAddress = true }
             port = socket.localPort
@@ -105,18 +103,18 @@ class CustomRequestsTest {
                 lastRequestUrl = http.requestURI.toString()
                 lastRequestBody = http.requestBody.bufferedReader(Charsets.UTF_8).readText()
                 lastRequestHeadersString = http.requestHeaders.toMap()
-                        .mapValues { it.value.first() }
-                        .filterKeys { it.startsWith("X_") }
-                        .toSortedMap()
-                        .entries
-                        .joinToString()
+                    .mapValues { it.value.first() }
+                    .filterKeys { it.startsWith("X_") }
+                    .toSortedMap()
+                    .entries
+                    .joinToString()
             }
 
             server.createContext("/dummy") { http ->
                 captureRequestParams(http)
 
-                val response = GsonFactory().getBaseGson().toJson(DummyEntity.DEFAULT)
-                        .toByteArray(Charsets.UTF_8)
+                val response = JsonApiTools.objectMapper
+                    .writeValueAsBytes(DummyEntity.DEFAULT)
 
                 http.responseHeaders.add("Content-type", "application/json")
                 http.sendResponseHeaders(HttpURLConnection.HTTP_OK, response.size.toLong())
@@ -126,8 +124,8 @@ class CustomRequestsTest {
             server.createContext("/dummy_list") { http ->
                 captureRequestParams(http)
 
-                val response = GsonFactory().getBaseGson().toJson(listOf(DummyEntity.DEFAULT))
-                        .toByteArray(Charsets.UTF_8)
+                val response = JsonApiTools.objectMapper
+                    .writeValueAsBytes(listOf(DummyEntity.DEFAULT))
 
                 http.responseHeaders.add("Content-type", "application/json")
                 http.sendResponseHeaders(HttpURLConnection.HTTP_OK, response.size.toLong())
@@ -138,16 +136,16 @@ class CustomRequestsTest {
                 captureRequestParams(http)
 
                 val page = mapOf(
-                        "_embedded" to mapOf(
-                                "records" to listOf(DummyEntity.DEFAULT)
-                        ),
-                        "_links" to mapOf(
-                                "self" to Link("/dummy_page?page=0&limit=10"),
-                                "next" to Link("/dummy_page?page=1&limit=10")
-                        )
+                    "_embedded" to mapOf(
+                        "records" to listOf(DummyEntity.DEFAULT)
+                    ),
+                    "_links" to mapOf(
+                        "self" to Link("/dummy_page?page=0&limit=10"),
+                        "next" to Link("/dummy_page?page=1&limit=10")
+                    )
                 )
-                val response = GsonFactory().getBaseGson().toJson(page)
-                        .toByteArray(Charsets.UTF_8)
+                val response = JsonApiTools.objectMapper
+                    .writeValueAsBytes(page)
 
                 http.responseHeaders.add("Content-type", "application/json")
                 http.sendResponseHeaders(HttpURLConnection.HTTP_OK, response.size.toLong())
@@ -157,8 +155,8 @@ class CustomRequestsTest {
             server.createContext("/dummy_resource") { http ->
                 captureRequestParams(http)
 
-                val response = JsonApiToolsProvider.getResourceConverter().writeDocument(
-                        JSONAPIDocument(DummyResource.DEFAULT)
+                val response = JsonApiTools.getResourceConverter().writeDocument(
+                    JSONAPIDocument(DummyResource.DEFAULT)
                 )
 
                 http.responseHeaders.add("Content-type", "application/vnd.api+json")
@@ -169,15 +167,17 @@ class CustomRequestsTest {
             server.createContext("/dummy_resource_page") { http ->
                 captureRequestParams(http)
 
-                val response = JsonApiToolsProvider.getResourceConverter().writeDocumentCollection(
-                        JSONAPIDocument(
-                                listOf(DummyResource.DEFAULT),
-                                Links(mapOf(
-                                        "self" to Link("/dummy_resource_page?page%5Blimit%5D=10&page%5Bnumber%5D=0"),
-                                        "next" to Link("/dummy_resource_page?page%5Blimit%5D=10&page%5Bnumber%5D=1")
-                                )),
-                                emptyMap()
-                        )
+                val response = JsonApiTools.getResourceConverter().writeDocumentCollection(
+                    JSONAPIDocument(
+                        listOf(DummyResource.DEFAULT),
+                        Links(
+                            mapOf(
+                                "self" to com.github.jasminb.jsonapi.Link("/dummy_resource_page?page%5Blimit%5D=10&page%5Bnumber%5D=0"),
+                                "next" to com.github.jasminb.jsonapi.Link("/dummy_resource_page?page%5Blimit%5D=10&page%5Bnumber%5D=1")
+                            )
+                        ),
+                        emptyMap()
+                    )
                 )
 
                 http.responseHeaders.add("Content-type", "application/vnd.api+json")
@@ -209,9 +209,9 @@ class CustomRequestsTest {
     @Test
     fun getWithClass() {
         val response = getApi()
-                .get("/dummy", DummyEntity::class.java, defaultQueryMap, defaultHeadersMap)
-                .execute()
-                .get()
+            .get("/dummy", DummyEntity::class.java, defaultQueryMap, defaultHeadersMap)
+            .execute()
+            .get()
 
         Assert.assertEquals("GET", lastRequestMethod)
         Assert.assertEquals("/dummy$defaultQueryMapEncoded", lastRequestUrl)
@@ -222,11 +222,15 @@ class CustomRequestsTest {
     @Test
     fun getWithType() {
         val response = getApi()
-                .get<List<DummyEntity>>("/dummy_list",
-                        object : TypeToken<List<DummyEntity>>() {}.type, defaultQueryMap, defaultHeadersMap)
-                .execute()
-                .get()
-                .first()
+            .get(
+                "/dummy_list",
+                jacksonTypeRef<List<DummyEntity>>(),
+                defaultQueryMap,
+                defaultHeadersMap
+            )
+            .execute()
+            .get()
+            .first()
 
         Assert.assertEquals("GET", lastRequestMethod)
         Assert.assertEquals("/dummy_list$defaultQueryMapEncoded", lastRequestUrl)
@@ -237,8 +241,8 @@ class CustomRequestsTest {
     @Test
     fun getNoContent() {
         val response = getApi()
-                .get("/no_content", Void::class.java, defaultQueryMap, defaultHeadersMap)
-                .execute()
+            .get("/no_content", Void::class.java, defaultQueryMap, defaultHeadersMap)
+            .execute()
 
         Assert.assertEquals("GET", lastRequestMethod)
         Assert.assertEquals("/no_content$defaultQueryMapEncoded", lastRequestUrl)
@@ -249,9 +253,9 @@ class CustomRequestsTest {
     @Test
     fun getResource() {
         val response = getApi()
-                .get("/dummy_resource", DummyResource::class.java, defaultQueryMap, defaultHeadersMap)
-                .execute()
-                .get()
+            .get("/dummy_resource", DummyResource::class.java, defaultQueryMap, defaultHeadersMap)
+            .execute()
+            .get()
 
         Assert.assertEquals("GET", lastRequestMethod)
         Assert.assertEquals("/dummy_resource$defaultQueryMapEncoded", lastRequestUrl)
@@ -262,9 +266,14 @@ class CustomRequestsTest {
     @Test
     fun getResourcePage() {
         val responsePage = getApi()
-                .getPage("/dummy_resource_page", DummyResource::class.java, defaultQueryMap, defaultHeadersMap)
-                .execute()
-                .get()
+            .getPage(
+                "/dummy_resource_page",
+                DummyResource::class.java,
+                defaultQueryMap,
+                defaultHeadersMap
+            )
+            .execute()
+            .get()
 
         Assert.assertEquals("GET", lastRequestMethod)
         Assert.assertEquals("/dummy_resource_page$defaultQueryMapEncoded", lastRequestUrl)
@@ -276,9 +285,9 @@ class CustomRequestsTest {
     @Test
     fun getPage() {
         val responsePage = getApi()
-                .getPage("/dummy_page", DummyEntity::class.java, defaultQueryMap, defaultHeadersMap)
-                .execute()
-                .get()
+            .getPage("/dummy_page", DummyEntity::class.java, defaultQueryMap, defaultHeadersMap)
+            .execute()
+            .get()
 
         Assert.assertEquals("GET", lastRequestMethod)
         Assert.assertEquals("/dummy_page$defaultQueryMapEncoded", lastRequestUrl)
@@ -292,14 +301,17 @@ class CustomRequestsTest {
         val data = mapOf("test" to "data")
 
         val response = getApi()
-                .post("/dummy", data, DummyEntity::class.java, defaultQueryMap, defaultHeadersMap)
-                .execute()
-                .get()
+            .post("/dummy", data, DummyEntity::class.java, defaultQueryMap, defaultHeadersMap)
+            .execute()
+            .get()
 
         Assert.assertEquals("POST", lastRequestMethod)
         Assert.assertEquals("/dummy$defaultQueryMapEncoded", lastRequestUrl)
         Assert.assertEquals(defaultHeadersString, lastRequestHeadersString)
-        Assert.assertEquals(GsonFactory().getBaseGson().toJson(data), lastRequestBody)
+        Assert.assertEquals(
+            JsonApiTools.objectMapper.writeValueAsString(data),
+            lastRequestBody
+        )
         Assert.assertEquals(DummyEntity.DEFAULT, response)
     }
 
@@ -308,13 +320,16 @@ class CustomRequestsTest {
         val data = mapOf("test" to "data")
 
         val response = getApi()
-                .post("/no_content", data, Void::class.java, defaultQueryMap, defaultHeadersMap)
-                .execute()
+            .post("/no_content", data, Void::class.java, defaultQueryMap, defaultHeadersMap)
+            .execute()
 
         Assert.assertEquals("POST", lastRequestMethod)
         Assert.assertEquals("/no_content$defaultQueryMapEncoded", lastRequestUrl)
         Assert.assertEquals(defaultHeadersString, lastRequestHeadersString)
-        Assert.assertEquals(GsonFactory().getBaseGson().toJson(data), lastRequestBody)
+        Assert.assertEquals(
+            JsonApiTools.objectMapper.writeValueAsString(data),
+            lastRequestBody
+        )
         Assert.assertFalse(response.hasValue())
     }
 
@@ -323,14 +338,17 @@ class CustomRequestsTest {
         val data = mapOf("test" to "data")
 
         val response = getApi()
-                .put("/dummy", data, DummyEntity::class.java, defaultQueryMap, defaultHeadersMap)
-                .execute()
-                .get()
+            .put("/dummy", data, DummyEntity::class.java, defaultQueryMap, defaultHeadersMap)
+            .execute()
+            .get()
 
         Assert.assertEquals("PUT", lastRequestMethod)
         Assert.assertEquals("/dummy$defaultQueryMapEncoded", lastRequestUrl)
         Assert.assertEquals(defaultHeadersString, lastRequestHeadersString)
-        Assert.assertEquals(GsonFactory().getBaseGson().toJson(data), lastRequestBody)
+        Assert.assertEquals(
+            JsonApiTools.objectMapper.writeValueAsString(data),
+            lastRequestBody
+        )
         Assert.assertEquals(DummyEntity.DEFAULT, response)
     }
 
@@ -339,13 +357,16 @@ class CustomRequestsTest {
         val data = mapOf("test" to "data")
 
         val response = getApi()
-                .put("/no_content", data, Void::class.java, defaultQueryMap, defaultHeadersMap)
-                .execute()
+            .put("/no_content", data, Void::class.java, defaultQueryMap, defaultHeadersMap)
+            .execute()
 
         Assert.assertEquals("PUT", lastRequestMethod)
         Assert.assertEquals("/no_content$defaultQueryMapEncoded", lastRequestUrl)
         Assert.assertEquals(defaultHeadersString, lastRequestHeadersString)
-        Assert.assertEquals(GsonFactory().getBaseGson().toJson(data), lastRequestBody)
+        Assert.assertEquals(
+            JsonApiTools.objectMapper.writeValueAsString(data),
+            lastRequestBody
+        )
         Assert.assertFalse(response.hasValue())
     }
 
@@ -354,14 +375,17 @@ class CustomRequestsTest {
         val data = mapOf("test" to "data")
 
         val response = getApi()
-                .patch("/dummy", data, DummyEntity::class.java, defaultQueryMap, defaultHeadersMap)
-                .execute()
-                .get()
+            .patch("/dummy", data, DummyEntity::class.java, defaultQueryMap, defaultHeadersMap)
+            .execute()
+            .get()
 
         Assert.assertEquals("PATCH", lastRequestMethod)
         Assert.assertEquals("/dummy$defaultQueryMapEncoded", lastRequestUrl)
         Assert.assertEquals(defaultHeadersString, lastRequestHeadersString)
-        Assert.assertEquals(GsonFactory().getBaseGson().toJson(data), lastRequestBody)
+        Assert.assertEquals(
+            JsonApiTools.objectMapper.writeValueAsString(data),
+            lastRequestBody
+        )
         Assert.assertEquals(DummyEntity.DEFAULT, response)
     }
 
@@ -370,22 +394,25 @@ class CustomRequestsTest {
         val data = mapOf("test" to "data")
 
         val response = getApi()
-                .patch("/no_content", data, Void::class.java, defaultQueryMap, defaultHeadersMap)
-                .execute()
+            .patch("/no_content", data, Void::class.java, defaultQueryMap, defaultHeadersMap)
+            .execute()
 
         Assert.assertEquals("PATCH", lastRequestMethod)
         Assert.assertEquals("/no_content$defaultQueryMapEncoded", lastRequestUrl)
         Assert.assertEquals(defaultHeadersString, lastRequestHeadersString)
-        Assert.assertEquals(GsonFactory().getBaseGson().toJson(data), lastRequestBody)
+        Assert.assertEquals(
+            JsonApiTools.objectMapper.writeValueAsString(data),
+            lastRequestBody
+        )
         Assert.assertFalse(response.hasValue())
     }
 
     @Test
     fun delete() {
         val response = getApi()
-                .delete("/dummy", DummyEntity::class.java, defaultQueryMap, defaultHeadersMap)
-                .execute()
-                .get()
+            .delete("/dummy", DummyEntity::class.java, defaultQueryMap, defaultHeadersMap)
+            .execute()
+            .get()
 
         Assert.assertEquals("DELETE", lastRequestMethod)
         Assert.assertEquals("/dummy$defaultQueryMapEncoded", lastRequestUrl)
@@ -396,8 +423,8 @@ class CustomRequestsTest {
     @Test
     fun deleteNoContent() {
         val response = getApi()
-                .delete("/no_content", Void::class.java, defaultQueryMap, defaultHeadersMap)
-                .execute()
+            .delete("/no_content", Void::class.java, defaultQueryMap, defaultHeadersMap)
+            .execute()
 
         Assert.assertEquals("DELETE", lastRequestMethod)
         Assert.assertEquals("/no_content$defaultQueryMapEncoded", lastRequestUrl)
@@ -408,9 +435,9 @@ class CustomRequestsTest {
     @Test
     fun getString() {
         val response = getApi()
-                .get("/dummy", String::class.java)
-                .execute()
-                .get()
+            .get("/dummy", String::class.java)
+            .execute()
+            .get()
 
         Assert.assertTrue(response.isNotEmpty())
     }
@@ -418,9 +445,9 @@ class CustomRequestsTest {
     @Test
     fun getByteArray() {
         val response = getApi()
-                .get("/dummy", ByteArray::class.java)
-                .execute()
-                .get()
+            .get("/dummy", ByteArray::class.java)
+            .execute()
+            .get()
 
         Assert.assertTrue(response.isNotEmpty())
     }

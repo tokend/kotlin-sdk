@@ -5,8 +5,8 @@ import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.base.model.DataPage
 import org.tokend.sdk.api.base.params.map
-import org.tokend.sdk.api.generated.resources.PollResource
-import org.tokend.sdk.api.generated.resources.VoteResource
+import org.tokend.sdk.api.v3.model.generated.resources.PollResource
+import org.tokend.sdk.api.v3.model.generated.resources.VoteResource
 import org.tokend.sdk.api.v3.polls.params.PollParams
 import org.tokend.sdk.api.v3.polls.params.PollsPageParams
 import org.tokend.sdk.api.v3.polls.params.VoteParams

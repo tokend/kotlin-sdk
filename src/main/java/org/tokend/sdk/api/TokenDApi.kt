@@ -1,13 +1,10 @@
 package org.tokend.sdk.api
 
-import com.google.gson.Gson
 import org.tokend.sdk.api.accounts.AccountsApi
 import org.tokend.sdk.api.accounts.AccountsService
 import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.BaseApi
-import org.tokend.sdk.api.base.model.BaseResource
 import org.tokend.sdk.api.blobs.BlobsApi
-import org.tokend.sdk.api.blobs.BlobsService
 import org.tokend.sdk.api.charts.ChartsApi
 import org.tokend.sdk.api.charts.ChartsService
 import org.tokend.sdk.api.custom.CustomRequestsApi
@@ -16,8 +13,6 @@ import org.tokend.sdk.api.documents.DocumentsApi
 import org.tokend.sdk.api.documents.DocumentsService
 import org.tokend.sdk.api.fees.FeesApi
 import org.tokend.sdk.api.fees.FeesService
-import org.tokend.sdk.api.general.GeneralApi
-import org.tokend.sdk.api.general.GeneralService
 import org.tokend.sdk.api.identity.IdentitiesApi
 import org.tokend.sdk.api.identity.IdentitiesService
 import org.tokend.sdk.api.integrations.IntegrationsApi
@@ -26,7 +21,8 @@ import org.tokend.sdk.api.tfa.TfaService
 import org.tokend.sdk.api.v3.TokenDApiV3
 import org.tokend.sdk.api.wallets.WalletsApi
 import org.tokend.sdk.api.wallets.WalletsService
-import org.tokend.sdk.factory.JsonApiToolsProvider
+import org.tokend.sdk.factory.JsonApiTools
+import org.tokend.sdk.keyserver.KeyServer
 import org.tokend.sdk.signing.AccountRequestSigner
 import org.tokend.sdk.signing.RequestSigner
 import org.tokend.sdk.tfa.TfaCallback
@@ -45,34 +41,40 @@ open class TokenDApi
  * @param extraHeaders  add headers to all requests
  * @param withLogs enable/disable HTTP Logs. True by default.
  * @param asyncCallbackExecutor [Executor] that performs [ApiRequest.executeAsync] callback.
- * By default it is [BaseApi.DEFAULT_ASYNC_CALLBACK_EXECUTOR], you may
+ * By default, it is [BaseApi.DEFAULT_ASYNC_CALLBACK_EXECUTOR], you may
  * want to use Android main thread executor for this.
  *
  * @see [AccountRequestSigner]
  */
 @JvmOverloads
 constructor(
-        rootUrl: String,
-        requestSigner: RequestSigner? = null,
-        tfaCallback: TfaCallback? = null,
-        cookieJarProvider: CookieJarProvider? = null,
-        extraHeaders: Map<String, String?>? = null,
-        withLogs: Boolean = true,
-        asyncCallbackExecutor: Executor = DEFAULT_ASYNC_CALLBACK_EXECUTOR
-) : BaseApi(rootUrl, requestSigner, tfaCallback, cookieJarProvider, extraHeaders,
-        asyncCallbackExecutor, withLogs) {
+    rootUrl: String,
+    requestSigner: RequestSigner? = null,
+    tfaCallback: TfaCallback? = null,
+    cookieJarProvider: CookieJarProvider? = null,
+    extraHeaders: Map<String, String?>? = null,
+    withLogs: Boolean = true,
+    asyncCallbackExecutor: Executor = DEFAULT_ASYNC_CALLBACK_EXECUTOR
+) : BaseApi(
+    rootUrl, requestSigner, tfaCallback, cookieJarProvider, extraHeaders,
+    asyncCallbackExecutor, withLogs
+) {
 
     open val v3: TokenDApiV3 by lazy {
-        TokenDApiV3(rootUrl, requestSigner, tfaCallback, cookieJarProvider, extraHeaders, withLogs,
-                asyncCallbackExecutor)
+        TokenDApiV3(
+            rootUrl, requestSigner, tfaCallback, cookieJarProvider, extraHeaders, withLogs,
+            asyncCallbackExecutor
+        )
     }
 
     /**
      * 🚨 Integration modules APIs. Backward compatibility is not guaranteed.
      */
     open val integrations: IntegrationsApi by lazy {
-        IntegrationsApi(rootUrl, requestSigner, tfaCallback, cookieJarProvider, extraHeaders, withLogs,
-                asyncCallbackExecutor)
+        IntegrationsApi(
+            rootUrl, requestSigner, tfaCallback, cookieJarProvider, extraHeaders, withLogs,
+            asyncCallbackExecutor
+        )
     }
 
     open val accounts: AccountsApi by lazy {
@@ -80,7 +82,7 @@ constructor(
     }
 
     open val blobs: BlobsApi by lazy {
-        BlobsApi(getService(BlobsService::class.java))
+        BlobsApi(customRequests)
     }
 
     open val fees: FeesApi by lazy {
@@ -91,15 +93,13 @@ constructor(
         TfaApi(getService(TfaService::class.java))
     }
 
-    @Deprecated("Use v3 instead")
-    open val general: GeneralApi by lazy {
-        GeneralApi(getService(GeneralService::class.java))
-    }
-
     open val charts: ChartsApi by lazy {
         ChartsApi(getService(ChartsService::class.java))
     }
 
+    /**
+     * @see [KeyServer]
+     */
     open val wallets: WalletsApi by lazy {
         WalletsApi(getService(WalletsService::class.java))
     }
@@ -113,12 +113,11 @@ constructor(
     }
 
     /**
-     * Allows to make custom HTTP requests with response body mapping.
+     * Allows making custom HTTP requests with response body mapping.
      *
-     * If response class extends [BaseResource], then [JsonApiToolsProvider] will be used for mapping.
-     * If response class is [String] or [ByteArray] or primitive Java byte array,
+     * [JsonApiTools] is used for mapping (both JSONAPI resources and regular models).
+     * If the response class is [String] or [ByteArray] or primitive Java byte array,
      * then no mapping will be performed.
-     * Otherwise [Gson] will be used for mapping.
      */
     open val customRequests: CustomRequestsApi by lazy {
         CustomRequestsApi(getService(CustomRequestsService::class.java))
@@ -197,13 +196,13 @@ constructor(
         }
 
         fun build() = TokenDApi(
-                rootUrl,
-                requestSigner,
-                tfaCallback,
-                cookieJarProvider,
-                extraHeaders,
-                withLogs,
-                asyncCallbackExecutor
+            rootUrl,
+            requestSigner,
+            tfaCallback,
+            cookieJarProvider,
+            extraHeaders,
+            withLogs,
+            asyncCallbackExecutor
         )
     }
 

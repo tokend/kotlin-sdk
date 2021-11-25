@@ -11,9 +11,10 @@ import org.tokend.sdk.api.base.params.PagingParamsV2
 import org.tokend.sdk.api.base.params.map
 import org.tokend.sdk.api.identity.model.*
 import org.tokend.sdk.api.identity.params.IdentitiesPageParams
+import org.tokend.sdk.factory.JsonApiTools
 
 open class IdentitiesApi(
-        protected open val identitesService: IdentitiesService
+    protected open val identitesService: IdentitiesService
 ) {
     /**
      * @return identities list page
@@ -21,8 +22,8 @@ open class IdentitiesApi(
     @JvmOverloads
     open fun get(params: IdentitiesPageParams? = null): ApiRequest<DataPage<IdentityResource>> {
         return MappedRetrofitApiRequest(
-                identitesService.get(params.map()),
-                DataPage.Companion::fromPageDocument
+            identitesService.get(params.map()),
+            DataPage.Companion::fromPageDocument
         )
     }
 
@@ -31,10 +32,16 @@ open class IdentitiesApi(
      */
     open fun create(email: String): ApiRequest<IdentityResource> {
         return MappedRetrofitApiRequest(
-                identitesService.create(DataEntity(AttributesEntity(mapOf(
-                        "email" to email
-                )))),
-                JSONAPIDocument<IdentityResource>::get
+            identitesService.create(
+                DataEntity(
+                    AttributesEntity(
+                        mapOf(
+                            "email" to email
+                        )
+                    )
+                )
+            ),
+            JSONAPIDocument<IdentityResource>::get
         )
     }
 
@@ -50,77 +57,111 @@ open class IdentitiesApi(
      */
     open fun getForAccounts(accountIds: List<String>): ApiRequest<List<IdentityResource>> {
         return MappedRetrofitApiRequest(
-                identitesService.getByAccountIds(
-                        DataEntity(accountIds.map(::MassEmailAccountKey))
-                ),
-                JSONAPIDocument<List<IdentityResource>>::get
+            identitesService.getByAccountIds(
+                DataEntity(accountIds.map(::MassEmailAccountKey))
+            ),
+            JSONAPIDocument<List<IdentityResource>>::get
         )
     }
 
-    open fun setPhoneNumber(accountId: String,
-                            phoneNumber: String): ApiRequest<Void> {
+    open fun setPhoneNumber(
+        accountId: String,
+        phoneNumber: String
+    ): ApiRequest<Void> {
         return SimpleRetrofitApiRequest(
-                identitesService.setPhone(
-                        accountId,
-                        DataEntity(AttributesEntity(SetPhoneRequestAttributes(phoneNumber)))
+            identitesService.setPhone(
+                accountId,
+                DataEntity(
+                    AttributesEntity(
+                        mapOf(
+                            "phone" to phoneNumber
+                        )
+                    )
                 )
+            )
         )
     }
 
-    open fun setPassportId(accountId: String,
-                            passportId: String): ApiRequest<Void> {
+    open fun setPassportId(
+        accountId: String,
+        passportId: String
+    ): ApiRequest<Void> {
         return SimpleRetrofitApiRequest(
-                identitesService.setPassportId(
-                        accountId,
-                        DataEntity(AttributesEntity(SetPassportIdRequestAttributes(passportId)))
+            identitesService.setPassportId(
+                accountId,
+                DataEntity(
+                    AttributesEntity(
+                        mapOf(
+                            "passport" to passportId
+                        )
+                    )
                 )
+            )
         )
     }
 
-    open fun setTelegramUsername(accountId: String,
-                                 username: String): ApiRequest<Void> {
+    open fun setTelegramUsername(
+        accountId: String,
+        username: String
+    ): ApiRequest<Void> {
         return SimpleRetrofitApiRequest(
-                identitesService.setTelegramUsername(
-                        accountId,
-                        DataEntity(AttributesEntity(SetTelegramRequestAttributes(username)))
+            identitesService.setTelegramUsername(
+                accountId,
+                DataEntity(
+                    AttributesEntity(
+                        mapOf(
+                            "username" to username
+                        )
+                    )
                 )
+            )
         )
     }
 
     @JvmOverloads
-    open fun getSettings(accountId: String,
-                         pagingParams: PagingParamsV2? = null): ApiRequest<DataPage<IdentitySettingsResource>> {
+    open fun getSettings(
+        accountId: String,
+        pagingParams: PagingParamsV2? = null
+    ): ApiRequest<DataPage<IdentitySettingsResource>> {
         return MappedRetrofitApiRequest(
-                identitesService.getSettings(
-                        accountId,
-                        pagingParams.map()
-                ),
-                DataPage.Companion::fromPageDocument
+            identitesService.getSettings(
+                accountId,
+                pagingParams.map()
+            ),
+            DataPage.Companion::fromPageDocument
         )
     }
 
-    open fun getSettingsItemByKey(accountId: String,
-                                  key: String): ApiRequest<IdentitySettingsResource> {
+    open fun getSettingsItemByKey(
+        accountId: String,
+        key: String
+    ): ApiRequest<IdentitySettingsResource> {
         return MappedRetrofitApiRequest(
-                identitesService.getSettingsItemByKey(accountId, key),
-                JSONAPIDocument<IdentitySettingsResource>::get
+            identitesService.getSettingsItemByKey(accountId, key),
+            JSONAPIDocument<IdentitySettingsResource>::get
         )
     }
 
 
     /**
-     * @param value - will be serialized with Gson
+     * @param value - any object that will be serilized with [JsonApiTools.objectMapper]
      */
-    open fun setSettingsItem(accountId: String,
-                             key: String,
-                             value: Any): ApiRequest<Void> {
-        val data = DataEntity(AttributesEntity(mapOf(
-                "key" to key,
-                "value" to value
-        )))
+    open fun setSettingsItem(
+        accountId: String,
+        key: String,
+        value: Any
+    ): ApiRequest<Void> {
+        val data = DataEntity(
+            AttributesEntity(
+                mapOf(
+                    "key" to key,
+                    "value" to value
+                )
+            )
+        )
 
         return SimpleRetrofitApiRequest(
-                identitesService.setSettingsItem(accountId, data)
+            identitesService.setSettingsItem(accountId, data)
         )
     }
 }

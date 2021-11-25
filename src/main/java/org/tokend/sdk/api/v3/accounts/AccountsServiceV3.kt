@@ -1,9 +1,9 @@
 package org.tokend.sdk.api.v3.accounts
 
 import com.github.jasminb.jsonapi.JSONAPIDocument
-import org.tokend.sdk.api.generated.resources.AccountResource
-import org.tokend.sdk.api.generated.resources.AccountRoleResource
-import org.tokend.sdk.api.generated.resources.AccountRuleResource
+import org.tokend.sdk.api.v3.model.generated.resources.AccountResource
+import org.tokend.sdk.api.v3.model.generated.resources.AccountRoleResource
+import org.tokend.sdk.api.v3.model.generated.resources.AccountRuleResource
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

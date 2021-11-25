@@ -1,17 +1,19 @@
 package org.tokend.sdk.api.base.model
 
-import com.google.gson.annotations.SerializedName
 
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonProperty
 import java.net.URI
 import java.net.URISyntaxException
 
 /**
  * Represents links in responses.
  */
-open class Link internal constructor(@field:SerializedName("href")
-                                val href: String,
-                                @field:SerializedName("templated")
-                                val isTemplated: Boolean) {
+open class Link internal constructor(
+    @get:JsonProperty("href")
+    val href: String
+) {
+    @get:JsonIgnore
     val uri: URI
         get() {
             try {
@@ -19,6 +21,5 @@ open class Link internal constructor(@field:SerializedName("href")
             } catch (e: URISyntaxException) {
                 throw RuntimeException(e)
             }
-
         }
 }

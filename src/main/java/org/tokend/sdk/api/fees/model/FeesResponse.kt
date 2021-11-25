@@ -1,8 +1,9 @@
 package org.tokend.sdk.api.fees.model
 
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
+
 
 class FeesResponse(
-        @SerializedName("fees")
-        val entries : Map<String, List<Fee>>?
+    @JsonProperty("fees")
+    val entries: Map<String, List<Fee>>?
 )

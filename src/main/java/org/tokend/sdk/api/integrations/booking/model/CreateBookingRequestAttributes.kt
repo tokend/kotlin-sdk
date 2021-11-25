@@ -1,23 +1,23 @@
 package org.tokend.sdk.api.integrations.booking.model
 
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.*
 
 class CreateBookingRequestAttributes(
-        @SerializedName("type")
+        @JsonProperty("type")
         val type: Int,
-        @SerializedName("source")
+        @JsonProperty("source")
         val sourceAccount: String,
-        @SerializedName("participants")
+        @JsonProperty("participants")
         val participantsCount: Int,
-        @SerializedName("details")
+        @JsonProperty("details")
         val details: Any,
-        @SerializedName("start_time")
+        @JsonProperty("start_time")
         val startTime: Date? = null,
-        @SerializedName("end_time")
+        @JsonProperty("end_time")
         val endTime: Date? = null,
-        @SerializedName("payload")
+        @JsonProperty("payload")
         val payload: String? = null,
-        @SerializedName("event_id")
+        @JsonProperty("event_id")
         val eventId: Int? = null
 )

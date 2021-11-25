@@ -1,7 +1,9 @@
 package org.tokend.sdk.keyserver.models
 
-import com.google.gson.annotations.SerializedName
-import org.tokend.sdk.factory.GsonFactory
+import com.fasterxml.jackson.annotation.JsonAlias
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonProperty
+import org.tokend.sdk.factory.JsonApiTools
 import org.tokend.sdk.utils.extentions.decodeBase64
 import org.tokend.sdk.utils.extentions.encodeBase64String
 
@@ -13,32 +15,45 @@ import org.tokend.sdk.utils.extentions.encodeBase64String
  */
 open class KeychainData
 @JvmOverloads
-constructor(@SerializedName("IV")
-            private val encodedIv: String,
-            @SerializedName("cipherText")
-            private val encodedCipherText: String,
-            @SerializedName("cipherName")
-            private val cipherName: String = "aes",
-            @SerializedName("modeName")
-            private val cipherMode: String = "gcm"
+constructor(
+    @get:JsonProperty("iv")
+    @JsonAlias("IV")
+    val encodedIv: String,
+    @get:JsonProperty("cipherText")
+    val encodedCipherText: String,
+    @get:JsonProperty("cipherName")
+    val cipherName: String = "aes",
+    @get:JsonProperty("modeName")
+    val cipherMode: String = "gcm"
 ) {
     /**
      * Raw bytes of the init vector.
      */
+    @get:JsonIgnore
     val iv: ByteArray
         get() = encodedIv.decodeBase64()
 
     /**
      * Raw bytes of the encrypted data
      */
+    @get:JsonIgnore
     val cipherText: ByteArray
         get() = encodedCipherText.decodeBase64()
 
     /**
-     * Serializes data to JSON and encodes it with Base64
+     * Serializes data to JSON.
+     */
+    fun toJson(): String {
+        return JsonApiTools.objectMapper.writeValueAsString(this)
+    }
+
+    /**
+     * Serializes data to JSON and encodes it with Base64.
      */
     fun encode(): String {
-        return GsonFactory().getBaseGson().toJson(this).toByteArray().encodeBase64String()
+        return toJson()
+            .toByteArray()
+            .encodeBase64String()
     }
 
     companion object {
@@ -49,7 +64,8 @@ constructor(@SerializedName("IV")
 
         @JvmStatic
         fun fromJson(rawJson: String): KeychainData {
-            return GsonFactory().getBaseGson().fromJson(rawJson, KeychainData::class.java)
+            return JsonApiTools.objectMapper
+                .readValue(rawJson, KeychainData::class.java)
         }
 
         @JvmStatic

@@ -15,7 +15,7 @@ import org.tokend.sdk.api.v3.balances.BalancesApi
 import org.tokend.sdk.api.v3.balances.BalancesService
 import org.tokend.sdk.api.v3.fees.FeesApiV3
 import org.tokend.sdk.api.v3.fees.FeesServiceV3
-import org.tokend.sdk.api.v3.general.GeneralApiV3
+import org.tokend.sdk.api.v3.info.HorizonInfoApiV3
 import org.tokend.sdk.api.v3.history.HistoryApi
 import org.tokend.sdk.api.v3.history.HistoryService
 import org.tokend.sdk.api.v3.keyvalue.KeyValueStorageApiV3
@@ -56,8 +56,8 @@ open class TokenDApiV3(rootUrl: String,
         CustomRequestsApi(getService(CustomRequestsService::class.java))
     }
 
-    open val general: GeneralApiV3 by  lazy {
-        GeneralApiV3(customRequests)
+    open val info: HorizonInfoApiV3 by  lazy {
+        HorizonInfoApiV3(customRequests)
     }
 
     open val accounts: AccountsApiV3 by lazy {

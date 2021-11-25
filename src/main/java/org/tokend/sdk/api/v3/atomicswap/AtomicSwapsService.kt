@@ -1,7 +1,7 @@
 package org.tokend.sdk.api.v3.atomicswap
 
 import com.github.jasminb.jsonapi.JSONAPIDocument
-import org.tokend.sdk.api.generated.resources.AtomicSwapAskResource
+import org.tokend.sdk.api.v3.model.generated.resources.AtomicSwapAskResource
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

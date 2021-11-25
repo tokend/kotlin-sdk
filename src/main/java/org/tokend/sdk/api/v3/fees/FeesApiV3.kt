@@ -5,8 +5,8 @@ import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.MappedRetrofitApiRequest
 import org.tokend.sdk.api.base.model.DataPage
 import org.tokend.sdk.api.base.params.map
-import org.tokend.sdk.api.generated.resources.CalculatedFeeResource
-import org.tokend.sdk.api.generated.resources.FeeRecordResource
+import org.tokend.sdk.api.v3.model.generated.resources.CalculatedFeeResource
+import org.tokend.sdk.api.v3.model.generated.resources.FeeRecordResource
 import org.tokend.sdk.api.v3.fees.params.FeeCalculationParams
 import org.tokend.sdk.api.v3.fees.params.FeesPageParamsV3
 

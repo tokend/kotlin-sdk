@@ -13,11 +13,11 @@ class ClientRedirectPayloadTest {
         Assert.assertEquals(ClientRedirectType.EMAIL_VERIFICATION, parsed.type)
         Assert.assertEquals(
                 "xhxKQFDaFpLSjFbcXoEF",
-                parsed.meta["token"].asString
+                parsed.meta["token"].asText()
         )
         Assert.assertEquals(
                 "931df87885cdb8aa805886891a48fd13506857afe68ff2c48464ba0cf93a2418",
-                parsed.meta["wallet_id"].asString
+                parsed.meta["wallet_id"].asText()
         )
     }
 }

@@ -7,6 +7,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [4.0.0] 2021-11-25
+
+### Added
+- Ability to customize wallet attributes and relationships
+before saving it in `KeyServer.createAndSaveWallet` methods
+using `walletCustomization` param
+- Kotlin Jackson module (now can use `jacksonTypeRef` anywhere)
+
+### Removed
+- Gson! Use `JsonApiTools.objectMapper` and @get:JsonProperties, @JsonIgnore for serialization
+- A lot of obsolete integration APIs
+- Deprecated `general` API, use `v3.info` instead
+- `EncryptedAccount`
+- Serialization annotations from `Blob`, it is no more directly used in creation request
+
+### Changed
+- `WalletData` is no longer used for wallet creation
+- `WalletSaveData` and `WalletCreationResult` are now used for wallet creation
+- `KeyServer.getWalletInfo` and `KeyServer.getWalletData` are renamed to `getWallet`
+- `WalletInfo` is replaced with `DecryptedWallet`
+- `email` param in `KeyServer` methods and indirect models is renamed to `login`
+- `currentWalletInfo` param in `KeyServer.updateWalletPassword` methods
+is renamed to `currentWallet`
+
+- `JsonApiToolsProvider` is renamed to `JsonApiTools`,
+`getObjectMapper()` getter is now the `objectMapper` property
+- `v3.general` is renamed to `v3.info`
+- `api.generated` package is moved to `api.v3.model.generated`
+- JVM target is set to 1.8
+- Updated wallet module version to `3.7.0`
+
+### Fixed
+- Typo in wallet verification code serialized attribute
+
 ## [3.8.0] 2021-07-23
 
 ### Added
@@ -478,4 +512,5 @@ with `addExtraResources` method
 [3.7.1]: https://github.com/tokend/kotlin-sdk/compare/3.7.0...3.7.1
 [3.7.2]: https://github.com/tokend/kotlin-sdk/compare/3.7.1...3.7.2
 [3.8.0]: https://github.com/tokend/kotlin-sdk/compare/3.7.2...3.8.0
-[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/3.8.0...HEAD
+[4.0.0]: https://github.com/tokend/kotlin-sdk/compare/3.8.0...4.0.0
+[Unreleased]: https://github.com/tokend/kotlin-sdk/compare/4.0.0...HEAD

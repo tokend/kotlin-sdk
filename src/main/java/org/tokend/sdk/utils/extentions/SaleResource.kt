@@ -1,6 +1,6 @@
 package org.tokend.sdk.utils.extentions
 
-import org.tokend.sdk.api.generated.resources.SaleResource
+import org.tokend.sdk.api.v3.model.generated.resources.SaleResource
 import org.tokend.sdk.api.v3.sales.model.SaleState
 import java.util.*
 
