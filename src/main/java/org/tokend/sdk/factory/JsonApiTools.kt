@@ -13,13 +13,10 @@ import org.tokend.sdk.api.generated.resources.AllResources
 import org.tokend.sdk.api.identity.model.IdentityResource
 import org.tokend.sdk.api.identity.model.IdentitySettingsResource
 import org.tokend.sdk.api.integrations.booking.model.scheduler.SchedulerPayloadResource
-import org.tokend.sdk.api.integrations.dns.model.BusinessResource
-import org.tokend.sdk.api.integrations.dns.model.ClientBalanceResource
-import org.tokend.sdk.api.integrations.dns.model.ClientResource
-import org.tokend.sdk.api.integrations.dns.model.UserInfoResource
 import org.tokend.sdk.api.integrations.marketplace.model.MarketplaceOfferResource
 import org.tokend.sdk.api.integrations.marketplace.model.MarketplacePaymentMethodResource
-import org.tokend.sdk.api.integrations.paymentproxy.model.PaymentAccountResource
+import org.tokend.sdk.factory.JsonApiTools.addExtraResources
+import org.tokend.sdk.factory.JsonApiTools.objectMapper
 import org.tokend.sdk.utils.ApiDateUtil
 import org.tokend.sdk.utils.BigDecimalUtil
 import retrofit2.Converter
@@ -39,11 +36,6 @@ import java.util.logging.Logger
 object JsonApiTools {
     private val extraResources = mutableSetOf<Class<*>>(
         IdentityResource::class.java,
-        BusinessResource::class.java,
-        ClientResource::class.java,
-        ClientBalanceResource::class.java,
-        UserInfoResource::class.java,
-        PaymentAccountResource::class.java,
         MarketplaceOfferResource::class.java,
         MarketplacePaymentMethodResource::class.java,
         IdentitySettingsResource::class.java,
@@ -81,13 +73,6 @@ object JsonApiTools {
                 *AllResources.ARRAY,
                 *org.tokend.sdk.api.integrations.booking.model.generated.resources.AllResources.ARRAY,
                 *org.tokend.sdk.api.integrations.booking.model.scheduler.generated.resources.AllResources.ARRAY,
-                *org.tokend.sdk.api.integrations.invoices.model.generated.resources.AllResources.ARRAY,
-                *org.tokend.sdk.api.integrations.recpayments.model.generated.resources.AllResources.ARRAY,
-                *org.tokend.sdk.api.integrations.cards.model.generated.resources.AllResources.ARRAY,
-                *org.tokend.sdk.api.integrations.friends.model.generated.resources.AllResources.ARRAY,
-                *org.tokend.sdk.api.integrations.mergedhistory.model.generated.resources.AllResources.ARRAY,
-                *org.tokend.sdk.api.integrations.invitations.model.generated.resources.AllResources.ARRAY,
-                *org.tokend.sdk.api.integrations.exchange.model.generated.resources.AllResources.ARRAY,
                 *org.tokend.sdk.api.integrations.kycprovider.model.generated.resources.AllResources.ARRAY,
                 *extraResources.toTypedArray()
             )
