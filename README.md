@@ -29,11 +29,11 @@ const val TOKEND_URL = "https://api.testnet.tokend.org"
 // Use TokenDApi facade members to access particular endpoints.
 val api = TokenDApi(TOKEND_URL)
 val assetsPage = api.v3.assets.get().execute().get()
-val systemInfo = api.general.getSystemInfo().execute().get()
+val systemInfo = api.v3.info.getInfo().execute().get()
 
 // Use KeyServer instance to work with key server.
 val keyServer = KeyServer(api.wallets)
-val walletInfo = keyServer.getWalletInfo(email, password).execute().get()
+val wallet = keyServer.getWallet(email, password).execute().get()
 ```
 
 ### Making custom requests
