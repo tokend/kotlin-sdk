@@ -22,10 +22,10 @@ class DocumentsTest {
 
         System.out.println("Attempt to sign up $email ${password.joinToString("")}")
 
-        val (wallet, rootAccount)
+        val (wallet, accounts)
                 = keyServer.createAndSaveWallet(email, password, api.v3.keyValue).execute().get()
 
-        val signedApi = Util.getSignedApi(rootAccount, api.rootUrl)
+        val signedApi = Util.getSignedApi(accounts.first(), api.rootUrl)
 
         val fileName = "test.txt"
         val document = "Hello World".toByteArray()

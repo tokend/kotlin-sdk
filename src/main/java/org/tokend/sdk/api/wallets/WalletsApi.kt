@@ -10,7 +10,7 @@ import org.tokend.sdk.api.wallets.model.EmailNotVerifiedException
 import org.tokend.sdk.api.wallets.model.InvalidCredentialsException
 import org.tokend.sdk.keyserver.models.Wallet
 import org.tokend.sdk.keyserver.models.LoginParams
-import org.tokend.sdk.keyserver.models.WalletCreationData
+import org.tokend.sdk.keyserver.models.WalletSaveData
 import org.tokend.sdk.redirects.ClientRedirectPayload
 import org.tokend.sdk.redirects.ClientRedirectType
 import retrofit2.HttpException
@@ -54,7 +54,7 @@ open class WalletsApi(
      * Will create new wallet.
      * @see <a href="https://tokend.gitlab.io/docs/?http#create-wallet">Docs</a>
      */
-    open fun create(data: WalletCreationData): ApiRequest<Wallet> {
+    open fun create(data: WalletSaveData): ApiRequest<Wallet> {
         return MappedRetrofitApiRequest(
             walletsService.create(data.toRequestBody()),
             { it }
@@ -75,7 +75,7 @@ open class WalletsApi(
      */
     open fun update(
         walletId: String,
-        data: WalletCreationData
+        data: WalletSaveData
     ): ApiRequest<Void> {
         return SimpleRetrofitApiRequest(
             walletsService.update(

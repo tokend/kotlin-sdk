@@ -21,13 +21,13 @@ class BlobsTest {
 
         System.out.println("Attempt to sign up $email ${password.joinToString("")}")
 
-        val (wallet, rootAccount)
+        val (wallet, accounts)
                 = keyServer.createAndSaveWallet(email, password, api.v3.keyValue).execute().get()
         email = wallet.email
 
         val currentWalletInfo = keyServer.getWallet(email, password).execute().get()
 
-        val signedApi = Util.getSignedApi(rootAccount, api.rootUrl)
+        val signedApi = Util.getSignedApi(accounts.first(), api.rootUrl)
 
         val content = "Hello World"
 

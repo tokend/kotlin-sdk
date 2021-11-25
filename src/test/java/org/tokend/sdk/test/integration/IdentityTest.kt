@@ -27,7 +27,7 @@ class IdentityTest {
 
         System.out.println("Attempt to sign up $email ${password.joinToString("")}")
 
-        val (wallet, rootAccount)
+        val (wallet, accounts)
                 = keyServer.createAndSaveWallet(email, password, api.v3.keyValue).execute().get()
         email = wallet.email
 
@@ -46,7 +46,7 @@ class IdentityTest {
                 }
             }
         }
-        val signedApi = Util.getSignedApi(rootAccount, api.rootUrl, tfaCallback)
+        val signedApi = Util.getSignedApi(accounts.first(), api.rootUrl, tfaCallback)
 
         val number = Random.nextInt(0, 999999999).toString()
         val phoneNumber = "+380${number.padEnd(9 - number.length, '0')}"
@@ -91,13 +91,13 @@ class IdentityTest {
 
         System.out.println("Attempt to sign up $email ${password.joinToString("")}")
 
-        val (wallet, rootAccount)
+        val (wallet, accounts)
                 = keyServer.createAndSaveWallet(email, password, api.v3.keyValue).execute().get()
         email = wallet.email
 
         val currentWalletInfo = keyServer.getWallet(email, password).execute().get()
 
-        val signedApi = Util.getSignedApi(rootAccount, api.rootUrl)
+        val signedApi = Util.getSignedApi(accounts.first(), api.rootUrl)
 
         signedApi
                 .identities

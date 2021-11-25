@@ -126,7 +126,7 @@ class KeyServer constructor(
      *
      * @see EmailAlreadyTakenException
      */
-    fun saveWallet(creationData: WalletCreationData): ApiRequest<Wallet> {
+    fun saveWallet(creationData: WalletSaveData): ApiRequest<Wallet> {
         return walletsApi.create(creationData)
     }
 
@@ -135,7 +135,7 @@ class KeyServer constructor(
      */
     fun updateWallet(
         walletId: String,
-        updateData: WalletCreationData
+        updateData: WalletSaveData
     ): ApiRequest<Void> {
         return walletsApi.update(walletId, updateData)
     }
@@ -144,6 +144,9 @@ class KeyServer constructor(
     /**
      * Loads default login params, loads default signer role,
      * creates a wallet with single signer and submits it to the system.
+     *
+     * @param walletCustomization allows adding extra attributes and relationships
+     * to the wallet before saving
      *
      * @see EmailAlreadyTakenException
      */
@@ -154,6 +157,7 @@ class KeyServer constructor(
         keyValueApi: KeyValueStorageApiV3,
         rootAccount: Account = Account.random(),
         verificationCode: String? = null,
+        walletCustomization: WalletSaveData.() -> Unit = {}
     ): ApiRequest<WalletCreationResult> {
         return MappedCallableApiRequest(
             {
@@ -164,6 +168,7 @@ class KeyServer constructor(
                     accounts = listOf(rootAccount),
                     signers = listOf(SignerData(rootAccount.accountId, defaultSignerRole)),
                     verificationCode = verificationCode,
+                    walletCustomization = walletCustomization
                 )
             },
             { it }
@@ -174,6 +179,9 @@ class KeyServer constructor(
      * Loads default login params, creates a wallet with single signer
      * and submits it to the system.
      *
+     * @param walletCustomization allows adding extra attributes and relationships
+     * to the wallet before saving
+     *
      * @see EmailAlreadyTakenException
      */
     @JvmOverloads
@@ -183,19 +191,24 @@ class KeyServer constructor(
         defaultSignerRole: Uint64,
         rootAccount: Account = Account.random(),
         verificationCode: String? = null,
+        walletCustomization: WalletSaveData.() -> Unit = {}
     ): ApiRequest<WalletCreationResult> {
         return createAndSaveWallet(
             email = email,
             password = password,
             rootAccount = rootAccount,
             signers = listOf(SignerData(rootAccount.accountId, defaultSignerRole)),
-            verificationCode = verificationCode
+            verificationCode = verificationCode,
+            walletCustomization = walletCustomization
         )
     }
 
     /**
      * Loads default login params, creates a wallet with specified signers
      * and submits it to the system.
+     *
+     * @param walletCustomization allows adding extra attributes and relationships
+     * to the wallet before saving
      */
     fun createAndSaveWallet(
         email: String,
@@ -203,6 +216,7 @@ class KeyServer constructor(
         rootAccount: Account,
         signers: Collection<SignerData>,
         verificationCode: String? = null,
+        walletCustomization: WalletSaveData.() -> Unit = {}
     ): ApiRequest<WalletCreationResult> {
         return MappedCallableApiRequest(
             {
@@ -212,6 +226,7 @@ class KeyServer constructor(
                     accounts = listOf(rootAccount),
                     signers = signers,
                     verificationCode = verificationCode,
+                    walletCustomization = walletCustomization
                 )
             },
             { it }
@@ -229,6 +244,7 @@ class KeyServer constructor(
         accounts: List<Account>,
         signers: Collection<SignerData>,
         verificationCode: String? = null,
+        walletCustomization: WalletSaveData.() -> Unit = {}
     ): ApiRequest<WalletCreationResult> {
         return MappedCallableApiRequest(
             {
@@ -237,7 +253,8 @@ class KeyServer constructor(
                     password = password,
                     accounts = accounts,
                     signers = signers,
-                    verificationCode = verificationCode
+                    verificationCode = verificationCode,
+                    walletCustomization = walletCustomization
                 )
             },
             { it }
@@ -256,6 +273,7 @@ class KeyServer constructor(
         accounts: List<Account>,
         signers: Collection<SignerData>,
         verificationCode: String? = null,
+        walletCustomization: WalletSaveData.() -> Unit = {}
     ): WalletCreationResult {
         val loginParams = getLoginParams().execute().get()
 
@@ -272,7 +290,9 @@ class KeyServer constructor(
             verificationCode = verificationCode
         )
 
-        val remoteWalletData = saveWallet(result.creationData)
+        walletCustomization.invoke(result.dataToSave)
+
+        val remoteWalletData = saveWallet(result.dataToSave)
             .execute()
             .get()
 
@@ -467,14 +487,14 @@ class KeyServer constructor(
             signers = emptyList()
         )
 
-        newLoginParams.kdfAttributes.encodedSalt = newWallet.creationData.encodedSalt
+        newLoginParams.kdfAttributes.encodedSalt = newWallet.dataToSave.encodedSalt
 
-        newWallet.creationData.relationships["transaction"] =
+        newWallet.dataToSave.relationships["transaction"] =
             WalletRelationship.transaction(signersUpdateTx)
 
         updateWallet(
             currentWalletInfo.walletId,
-            newWallet.creationData
+            newWallet.dataToSave
         )
             .execute()
 
@@ -483,7 +503,7 @@ class KeyServer constructor(
             login = currentWalletInfo.login,
             loginParams = newLoginParams,
             accounts = newAccounts,
-            walletId = newWallet.creationData.walletId
+            walletId = newWallet.dataToSave.walletId
         )
     }
 
@@ -544,25 +564,25 @@ class KeyServer constructor(
             kdfAttributes = newLoginParams.kdfAttributes,
             kdfVersion = newLoginParams.id,
             accounts = newAccounts,
-            walletType = WalletCreationData.TYPE_RECOVERY,
+            walletType = WalletSaveData.TYPE_RECOVERY,
             signers = emptyList()
         )
 
-        recoveryWallet.creationData.relationships["signer"] =
+        recoveryWallet.dataToSave.relationships["signer"] =
             WalletRelationship.signer(
                 SignerData(
-                    recoveryWallet.creationData.accountId,
+                    recoveryWallet.dataToSave.accountId,
                     0
                 )
             )
 
-        newLoginParams.kdfAttributes.encodedSalt = recoveryWallet.creationData.encodedSalt
+        newLoginParams.kdfAttributes.encodedSalt = recoveryWallet.dataToSave.encodedSalt
 
-        val newWalletId = recoveryWallet.creationData.walletId
+        val newWalletId = recoveryWallet.dataToSave.walletId
 
         updateWallet(
             newWalletId,
-            recoveryWallet.creationData
+            recoveryWallet.dataToSave
         )
             .execute()
 
@@ -595,7 +615,7 @@ class KeyServer constructor(
             kdfVersion: Long,
             accounts: List<Account>,
             signers: Collection<SignerData>,
-            walletType: String = WalletCreationData.TYPE_DEFAULT,
+            walletType: String = WalletSaveData.TYPE_DEFAULT,
             verificationCode: String? = null,
         ): WalletCreationResult {
             val derivationEmail = login.toLowerCase()
@@ -609,7 +629,7 @@ class KeyServer constructor(
             val walletId = WalletKeyDerivation
                 .deriveAndEncodeWalletId(derivationEmail, password, kdfAttributesWithSalt)
 
-            val wallet = WalletCreationData(
+            val wallet = WalletSaveData(
                 type = walletType,
                 walletId = walletId,
                 email = derivationEmail,
@@ -636,10 +656,8 @@ class KeyServer constructor(
             wallet.arrayRelationships["signers"] = signers.map(WalletRelationship.Companion::signer)
 
             return WalletCreationResult(
-                creationData = wallet,
+                dataToSave = wallet,
                 accounts = accounts,
-                rootAccount = accounts.first(),
-                walletId = walletId,
                 loginParams = LoginParams(
                     id = kdfVersion,
                     type = "kdf",
@@ -669,7 +687,7 @@ class KeyServer constructor(
             kdfVersion: Long,
             defaultSignerRole: Uint64,
             rootAccount: Account = Account.random(),
-            walletType: String = WalletCreationData.TYPE_DEFAULT,
+            walletType: String = WalletSaveData.TYPE_DEFAULT,
             verificationCode: String? = null,
         ): WalletCreationResult {
             return createWallet(
@@ -706,7 +724,7 @@ class KeyServer constructor(
             kdfVersion: Long,
             keyValueApi: KeyValueStorageApiV3,
             rootAccount: Account = Account.random(),
-            walletType: String = WalletCreationData.TYPE_DEFAULT,
+            walletType: String = WalletSaveData.TYPE_DEFAULT,
             verificationCode: String? = null,
         ): ApiRequest<WalletCreationResult> {
             return MappedCallableApiRequest(

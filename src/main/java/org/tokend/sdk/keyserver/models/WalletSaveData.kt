@@ -3,22 +3,42 @@ package org.tokend.sdk.keyserver.models
 import org.tokend.sdk.api.base.model.DataEntity
 import org.tokend.sdk.utils.extentions.encodeBase64String
 
-class WalletCreationData(
+/**
+ * Data to be saved in the system key server.
+ */
+class WalletSaveData(
     val type: String,
     val walletId: String,
     val email: String,
     val accountId: String,
     val salt: ByteArray,
     val keychainData: KeychainData,
-    val extraAttributes: MutableMap<String, Any> = mutableMapOf(),
     val verificationCode: String? = null
 ) {
+    /**
+     * Extra attributes to add during the saving.
+     */
+    val extraAttributes: MutableMap<String, Any> = mutableMapOf()
+
+    /**
+     * Single relationships (key:relationship).
+     */
     val relationships: MutableMap<String, WalletRelationship> = mutableMapOf()
+
+    /**
+     * Array relationships (key:[relationship1, ..., relationshipN])
+     */
     val arrayRelationships: MutableMap<String, Collection<WalletRelationship>> = mutableMapOf()
 
+    /**
+     * KDF salt encoded with Base64.
+     */
     val encodedSalt: String
         get() = salt.encodeBase64String()
 
+    /**
+     * Keychain data encoded with [KeychainData.encode]
+     */
     val encodedKeychainData: String
         get() = keychainData.encode()
 
