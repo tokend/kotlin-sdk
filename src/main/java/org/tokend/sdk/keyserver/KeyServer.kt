@@ -38,7 +38,7 @@ class KeyServer constructor(
 
     /**
      * @see getLoginParams
-     * @see getExistingWallet
+     * @see getWallet
      */
     @Throws(
         InvalidCredentialsException::class,
@@ -60,9 +60,9 @@ class KeyServer constructor(
         val walletKey = WalletKeyDerivation
             .deriveWalletEncryptionKey(derivationLogin, password, loginParams.kdfAttributes)
 
-        val existingWallet = getExistingWallet(hexWalletId, queryMap).execute().get()
+        val existingWallet = getWallet(hexWalletId, queryMap).execute().get()
 
-        val encodedKeychainData = existingWallet.data.attributes.keychainData
+        val encodedKeychainData = existingWallet.data.attributes.encodedKeychainData
         val accountId = existingWallet.data.attributes.accountId
         val email = existingWallet.data.attributes.email
 
@@ -110,7 +110,7 @@ class KeyServer constructor(
         HttpException::class
     )
     @JvmOverloads
-    fun getExistingWallet(
+    fun getWallet(
         walletId: String,
         queryMap: Map<String, Any>? = null
     ): ApiRequest<ExistingWallet> {
@@ -581,7 +581,7 @@ class KeyServer constructor(
                 walletId = walletId,
                 email = derivationEmail,
                 accountId = accounts.first().accountId,
-                keychainData = WalletEncryption.encryptAccountsV2(accounts, walletKey),
+                keychainData = WalletEncryption.encryptAccounts(accounts, walletKey),
                 salt = kdfSalt,
                 verificationCode = verificationCode
             )
@@ -592,7 +592,7 @@ class KeyServer constructor(
             wallet.relationships["factor"] =
                 WalletRelationship.passwordV2(
                     accountId = passwordFactorAccount.accountId,
-                    keychainData = WalletEncryption.encryptAccountsV2(
+                    keychainData = WalletEncryption.encryptAccounts(
                         listOf(
                             passwordFactorAccount
                         ), walletKey

@@ -15,7 +15,7 @@ class ExistingWalletData(
         @JsonProperty("email")
         val email: String,
         @JsonProperty("keychain_data")
-        val keychainData: String,
+        val encodedKeychainData: String,
         @JsonProperty("verified")
         val isVerified: Boolean,
     )

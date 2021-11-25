@@ -2,7 +2,6 @@ package org.tokend.sdk.keyserver
 
 import org.tokend.crypto.cipher.Aes256GCM
 import org.tokend.crypto.ecdsa.erase
-import org.tokend.sdk.keyserver.models.EncryptedWalletAccount
 import org.tokend.sdk.keyserver.models.KeychainData
 import org.tokend.sdk.keyserver.seedreader.KeychainDataSeedsArrayReader
 import org.tokend.sdk.keyserver.seedreader.KeychainDataSingleSeedReader
@@ -150,115 +149,16 @@ object WalletEncryption {
     }
 
     /**
-     * Encrypts given account data
-     *
-     * @param email wallet email
-     * @param seed secret seed of the [Account]
-     * @param accountId ID i.e. a public key of the [Account]
-     * @param walletEncryptionKey 32 bytes encryption key
-     * @param keyDerivationSalt KDF salt used for [walletEncryptionKey] derivation
-     *
-     * @see WalletKeyDerivation.deriveWalletEncryptionKey
-     * @see Account.secretSeed
-     * @see Aes256GCM
-     */
-    @JvmStatic
-    fun encryptAccount(
-        email: String,
-        seed: CharArray,
-        accountId: String,
-        walletEncryptionKey: ByteArray,
-        keyDerivationSalt: ByteArray
-    ): EncryptedWalletAccount {
-        val iv = SecureRandom.getSeed(IV_LENGTH)
-
-        val encryptedSeedKeychainData = encryptSecretSeed(seed, iv, walletEncryptionKey)
-
-        return EncryptedWalletAccount(
-            accountId,
-            email,
-            keyDerivationSalt,
-            encryptedSeedKeychainData
-        )
-    }
-
-    /**
-     * Encrypts given account
-     *
-     * @param email wallet email
-     * @param account [Account] to encrypt
-     * @param walletEncryptionKey 32 bytes encryption key
-     * @param keyDerivationSalt KDF salt used for [walletEncryptionKey] derivation
-     *
-     * @see WalletKeyDerivation.deriveWalletEncryptionKey
-     * @see Aes256GCM
-     */
-    @JvmStatic
-    fun encryptAccount(
-        email: String,
-        account: Account,
-        walletEncryptionKey: ByteArray,
-        keyDerivationSalt: ByteArray
-    ): EncryptedWalletAccount {
-        return encryptAccounts(email, listOf(account), walletEncryptionKey, keyDerivationSalt)
-    }
-
-    /**
      * Encrypts given account assuming that first account is the root one
      *
-     * @param email wallet email
      * @param accounts accounts to encrypt in specified order
      * @param walletEncryptionKey 32 bytes encryption key
-     * @param keyDerivationSalt KDF salt used for [walletEncryptionKey] derivation
      *
      * @see WalletKeyDerivation.deriveWalletEncryptionKey
      * @see Aes256GCM
      */
     @JvmStatic
     fun encryptAccounts(
-        email: String,
-        accounts: List<Account>,
-        walletEncryptionKey: ByteArray,
-        keyDerivationSalt: ByteArray
-    ): EncryptedWalletAccount {
-        val iv = SecureRandom.getSeed(IV_LENGTH)
-
-        val seeds = accounts.map {
-            requireNotNull(it.secretSeed) {
-                "Account $it has no secret seed"
-            }
-        }
-        val mainAccount = requireNotNull(accounts.firstOrNull()) {
-            "There must be at least one account"
-        }
-
-        val encryptedSeedsKeychainData = encryptSecretSeeds(
-            seeds = seeds,
-            iv = iv,
-            walletEncryptionKey = walletEncryptionKey
-        )
-
-        seeds.forEach(CharArray::erase)
-
-        return EncryptedWalletAccount(
-            accountId = mainAccount.accountId,
-            keychainData = encryptedSeedsKeychainData,
-            salt = keyDerivationSalt,
-            email = email
-        )
-    }
-
-    /**
-     * Encrypts given account assuming that first account is the root one
-     *
-     * @param accounts accounts to encrypt in specified order
-     * @param walletEncryptionKey 32 bytes encryption key
-     *
-     * @see WalletKeyDerivation.deriveWalletEncryptionKey
-     * @see Aes256GCM
-     */
-    @JvmStatic
-    fun encryptAccountsV2(
         accounts: List<Account>,
         walletEncryptionKey: ByteArray,
     ): KeychainData {
