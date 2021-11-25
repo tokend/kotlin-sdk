@@ -13,11 +13,6 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'kotlin'
 
-compileJava {
-    sourceCompatibility = 1.6
-    targetCompatibility = 1.6
-}
-
 dependencies {
     testCompile 'junit:junit:4.12'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -41,12 +36,12 @@ repositories {
     maven { url "https://maven.tokend.io" }
 }
 
-compileKotlin {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
+compileJava {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
-compileTestKotlin {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
-}
+compileKotlin { kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8 }
+compileTestKotlin { kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8 }
 
 apply from: 'deploy.gradle'
 
