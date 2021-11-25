@@ -88,6 +88,9 @@ For correct ProGuard processing add following lines to your project's `proguard-
 -keepclassmembers class * { @com.github.jasminb.jsonapi.annotations.Id <fields>; }
 -keep class * implements com.github.jasminb.jsonapi.ResourceIdHandler
 
+# Crypto
+-dontwarn net.i2p.crypto.eddsa.**
+
 # Wallet
 # Uncomment this if you would like to decode XDRs
 #-keep class org.tokend.wallet.xdr.* { *; }
