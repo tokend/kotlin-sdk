@@ -36,6 +36,7 @@ is renamed to `currentWallet`
 - `v3.general` is renamed to `v3.info`
 - `api.generated` package is moved to `api.v3.model.generated`
 - JVM target is set to 1.8
+- Updated wallet module version to `3.7.0`
 
 ### Fixed
 - Typo in wallet verification code serialized attribute
