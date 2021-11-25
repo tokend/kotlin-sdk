@@ -17,12 +17,11 @@ import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
 /**
- * Allows to make custom HTTP requests with response body mapping.
+ * Allows making custom HTTP requests with response body mapping.
  *
- * If response class extends [BaseResource], then [JsonApiTools] will be used for mapping.
- * If response class is [String] or [ByteArray] or primitive Java byte array,
+ * [JsonApiTools] is used for mapping (both JSONAPI resources and regular models).
+ * If the response class is [String] or [ByteArray] or primitive Java byte array,
  * then no mapping will be performed.
- * Otherwise [Gson] will be used for mapping.
  */
 open class CustomRequestsApi(
     protected open val customRequestsService: CustomRequestsService
@@ -65,7 +64,7 @@ open class CustomRequestsApi(
     ): ApiRequest<T> {
         return MappedRetrofitApiRequest(
             doGet(url, queryMap, headersMap),
-            { mapResponseByType<T>(it, responseType) }
+            { mapResponseByType(it, responseType) }
         )
     }
 
@@ -163,7 +162,7 @@ open class CustomRequestsApi(
      * @return Response of type [T]
      *
      * @param url Relative endpoint URL
-     * @param body Request body, will be serialized to JSON with [Gson]
+     * @param body Request body, will be serialized to JSON with [JsonApiTools.objectMapper]
      * @param responseClass [Class] that matches [T]
      * @param queryMap Map of query params
      * @param headersMap Map of headers
@@ -190,7 +189,7 @@ open class CustomRequestsApi(
      * @return Response of type [T]
      *
      * @param url Relative endpoint URL
-     * @param body Request body, will be serialized to JSON with [Gson]
+     * @param body Request body, will be serialized to JSON with [JsonApiTools.objectMapper]
      * @param responseType [TypeReference] that matches [T]
      * @param queryMap Map of query params
      * @param headersMap Map of headers
@@ -231,7 +230,7 @@ open class CustomRequestsApi(
      * @return Response of type [T]
      *
      * @param url Relative endpoint URL
-     * @param body Request body, will be serialized to JSON with [Gson]
+     * @param body Request body, will be serialized to JSON with [JsonApiTools.objectMapper]
      * @param responseClass [Class] that matches [T]
      * @param queryMap Map of query params
      * @param headersMap Map of headers
@@ -260,7 +259,7 @@ open class CustomRequestsApi(
      * @return Response of type [T]
      *
      * @param url Relative endpoint URL
-     * @param body Request body, will be serialized to JSON with [Gson]
+     * @param body Request body, will be serialized to JSON with [JsonApiTools.objectMapper]
      * @param responseType [TypeReference] that matches [T]
      * @param queryMap Map of query params
      * @param headersMap Map of headers
@@ -301,7 +300,7 @@ open class CustomRequestsApi(
      * @return Response of type [T]
      *
      * @param url Relative endpoint URL
-     * @param body Request body, will be serialized to JSON with [Gson]
+     * @param body Request body, will be serialized to JSON with [JsonApiTools.objectMapper]
      * @param responseClass [Class] that matches [T]
      * @param queryMap Map of query params
      * @param headersMap Map of headers
@@ -330,7 +329,7 @@ open class CustomRequestsApi(
      * @return Response of type [T]
      *
      * @param url Relative endpoint URL
-     * @param body Request body, will be serialized to JSON with [Gson]
+     * @param body Request body, will be serialized to JSON with [JsonApiTools.objectMapper]
      * @param responseType [TypeReference] that matches [T]
      * @param queryMap Map of query params
      * @param headersMap Map of headers
@@ -348,7 +347,7 @@ open class CustomRequestsApi(
     ): ApiRequest<T> {
         return MappedRetrofitApiRequest(
             doPatch(url, body, queryMap, headersMap),
-            { mapResponseByType<T>(it, responseType) }
+            { mapResponseByType(it, responseType) }
         )
     }
     // endregion
@@ -389,7 +388,7 @@ open class CustomRequestsApi(
     ): ApiRequest<T> {
         return MappedRetrofitApiRequest(
             doDelete(url, queryMap, headersMap),
-            { mapResponseByType<T>(it, responseType) }
+            { mapResponseByType(it, responseType) }
         )
     }
 

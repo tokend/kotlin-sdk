@@ -4,7 +4,6 @@ import org.tokend.sdk.api.accounts.AccountsApi
 import org.tokend.sdk.api.accounts.AccountsService
 import org.tokend.sdk.api.base.ApiRequest
 import org.tokend.sdk.api.base.BaseApi
-import org.tokend.sdk.api.base.model.BaseResource
 import org.tokend.sdk.api.blobs.BlobsApi
 import org.tokend.sdk.api.charts.ChartsApi
 import org.tokend.sdk.api.charts.ChartsService
@@ -43,7 +42,7 @@ open class TokenDApi
  * @param extraHeaders  add headers to all requests
  * @param withLogs enable/disable HTTP Logs. True by default.
  * @param asyncCallbackExecutor [Executor] that performs [ApiRequest.executeAsync] callback.
- * By default it is [BaseApi.DEFAULT_ASYNC_CALLBACK_EXECUTOR], you may
+ * By default, it is [BaseApi.DEFAULT_ASYNC_CALLBACK_EXECUTOR], you may
  * want to use Android main thread executor for this.
  *
  * @see [AccountRequestSigner]
@@ -117,12 +116,11 @@ constructor(
     }
 
     /**
-     * Allows to make custom HTTP requests with response body mapping.
+     * Allows making custom HTTP requests with response body mapping.
      *
-     * If response class extends [BaseResource], then [JsonApiTools] will be used for mapping.
-     * If response class is [String] or [ByteArray] or primitive Java byte array,
+     * [JsonApiTools] is used for mapping (both JSONAPI resources and regular models).
+     * If the response class is [String] or [ByteArray] or primitive Java byte array,
      * then no mapping will be performed.
-     * Otherwise [Gson] will be used for mapping.
      */
     open val customRequests: CustomRequestsApi by lazy {
         CustomRequestsApi(getService(CustomRequestsService::class.java))

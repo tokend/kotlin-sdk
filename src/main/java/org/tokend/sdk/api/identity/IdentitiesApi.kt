@@ -11,6 +11,7 @@ import org.tokend.sdk.api.base.params.PagingParamsV2
 import org.tokend.sdk.api.base.params.map
 import org.tokend.sdk.api.identity.model.*
 import org.tokend.sdk.api.identity.params.IdentitiesPageParams
+import org.tokend.sdk.factory.JsonApiTools
 
 open class IdentitiesApi(
     protected open val identitesService: IdentitiesService
@@ -143,7 +144,7 @@ open class IdentitiesApi(
 
 
     /**
-     * @param value - will be serialized with Gson
+     * @param value - any object that will be serilized with [JsonApiTools.objectMapper]
      */
     open fun setSettingsItem(
         accountId: String,
