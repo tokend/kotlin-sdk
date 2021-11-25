@@ -31,7 +31,7 @@ class IdentityTest {
                 = keyServer.createAndSaveWallet(email, password, api.v3.keyValue).execute().get()
         email = wallet.email
 
-        val currentWalletInfo = keyServer.getWalletInfo(email, password).execute().get()
+        val currentWalletInfo = keyServer.getWallet(email, password).execute().get()
 
         val tfaCallback = object : TfaCallback {
             override fun onTfaRequired(exception: NeedTfaException, verifierInterface: TfaVerifier.Interface) {
@@ -95,7 +95,7 @@ class IdentityTest {
                 = keyServer.createAndSaveWallet(email, password, api.v3.keyValue).execute().get()
         email = wallet.email
 
-        val currentWalletInfo = keyServer.getWalletInfo(email, password).execute().get()
+        val currentWalletInfo = keyServer.getWallet(email, password).execute().get()
 
         val signedApi = Util.getSignedApi(rootAccount, api.rootUrl)
 

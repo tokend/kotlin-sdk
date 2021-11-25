@@ -2,7 +2,7 @@ package org.tokend.sdk.api.wallets
 
 import org.tokend.sdk.api.base.model.AttributesEntity
 import org.tokend.sdk.api.base.model.DataEntity
-import org.tokend.sdk.keyserver.models.ExistingWallet
+import org.tokend.sdk.keyserver.models.Wallet
 import org.tokend.sdk.keyserver.models.LoginParams
 import retrofit2.Call
 import retrofit2.http.*
@@ -29,7 +29,7 @@ interface WalletsService {
     fun getById(
         @Path("walletId") walletId: String,
         @QueryMap queryMap: Map<String, Any>?
-    ): Call<ExistingWallet>
+    ): Call<Wallet>
 
     @PUT("wallets/{walletId}")
     @JvmSuppressWildcards
@@ -40,5 +40,5 @@ interface WalletsService {
 
     @POST("wallets")
     @JvmSuppressWildcards
-    fun create(@Body body: Any): Call<ExistingWallet>
+    fun create(@Body body: Any): Call<Wallet>
 }

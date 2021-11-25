@@ -3,7 +3,7 @@ package org.tokend.sdk.keyserver.models
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.*
 
-class ExistingWalletData(
+class WalletData(
     @JsonProperty("id")
     val id: String,
     @JsonProperty("attributes")

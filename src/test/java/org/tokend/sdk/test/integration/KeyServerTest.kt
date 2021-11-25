@@ -148,7 +148,7 @@ class KeyServerTest {
         )
 
         val walletInfo = try {
-            keyServer.getWalletInfo(email, password)
+            keyServer.getWallet(email, password)
                     .execute()
                     .get()
         } catch (e: Exception) {
@@ -163,7 +163,7 @@ class KeyServerTest {
         )
 
         val recoveryWalletInfo = try {
-            keyServer.getWalletInfo(email, password, isRecovery = true)
+            keyServer.getWallet(email, password, isRecovery = true)
                     .execute()
                     .get()
         } catch (e: Exception) {
@@ -203,7 +203,7 @@ class KeyServerTest {
                 = keyServer.createAndSaveWallet(email, password, api.v3.keyValue).execute().get()
         email = wallet.email
 
-        val currentWalletInfo = keyServer.getWalletInfo(email, password).execute().get()
+        val currentWalletInfo = keyServer.getWallet(email, password).execute().get()
 
         val tfaCallback = object : TfaCallback {
             override fun onTfaRequired(exception: NeedTfaException,
@@ -234,7 +234,7 @@ class KeyServerTest {
                 networkParams = netParams,
                 newPassword = newPassword,
                 newAccount = newAccount,
-                currentWalletInfo = currentWalletInfo,
+                currentWallet = currentWalletInfo,
                 signersApi = api.v3.signers,
                 keyValueApi = api.v3.keyValue
         )
@@ -243,7 +243,7 @@ class KeyServerTest {
 
 
         val remoteNewWalletInfo = try {
-            keyServer.getWalletInfo(email, newPassword).execute().get()
+            keyServer.getWallet(email, newPassword).execute().get()
         } catch (e: Exception) {
             Assert.fail("New wallet must be accessible with new credentials")
             throw e
@@ -336,10 +336,10 @@ class KeyServerTest {
 
         val (_, rootAccount) = keyServer.createAndSaveWallet(email, password, api.v3.keyValue).execute().get()
 
-        val walletInfo = keyServer.getWalletInfo(email, password).execute().get()
+        val walletInfo = keyServer.getWallet(email, password).execute().get()
 
         Assert.assertEquals("Remote wallet email must be " +
-                "a lowercased current", email.toLowerCase(), walletInfo.email)
+                "a lowercased current", email.toLowerCase(), walletInfo.login)
         Assert.assertEquals("Remote wallet account ID must be equal to the one used for sign up",
                 rootAccount.accountId, walletInfo.accountId)
     }
@@ -358,7 +358,7 @@ class KeyServerTest {
         keyServer.createAndSaveWallet(email, charArrayOf(), api.v3.keyValue).execute().get()
 
         try {
-            keyServer.getWalletInfo(email, "qweqwe".toCharArray()).execute().get()
+            keyServer.getWallet(email, "qweqwe".toCharArray()).execute().get()
 
             Assert.fail("${InvalidCredentialsException::class.java.name} expected")
         } catch (e: Exception) {
@@ -371,7 +371,7 @@ class KeyServerTest {
         }
 
         try {
-            keyServer.getWalletInfo(
+            keyServer.getWallet(
                     SecureRandom.getSeed(12).encodeHexString(),
                     password
             ).execute().get()
@@ -452,7 +452,7 @@ class KeyServerTest {
                         .all { it }
         )
 
-        val walletInfo = keyServer.getWalletInfo(email, password)
+        val walletInfo = keyServer.getWallet(email, password)
                 .execute()
                 .get()
 

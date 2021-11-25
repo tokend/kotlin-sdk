@@ -25,7 +25,7 @@ class BlobsTest {
                 = keyServer.createAndSaveWallet(email, password, api.v3.keyValue).execute().get()
         email = wallet.email
 
-        val currentWalletInfo = keyServer.getWalletInfo(email, password).execute().get()
+        val currentWalletInfo = keyServer.getWallet(email, password).execute().get()
 
         val signedApi = Util.getSignedApi(rootAccount, api.rootUrl)
 

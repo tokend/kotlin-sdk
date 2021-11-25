@@ -16,14 +16,14 @@ import org.tokend.sdk.utils.extentions.encodeBase64String
 open class KeychainData
 @JvmOverloads
 constructor(
-    @JsonProperty("iv")
+    @get:JsonProperty("iv")
     @JsonAlias("IV")
     val encodedIv: String,
-    @JsonProperty("cipherText")
+    @get:JsonProperty("cipherText")
     val encodedCipherText: String,
-    @JsonProperty("cipherName")
+    @get:JsonProperty("cipherName")
     val cipherName: String = "aes",
-    @JsonProperty("modeName")
+    @get:JsonProperty("modeName")
     val cipherMode: String = "gcm"
 ) {
     /**
@@ -41,10 +41,17 @@ constructor(
         get() = encodedCipherText.decodeBase64()
 
     /**
-     * Serializes data to JSON and encodes it with Base64
+     * Serializes data to JSON.
+     */
+    fun toJson(): String {
+        return JsonApiTools.objectMapper.writeValueAsString(this)
+    }
+
+    /**
+     * Serializes data to JSON and encodes it with Base64.
      */
     fun encode(): String {
-        return JsonApiTools.objectMapper.writeValueAsString(this)
+        return toJson()
             .toByteArray()
             .encodeBase64String()
     }
