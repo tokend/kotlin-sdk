@@ -16,7 +16,7 @@ using `walletCustomization` param
 - Kotlin Jackson module (now can use `jacksonTypeRef` anywhere)
 
 ### Removed
-- Gson! Use `JsonApiTools.objectMapper` and @get:JsonProperties, @JsonIgnore for serialization
+- Gson! Use `JsonApiTools.objectMapper` and `@JsonProperties`, `@JsonIgnore` for serialization
 - A lot of obsolete integration APIs
 - Deprecated `general` API, use `v3.info` instead
 - `EncryptedAccount`
