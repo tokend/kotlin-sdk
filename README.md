@@ -65,37 +65,8 @@ val collection = api
 If you would like to use RxJava in your project check out [Rx extensions for SDK](https://github.com/tokend/kotlin-sdk-rx-extensions).
 
 ### Android integration
-For correct ProGuard processing add following lines to your project's `proguard-rules.pro`:
-```proguard
-# General reflection
--keepattributes Signature, InnerClasses, EnclosingMethod
--keepattributes RuntimeVisibleAnnotations, RuntimeVisibleParameterAnnotations
--dontwarn javax.annotation.**
--keepclassmembers enum * { *; }
-
-# Retrofit
--dontwarn org.codehaus.**
--keepclassmembers,allowshrinking,allowobfuscation interface * {
-    @retrofit2.http.* <methods>;
-}
-
-# Jackson
--keep class com.fasterxml.** { *; }
--keep @com.fasterxml.jackson.annotation.** class * { *; }
--dontwarn com.fasterxml.jackson.databind.**
-
-# JSONAPI
--keepclassmembers class * { @com.github.jasminb.jsonapi.annotations.Id <fields>; }
--keep class * implements com.github.jasminb.jsonapi.ResourceIdHandler
-
-# Crypto
--dontwarn net.i2p.crypto.eddsa.**
-
-# Wallet
-# Uncomment this if you would like to decode XDRs
-#-keep class org.tokend.wallet.xdr.* { *; }
-#-dontnote org.tokend.wallet.xdr.*
-```
+TokenD SDK works fine on Android targeting JVM version 1.8.
+For correct ProGuard processing check out the [rules from TokenD Android client](https://github.com/tokend/android-client/blob/master/app/proguard-rules.pro)
 
 ## Generate resources
 
