@@ -47,4 +47,4 @@ ext.publishGroupId = 'org.tokend'
 ext.publishArtifactId = 'sdk'
 ext.publishVersion = '4.0.0'
 
-apply from: 'publishS3.gradle'
+apply from: 'publish.gradle'
