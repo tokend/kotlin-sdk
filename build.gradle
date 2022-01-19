@@ -43,9 +43,8 @@ compileJava {
 compileKotlin { kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8 }
 compileTestKotlin { kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8 }
 
-apply from: 'deploy.gradle'
+ext.publishGroupId = 'org.tokend'
+ext.publishArtifactId = 'sdk'
+ext.publishVersion = '4.0.0'
 
-group 'org.tokend'
-version '4.0.0'
-uploadArchives.repositories.mavenDeployer.pom.artifactId = 'sdk'
-uploadArchives.repositories.mavenDeployer.pom.name = 'TokenD SDK'
+apply from: 'publishS3.gradle'

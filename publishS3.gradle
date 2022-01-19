@@ -1,0 +1,52 @@
+/**
+ * Config for a private S3 Maven repo deployment.
+ * Use "publish" task.
+ */
+
+if (file("repoCredentials.gradle").exists()) {
+    apply from: "repoCredentials.gradle"
+}
+
+apply plugin: 'maven-publish'
+
+task sourceJar(type: Jar, dependsOn: classes) {
+    archiveClassifier.set('sources')
+    from sourceSets.main.allSource
+}
+
+publishing {
+    repositories {
+        maven {
+            System.setProperty("org.gradle.s3.endpoint", project.ext.has("repoS3Endpoint") ? repoS3Endpoint : "")
+
+            url = project.ext.has("repoS3Bucket") ? repoS3Bucket : ""
+            credentials(AwsCredentials) {
+                accessKey = project.ext.has("repoAwsKeyId") ? repoAwsKeyId : ""
+                secretKey = project.ext.has("repoAwsSecret") ? repoAwsSecret : ""
+            }
+        }
+    }
+
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = publishGroupId
+            artifactId = publishArtifactId
+            version = publishVersion
+
+            from components.java
+            artifact sourceJar
+        }
+    }
+}
+
+publishMavenJavaPublicationToMavenRepository.doFirst {
+    if (!(project.ext.has("repoS3Bucket")
+            && project.ext.has("repoS3Endpoint")
+            && project.ext.has("repoAwsKeyId")
+            && project.ext.has("repoAwsSecret"))) {
+        throw new GradleException("In order to deploy archives you must create " +
+                "'repoCredentials.gradle' file the root dir and specify following " +
+                "credentials inside:\n" +
+                "\text.repoS3Endpoint\n\text.repoS3Bucket\n\text.repoAwsKeyId\n\text.repoAwsSecret")
+    }
+}
