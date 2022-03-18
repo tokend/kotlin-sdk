@@ -29,7 +29,7 @@ dependencies {
 
     compile 'org.tokend:crypto-cipher:1.0.2'
     compile 'org.tokend:crypto-kdf:1.0.4'
-    compile 'org.tokend:wallet:3.7.0'
+    compile 'org.tokend:wallet:3.7.1-lp.1'
 }
 repositories {
     mavenCentral()
@@ -46,6 +46,6 @@ compileTestKotlin { kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8 }
 apply from: 'deploy.gradle'
 
 group 'org.tokend'
-version '4.0.0'
+version '4.0.1-lp.1'
 uploadArchives.repositories.mavenDeployer.pom.artifactId = 'sdk'
 uploadArchives.repositories.mavenDeployer.pom.name = 'TokenD SDK'
