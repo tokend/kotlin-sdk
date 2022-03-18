@@ -45,6 +45,20 @@ public class SaleResource extends BaseResource {
         return endTime;
     }
     
+    @JsonProperty("participants_count")
+    private Integer participantsCount;
+    
+    public Integer getParticipantsCount() {
+        return participantsCount;
+    }
+    
+    @JsonProperty("participations_count")
+    private Integer participationsCount;
+    
+    public Integer getParticipationsCount() {
+        return participationsCount;
+    }
+    
     @JsonProperty("sale_state")
     private org.tokend.sdk.api.v3.model.generated.inner.Enum saleState;
     
@@ -72,6 +86,8 @@ public class SaleResource extends BaseResource {
             baseHardCap != null &&
             details != null &&
             endTime != null &&
+            participantsCount != null &&
+            participationsCount != null &&
             saleState != null &&
             saleType != null &&
             startTime != null 

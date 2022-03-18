@@ -25,9 +25,9 @@ public class CreateRedemptionRequestOpResource extends BaseOperationDetailsResou
     }
     
     @JsonProperty("creator_details")
-    private String creatorDetails;
+    private JsonNode creatorDetails;
     
-    public String getCreatorDetails() {
+    public JsonNode getCreatorDetails() {
         return creatorDetails;
     }
     

@@ -12,6 +12,24 @@ import org.jetbrains.annotations.Nullable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class VoteData {
     
+    @JsonProperty("creation_time")
+    @Nullable
+    private Date creationTime;
+    
+    @Nullable
+    public Date getCreationTime() {
+        return creationTime;
+    }
+    
+    @JsonProperty("custom_choice")
+    @Nullable
+    private String customChoice;
+    
+    @Nullable
+    public String getCustomChoice() {
+        return customChoice;
+    }
+    
     @JsonProperty("poll_type")
     private org.tokend.sdk.api.v3.model.generated.inner.Enum pollType;
     

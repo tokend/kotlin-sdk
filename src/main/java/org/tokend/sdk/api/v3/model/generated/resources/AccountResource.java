@@ -95,4 +95,12 @@ public class AccountResource extends BaseResource {
     public AccountRoleResource getRole() {
         return role;
     }
+    
+    @JsonIgnore
+    @Relationship("signers")
+    private List<SignerResource> signers;
+    
+    public List<? extends SignerResource> getSigners() {
+        return signers;
+    }
 }
