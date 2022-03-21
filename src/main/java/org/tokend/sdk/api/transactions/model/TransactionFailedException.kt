@@ -10,6 +10,9 @@ class TransactionFailedException(val submitResponse: SubmitTransactionResponse) 
             it != "op_success"
         }
 
+    override val message: String
+        get() = "$transactionResultCode: $operationResultCodes"
+
     companion object {
         const val TX_FAILED = "tx_failed"
         const val TX_BAD_AUTH = "tx_bad_auth_extra"
