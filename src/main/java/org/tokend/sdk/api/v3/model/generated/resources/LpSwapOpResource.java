@@ -15,7 +15,7 @@ import org.tokend.sdk.api.base.model.*;
 
 @Type("operations-lp-swap")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LpSwapOpResource extends BaseResource {
+public class LpSwapOpResource extends BaseOperationDetailsResource {
     
     @JsonProperty("in_amount")
     private BigDecimal inAmount;
@@ -51,6 +51,7 @@ public class LpSwapOpResource extends BaseResource {
             liquidityPoolId != null &&
             outAmount != null &&
             swapType != null 
+            && super.isFilled()
         ;
     }
     

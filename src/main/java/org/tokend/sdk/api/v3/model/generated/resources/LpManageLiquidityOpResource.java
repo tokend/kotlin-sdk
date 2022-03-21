@@ -15,7 +15,7 @@ import org.tokend.sdk.api.base.model.*;
 
 @Type("base-lp-manage-liquidity-op")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LpManageLiquidityOpResource extends BaseResource {
+public class LpManageLiquidityOpResource extends BaseOperationDetailsResource {
     
     @JsonProperty("first_asset_amount")
     private BigDecimal firstAssetAmount;
@@ -51,6 +51,7 @@ public class LpManageLiquidityOpResource extends BaseResource {
             liquidityPoolId != null &&
             lpTokensAmount != null &&
             secondAssetAmount != null 
+            && super.isFilled()
         ;
     }
     
