@@ -9,9 +9,15 @@ for further information about branching and tagging conventions.
 
 ## [Unreleased]
 
+### Added
+- `v3.accounts.get` admin endpoint to list all the accounts
+
 ### Fixed
 - Incorrect behavior of 2FA errors handling when there is no `Content-Length` header
 in the response
+
+### Internal
+- Now the `publish` task is used to publish archives to the Maven
 
 ## [4.0.0] 2021-11-25
 
