@@ -13,9 +13,9 @@ import org.jetbrains.annotations.Nullable;
 import org.tokend.sdk.api.base.model.*;
 
 
-@Type("operations-create-redemption-request")
+@Type("operations-create-deferred-payment-creation-request")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CreateRedemptionRequestOpResource extends BaseOperationDetailsResource {
+public class CreateDeferredPaymentCreationRequestOpResource extends BaseOperationDetailsResource {
     
     @JsonProperty("amount")
     private BigDecimal amount;
@@ -39,18 +39,11 @@ public class CreateRedemptionRequestOpResource extends BaseOperationDetailsResou
         ;
     }
     
-    @Relationship("account_to")
-    private AccountResource accountTo;
+    @Relationship("destination_account")
+    private AccountResource destinationAccount;
     
-    public AccountResource getAccountTo() {
-        return accountTo;
-    }
-    
-    @Relationship("balance_from")
-    private BalanceResource balanceFrom;
-    
-    public BalanceResource getBalanceFrom() {
-        return balanceFrom;
+    public AccountResource getDestinationAccount() {
+        return destinationAccount;
     }
     
     @Relationship("request")
@@ -58,5 +51,12 @@ public class CreateRedemptionRequestOpResource extends BaseOperationDetailsResou
     
     public ReviewableRequestResource getRequest() {
         return request;
+    }
+    
+    @Relationship("source_balance")
+    private BalanceResource sourceBalance;
+    
+    public BalanceResource getSourceBalance() {
+        return sourceBalance;
     }
 }
