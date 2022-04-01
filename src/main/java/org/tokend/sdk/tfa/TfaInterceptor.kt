@@ -54,7 +54,8 @@ open class TfaInterceptor(
 
     protected open fun extractTfaException(response: Response): NeedTfaException? {
         val error = try {
-            val responseString = response.peekBody(response.body().contentLength()).string()
+            // Peeking 1 KB is enough to get a 2FA error body.
+            val responseString = response.peekBody(1000).string()
             ErrorBody.fromJsonString(responseString).firstOrNull
         } catch (_: Exception) {
             null
