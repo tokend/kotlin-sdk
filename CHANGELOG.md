@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please check our [developers guide](https://gitlab.com/tokend/developers-guide)
 for further information about branching and tagging conventions.
 
+## [Unreleased]
+
+### Fixed
+- Incorrect behavior of 2FA errors handling when there is no `Content-Length` header
+in the response
+
 ## [4.0.0] 2021-11-25
 
 ### Added
