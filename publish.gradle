@@ -1,0 +1,49 @@
+/**
+ * Config for a private Maven repo deployment.
+ * Use "publish" task.
+ */
+
+if (file("repoCredentials.gradle").exists()) {
+    apply from: "repoCredentials.gradle"
+}
+
+apply plugin: 'maven-publish'
+
+task sourceJar(type: Jar, dependsOn: classes) {
+    archiveClassifier.set('sources')
+    from sourceSets.main.allSource
+}
+
+publishing {
+    repositories {
+        maven {
+            url = project.ext.has("repoUrl") ? repoUrl : ""
+            credentials(PasswordCredentials) {
+                username = project.ext.has("repoUser") ? repoUser : ""
+                password = project.ext.has("repoPass") ? repoPass : ""
+            }
+        }
+    }
+
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = publishGroupId
+            artifactId = publishArtifactId
+            version = publishVersion
+
+            from components.java
+            artifact sourceJar
+        }
+    }
+}
+
+publishMavenJavaPublicationToMavenRepository.doFirst {
+    if (!(project.ext.has("repoUrl")
+            && project.ext.has("repoUser")
+            && project.ext.has("repoPass"))) {
+        throw new GradleException("In order to deploy archives you must create " +
+                "'repoCredentials.gradle' file the root dir and specify following " +
+                "credentials inside:\n" +
+                "\text.repoUrl\n\text.repoUser\n\text.repoPass")
+    }
+}
