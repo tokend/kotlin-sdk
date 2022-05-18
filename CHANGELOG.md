@@ -11,6 +11,7 @@ for further information about branching and tagging conventions.
 
 ### Added
 - `v3.accounts.get` admin endpoint to list all the accounts
+- Human-readable `message` for `TransactionFailedException`
 
 ### Fixed
 - Incorrect behavior of 2FA errors handling when there is no `Content-Length` header
