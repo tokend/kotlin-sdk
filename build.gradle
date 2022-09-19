@@ -45,6 +45,6 @@ compileTestKotlin { kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8 }
 
 ext.publishGroupId = 'org.tokend'
 ext.publishArtifactId = 'sdk'
-ext.publishVersion = '4.0.1-x.1'
+ext.publishVersion = '4.0.1-x.3'
 
 apply from: 'publish.gradle'

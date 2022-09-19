@@ -16,8 +16,8 @@ import org.tokend.sdk.utils.extentions.encodeBase64String
 open class KeychainData
 @JvmOverloads
 constructor(
-    @get:JsonProperty("iv")
-    @JsonAlias("IV")
+    @get:JsonProperty("IV")
+    @JsonAlias("iv")
     val encodedIv: String,
     @get:JsonProperty("cipherText")
     val encodedCipherText: String,

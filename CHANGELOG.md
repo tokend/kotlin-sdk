@@ -16,6 +16,7 @@ for further information about branching and tagging conventions.
 ### Fixed
 - Incorrect behavior of 2FA errors handling when there is no `Content-Length` header
 in the response
+- Incorrect serialization of "IV" in `KeychainData`
 
 ### Internal
 - Now the `publish` task is used to publish archives to the Maven
